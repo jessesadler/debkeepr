@@ -7,11 +7,11 @@
 deb_refactor(l, s, d, vector = FALSE)
 }
 \arguments{
-\item{l}{pounds}
+\item{l}{Pounds: numeric value}
 
-\item{s}{shillings}
+\item{s}{Shillings: numeric value}
 
-\item{d}{pence}
+\item{d}{Pence: numeric value}
 
 \item{vector}{Logical (default FALSE), when FALSE the output will
 be a tibble, when TRUE the output will be a numeric vector.}
@@ -19,7 +19,8 @@ be a tibble, when TRUE the output will be a numeric vector.}
 \value{
 Returns either a tibble with one row of values and columns for the
 pounds, shillings, and pence values labeled as l, s, and d or a named
-numeric vector with values for pounds, shillings, and pence.
+numeric vector with values for pounds, shillings, and pence. If the amount
+is negative, the pounds, shillings, and pence values will all be negative.
 }
 \description{
 Refactor pounds, shillings, and pence to correct values based
@@ -32,9 +33,22 @@ solidi, and denarii. One solidus was equivalent to 12 denarii, and
 240 denarii coins were made from on libra of silver. The nomenclature
 and values of 12 denarii to 1 solidus and 20 solidi to 1 libra was
 adopted by Charlemagne and spread throughout Europe under different names.
+For more information on the lsd noemclature see
+\url{https://en.wikipedia.org/wiki/£sd}
 }
 \examples{
-deb_refactor(5, 25, 22)
+# Use to calculate the correct number of pounds, shillings, and pence
+deb_refactor(l = 5, s = 25, d = 22)
 deb_refactor(5, 25, 22, vector = TRUE)
+
+# It is possible to add within the function
+deb_refactor(5 + 6, 20 + 18, 8 + 11)
+# Or even
+deb_refactor(sum(4, 9, 0), sum(12, 16, 5), sum(11, 0, 6))
+
+# deb_refactor can deal with negative values
+deb_refactor(-5, -25, -22)
+# Or even a mixture of positive and negative if that occurs for some reason
+deb_refactor(5, -25, 22)
 
 }

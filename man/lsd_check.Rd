@@ -7,11 +7,11 @@
 lsd_check(l, s, d)
 }
 \arguments{
-\item{l}{pounds}
+\item{l}{Pounds: numeric value}
 
-\item{s}{shillings}
+\item{s}{Shillings: numeric value}
 
-\item{d}{pence}
+\item{d}{Pence: numeric value}
 }
 \description{
 Check l, s, and d values
