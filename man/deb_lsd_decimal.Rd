@@ -22,7 +22,8 @@ Convert pounds, shillings, and pence to decimalized pounds.
 \examples{
 deb_lsd_decimal(10, 5, 8)
 
-# Can be used with mutate on a data frame with pounds, shillings, and pence
-# columns to create a column for decimalized pounds.
+# Can be used with mutate() on a data frame with
+# pounds, shillings, and pence columns to create
+# a column for the total decimalized pounds.
 mutate(transactions, pounds = deb_lsd_decimal(l, s, d))
 }

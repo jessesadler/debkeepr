@@ -4,7 +4,7 @@
 \alias{deb_refactor}
 \title{Refactor pounds, shillings, and pence}
 \usage{
-deb_refactor(l, s, d, vector = FALSE)
+deb_refactor(l, s, d, x = 3, vector = FALSE)
 }
 \arguments{
 \item{l}{Pounds: numeric value}
@@ -12,6 +12,8 @@ deb_refactor(l, s, d, vector = FALSE)
 \item{s}{Shillings: numeric value}
 
 \item{d}{Pence: numeric value}
+
+\item{x}{round pence to specified number of decimal places. Default is 3.}
 
 \item{vector}{Logical (default FALSE), when FALSE the output will
 be a tibble, when TRUE the output will be a numeric vector.}

@@ -13,7 +13,17 @@ deb_lsd_s(l, s, d)
 
 \item{d}{Pence: numeric value}
 }
+\value{
+Returns a single value or numeric vector of length one.
+}
 \description{
 Convert pounds, shillings, and pence to decimalized shillings.
-This converts pounds, shillings, and pence to decimalized currency.
+}
+\examples{
+deb_lsd_s(10, 5, 8)
+
+# Can be used with mutate() on a data frame with
+# pounds, shillings, and pence columns to create
+# a column for the total decimalized shillings.
+mutate(transactions, pounds = deb_lsd_s(l, s, d))
 }

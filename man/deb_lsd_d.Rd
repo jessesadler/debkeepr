@@ -27,8 +27,9 @@ deb_lsd_d(4, 6, 8)
 # The pounds, shillings, and pence do not need to be properly factored
 deb_lsd_d(l = 6, s = 25, d = 17)
 
-# Can be used with mutate on a data frame with pounds, shillings, and pence
-# columns to create a column for the total pence.
+# Can be used with mutate() on a data frame with
+# pounds, shillings, and pence columns to create
+# a column for the total pence.
 mutate(transactions, pence = deb_lsd_d(l, s, d))
 
 }

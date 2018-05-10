@@ -15,15 +15,13 @@ be a tibble, when TRUE the output will be a numeric vector.}
 \value{
 Returns either a tibble with one row of values and columns for the
 pounds, shillings, and pence values labeled as l, s, and d or a named
-numeric vector with values for pounds, shillings, and pence.
+numeric vector with values for pounds, shillings, and pence. If d
+is negative, the pounds, shillings, and pence values will all be negative.
 }
 \description{
 Convert pence or denarii to pounds, shillings, and pence. This returns
 the value from a decimal curreny to the non-decimal currency of pounds,
-shillings, and pence.
-}
-\details{
-d can be either a positive
+shillings, and pence. This is a wrapper around \code{deb_refactor()}.
 }
 \examples{
 # Pounds, shillings, and pence as a tibble
@@ -31,5 +29,8 @@ deb_d_lsd(d = 2500)
 
 # Pounds, shillings, and pence as named vector
 deb_d_lsd(d = 2500, vector = TRUE)
+
+# The value for pence can be negative
+deb_d_lsd(-2500)
 
 }

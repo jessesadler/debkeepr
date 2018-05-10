@@ -13,8 +13,9 @@
 #' @examples
 #' deb_lsd_decimal(10, 5, 8)
 #'
-#' # Can be used with mutate on a data frame with pounds, shillings, and pence
-#' # columns to create a column for decimalized pounds.
+#' # Can be used with mutate() on a data frame with
+#' # pounds, shillings, and pence columns to create
+#' # a column for the total decimalized pounds.
 #' mutate(transactions, pounds = deb_lsd_decimal(l, s, d))
 
 deb_lsd_decimal <- function(l, s, d) {
@@ -42,8 +43,9 @@ deb_lsd_decimal <- function(l, s, d) {
 #' # The pounds, shillings, and pence do not need to be properly factored
 #' deb_lsd_d(l = 6, s = 25, d = 17)
 #'
-#' # Can be used with mutate on a data frame with pounds, shillings, and pence
-#' # columns to create a column for the total pence.
+#' # Can be used with mutate() on a data frame with
+#' # pounds, shillings, and pence columns to create
+#' # a column for the total pence.
 #' mutate(transactions, pence = deb_lsd_d(l, s, d))
 #'
 #' @export
@@ -52,27 +54,11 @@ deb_lsd_d <- function(l, s, d) {
   l * 240 + s * 12 + d
 }
 
-# Helper functions to return librae, solidi, and denarii from denarii
-# Can take postive or negative value
-# If negative, returns negative l, s, and d in case one is 0
-deb_d_librae <- function(d) {
-  dplyr::if_else(d < 0, -((-d %/% 12) %/% 20), (d %/% 12) %/% 20)
-}
-
-deb_d_solidi <- function(d) {
-  dplyr::if_else(d < 0, -((-d %/% 12) %% 20), (d %/% 12) %% 20)
-}
-deb_d_denarii <- function(d) {
-  dplyr::if_else(d < 0, -(-d %% 12), d %% 12)
-}
-
 #' Convert from pence to pounds, shillings and pence
 #'
 #' Convert pence or denarii to pounds, shillings, and pence. This returns
 #' the value from a decimal curreny to the non-decimal currency of pounds,
-#' shillings, and pence.
-#'
-#' d can be either a positive
+#' shillings, and pence. This is a wrapper around \code{deb_refactor()}.
 #'
 #' @param d pence: numeric value. Can be either positive or negative.
 #' @param vector Logical (default FALSE), when FALSE the output will
@@ -80,7 +66,8 @@ deb_d_denarii <- function(d) {
 #'
 #' @return Returns either a tibble with one row of values and columns for the
 #'   pounds, shillings, and pence values labeled as l, s, and d or a named
-#'   numeric vector with values for pounds, shillings, and pence.
+#'   numeric vector with values for pounds, shillings, and pence. If d
+#'   is negative, the pounds, shillings, and pence values will all be negative.
 #'
 #' @examples
 #' # Pounds, shillings, and pence as a tibble
@@ -89,20 +76,13 @@ deb_d_denarii <- function(d) {
 #' # Pounds, shillings, and pence as named vector
 #' deb_d_lsd(d = 2500, vector = TRUE)
 #'
+#' # The value for pence can be negative
+#' deb_d_lsd(-2500)
+#'
 #' @export
 
 deb_d_lsd <- function(d, vector = FALSE) {
-  if (vector == FALSE) {
-    tibble::tibble(
-      l = deb_d_librae(d),
-      s = deb_d_solidi(d),
-      d = deb_d_denarii(d))
-  } else {
-    c(
-      l = deb_d_librae(d),
-      s = deb_d_solidi(d),
-      d = deb_d_denarii(d))
-  }
+  deb_refactor(0, 0, d, vector = vector)
 }
 
 ### Refactor through solidi ###
@@ -110,9 +90,18 @@ deb_d_lsd <- function(d, vector = FALSE) {
 #' Convert from pounds, shillings and pence to shillings
 #'
 #' Convert pounds, shillings, and pence to decimalized shillings.
-#' This converts pounds, shillings, and pence to decimalized currency.
 #'
 #' @inheritParams lsd_check
+#'
+#' @return Returns a single value or numeric vector of length one.
+#'
+#' @examples
+#' deb_lsd_s(10, 5, 8)
+#'
+#' # Can be used with mutate() on a data frame with
+#' # pounds, shillings, and pence columns to create
+#' # a column for the total decimalized shillings.
+#' mutate(transactions, pounds = deb_lsd_s(l, s, d))
 
 deb_lsd_s <- function(l, s, d) {
   l * 20 + s + d/12

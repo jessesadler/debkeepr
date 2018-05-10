@@ -19,11 +19,11 @@ deb_solidi <- function(l, s, d) {
   }
 }
 
-deb_denarii <- function(l, s, d) {
+deb_denarii <- function(l, s, d, x) {
   if (l + s/20 + d/240 > 0) {
-    d %% 12
+    round(d %% 12, x)
   } else {
-    -(-d %% 12)
+    round(-(-d %% 12), x)
   }
 }
 
@@ -42,6 +42,8 @@ deb_denarii <- function(l, s, d) {
 #' \url{https://en.wikipedia.org/wiki/£sd}
 #'
 #' @inheritParams lsd_check
+#' @param x round pence to specified number of decimal places. Default is 3.
+#'   Set to 0 if you want pence to always be a whole number.
 #' @param vector Logical (default FALSE), when FALSE the output will
 #'   be a tibble, when TRUE the output will be a numeric vector.
 #'
@@ -67,19 +69,37 @@ deb_denarii <- function(l, s, d) {
 #'
 #' @export
 
-deb_refactor <- function(l, s, d, vector = FALSE) {
+deb_refactor <- function(l, s, d, x = 3, vector = FALSE) {
+  # Check that l, s, d are numeric
   lsd_check(l = l,
             s = s,
             d = d)
+  # Check for decimals in l
+  if (l != round(l)) {
+    temp_s <- s + (l - floor(l)) * 20
+    l <- floor(l)
+    if (temp_s != round(temp_s)) {
+      s <- floor(temp_s)
+      d <- d + (temp_s - floor(temp_s)) * 12
+    } else {
+      s <- temp_s
+    }
+  }
+  # Check for decimals in s
+  if (s != round(s)) {
+    d <- d + (s - floor(s)) * 12
+    s <- floor(s)
+  }
+
   if (vector == FALSE) {
     tibble::tibble(
       l = deb_librae(l, s, d),
       s = deb_solidi(l, s, d),
-      d = deb_denarii(l, s, d))
+      d = deb_denarii(l, s, d, x))
   } else {
     c(
       l = deb_librae(l, s, d),
       s = deb_solidi(l, s, d),
-      d = deb_denarii(l, s, d))
+      d = deb_denarii(l, s, d, x))
   }
 }
