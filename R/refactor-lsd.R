@@ -1,29 +1,71 @@
-## lsd transformations ##
+## Refactor lsd ##
 
-# Helper functions: Check whether entry is positive or negative
-# If negative l, s, and d are all made negative
+# Check and deal with decimals in l or s
+# If value is negative, turn l, s, and d positive
+deb_decimal_check <- function(l, s, d) {
+  # Check if the value is positive
+  # Return positive values so only need to use floor
+  if (l + s/20 + d/240 < 0) {
+    l <- -l
+    s <- -s
+    d <- -d
+  }
+  # Check for decimals in l
+  if (l != round(l)) {
+    temp_s <- s + (l - floor(l)) * 20
+    l <- floor(l)
+    if (temp_s != round(temp_s)) {
+      s <- floor(temp_s)
+      d <- d + (temp_s - floor(temp_s)) * 12
+    } else {
+      s <- temp_s
+    }
+  }
+  # Check for decimals in s
+  if (s != round(s)) {
+    d <- d + (s - floor(s)) * 12
+    s <- floor(s)
+  }
+  c(l, s, d)
+}
+
+# Individual helper functions
+# Check decimal, deal with negative numbers, and
+# refactor to correct value.
 
 deb_librae <- function(l, s, d) {
+  lsd <- deb_decimal_check(l, s, d)
+  librae <- lsd[1]
+  solidi <- lsd[2]
+  denarii <- lsd[3]
+  librae <- librae + ((solidi + denarii %/% 12) %/% 20)
   if (l + s/20 + d/240 > 0) {
-    l + ((s + d %/% 12) %/% 20)
+    librae
   } else {
-    -(-l + ((-s + -d %/% 12) %/% 20))
+    -librae
   }
 }
 
 deb_solidi <- function(l, s, d) {
+  lsd <- deb_decimal_check(l, s, d)
+  solidi <- lsd[2]
+  denarii <- lsd[3]
+  solidi <- (solidi + denarii %/% 12) %% 20
   if (l + s/20 + d/240 > 0) {
-    (s + d %/% 12) %% 20
+    solidi
   } else {
-    -((-s + -d %/% 12) %% 20)
+    -solidi
   }
 }
 
-deb_denarii <- function(l, s, d, x) {
+deb_denarii <- function(l, s, d, round) {
+  lsd <- deb_decimal_check(l, s, d)
+  denarii <- lsd[3]
+  denarii <- round(denarii %% 12, round)
   if (l + s/20 + d/240 > 0) {
-    round(d %% 12, x)
+    denarii
   } else {
-    round(-(-d %% 12), x)
+    -denarii
   }
 }
 
@@ -42,7 +84,7 @@ deb_denarii <- function(l, s, d, x) {
 #' \url{https://en.wikipedia.org/wiki/£sd}
 #'
 #' @inheritParams lsd_check
-#' @param x round pence to specified number of decimal places. Default is 3.
+#' @param round round pence to specified number of decimal places. Default is 3.
 #'   Set to 0 if you want pence to always be a whole number.
 #' @param vector Logical (default FALSE), when FALSE the output will
 #'   be a tibble, when TRUE the output will be a numeric vector.
@@ -69,37 +111,19 @@ deb_denarii <- function(l, s, d, x) {
 #'
 #' @export
 
-deb_refactor <- function(l, s, d, x = 3, vector = FALSE) {
-  # Check that l, s, d are numeric
-  lsd_check(l = l,
-            s = s,
-            d = d)
-  # Check for decimals in l
-  if (l != round(l)) {
-    temp_s <- s + (l - floor(l)) * 20
-    l <- floor(l)
-    if (temp_s != round(temp_s)) {
-      s <- floor(temp_s)
-      d <- d + (temp_s - floor(temp_s)) * 12
-    } else {
-      s <- temp_s
-    }
-  }
-  # Check for decimals in s
-  if (s != round(s)) {
-    d <- d + (s - floor(s)) * 12
-    s <- floor(s)
-  }
-
+deb_refactor <- function(l, s, d, round = 3, vector = FALSE) {
+  librae <- deb_librae(l, s, d)
+  solidi <- deb_solidi(l, s, d)
+  denarii <- deb_denarii(l, s, d, round)
   if (vector == FALSE) {
     tibble::tibble(
-      l = deb_librae(l, s, d),
-      s = deb_solidi(l, s, d),
-      d = deb_denarii(l, s, d, x))
+      l = librae,
+      s = solidi,
+      d = denarii)
   } else {
     c(
-      l = deb_librae(l, s, d),
-      s = deb_solidi(l, s, d),
-      d = deb_denarii(l, s, d, x))
+      l = librae,
+      s = solidi,
+      d = denarii)
   }
 }
