@@ -58,7 +58,7 @@ deb_solidi <- function(l, s, d) {
   }
 }
 
-deb_denarii <- function(l, s, d, round) {
+deb_denarii <- function(l, s, d, round = 3) {
   lsd <- deb_decimal_check(l, s, d)
   denarii <- lsd[3]
   denarii <- round(denarii %% 12, round)
