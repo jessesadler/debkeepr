@@ -7,11 +7,11 @@
 lsd_column_check(df, l, s, d)
 }
 \arguments{
-\item{l}{Pounds column: Unquoted name of numeric variable.}
+\item{l}{Pounds column: Unquoted name of a numeric variable corresponding to pounds.}
 
-\item{s}{Shillings column: Unquoted name of numeric variable.}
+\item{s}{Shillings column: Unquoted name of numeric variable corresponding to shillings.}
 
-\item{d}{Pence column: Unquoted name of numeric variable.}
+\item{d}{Pence column: Unquoted name of numeric variable corresponding to pence.}
 }
 \description{
 Check l, s, and d values

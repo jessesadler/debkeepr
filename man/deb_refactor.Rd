@@ -4,7 +4,7 @@
 \alias{deb_refactor}
 \title{Refactor pounds, shillings, and pence}
 \usage{
-deb_refactor(l, s, d, x = 3, vector = FALSE)
+deb_refactor(l, s, d, round = 3, vector = FALSE)
 }
 \arguments{
 \item{l}{Pounds: numeric value}
@@ -13,7 +13,8 @@ deb_refactor(l, s, d, x = 3, vector = FALSE)
 
 \item{d}{Pence: numeric value}
 
-\item{x}{round pence to specified number of decimal places. Default is 3.}
+\item{round}{round pence to specified number of decimal places. Default is 3.
+Set to 0 if you want pence to always be a whole number.}
 
 \item{vector}{Logical (default FALSE), when FALSE the output will
 be a tibble, when TRUE the output will be a numeric vector.}
@@ -52,5 +53,8 @@ deb_refactor(sum(4, 9, 0), sum(12, 16, 5), sum(11, 0, 6))
 deb_refactor(-5, -25, -22)
 # Or even a mixture of positive and negative if that occurs for some reason
 deb_refactor(5, -25, 22)
+
+# deb_refactor can also properly refactor decimalized pounds and shillings
+deb_refactor(8.7, 33.65, 15)
 
 }

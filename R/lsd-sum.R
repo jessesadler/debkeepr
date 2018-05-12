@@ -1,33 +1,5 @@
 ## Sum of lsd columns ##
 
-# Helper functions: They check whether sum is positive or negative
-# If negative l, s, and d are all made negative
-
-deb_l_sum <- function(l, s, d) {
-  if (sum(l) + sum(s)/20 + sum(d)/240 > 0) {
-    sum(l) + ((sum(s) + (sum(d) %/% 12)) %/% 20)
-  } else {
-    -(sum(-l) + ((sum(-s) + (sum(-d) %/% 12)) %/% 20))
-  }
-}
-
-deb_s_sum <- function(l, s, d) {
-  if (sum(l) + sum(s)/20 + sum(d)/240 > 0) {
-    (sum(s) + (sum(d) %/% 12)) %% 20
-  } else {
-    -((sum(-s) + (sum(-d) %/% 12)) %% 20)
-  }
-}
-
-deb_d_sum <- function(l, s, d) {
-  if (sum(l) + sum(s)/20 + sum(d)/240 > 0) {
-    round(sum(d) %% 12, 3)
-  } else {
-    -(round(sum(-d) %% 12, 3))
-  }
-}
-
-
 #' Sum of pounds, shillings, and pence columns in a data frame
 #'
 #' Uses \code{summarise()} from \code{dplyr} to add pounds, shillings, and pence
@@ -42,6 +14,8 @@ deb_d_sum <- function(l, s, d) {
 #' @param df A data frame that contains columns with pounds, shillings,
 #'   and pence variables.
 #' @inheritParams lsd_column_check
+#' @param round round pence to specified number of decimal places.
+#'   Default is 3. Set to 0 if you want pence to always be a whole number.
 #'
 #' @return Returns a data frame with one level of grouping dropped.
 #'   Any variables other than l, s, and d that are not grouped will
@@ -70,7 +44,7 @@ deb_d_sum <- function(l, s, d) {
 #'   group_by(group) %>%
 #'   deb_sum()
 #'
-#' # The function can also take into account negative values
+#' # The function can take into account negative values
 #' example2 <- tibble::tibble(group = c(1, 2, 1, 2),
 #'                            l = c(-3, 5, -6, 2),
 #'                            s = c(-10, 18, -11, 16),
@@ -81,18 +55,23 @@ deb_d_sum <- function(l, s, d) {
 #'
 #' @export
 
-deb_sum <- function(df, l = l, s = s, d = d) {
-  l <- rlang::enquo(l)
-  s <- rlang::enquo(s)
-  d <- rlang::enquo(d)
+deb_sum <- function(df, l = l, s = s, d = d, round = 3) {
+  l <- dplyr::enquo(l)
+  s <- dplyr::enquo(s)
+  d <- dplyr::enquo(d)
+  # Column names
+  l_column <- dplyr::quo_name(l)
+  s_column <- dplyr::quo_name(s)
+  d_column <- dplyr::quo_name(d)
 
-  lsd_column_check(df = df,
-                   l = l,
-                   s = s,
-                   d = d)
+  lsd_column_check(df, l, s, d)
 
-  dplyr::summarise(df,
-                   l = deb_l_sum(!!l, !!s, !!d),
-                   s = deb_s_sum(!!l, !!s, !!d),
-                   d = deb_d_sum(!!l, !!s, !!d))
+  # Use temp columns and rename so that l and s do not get overwritten
+  df %>%
+    dplyr::summarise(temp_l_col = deb_librae(sum(!!l), sum(!!s), sum(!!d)),
+                     temp_s_col = deb_solidi(sum(!!l), sum(!!s), sum(!!d)),
+                     temp_d_col = deb_denarii(sum(!!l), sum(!!s), sum(!!d), round)) %>%
+    dplyr::rename(!! l_column := temp_l_col,
+                  !! s_column := temp_s_col,
+                  !! d_column := temp_d_col)
 }

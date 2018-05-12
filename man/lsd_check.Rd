@@ -2,7 +2,7 @@
 % Please edit documentation in R/checks.R
 \name{lsd_check}
 \alias{lsd_check}
-\title{Check l, s, and d values}
+\title{Check that l, s, and d values are numeric}
 \usage{
 lsd_check(l, s, d)
 }
@@ -14,5 +14,5 @@ lsd_check(l, s, d)
 \item{d}{Pence: numeric value}
 }
 \description{
-Check l, s, and d values
+Check that l, s, and d values are numeric
 }

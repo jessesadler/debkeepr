@@ -2,6 +2,7 @@
 
 # Check and deal with decimals in l or s
 # If value is negative, turn l, s, and d positive
+# Returns vector in form c(l, s, d)
 deb_decimal_check <- function(l, s, d) {
   # Check if the value is positive
   # Return positive values so only need to use floor
@@ -29,16 +30,15 @@ deb_decimal_check <- function(l, s, d) {
   c(l, s, d)
 }
 
+
 # Individual helper functions
 # Check decimal, deal with negative numbers, and
 # refactor to correct value.
 
 deb_librae <- function(l, s, d) {
   lsd <- deb_decimal_check(l, s, d)
-  librae <- lsd[1]
-  solidi <- lsd[2]
-  denarii <- lsd[3]
-  librae <- librae + ((solidi + denarii %/% 12) %/% 20)
+  librae <- lsd[1] + ((lsd[2] + lsd[3] %/% 12) %/% 20)
+  # Deal with positive or negative values
   if (l + s/20 + d/240 > 0) {
     librae
   } else {
@@ -48,9 +48,7 @@ deb_librae <- function(l, s, d) {
 
 deb_solidi <- function(l, s, d) {
   lsd <- deb_decimal_check(l, s, d)
-  solidi <- lsd[2]
-  denarii <- lsd[3]
-  solidi <- (solidi + denarii %/% 12) %% 20
+  solidi <- (lsd[2] + lsd[3] %/% 12) %% 20
   if (l + s/20 + d/240 > 0) {
     solidi
   } else {
@@ -60,8 +58,7 @@ deb_solidi <- function(l, s, d) {
 
 deb_denarii <- function(l, s, d, round = 3) {
   lsd <- deb_decimal_check(l, s, d)
-  denarii <- lsd[3]
-  denarii <- round(denarii %% 12, round)
+  denarii <- round(lsd[3] %% 12, round)
   if (l + s/20 + d/240 > 0) {
     denarii
   } else {
@@ -109,9 +106,14 @@ deb_denarii <- function(l, s, d, round = 3) {
 #' # Or even a mixture of positive and negative if that occurs for some reason
 #' deb_refactor(5, -25, 22)
 #'
+#' # deb_refactor can also properly refactor decimalized pounds and shillings
+#' deb_refactor(8.7, 33.65, 15)
+#'
 #' @export
 
 deb_refactor <- function(l, s, d, round = 3, vector = FALSE) {
+  lsd_check(l, s, d)
+  # Create values with different names so that l, s, and d do not get overwritten
   librae <- deb_librae(l, s, d)
   solidi <- deb_solidi(l, s, d)
   denarii <- deb_denarii(l, s, d, round)

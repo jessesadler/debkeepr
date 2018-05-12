@@ -1,5 +1,9 @@
 context("test refactor lsd.R")
 
+test_that("non-numeric is an error", {
+  expect_error(deb_refactor(9, 0, "t"),
+               "d must be numeric")
+})
 
 test_that("positive and negative refactor", {
   expect_equal(deb_librae(10, 25, 22), 11)

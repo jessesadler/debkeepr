@@ -4,17 +4,20 @@
 \alias{deb_sum}
 \title{Sum of pounds, shillings, and pence columns in a data frame}
 \usage{
-deb_sum(df, l = l, s = s, d = d)
+deb_sum(df, l = l, s = s, d = d, round = 3)
 }
 \arguments{
 \item{df}{A data frame that contains columns with pounds, shillings,
 and pence variables.}
 
-\item{l}{Pounds column: Unquoted name of numeric variable.}
+\item{l}{Pounds column: Unquoted name of a numeric variable corresponding to pounds.}
 
-\item{s}{Shillings column: Unquoted name of numeric variable.}
+\item{s}{Shillings column: Unquoted name of numeric variable corresponding to shillings.}
 
-\item{d}{Pence column: Unquoted name of numeric variable.}
+\item{d}{Pence column: Unquoted name of numeric variable corresponding to pence.}
+
+\item{round}{round pence to specified number of decimal places.
+Default is 3. Set to 0 if you want pence to always be a whole number.}
 }
 \value{
 Returns a data frame with one level of grouping dropped.
@@ -55,7 +58,7 @@ example1 \%>\%
   group_by(group) \%>\%
   deb_sum()
 
-# The function can also take into account negative values
+# The function can take into account negative values
 example2 <- tibble::tibble(group = c(1, 2, 1, 2),
                            l = c(-3, 5, -6, 2),
                            s = c(-10, 18, -11, 16),
