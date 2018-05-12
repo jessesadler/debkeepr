@@ -31,7 +31,7 @@ deb_decimal_check <- function(l, s, d) {
 }
 
 
-# Individual helper functions
+## Transform lsd to separate l, s, and d ##
 # Check decimal, deal with negative numbers, and
 # refactor to correct value.
 
@@ -66,6 +66,19 @@ deb_denarii <- function(l, s, d, round = 3) {
   }
 }
 
+## Transformations through denarii to l, s, d ##
+
+deb_denarii_l <- function(d) {
+  dplyr::if_else(d < 0, -((-d %/% 12) %/% 20), (d %/% 12) %/% 20)
+}
+
+deb_denarii_s <- function(d) {
+  dplyr::if_else(d < 0, -((-d %/% 12) %% 20), (d %/% 12) %% 20)
+}
+deb_denarii_d <- function(d) {
+  dplyr::if_else(d < 0, -(-d %% 12), d %% 12)
+}
+
 #' Refactor pounds, shillings, and pence
 #'
 #' Refactor pounds, shillings, and pence to correct values based
@@ -80,7 +93,9 @@ deb_denarii <- function(l, s, d, round = 3) {
 #' For more information on the lsd noemclature see
 #' \url{https://en.wikipedia.org/wiki/£sd}
 #'
-#' @inheritParams lsd_check
+#' @param l Pounds: numeric value
+#' @param s Shillings: numeric value
+#' @param d Pence: numeric value
 #' @param round round pence to specified number of decimal places. Default is 3.
 #'   Set to 0 if you want pence to always be a whole number.
 #' @param vector Logical (default FALSE), when FALSE the output will
@@ -112,7 +127,7 @@ deb_denarii <- function(l, s, d, round = 3) {
 #' @export
 
 deb_refactor <- function(l, s, d, round = 3, vector = FALSE) {
-  lsd_check(l, s, d)
+  lsd_check(l, s, d, round, vector)
   # Create values with different names so that l, s, and d do not get overwritten
   librae <- deb_librae(l, s, d)
   solidi <- deb_solidi(l, s, d)
