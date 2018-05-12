@@ -13,7 +13,9 @@
 #'
 #' @param df A data frame that contains columns with pounds, shillings,
 #'   and pence variables.
-#' @inheritParams lsd_column_check
+#' @param l Pounds column: Unquoted name of a numeric variable corresponding to pounds.
+#' @param s Shillings column: Unquoted name of numeric variable corresponding to shillings.
+#' @param d Pence column: Unquoted name of numeric variable corresponding to pence.
 #' @param round round pence to specified number of decimal places.
 #'   Default is 3. Set to 0 if you want pence to always be a whole number.
 #'
@@ -66,7 +68,7 @@ deb_sum <- function(df, l = l, s = s, d = d, round = 3) {
 
   lsd_column_check(df, l, s, d)
 
-  # Use temp columns and rename so that l and s do not get overwritten
+  # Use temp columns and rename so that l, s, and d do not get overwritten
   df %>%
     dplyr::summarise(temp_l_col = deb_librae(sum(!!l), sum(!!s), sum(!!d)),
                      temp_s_col = deb_solidi(sum(!!l), sum(!!s), sum(!!d)),

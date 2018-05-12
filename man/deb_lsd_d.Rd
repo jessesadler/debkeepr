@@ -2,7 +2,7 @@
 % Please edit documentation in R/lsd-transformations.R
 \name{deb_lsd_d}
 \alias{deb_lsd_d}
-\title{Convert from pounds, shillings and pence to pence}
+\title{Convert from pounds, shillings, and pence to pence}
 \usage{
 deb_lsd_d(l, s, d)
 }
@@ -22,14 +22,18 @@ Converting to the lowest denomination turns the non-decimal
 pounds, shillings, and pence currency into a decimal currency.
 }
 \examples{
-deb_lsd_d(4, 6, 8)
+# Create decimalized pence
+deb_lsd_d(10, 5, 8)
 
-# The pounds, shillings, and pence do not need to be properly factored
+# The pounds, shillings, and pence do not need to be properly grouped
 deb_lsd_d(l = 6, s = 25, d = 17)
 
 # Can be used with mutate() on a data frame with
 # pounds, shillings, and pence columns to create
-# a column for the total pence.
-mutate(transactions, pence = deb_lsd_d(l, s, d))
+# a column for the equivalent decimalized pence.
+df <- tibble::tibble(l = c(3, 5, 6, 2),
+                     s = c(10, 18, 11, 16),
+                     d = c(9, 11, 10, 5))
+ mutate(df, pence = deb_lsd_d(l, s, d))
 
 }

@@ -5,6 +5,16 @@ test_that("non-numeric is an error", {
                "d must be numeric")
 })
 
+test_that("round argument is numeric", {
+  expect_error(deb_refactor(1, 34, 4, round = "t"),
+               "round must be numeric")
+})
+
+test_that("vector argument is logical", {
+  expect_error(deb_refactor(9, 0, 8, 2, 5),
+               "vector must be logical, either TRUE or FALSE")
+})
+
 test_that("positive and negative refactor", {
   expect_equal(deb_librae(10, 25, 22), 11)
   expect_equal(deb_librae(-10, -25, -22), -11)

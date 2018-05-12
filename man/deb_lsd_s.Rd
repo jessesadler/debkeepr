@@ -20,10 +20,17 @@ Returns a single value or numeric vector of length one.
 Convert pounds, shillings, and pence to decimalized shillings.
 }
 \examples{
+# Create decimalized shillings
 deb_lsd_s(10, 5, 8)
+
+# The pounds, shillings, and pence do not need to be properly grouped
+deb_lsd_s(l = 6, s = 25, d = 17)
 
 # Can be used with mutate() on a data frame with
 # pounds, shillings, and pence columns to create
-# a column for the total decimalized shillings.
-mutate(transactions, pounds = deb_lsd_s(l, s, d))
+# a column for the equivalent decimalized shillings.
+df <- tibble::tibble(l = c(3, 5, 6, 2),
+                     s = c(10, 18, 11, 16),
+                     d = c(9, 11, 10, 5))
+ mutate(df, shillings = deb_lsd_s(l, s, d))
 }
