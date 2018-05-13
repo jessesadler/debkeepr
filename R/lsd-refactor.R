@@ -66,19 +66,6 @@ deb_denarii <- function(l, s, d, round = 3) {
   }
 }
 
-## Transformations through denarii to l, s, d ##
-
-deb_denarii_l <- function(d) {
-  dplyr::if_else(d < 0, -((-d %/% 12) %/% 20), (d %/% 12) %/% 20)
-}
-
-deb_denarii_s <- function(d) {
-  dplyr::if_else(d < 0, -((-d %/% 12) %% 20), (d %/% 12) %% 20)
-}
-deb_denarii_d <- function(d) {
-  dplyr::if_else(d < 0, -(-d %% 12), d %% 12)
-}
-
 #' Refactor pounds, shillings, and pence
 #'
 #' Refactor pounds, shillings, and pence to correct values based
