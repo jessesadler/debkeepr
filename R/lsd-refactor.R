@@ -115,11 +115,12 @@ deb_denarii <- function(l, s, d, round = 3) {
 #'
 #' @return Returns either a tibble with columns for the pounds, shillings, and
 #'   pence values labeled as l, s, and d or a named numeric vector with values
-#'   for pounds, shillings, and pence. If the amount is negative, the pounds,
-#'   shillings, and pence values will all be negative. The number of rows in
-#'   the resulting tibble will be equal to the length of the input vectors.
-#'   If the length of l, s, and d are greater than 1 and \code{vector = TRUE},
-#'   the result with be a list of named vectors.
+#'   for pounds, shillings, and pence. If the input lsd value is negative, the
+#'   pounds, shillings, and pence values will all be negative. The number of
+#'   rows in the resulting tibble will be equal to the length of the input
+#'   vectors. If the length of l, s, and d is greater than 1 and
+#'   \code{vector = TRUE}, the result will be a list of named vectors of length
+#'   equal to the input vectors.
 #'
 #' @examples
 #' # Use to calculate the correct number of pounds, shillings, and pence
@@ -140,7 +141,6 @@ deb_denarii <- function(l, s, d, round = 3) {
 #' deb_refactor(8.7, 33.65, 15)
 #'
 #' # l, s, and d can be vectors of length > 1
-#'
 #' # Return a tibble with two rows
 #' deb_refactor(l = c(8, 10), s = c(25, 86), d = c(34, 29))
 #'

@@ -18,6 +18,23 @@ test_that("decimalized to lsd works", {
   expect_equal(deb_d_lsd(1339.25, vector = TRUE), c(l = 5, s = 11, d = 7.25))
 })
 
+test_that("vectorization works", {
+  expect_equal(nrow(deb_l_lsd(c(8.325, -8.725))), 2)
+  expect_equal(length(deb_l_lsd(c(8.325, -8.725), vector = TRUE)), 2)
+  expect_equal(deb_l_lsd(c(8.325, -8.725), vector = TRUE),
+              list(c(l = 8, s = 6, d = 6), c(l = -8, s = -14, d = -6)))
+
+  expect_equal(nrow(deb_s_lsd(c(123, -123.325))), 2)
+  expect_equal(length(deb_s_lsd(c(123, -123.325), vector = TRUE)), 2)
+  expect_equal(deb_s_lsd(c(123, -123.325), vector = TRUE),
+               list(c(l = 6, s = 3, d = 0), c(l = -6, s = -3, d = -3.9)))
+
+  expect_equal(nrow(deb_d_lsd(c(1339, -1339))), 2)
+  expect_equal(length(deb_d_lsd(c(1339, -1339), vector = TRUE)), 2)
+  expect_equal(deb_d_lsd(c(1339, -1339), vector = TRUE),
+               list(c(l = 5, s = 11, d = 7), c(l = -5, s = -11, d = -7)))
+})
+
 # Reverse of above
 test_that("lsd to decimalized l, s, and d works", {
   # deb_lsd_l

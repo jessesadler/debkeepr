@@ -39,14 +39,17 @@ deb_lsd_l <- function(l, s, d) {
 #' Convert decimalized pounds to the lsd system of pounds, shillings,
 #' and pence. The function returns the value from a decimal currency to the
 #' non-decimal currency of pounds, shillings, and pence.
-#' This is a wrapper around \code{deb_refactor()}.
+#' This is a wrapper around \code{\link{deb_refactor}}.
 #'
 #' @inheritParams deb_refactor
 #'
-#' @return Returns either a tibble with one row of values and columns for the
-#'   pounds, shillings, and pence values labeled as l, s, and d or a named
-#'   numeric vector with values for pounds, shillings, and pence. If l
-#'   is negative, the pounds, shillings, and pence values will all be negative.
+#' @return Returns either a tibble with columns for the pounds, shillings, and
+#'   pence values labeled as l, s, and d or a named numeric vector with values
+#'   for pounds, shillings, and pence. If the input value is negative, the
+#'   pounds, shillings, and pence values will all be negative. The number of
+#'   rows in the resulting tibble will be equal to the length of d. If the
+#'   length of d is greater than 1 and \code{vector = TRUE}, the result will
+#'   be a list of named vectors of length equal to d.
 #'
 #' @examples
 #' # Conversion from pounds to pounds, shillings, and pence
@@ -59,10 +62,18 @@ deb_lsd_l <- function(l, s, d) {
 #' # The value can be negative
 #' deb_l_lsd(-8.625)
 #'
+#' # l can be a vector of length > 1
+#' # Return a tibble with three rows
+#' deb_l_lsd(c(8.625, -8.625, 8))
+#'
+#' # Return a list with three vectors
+#' deb_l_lsd(c(8.625, -8.625, 8), vector = TRUE)
+#'
 #' @export
 
 deb_l_lsd <- function(l, round = 3, vector = FALSE) {
-  deb_refactor(l, 0, 0, round, vector)
+  # repeat 0 of length l for vectorization
+  deb_refactor(l, rep(0, length(l)), rep(0, length(l)), round, vector)
 }
 
 ### Refactor through solidi ###
@@ -102,14 +113,17 @@ deb_lsd_s <- function(l, s, d) {
 #' Convert decimalized shillings to the lsd system of pounds, shillings,
 #' and pence. The function returns the value from a decimal currency to the
 #' non-decimal currency of pounds, shillings, and pence.
-#' This is a wrapper around \code{deb_refactor()}.
+#' This is a wrapper around \code{\link{deb_refactor}}.
 #'
 #' @inheritParams deb_refactor
 #'
-#' @return Returns either a tibble with one row of values and columns for the
-#'   pounds, shillings, and pence values labeled as l, s, and d or a named
-#'   numeric vector with values for pounds, shillings, and pence. If s
-#'   is negative, the pounds, shillings, and pence values will all be negative.
+#' @return Returns either a tibble with columns for the pounds, shillings, and
+#'   pence values labeled as l, s, and d or a named numeric vector with values
+#'   for pounds, shillings, and pence. If the input value is negative, the
+#'   pounds, shillings, and pence values will all be negative. The number of
+#'   rows in the resulting tibble will be equal to the length of d. If the
+#'   length of d is greater than 1 and \code{vector = TRUE}, the result will
+#'   be a list of named vectors of length equal to d.
 #'
 #' @examples
 #' # Pounds, shillings, and pence as a tibble
@@ -124,10 +138,18 @@ deb_lsd_s <- function(l, s, d) {
 #' # Or it can have a decimal
 #' deb_d_lsd(2635.835)
 #'
+#' # s can be a vector of length > 1
+#' # Return a tibble with three rows
+#' deb_s_lsd(c(2635, -2635, 2635.835))
+#'
+#' # Return a list with three vectors
+#' deb_s_lsd(c(2635, -2635, 2635.835), vector = TRUE)
+#'
 #' @export
 
 deb_s_lsd <- function(s, round = 3, vector = FALSE) {
-  deb_refactor(0, s, 0, round, vector)
+  # repeat 0 of length s for vectorization
+  deb_refactor(rep(0, length(s)), s, rep(0, length(s)), round, vector)
 }
 
 ### Refactor through denarii ###
@@ -168,17 +190,21 @@ deb_lsd_d <- function(l, s, d) {
 
 #' Convert from pence to pounds, shillings, and pence
 #'
-#' Convert pence to the lsd system of pounds, shillings,and pence.
+#' Convert pence to the lsd system of pounds, shillings, and pence.
 #' The function returns the value from a decimal currency to the
 #' non-decimal currency of pounds, shillings, and pence.
-#' This is a wrapper around \code{deb_refactor()}.
+#' This is a wrapper around \code{\link{deb_refactor}}.
 #'
 #' @inheritParams deb_refactor
 #'
-#' @return Returns either a tibble with one row of values and columns for the
-#'   pounds, shillings, and pence values labeled as l, s, and d or a named
-#'   numeric vector with values for pounds, shillings, and pence. If d
-#'   is negative, the pounds, shillings, and pence values will all be negative.
+#'
+#' @return Returns either a tibble with columns for the pounds, shillings, and
+#'   pence values labeled as l, s, and d or a named numeric vector with values
+#'   for pounds, shillings, and pence. If the input value is negative, the
+#'   pounds, shillings, and pence values will all be negative. The number of
+#'   rows in the resulting tibble will be equal to the length of d. If the
+#'   length of d is greater than 1 and \code{vector = TRUE}, the result will
+#'   be a list of named vectors of length equal to d.
 #'
 #' @examples
 #' # Pounds, shillings, and pence as a tibble
@@ -190,8 +216,16 @@ deb_lsd_d <- function(l, s, d) {
 #' # The value for pence can be negative
 #' deb_d_lsd(-2500)
 #'
+#' # d can be a vector of length > 1
+#' # Return a tibble with three rows
+#' deb_d_lsd(c(2500, -2500, 4575))
+#'
+#' # Return a list with three vectors
+#' deb_d_lsd(c(2500, -2500, 4575), vector = TRUE)
+#'
 #' @export
 
 deb_d_lsd <- function(d, round = 3, vector = FALSE) {
-  deb_refactor(0, 0, d, round, vector)
+  # repeat 0 of length d for vectorization
+  deb_refactor(rep(0, length(d)), rep(0, length(d)), d, round, vector)
 }

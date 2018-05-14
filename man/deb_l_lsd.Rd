@@ -18,16 +18,19 @@ vector or list of named numeric vectors if the length of l, s, and d is
 greater than 1.}
 }
 \value{
-Returns either a tibble with one row of values and columns for the
-pounds, shillings, and pence values labeled as l, s, and d or a named
-numeric vector with values for pounds, shillings, and pence. If l
-is negative, the pounds, shillings, and pence values will all be negative.
+Returns either a tibble with columns for the pounds, shillings, and
+pence values labeled as l, s, and d or a named numeric vector with values
+for pounds, shillings, and pence. If the input value is negative, the
+pounds, shillings, and pence values will all be negative. The number of
+rows in the resulting tibble will be equal to the length of d. If the
+length of d is greater than 1 and \code{vector = TRUE}, the result will
+be a list of named vectors of length equal to d.
 }
 \description{
 Convert decimalized pounds to the lsd system of pounds, shillings,
 and pence. The function returns the value from a decimal currency to the
 non-decimal currency of pounds, shillings, and pence.
-This is a wrapper around \code{deb_refactor()}.
+This is a wrapper around \code{\link{deb_refactor}}.
 }
 \examples{
 # Conversion from pounds to pounds, shillings, and pence
@@ -39,5 +42,12 @@ deb_l_lsd(l = 8.625, vector = TRUE)
 
 # The value can be negative
 deb_l_lsd(-8.625)
+
+# l can be a vector of length > 1
+# Return a tibble with three rows
+deb_l_lsd(c(8.625, -8.625, 8))
+
+# Return a list with three vectors
+deb_l_lsd(c(8.625, -8.625, 8), vector = TRUE)
 
 }
