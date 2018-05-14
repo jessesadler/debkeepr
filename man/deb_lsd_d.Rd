@@ -7,11 +7,11 @@
 deb_lsd_d(l, s, d)
 }
 \arguments{
-\item{l}{Pounds: numeric value}
+\item{l}{Pounds: numeric vector of the same length as s and d.}
 
-\item{s}{Shillings: numeric value}
+\item{s}{Shillings: numeric vector of the same length as l and d.}
 
-\item{d}{Pence: numeric value}
+\item{d}{Pence: numeric vector of the same length as l and s.}
 }
 \value{
 Returns a single value or numeric vector of length one.

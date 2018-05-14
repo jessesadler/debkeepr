@@ -7,23 +7,28 @@
 deb_refactor(l, s, d, round = 3, vector = FALSE)
 }
 \arguments{
-\item{l}{Pounds: numeric value}
+\item{l}{Pounds: numeric vector of the same length as s and d.}
 
-\item{s}{Shillings: numeric value}
+\item{s}{Shillings: numeric vector of the same length as l and d.}
 
-\item{d}{Pence: numeric value}
+\item{d}{Pence: numeric vector of the same length as l and s.}
 
-\item{round}{round pence to specified number of decimal places. Default is 3.
-Set to 0 if you want pence to always be a whole number.}
+\item{round}{round pence to specified number of decimal places.
+Default is 3. Set to 0 if you want pence to always be a whole number.}
 
-\item{vector}{Logical (default FALSE), when FALSE the output will
-be a tibble, when TRUE the output will be a numeric vector.}
+\item{vector}{Logical (default \code{FALSE}): when \code{FALSE} the output
+will be a tibble. When \code{TRUE} the output will be a named numeric
+vector or list of named numeric vectors if the length of l, s, and d is
+greater than 1.}
 }
 \value{
-Returns either a tibble with one row of values and columns for the
-pounds, shillings, and pence values labeled as l, s, and d or a named
-numeric vector with values for pounds, shillings, and pence. If the amount
-is negative, the pounds, shillings, and pence values will all be negative.
+Returns either a tibble with columns for the pounds, shillings, and
+pence values labeled as l, s, and d or a named numeric vector with values
+for pounds, shillings, and pence. If the amount is negative, the pounds,
+shillings, and pence values will all be negative. The number of rows in
+the resulting tibble will be equal to the length of the input vectors.
+If the length of l, s, and d are greater than 1 and \code{vector = TRUE},
+the result with be a list of named vectors.
 }
 \description{
 Refactor pounds, shillings, and pence to correct values based
@@ -37,24 +42,38 @@ solidi, and denarii. One solidus was equivalent to 12 denarii, and
 and values of 12 denarii to 1 solidus and 20 solidi to 1 libra was
 adopted by Charlemagne and spread throughout Europe under different names.
 For more information on the lsd noemclature see
-\url{https://en.wikipedia.org/wiki/£sd}
+\url{https://en.wikipedia.org/wiki/£sd}.
 }
 \examples{
 # Use to calculate the correct number of pounds, shillings, and pence
 deb_refactor(l = 5, s = 25, d = 22)
 deb_refactor(5, 25, 22, vector = TRUE)
 
-# It is possible to add within the function
+# It is possible to perform math within the function
 deb_refactor(5 + 6, 20 + 18, 8 + 11)
 # Or even
 deb_refactor(sum(4, 9, 0), sum(12, 16, 5), sum(11, 0, 6))
 
 # deb_refactor can deal with negative values
 deb_refactor(-5, -25, -22)
-# Or even a mixture of positive and negative if that occurs for some reason
+# Or a mixture of positive and negative if that occurs for some reason
 deb_refactor(5, -25, 22)
 
 # deb_refactor can also properly refactor decimalized pounds and shillings
 deb_refactor(8.7, 33.65, 15)
+
+# l, s, and d can be vectors of length > 1
+
+# Return a tibble with two rows
+deb_refactor(l = c(8, 10), s = c(25, 86), d = c(34, 29))
+
+# Return a list with two vectors
+deb_refactor(l = c(8, 10), s = c(25, 86), d = c(34, 29), vector = TRUE)
+
+# This makes it possible to refactor a tibble of lsd values
+ex_tbl <- tibble::tibble(l = c(8, 10),
+                         s = c(25, 86),
+                         d = c(34, 29))
+deb_refactor(ex_tbl$l, ex_tbl$s, ex_tbl$d)
 
 }

@@ -7,13 +7,15 @@
 deb_s_lsd(s, round = 3, vector = FALSE)
 }
 \arguments{
-\item{s}{Shillings: numeric value}
+\item{s}{Shillings: numeric vector of the same length as l and d.}
 
-\item{round}{round pence to specified number of decimal places. Default is 3.
-Set to 0 if you want pence to always be a whole number.}
+\item{round}{round pence to specified number of decimal places.
+Default is 3. Set to 0 if you want pence to always be a whole number.}
 
-\item{vector}{Logical (default FALSE), when FALSE the output will
-be a tibble, when TRUE the output will be a numeric vector.}
+\item{vector}{Logical (default \code{FALSE}): when \code{FALSE} the output
+will be a tibble. When \code{TRUE} the output will be a named numeric
+vector or list of named numeric vectors if the length of l, s, and d is
+greater than 1.}
 }
 \value{
 Returns either a tibble with one row of values and columns for the

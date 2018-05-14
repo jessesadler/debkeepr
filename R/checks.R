@@ -25,6 +25,10 @@ lsd_check <- function(l, s, d, round = 3, vector = FALSE) {
   if (!is.numeric(d)) {
     stop(call. = FALSE, "d must be numeric")
   }
+
+  if (length(l) != length(s) | length(l) != length(d)) {
+    stop(call. = FALSE, "l, s, and d must be numeric vectors of the same length")
+  }
 }
 
 # Check l, s, and d values for deb_sum
