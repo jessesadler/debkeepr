@@ -65,7 +65,6 @@ deb_l_lsd <- function(l, round = 3, vector = FALSE) {
   deb_refactor(l, 0, 0, round, vector)
 }
 
-
 ### Refactor through solidi ###
 
 #' Convert from pounds, shillings and pence to shillings

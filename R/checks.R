@@ -1,11 +1,16 @@
 ## Checks ##
 
-#' Check that l, s, and d values are numeric
-#' @param l Pounds: numeric value
-#' @param s Shillings: numeric value
-#' @param d Pence: numeric value
-lsd_check <- function(l, s, d) {
-  if (is.null(l) | is.null(s) | is.environment(d)) {
+# Check that l, s, and d values are numeric in deb_refactor
+lsd_check <- function(l, s, d, round = 3, vector = FALSE) {
+  if (!is.numeric(round)) {
+    stop(call. = FALSE, "round must be numeric")
+  }
+
+  if (!is.logical(vector)) {
+    stop(call. = FALSE, "vector must be logical, either TRUE or FALSE")
+  }
+
+  if (is.null(l) | is.null(s) | is.null(d)) {
     stop(call. = FALSE, "Values for l, s, and d must be provided. Maybe you need a 0.")
   }
 
@@ -22,10 +27,7 @@ lsd_check <- function(l, s, d) {
   }
 }
 
-#' Check l, s, and d values
-#' @param l Pounds column: Unquoted name of a numeric variable corresponding to pounds.
-#' @param s Shillings column: Unquoted name of numeric variable corresponding to shillings.
-#' @param d Pence column: Unquoted name of numeric variable corresponding to pence.
+# Check l, s, and d values for deb_sum
 lsd_column_check <- function(df, l, s, d) {
   l <- rlang::eval_tidy(l, df)
   s <- rlang::eval_tidy(s, df)

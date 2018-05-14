@@ -38,7 +38,7 @@ deb_librae_s <- function(l) {
 deb_librae_d <- function(l, round = 3) {
   # vectorize
   if (length(l) > 1) {
-    return(purrr::map_dbl(l, deb_librae_d))
+    return(purrr::map_dbl(l, deb_librae_d, round))
   }
 
   if (l == round(l)) {
@@ -81,7 +81,7 @@ deb_solidi_s <- function(s) {
 deb_solidi_d <- function(s, round = 3) {
   # vectorize
   if (length(s) > 1) {
-    return(purrr::map_dbl(s, deb_solidi_d))
+    return(purrr::map_dbl(s, deb_solidi_d, round))
   }
 
   if (s == round(s)) {
@@ -110,23 +110,52 @@ deb_denarii_d <- function(d) {
 
 ## Mutate l, s, and d, to separate l, s, and d ##
 
+# Avoid overwriting l, s, and d columns
+# and check that column names and suffix are character vectors of length 1
+lsd_column_names <- function(df, l, s, d, suffix) {
+
+  if (!is.character(l) | !is.character(s) | !is.character(d)) {
+    stop(call. = FALSE, "Column names must be characters")
+  }
+
+  if (length(l) != 1 | length(s) != 1 | length(d) != 1) {
+    stop(call. = FALSE, "Column names must be character vectors of length 1")
+  }
+
+  if (!is.character(suffix)) {
+    stop(call. = FALSE, "suffix must be a character vector")
+  }
+
+  if (length(suffix) != 1) {
+    stop(call. = FALSE, "suffix must be a character vector of length 1")
+  }
+
+  lsd_names <- c(l, s, d)
+
+  if (any(lsd_names %in% names(df)) == TRUE) {
+    lsd_names[1] <- paste0(lsd_names[1], suffix)
+    lsd_names[2] <- paste0(lsd_names[2], suffix)
+    lsd_names[3] <- paste0(lsd_names[3], suffix)
+  }
+  lsd_names
+}
+
 ### mutate l to l, s, d
 deb_l_mutate <- function(df, l,
                          l_column = "l",
                          s_column = "s",
                          d_column = "d",
+                         suffix = ".1",
                          round = 3) {
   l <- dplyr::enquo(l)
 
-  # Column names
-  l_column <- paste(dplyr::quo_name(l_column))
-  s_column <- paste(dplyr::quo_name(s_column))
-  d_column <- paste(dplyr::quo_name(d_column))
+  # Column names: avoid overwriting l, s, and d columns
+  lsd_names <- lsd_column_names(df, l_column, s_column, d_column, suffix)
 
   df %>%
-    dplyr::mutate(!! l_column := deb_librae_l(!!l),
-                  !! s_column := deb_librae_s(!!l),
-                  !! d_column := deb_librae_d(!!l, round))
+    dplyr::mutate(!! lsd_names[1] := deb_librae_l(!!l),
+                  !! lsd_names[2] := deb_librae_s(!!l),
+                  !! lsd_names[3] := deb_librae_d(!!l, round))
 }
 
 ### mutate s to l, s, d
@@ -134,34 +163,32 @@ deb_s_mutate <- function(df, s,
                          l_column = "l",
                          s_column = "s",
                          d_column = "d",
+                         suffix = ".1",
                          round = 3) {
   s <- dplyr::enquo(s)
 
-  # Column names
-  l_column <- paste(dplyr::quo_name(l_column))
-  s_column <- paste(dplyr::quo_name(s_column))
-  d_column <- paste(dplyr::quo_name(d_column))
+  # Column names: avoid overwriting l, s, and d columns
+  lsd_names <- lsd_column_names(df, l_column, s_column, d_column, suffix)
 
   df %>%
-    dplyr::mutate(!! l_column := deb_solidi_l(!!s),
-                  !! s_column := deb_solidi_s(!!s),
-                  !! d_column := deb_solidi_d(!!s, round))
+    dplyr::mutate(!! lsd_names[1] := deb_solidi_l(!!s),
+                  !! lsd_names[2] := deb_solidi_s(!!s),
+                  !! lsd_names[3] := deb_solidi_d(!!s, round))
 }
 
 ### mutate d to l, s, d
 deb_d_mutate <- function(df, d,
                          l_column = "l",
                          s_column = "s",
-                         d_column = "d") {
+                         d_column = "d",
+                         suffix = ".1") {
   d <- dplyr::enquo(d)
 
-  # Column names
-  l_column <- paste(dplyr::quo_name(l_column))
-  s_column <- paste(dplyr::quo_name(s_column))
-  d_column <- paste(dplyr::quo_name(d_column))
+  # Column names: avoid overwriting l, s, and d columns
+  lsd_names <- lsd_column_names(df, l_column, s_column, d_column, suffix)
 
   df %>%
-    dplyr::mutate(!! l_column := deb_denarii_l(!!d),
-                  !! s_column := deb_denarii_s(!!d),
-                  !! d_column := deb_denarii_d(!!d))
+    dplyr::mutate(!! lsd_names[1] := deb_denarii_l(!!d),
+                  !! lsd_names[2] := deb_denarii_s(!!d),
+                  !! lsd_names[3] := deb_denarii_d(!!d))
 }
