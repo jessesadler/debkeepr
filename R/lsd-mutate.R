@@ -138,14 +138,55 @@ lsd_column_names <- function(df, l, s, d, suffix) {
   lsd_names
 }
 
+#' Mutate decimal pounds into pounds, shillings, and pence variables
+#'
+#' Uses \code{\link[dplyr]{mutate()}} to add equivalent pounds, shillings,
+#' and pence variables to a data frame that contains a decimalized pounds
+#' variable. Thus, the function converts decimalized pounds into the lsd
+#' system of pounds, shillings, and pence.
+#'
+#' @param df A data frame that contains a column of decimalized pounds.
+#' @param librae Decimalized pounds column: Unquoted name of a numeric
+#'   variable corresponding to pounds. This is the variable that will be
+#'   mutated into pounds, shillings, and pence variables.
+#' @param l_column A name for the pounds column created by the function.
+#'   Default is l.
+#' @param s_column A name for the shillings column created by the function.
+#'   Default is s.
+#' @param d_column A name for the pence column created by the function.
+#'   Default is d.
+#' @param suffix If the data frame already contains variables with the same
+#'   names as \code{l_column}, \code{s_column}, or \code{d_column}, this
+#'   suffix will be added to the new variables to distinguish them.
+#' @param round round pence to specified number of decimal places.
+#'   Default is 3. Set to 0 if you want pence to always be a whole number.
+#'
+#' @return Returns a data frame with three new variables of pounds, shillings,
+#'   and pence.
+#'
+#' @examples
+#' # Create equivalent pounds, shillings, and pence
+#' # variables from a decimalized pounds variable
+#' example <- tibble::tibble(pounds = c(8, 8.325, -8.325, 5.425, 4.5678))
+#'
+#' deb_l_mutate(example, pounds)
+#'
+#' # You can choose the names for the created columns
+#' example %>%
+#'   deb_l_mutate(pounds,
+#'                l_column = librae,
+#'                s_column = solidi,
+#'                d_column = denarii)
+#'
+#' @export
 
-deb_l_mutate <- function(df, l,
+deb_l_mutate <- function(df, librae,
                          l_column = l,
                          s_column = s,
                          d_column = d,
                          suffix = ".1",
                          round = 3) {
-  l <- dplyr::enquo(l)
+  l <- dplyr::enquo(librae)
 
   # Column names: avoid overwriting l, s, and d columns
   lsd_names <- lsd_column_names(df,
@@ -160,14 +201,45 @@ deb_l_mutate <- function(df, l,
                   !! lsd_names[3] := deb_librae_d(!!l, round))
 }
 
-### mutate s to l, s, d ###
-deb_s_mutate <- function(df, s,
+#' Mutate decimal shillings into pounds, shillings, and pence variables
+#'
+#' Uses \code{\link[dplyr]{mutate()}} to add equivalent pounds, shillings,
+#' and pence variables to a data frame that contains a decimalized shillings
+#' variable. Thus, the function converts decimalized shillings into the lsd
+#' system of pounds, shillings, and pence.
+#'
+#' @param df A data frame that contains a column of decimalized shillings.
+#' @param solidi Decimalized shillings column: Unquoted name of a numeric
+#'   variable corresponding to shillings. This is the variable that will be
+#'   mutated into pounds, shillings, and pence variables.
+#' @inheritParams deb_l_mutate
+#'
+#' @return Returns a data frame with three new variables of pounds, shillings,
+#'   and pence.
+#'
+#' @examples
+#' # Create equivalent pounds, shillings, and pence
+#' # variables from a decimalized shillings variable
+#' example <- tibble::tibble(shillings = c(166, -166, 166.5, 236.35, -354.845))
+#'
+#' deb_s_mutate(example, shillings)
+#'
+#' # You can choose the names for the created columns
+#' example %>%
+#'   deb_s_mutate(shillings,
+#'                l_column = librae,
+#'                s_column = solidi,
+#'                d_column = denarii)
+#'
+#' @export
+
+deb_s_mutate <- function(df, solidi,
                          l_column = l,
                          s_column = s,
                          d_column = d,
                          suffix = ".1",
                          round = 3) {
-  s <- dplyr::enquo(s)
+  s <- dplyr::enquo(solidi)
 
   # Column names: avoid overwriting l, s, and d columns
   lsd_names <- lsd_column_names(df,
@@ -182,13 +254,44 @@ deb_s_mutate <- function(df, s,
                   !! lsd_names[3] := deb_solidi_d(!!s, round))
 }
 
-### mutate d to l, s, d ###
-deb_d_mutate <- function(df, d,
+#' Mutate decimal pence into pounds, shillings, and pence variables
+#'
+#' Uses \code{\link[dplyr]{mutate()}} to add equivalent pounds, shillings,
+#' and pence variables to a data frame that contains a pence
+#' variable. Thus, the function converts pence into the lsd
+#' system of pounds, shillings, and pence.
+#'
+#' @param df A data frame that contains a column of pence.
+#' @param denarii Pence column: Unquoted name of a numeric variable
+#'   corresponding to pence. This is the variable that will be
+#'   mutated into pounds, shillings, and pence variables.
+#' @inheritParams deb_l_mutate
+#'
+#' @return Returns a data frame with three new variables of pounds, shillings,
+#'   and pence.
+#'
+#' @examples
+#' # Create equivalent pounds, shillings, and pence
+#' # variables from a pence variable
+#' example <- tibble::tibble(pence = c(1998, -1998, 387, -5378))
+#'
+#' deb_d_mutate(example, pence)
+#'
+#' # You can choose the names for the created columns
+#' example %>%
+#'   deb_d_mutate(pence,
+#'                l_column = librae,
+#'                s_column = solidi,
+#'                d_column = denarii)
+#'
+#' @export
+
+deb_d_mutate <- function(df, denarii,
                          l_column = l,
                          s_column = s,
                          d_column = d,
                          suffix = ".1") {
-  d <- dplyr::enquo(d)
+  d <- dplyr::enquo(denarii)
 
   # Column names: avoid overwriting l, s, and d columns
   lsd_names <- lsd_column_names(df,

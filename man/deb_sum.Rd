@@ -26,15 +26,16 @@ be dropped. If the sum of any group is a negative value, the l,
 s, and d values for that group will all be returned as negative.
 }
 \description{
-Uses \code{summarise()} from \code{dplyr} to add pounds, shillings, and pence
+Uses \code{\link[dplyr]{summarise()}} to add pounds, shillings, and pence
 columns in a data frame and refactor the values so that the result has
 properly formatted values.
 }
 \details{
 When used on a data frame without any grouping, the result will be a data
 frame with a single row consisting of columns for pounds, shillings, and
-pence. When used in conjunction with \code{group_by()}, \code{deb_sum()}
-will summarize the pounds, shillings, and pence columns for each group.
+pence. When used in conjunction with \code{\link[dplyr]{group_by()}},
+\code{deb_sum()} will summarize the pounds, shillings, and pence columns
+for each group.
 }
 \examples{
 # Use on an ungrouped data frame adds all values of pounds, shillings,

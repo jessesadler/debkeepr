@@ -2,14 +2,15 @@
 
 #' Sum of pounds, shillings, and pence columns in a data frame
 #'
-#' Uses \code{summarise()} from \code{dplyr} to add pounds, shillings, and pence
+#' Uses \code{\link[dplyr]{summarise()}} to add pounds, shillings, and pence
 #' columns in a data frame and refactor the values so that the result has
 #' properly formatted values.
 #'
 #' When used on a data frame without any grouping, the result will be a data
 #' frame with a single row consisting of columns for pounds, shillings, and
-#' pence. When used in conjunction with \code{group_by()}, \code{deb_sum()}
-#' will summarize the pounds, shillings, and pence columns for each group.
+#' pence. When used in conjunction with \code{\link[dplyr]{group_by()}},
+#' \code{deb_sum()} will summarize the pounds, shillings, and pence columns
+#' for each group.
 #'
 #' @param df A data frame that contains columns with pounds, shillings,
 #'   and pence variables.
