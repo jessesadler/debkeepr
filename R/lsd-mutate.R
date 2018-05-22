@@ -102,8 +102,9 @@ deb_denarii_l <- function(d) {
 deb_denarii_s <- function(d) {
   dplyr::if_else(d < 0, -((-d %/% 12) %% 20), (d %/% 12) %% 20)
 }
-deb_denarii_d <- function(d) {
-  dplyr::if_else(d < 0, -(-d %% 12), d %% 12)
+deb_denarii_d <- function(d, round = 3) {
+  denarii <- dplyr::if_else(d < 0, -(-d %% 12), d %% 12)
+  round(denarii, round)
 }
 
 ## Mutate l, s, and d, to separate l, s, and d ##
@@ -290,7 +291,8 @@ deb_d_mutate <- function(df, denarii,
                          l_column = l,
                          s_column = s,
                          d_column = d,
-                         suffix = ".1") {
+                         suffix = ".1",
+                         round = 3) {
   d <- dplyr::enquo(denarii)
 
   # Column names: avoid overwriting l, s, and d columns
@@ -303,5 +305,5 @@ deb_d_mutate <- function(df, denarii,
   df %>%
     dplyr::mutate(!! lsd_names[1] := deb_denarii_l(!!d),
                   !! lsd_names[2] := deb_denarii_s(!!d),
-                  !! lsd_names[3] := deb_denarii_d(!!d))
+                  !! lsd_names[3] := deb_denarii_d(!!d, round))
 }

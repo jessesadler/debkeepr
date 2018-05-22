@@ -22,15 +22,15 @@ deb_interest_mutate <- function(df, l = l, s = s, d = d,
                                 interest = 0.0625,
                                 years = 1,
                                 with_princple = TRUE,
-                                suffix = "interest",
+                                suffix = ".interest",
                                 round = 3) {
   l <- dplyr::enquo(l)
   s <- dplyr::enquo(s)
   d <- dplyr::enquo(d)
   # Column names
-  l_column <- paste0(dplyr::quo_name(l), "_", suffix)
-  s_column <- paste0(dplyr::quo_name(s), "_", suffix)
-  d_column <- paste0(dplyr::quo_name(d), "_", suffix)
+  l_column <- paste0(dplyr::quo_name(l), suffix)
+  s_column <- paste0(dplyr::quo_name(s), suffix)
+  d_column <- paste0(dplyr::quo_name(d), suffix)
 
   lsd_column_check(df, l, s, d)
 

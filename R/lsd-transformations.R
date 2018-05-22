@@ -181,11 +181,11 @@ deb_s_lsd <- function(s, round = 3, vector = FALSE) {
 #'
 #' @export
 
-deb_lsd_d <- function(l, s, d) {
+deb_lsd_d <- function(l, s, d, round = 3) {
   lsd_check(l = l,
             s = s,
             d = d)
-  l * 240 + s * 12 + d
+  round(l * 240 + s * 12 + d, round)
 }
 
 #' Convert from pence to pounds, shillings, and pence

@@ -4,7 +4,7 @@
 \alias{deb_lsd_d}
 \title{Convert from pounds, shillings, and pence to pence}
 \usage{
-deb_lsd_d(l, s, d)
+deb_lsd_d(l, s, d, round = 3)
 }
 \arguments{
 \item{l}{Pounds: numeric vector of the same length as s and d.}
@@ -12,6 +12,9 @@ deb_lsd_d(l, s, d)
 \item{s}{Shillings: numeric vector of the same length as l and d.}
 
 \item{d}{Pence: numeric vector of the same length as l and s.}
+
+\item{round}{round pence to specified number of decimal places.
+Default is 3. Set to 0 if you want pence to always be a whole number.}
 }
 \value{
 Returns a single value or numeric vector of length one.

@@ -5,7 +5,7 @@
 \title{Mutate decimal pence into pounds, shillings, and pence variables}
 \usage{
 deb_d_mutate(df, denarii, l_column = l, s_column = s, d_column = d,
-  suffix = ".1")
+  suffix = ".1", round = 3)
 }
 \arguments{
 \item{df}{A data frame that contains a column of pence.}
@@ -26,6 +26,9 @@ Default is d.}
 \item{suffix}{If the data frame already contains variables with the same
 names as \code{l_column}, \code{s_column}, or \code{d_column}, this
 suffix will be added to the new variables to distinguish them.}
+
+\item{round}{round pence to specified number of decimal places.
+Default is 3. Set to 0 if you want pence to always be a whole number.}
 }
 \value{
 Returns a data frame with three new variables of pounds, shillings,
