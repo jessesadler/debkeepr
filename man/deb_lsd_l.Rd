@@ -14,7 +14,8 @@ deb_lsd_l(l, s, d)
 \item{d}{Pence: numeric vector of the same length as l and s.}
 }
 \value{
-Returns a single value or numeric vector of length one.
+Returns a numeric vector of decimalized pounds of length
+equivalent to that of l, s, and d.
 }
 \description{
 Convert pounds, shillings, and pence to decimalized pounds.
@@ -23,7 +24,11 @@ Convert pounds, shillings, and pence to decimalized pounds.
 # Create decimalized pounds
 deb_lsd_l(10, 5, 8)
 
+# The pounds, shillings, and pence do not need to be properly grouped
 deb_lsd_l(l = 6, s = 25, d = 17)
+
+# l, s, and d can be vectors of length > 1
+deb_lsd_l(l = c(8, 4, 6), s = c(87, 35, 64), d = c(46, 58, 96))
 
 # Can be used with mutate() on a data frame with
 # pounds, shillings, and pence columns to create
@@ -31,6 +36,6 @@ deb_lsd_l(l = 6, s = 25, d = 17)
 df <- tibble::tibble(l = c(3, 5, 6, 2),
                      s = c(10, 18, 11, 16),
                      d = c(9, 11, 10, 5))
- mutate(df, pounds = deb_lsd_l(l, s, d))
+ dplyr::mutate(df, pounds = deb_lsd_l(l, s, d))
 
 }

@@ -8,14 +8,18 @@
 #'
 #' @inheritParams deb_refactor
 #'
-#' @return Returns a single value or numeric vector of length one.
+#' @return Returns a numeric vector of decimalized pounds of length
+#'   equivalent to that of l, s, and d.
 #'
 #' @examples
 #' # Create decimalized pounds
 #' deb_lsd_l(10, 5, 8)
 #'
-# The pounds, shillings, and pence do not need to be properly grouped
+#' # The pounds, shillings, and pence do not need to be properly grouped
 #' deb_lsd_l(l = 6, s = 25, d = 17)
+#'
+#' # l, s, and d can be vectors of length > 1
+#' deb_lsd_l(l = c(8, 4, 6), s = c(87, 35, 64), d = c(46, 58, 96))
 #'
 #' # Can be used with mutate() on a data frame with
 #' # pounds, shillings, and pence columns to create
@@ -23,7 +27,7 @@
 #' df <- tibble::tibble(l = c(3, 5, 6, 2),
 #'                      s = c(10, 18, 11, 16),
 #'                      d = c(9, 11, 10, 5))
-#'  mutate(df, pounds = deb_lsd_l(l, s, d))
+#'  dplyr::mutate(df, pounds = deb_lsd_l(l, s, d))
 #'
 #' @export
 
@@ -84,7 +88,8 @@ deb_l_lsd <- function(l, round = 3, vector = FALSE) {
 #'
 #' @inheritParams deb_refactor
 #'
-#' @return Returns a single value or numeric vector of length one.
+#' @return Returns a numeric vector of decimalized shillings of length
+#'   equivalent to that of l, s, and d.
 #'
 #' @examples
 #' # Create decimalized shillings
@@ -93,13 +98,16 @@ deb_l_lsd <- function(l, round = 3, vector = FALSE) {
 #' # The pounds, shillings, and pence do not need to be properly grouped
 #' deb_lsd_s(l = 6, s = 25, d = 17)
 #'
+#' # l, s, and d can be vectors of length > 1
+#' deb_lsd_s(l = c(8, 4, 6), s = c(87, 35, 64), d = c(46, 58, 96))
+#'
 #' # Can be used with mutate() on a data frame with
 #' # pounds, shillings, and pence columns to create
 #' # a column for the equivalent decimalized shillings.
 #' df <- tibble::tibble(l = c(3, 5, 6, 2),
 #'                      s = c(10, 18, 11, 16),
 #'                      d = c(9, 11, 10, 5))
-#'  mutate(df, shillings = deb_lsd_s(l, s, d))
+#' dplyr::mutate(df, shillings = deb_lsd_s(l, s, d))
 
 deb_lsd_s <- function(l, s, d) {
   lsd_check(l = l,
@@ -162,7 +170,8 @@ deb_s_lsd <- function(s, round = 3, vector = FALSE) {
 #'
 #' @inheritParams deb_refactor
 #'
-#' @return Returns a single value or numeric vector of length one.
+#' @return Returns a numeric vector of decimalized pence of length
+#'   equivalent to that of l, s, and d.
 #'
 #' @examples
 #' # Create decimalized pence
@@ -177,15 +186,15 @@ deb_s_lsd <- function(s, round = 3, vector = FALSE) {
 #' df <- tibble::tibble(l = c(3, 5, 6, 2),
 #'                      s = c(10, 18, 11, 16),
 #'                      d = c(9, 11, 10, 5))
-#'  mutate(df, pence = deb_lsd_d(l, s, d))
+#'  dplyr::mutate(df, pence = deb_lsd_d(l, s, d))
 #'
 #' @export
 
-deb_lsd_d <- function(l, s, d, round = 3) {
+deb_lsd_d <- function(l, s, d) {
   lsd_check(l = l,
             s = s,
             d = d)
-  round(l * 240 + s * 12 + d, round)
+  l * 240 + s * 12 + d
 }
 
 #' Convert from pence to pounds, shillings, and pence

@@ -160,7 +160,7 @@ lsd_column_names <- function(df, l, s, d, suffix) {
 #'   names as \code{l_column}, \code{s_column}, or \code{d_column}, this
 #'   suffix will be added to the new variables to distinguish them.
 #' @param round round pence to specified number of decimal places.
-#'   Default is 3. Set to 0 if you want pence to always be a whole number.
+#'   Default is 3. Set to 0 to return pence as whole numbers.
 #'
 #' @return Returns a data frame with three new variables of pounds, shillings,
 #'   and pence.

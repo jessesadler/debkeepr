@@ -4,7 +4,7 @@
 \alias{deb_lsd_d}
 \title{Convert from pounds, shillings, and pence to pence}
 \usage{
-deb_lsd_d(l, s, d, round = 3)
+deb_lsd_d(l, s, d)
 }
 \arguments{
 \item{l}{Pounds: numeric vector of the same length as s and d.}
@@ -12,12 +12,10 @@ deb_lsd_d(l, s, d, round = 3)
 \item{s}{Shillings: numeric vector of the same length as l and d.}
 
 \item{d}{Pence: numeric vector of the same length as l and s.}
-
-\item{round}{round pence to specified number of decimal places.
-Default is 3. Set to 0 if you want pence to always be a whole number.}
 }
 \value{
-Returns a single value or numeric vector of length one.
+Returns a numeric vector of decimalized pence of length
+equivalent to that of l, s, and d.
 }
 \description{
 Convert pounds, shillings, and pence to pence or denarii.
@@ -37,6 +35,6 @@ deb_lsd_d(l = 6, s = 25, d = 17)
 df <- tibble::tibble(l = c(3, 5, 6, 2),
                      s = c(10, 18, 11, 16),
                      d = c(9, 11, 10, 5))
- mutate(df, pence = deb_lsd_d(l, s, d))
+ dplyr::mutate(df, pence = deb_lsd_d(l, s, d))
 
 }

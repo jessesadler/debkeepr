@@ -107,7 +107,7 @@ deb_denarii <- function(l, s, d, round = 3) {
 #' @param s Shillings: numeric vector of the same length as l and d.
 #' @param d Pence: numeric vector of the same length as l and s.
 #' @param round round pence to specified number of decimal places.
-#' Default is 3. Set to 0 if you want pence to always be a whole number.
+#' Default is 3. Set to 0 to return pence as whole numbers.
 #' @param vector Logical (default \code{FALSE}): when \code{FALSE} the output
 #'   will be a tibble. When \code{TRUE} the output will be a named numeric
 #'   vector or list of named numeric vectors if the length of l, s, and d is

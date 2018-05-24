@@ -10,7 +10,7 @@ deb_l_lsd(l, round = 3, vector = FALSE)
 \item{l}{Pounds: numeric vector of the same length as s and d.}
 
 \item{round}{round pence to specified number of decimal places.
-Default is 3. Set to 0 if you want pence to always be a whole number.}
+Default is 3. Set to 0 to return pence as whole numbers.}
 
 \item{vector}{Logical (default \code{FALSE}): when \code{FALSE} the output
 will be a tibble. When \code{TRUE} the output will be a named numeric
