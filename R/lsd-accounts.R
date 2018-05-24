@@ -22,17 +22,17 @@ deb_account <- function(df,
     dplyr::filter((!! credit) == account_id) %>%
     dplyr::summarise(
       relation = "credit",
-      l = deb_librae(sum(!!l), sum(!!s), sum(!!d)),
-      s = deb_solidi(sum(!!l), sum(!!s), sum(!!d)),
-      d = deb_denarii(sum(!!l), sum(!!s), sum(!!d), round))
+      l = deb_librae_sum(!!l, !!s, !!d),
+      s = deb_solidi_sum(!!l, !!s, !!d),
+      d = deb_denarii_sum(!!l, !!s, !!d, round))
 
   debit <- df %>%
     dplyr::filter((!! debit) == account_id) %>%
     dplyr::summarise(
       relation = "debit",
-      l = deb_librae(sum(!!l), sum(!!s), sum(!!d)),
-      s = deb_solidi(sum(!!l), sum(!!s), sum(!!d)),
-      d = deb_denarii(sum(!!l), sum(!!s), sum(!!d), round))
+      l = deb_librae_sum(!!l, !!s, !!d),
+      s = deb_solidi_sum(!!l, !!s, !!d),
+      d = deb_denarii_sum(!!l, !!s, !!d, round))
 
   credit_d <- deb_lsd_d(credit$l, credit$s, credit$d)
   debit_d <- deb_lsd_d(debit$l, debit$s, debit$d)
@@ -41,6 +41,7 @@ deb_account <- function(df,
 
   current <- dplyr::bind_cols(relation = "current", deb_d_lsd(denarii, vector = FALSE, round))
 
+  # Create account tibble and rename columns
   dplyr::bind_rows(credit, debit, current) %>%
     dplyr::rename(!! l_column := l, !! s_column := s, !! d_column := d)
 }
@@ -62,27 +63,27 @@ deb_account_summary <- function(df,
     dplyr::group_by(!! credit) %>%
     dplyr::summarise(
       relation = "credit",
-      denarii = deb_lsd_d(sum(!!l), sum(!!s), sum(!!d), round)) %>%
-    dplyr::rename(id = !! credit)
+      denarii = round(deb_lsd_d(sum(!!l), sum(!!s), sum(!!d)), round)) %>%
+    dplyr::rename(account_id = !! credit)
 
   debits <- df %>%
     dplyr::group_by(!! debit) %>%
     dplyr::summarise(
       relation = "debit",
-      denarii = -(deb_lsd_d(sum(!!l), sum(!!s), sum(!!d), round))) %>%
-    dplyr::rename(id = !! debit)
+      denarii = -(round(deb_lsd_d(sum(!!l), sum(!!s), sum(!!d)), round))) %>%
+    dplyr::rename(account_id = !! debit)
 
   accounts_sum <- dplyr::bind_rows(credits, debits)
 
   current <- accounts_sum %>%
-    dplyr::group_by(id) %>%
+    dplyr::group_by(account_id) %>%
     dplyr::summarise(
       relation = "current",
       denarii = sum(denarii))
 
   dplyr::bind_rows(accounts_sum, current) %>%
     deb_d_mutate(denarii, l_column = !! l, s_column = !! s, d_column = !! d) %>%
-    dplyr::arrange(id) %>%
+    dplyr::arrange(account_id) %>%
     dplyr::select(-denarii)
 }
 
@@ -99,14 +100,13 @@ deb_current <- function(df,
   s <- dplyr::enquo(s)
   d <- dplyr::enquo(d)
 
-  temp <- deb_account_summary(df,
-                              credit = !! credit,
-                              debit = !! debit,
-                              l = !! l,
-                              s = !! s,
-                              d = !! d,
-                              round = round)
-  temp %>%
+  deb_account_summary(df,
+                      credit = !! credit,
+                      debit = !! debit,
+                      l = !! l,
+                      s = !! s,
+                      d = !! d,
+                      round = round) %>%
     dplyr::filter(relation == "current") %>%
     dplyr::select(-relation)
 }
@@ -125,14 +125,12 @@ deb_open <- function(df,
   s <- dplyr::enquo(s)
   d <- dplyr::enquo(d)
 
-  temp <- deb_current(df,
-                      credit = !! credit,
-                      debit = !! debit,
-                      l = !! l,
-                      s = !! s,
-                      d = !! d,
-                      round = round)
-
-  temp %>%
-    dplyr::filter(!! l + !! s/20 + !! d/240 != 0)
+  deb_current(df,
+              credit = !! credit,
+              debit = !! debit,
+              l = !! l,
+              s = !! s,
+              d = !! d,
+              round = round) %>%
+    dplyr::filter(l + s/20 + d/240 != 0)
 }
