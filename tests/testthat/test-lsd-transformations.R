@@ -18,7 +18,7 @@ test_that("decimalized to lsd works", {
   expect_equal(deb_d_lsd(1339.25, vector = TRUE), c(l = 5, s = 11, d = 7.25))
 })
 
-test_that("vectorization works", {
+test_that("vectorization works for separate l, s, d to lsd", {
   expect_equal(nrow(deb_l_lsd(c(8.325, -8.725))), 2)
   expect_equal(length(deb_l_lsd(c(8.325, -8.725), vector = TRUE)), 2)
   expect_equal(deb_l_lsd(c(8.325, -8.725), vector = TRUE),
@@ -51,6 +51,20 @@ test_that("lsd to decimalized l, s, and d works", {
   expect_equal(deb_lsd_d(8, 6, 6), 1998)
   expect_equal(deb_lsd_d(-8, -6, -6), -1998)
   expect_equal(deb_lsd_d(8.325, 6, 6), 2076)
+})
+
+l_vector <- c(8, 4, 6)
+s_vector <- c(87, 35, 64)
+d_vector <- c(46, 58, 96)
+
+test_that("vectorization works for lsd to decimalized l, s, d", {
+  # Round numbers to make get numbers to be equivalent
+  expect_equal(round(deb_lsd_l(l_vector, s_vector, d_vector), 3),
+               c(12.542, 5.992, 9.6))
+  expect_equal(round(deb_lsd_s(l_vector, s_vector, d_vector), 3),
+               c(250.833, 119.833, 192))
+  expect_equal(deb_lsd_d(l_vector, s_vector, d_vector),
+               c(3010, 1438, 2304))
 })
 
 test_that("non-numeric values are not accepted", {
