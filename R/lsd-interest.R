@@ -5,12 +5,14 @@
 # calculating interest, then back to lsd
 deb_interest <- function(l, s, d,
                          interest = 0.0625,
-                         years = 1,
+                         duration = 1,
                          with_princple = TRUE,
                          round = 3,
                          vector = FALSE) {
   principle_d <- deb_lsd_d(l, s, d)
-  interest_d <-  principle_d * interest * years
+
+  interest_d <-  principle_d * interest * duration
+
   if (with_princple == TRUE) {
     deb_d_lsd(principle_d + interest_d, round, vector)
   } else {
@@ -18,9 +20,12 @@ deb_interest <- function(l, s, d,
   }
 }
 
-deb_interest_mutate <- function(df, l = l, s = s, d = d,
+deb_interest_mutate <- function(df,
+                                l = l,
+                                s = s,
+                                d = d,
                                 interest = 0.0625,
-                                years = 1,
+                                duration = 1,
                                 with_princple = TRUE,
                                 suffix = ".interest",
                                 round = 3) {
@@ -36,15 +41,15 @@ deb_interest_mutate <- function(df, l = l, s = s, d = d,
 
   if (with_princple == TRUE) {
     temp <- df %>%
-      dplyr::mutate(temp_principle_d = deb_lsd_d(!!l, !!s, !!d),
-                    temp_interest_d = temp_principle_d * interest * years,
+      dplyr::mutate(temp_principle_d = deb_lsd_d(!! l, !! s, !! d),
+                    temp_interest_d = temp_principle_d * interest * duration,
                     !! l_column := deb_denarii_l(temp_principle_d + temp_interest_d),
                     !! s_column := deb_denarii_s(temp_principle_d + temp_interest_d),
                     !! d_column := deb_denarii_d(temp_principle_d + temp_interest_d))
   } else {
     temp <- df %>%
-      dplyr::mutate(temp_principle_d = deb_lsd_d(!!l, !!s, !!d),
-                    temp_interest_d = temp_principle_d * interest * years,
+      dplyr::mutate(temp_principle_d = deb_lsd_d(!! l, !! s, !! d),
+                    temp_interest_d = temp_principle_d * interest * duration,
                     !! l_column := deb_denarii_l(temp_interest_d),
                     !! s_column := deb_denarii_s(temp_interest_d),
                     !! d_column := deb_denarii_d(temp_interest_d))
