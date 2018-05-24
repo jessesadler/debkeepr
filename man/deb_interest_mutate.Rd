@@ -60,6 +60,7 @@ example \%>\%
                       with_principal = FALSE)
 
 # Change the suffix for the new columns from the default
+# and round the pence to be whole numbers.
 deb_interest_mutate(example,
                     l, s, d,
                     duration = 5,
