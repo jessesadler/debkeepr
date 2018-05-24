@@ -1,5 +1,19 @@
 ## Sum of lsd columns ##
 
+## Helper functions to sum l, s, and d ##
+
+deb_librae_sum <- function(l, s, d) {
+  deb_librae(sum(l), sum(s), sum(d))
+}
+
+deb_solidi_sum <- function(l, s, d) {
+  deb_solidi(sum(l), sum(s), sum(d))
+}
+
+deb_denarii_sum <- function(l, s, d, round = 3) {
+  deb_denarii(sum(l), sum(s), sum(d), round)
+}
+
 #' Sum of pounds, shillings, and pence columns in a data frame
 #'
 #' Uses \code{\link[dplyr]{summarise()}} to add pounds, shillings, and pence
@@ -71,9 +85,9 @@ deb_sum <- function(df, l = l, s = s, d = d, round = 3) {
 
   # Use temp columns and rename so that l, s, and d do not get overwritten
   df %>%
-    dplyr::summarise(temp_l_col = deb_librae(sum(!!l), sum(!!s), sum(!!d)),
-                     temp_s_col = deb_solidi(sum(!!l), sum(!!s), sum(!!d)),
-                     temp_d_col = deb_denarii(sum(!!l), sum(!!s), sum(!!d), round)) %>%
+    dplyr::summarise(temp_l_col = deb_librae_sum(!!l, !!s, !!d),
+                     temp_s_col = deb_solidi_sum(!!l, !!s, !!d),
+                     temp_d_col = deb_denarii_sum(!!l, !!s, !!d, round)) %>%
     dplyr::rename(!! l_column := temp_l_col,
                   !! s_column := temp_s_col,
                   !! d_column := temp_d_col)
