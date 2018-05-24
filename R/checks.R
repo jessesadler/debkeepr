@@ -48,5 +48,25 @@ lsd_column_check <- function(df, l, s, d) {
   if (!is.numeric(d)) {
     stop(call. = FALSE, "d must be a numeric variable")
   }
+}
 
+# Check interest parameters
+interest_check <- function(interest, duration, with_principal) {
+  if (!is.numeric(interest)) {
+    stop(call. = FALSE, "interest must be numeric")
+  }
+  if (length(interest) != 1) {
+    stop(call. = FALSE, "interest must be a numeric vector of length 1")
+  }
+
+  if (!is.numeric(duration)) {
+    stop(call. = FALSE, "duration must be numeric")
+  }
+  if (length(duration) != 1) {
+    stop(call. = FALSE, "duration must be a numeric vector of length 1")
+  }
+
+  if (!is.logical(with_principal)) {
+    stop(call. = FALSE, "with_principal must be logical, either TRUE or FALSE")
+  }
 }

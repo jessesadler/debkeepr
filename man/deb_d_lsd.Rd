@@ -9,7 +9,7 @@ deb_d_lsd(d, round = 3, vector = FALSE)
 \arguments{
 \item{d}{Pence: numeric vector of the same length as l and s.}
 
-\item{round}{round pence to specified number of decimal places.
+\item{round}{Round pence to specified number of decimal places.
 Default is 3. Set to 0 to return pence as whole numbers.}
 
 \item{vector}{Logical (default \code{FALSE}): when \code{FALSE} the output

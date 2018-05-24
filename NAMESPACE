@@ -3,6 +3,8 @@
 export("%>%")
 export(deb_d_lsd)
 export(deb_d_mutate)
+export(deb_interest)
+export(deb_interest_mutate)
 export(deb_l_lsd)
 export(deb_l_mutate)
 export(deb_lsd_d)
