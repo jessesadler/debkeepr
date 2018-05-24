@@ -46,6 +46,11 @@ test_that("column names can be different", {
                tibble(pounds = 18, shillings = 17, pence = 11))
 })
 
+test_that("error is column names not present", {
+  expect_error(deb_sum(example2), "Column names for l, s, and d must be provided if the
+         default names of l, s, and d are not present in the data frame")
+})
+
 test_that("works with negative values", {
   expect_equal(deb_sum(example_neg, l, s, d),
                tibble(l = -1, s = -7, d = -3))

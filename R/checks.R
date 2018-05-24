@@ -32,7 +32,14 @@ lsd_check <- function(l, s, d, round = 3, vector = FALSE) {
 }
 
 # Check l, s, and d values for deb_sum
-lsd_column_check <- function(df, l, s, d) {
+lsd_column_check <- function(df, l, s, d, l_column, s_column, d_column) {
+
+  # Ensure that l, s, and d columns exist in the data frame
+  if (all(c(l_column, s_column, d_column) %in% names(df)) == FALSE) {
+    stop(call. = FALSE, "Column names for l, s, and d must be provided if the
+         default names of l, s, and d are not present in the data frame")
+  }
+
   l <- rlang::eval_tidy(l, df)
   s <- rlang::eval_tidy(s, df)
   d <- rlang::eval_tidy(d, df)

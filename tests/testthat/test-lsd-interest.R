@@ -71,3 +71,11 @@ test_that("deb_interest_mutate works", {
   expect_equal(names(deb_interest_mutate(example2, l = pounds, s = shillings, d = pence, suffix = "_x")),
                c("pounds", "shillings", "pence", "pounds_x", "shillings_x", "pence_x"))
 })
+
+test_that("checks work for mutate", {
+  expect_error(deb_interest_mutate(example2), "Column names for l, s, and d must be provided if the
+         default names of l, s, and d are not present in the data frame")
+  expect_error(deb_interest_mutate(example1, suffix = 5), "suffix must be a character vector")
+  expect_error(deb_interest_mutate(example1, suffix = c("hello", "goodbye")),
+               "suffix must be a character vector of length 1")
+})

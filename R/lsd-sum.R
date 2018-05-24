@@ -81,7 +81,7 @@ deb_sum <- function(df, l = l, s = s, d = d, round = 3) {
   s_column <- dplyr::quo_name(s)
   d_column <- dplyr::quo_name(d)
 
-  lsd_column_check(df, l, s, d)
+  lsd_column_check(df, l, s, d, l_column, s_column, d_column)
 
   # Use temp columns and rename so that l, s, and d do not get overwritten
   df %>%

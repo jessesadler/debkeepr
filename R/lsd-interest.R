@@ -123,12 +123,11 @@ deb_interest_mutate <- function(df,
   s <- dplyr::enquo(s)
   d <- dplyr::enquo(d)
   # Column names
-  l_column <- paste0(dplyr::quo_name(l), suffix)
-  s_column <- paste0(dplyr::quo_name(s), suffix)
-  d_column <- paste0(dplyr::quo_name(d), suffix)
+  l_column <- dplyr::quo_name(l)
+  s_column <- dplyr::quo_name(s)
+  d_column <- dplyr::quo_name(d)
 
-  # Checks
-  lsd_column_check(df, l, s, d)
+  lsd_column_check(df, l, s, d, l_column, s_column, d_column)
   interest_check(interest, duration, with_principal)
 
   if (!is.character(suffix)) {
@@ -137,6 +136,11 @@ deb_interest_mutate <- function(df,
   if (length(suffix) != 1) {
     stop(call. = FALSE, "suffix must be a character vector of length 1")
   }
+
+  # Create column names with suffix
+  l_column <- paste0(l_column, suffix)
+  s_column <- paste0(s_column, suffix)
+  d_column <- paste0(d_column, suffix)
 
   if (with_principal == TRUE) {
     temp <- df %>%
