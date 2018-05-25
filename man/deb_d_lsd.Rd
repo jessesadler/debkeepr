@@ -7,24 +7,24 @@
 deb_d_lsd(d, round = 3, vector = FALSE)
 }
 \arguments{
-\item{d}{Pence: numeric vector of the same length as l and s.}
+\item{d}{Pence: numeric vector of the same length as \code{l} and \code{s}.}
 
 \item{round}{Round pence to specified number of decimal places.
 Default is 3. Set to 0 to return pence as whole numbers.}
 
 \item{vector}{Logical (default \code{FALSE}): when \code{FALSE} the output
 will be a tibble. When \code{TRUE} the output will be a named numeric
-vector or list of named numeric vectors if the length of l, s, and d is
-greater than 1.}
+vector or list of named numeric vectors if the length of \code{l},
+\code{s}, \code{d} is greater than 1.}
 }
 \value{
 Returns either a tibble with columns for the pounds, shillings, and
 pence values labeled as l, s, and d or a named numeric vector with values
 for pounds, shillings, and pence. If the input value is negative, the
 pounds, shillings, and pence values will all be negative. The number of
-rows in the resulting tibble will be equal to the length of d. If the
-length of d is greater than 1 and \code{vector = TRUE}, the result will
-be a list of named vectors of length equal to d.
+rows in the resulting tibble will be equal to the length of \code{d}. If
+the length of \code{d} is greater than 1 and \code{vector = TRUE}, the
+result will be a list of named vectors of length equal to \code{d}.
 }
 \description{
 Convert pence to the lsd system of pounds, shillings, and pence.

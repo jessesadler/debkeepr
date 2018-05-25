@@ -150,12 +150,12 @@ lsd_column_names <- function(df, l, s, d, suffix) {
 #' @param librae Decimalized pounds column: Unquoted name of a numeric
 #'   variable corresponding to pounds. This is the variable that will be
 #'   mutated into pounds, shillings, and pence variables.
-#' @param l_column A name for the pounds column created by the function.
-#'   Default is l.
-#' @param s_column A name for the shillings column created by the function.
-#'   Default is s.
-#' @param d_column A name for the pence column created by the function.
-#'   Default is d.
+#' @param l_column An unquoted name for the pounds column created by the
+#'   function. Default is l.
+#' @param s_column An unquoted name for the shillings column created by
+#'   the function. Default is s.
+#' @param d_column An unquoted name for the pence column created by the
+#'   function. Default is d.
 #' @param suffix If the data frame already contains variables with the same
 #'   names as \code{l_column}, \code{s_column}, or \code{d_column}, this
 #'   suffix will be added to the new variables to distinguish them.

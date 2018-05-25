@@ -22,8 +22,9 @@
 #'   pence values labeled as l, s, and d or a named numeric vector with values
 #'   for pounds, shillings, and pence. The number of rows in the resulting
 #'   tibble will be equal to the length of the input vectors. If the length of
-#'   l, s, and d is greater than 1 and \code{vector = TRUE}, the result will
-#'   be a list of named vectors of length equal to the input vectors.
+#'   \code{l}, \code{s}, \code{d} is greater than 1 and \code{vector = TRUE},
+#'   the result will be a list of named vectors of length equal to the input
+#'   vectors.
 #'
 #' @examples
 #' # Calculate the interest with the principal over a certain duration
@@ -80,8 +81,8 @@ deb_interest <- function(l, s, d,
 #' @inheritParams deb_interest
 #' @param suffix Suffix added to the column names for the pounds,
 #'   shillings, and pence columns representing the interest so that
-#'   they are distinguished from the principal pounds, shillings,
-#'   and pence columns used to make the calculation. Default is
+#'   they are distinguished from the pounds, shillings, and pence
+#'   columns of the principal used to make the calculation. Default is
 #'   ".interest". Should be a character vector of length 1.
 #'
 #' @return Returns a data frame with three new variables of pounds, shillings,
@@ -127,7 +128,7 @@ deb_interest_mutate <- function(df,
   s_column <- dplyr::quo_name(s)
   d_column <- dplyr::quo_name(d)
 
-  lsd_column_check(df, l, s, d, l_column, s_column, d_column)
+  lsd_column_check(df, l, s, d, column_names = c(l_column, s_column, d_column))
   interest_check(interest, duration, with_principal)
 
   if (!is.character(suffix)) {

@@ -8,11 +8,13 @@ deb_interest(l, s, d, interest = 0.0625, duration = 1,
   with_principal = TRUE, round = 3, vector = FALSE)
 }
 \arguments{
-\item{l}{Pounds: numeric vector of the same length as s and d.}
+\item{l}{Pounds: numeric vector of the same length as \code{s} and
+\code{d}.}
 
-\item{s}{Shillings: numeric vector of the same length as l and d.}
+\item{s}{Shillings: numeric vector of the same length as \code{l}
+and \code{d}.}
 
-\item{d}{Pence: numeric vector of the same length as l and s.}
+\item{d}{Pence: numeric vector of the same length as \code{l} and \code{s}.}
 
 \item{interest}{Interest rate in decimal form. A numeric vector
 of length 1. Default is 0.0625, or 6.25 percent, which was default
@@ -27,8 +29,8 @@ Default is 3. Set to 0 to return pence as whole numbers.}
 
 \item{vector}{Logical (default \code{FALSE}): when \code{FALSE} the output
 will be a tibble. When \code{TRUE} the output will be a named numeric
-vector or list of named numeric vectors if the length of l, s, and d is
-greater than 1.}
+vector or list of named numeric vectors if the length of \code{l},
+\code{s}, \code{d} is greater than 1.}
 
 \item{with_principle}{Logical (default \code{TRUE}: when \code{TRUE}
 the resulting pounds, shillings and pence will include the interest
@@ -40,8 +42,9 @@ Returns either a tibble with columns for the pounds, shillings, and
 pence values labeled as l, s, and d or a named numeric vector with values
 for pounds, shillings, and pence. The number of rows in the resulting
 tibble will be equal to the length of the input vectors. If the length of
-l, s, and d is greater than 1 and \code{vector = TRUE}, the result will
-be a list of named vectors of length equal to the input vectors.
+\code{l}, \code{s}, \code{d} is greater than 1 and \code{vector = TRUE},
+the result will be a list of named vectors of length equal to the input
+vectors.
 }
 \description{
 Calculate the interest of pounds, shillings, and pence

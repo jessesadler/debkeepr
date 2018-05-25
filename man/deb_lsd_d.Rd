@@ -7,15 +7,17 @@
 deb_lsd_d(l, s, d)
 }
 \arguments{
-\item{l}{Pounds: numeric vector of the same length as s and d.}
+\item{l}{Pounds: numeric vector of the same length as \code{s} and
+\code{d}.}
 
-\item{s}{Shillings: numeric vector of the same length as l and d.}
+\item{s}{Shillings: numeric vector of the same length as \code{l}
+and \code{d}.}
 
-\item{d}{Pence: numeric vector of the same length as l and s.}
+\item{d}{Pence: numeric vector of the same length as \code{l} and \code{s}.}
 }
 \value{
 Returns a numeric vector of decimalized pence of length
-equivalent to that of l, s, and d.
+equivalent to that of \code{l}, \code{s}, \code{d}.
 }
 \description{
 Convert pounds, shillings, and pence to pence or denarii.

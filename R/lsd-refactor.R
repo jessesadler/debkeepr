@@ -94,33 +94,34 @@ deb_denarii <- function(l, s, d, round = 3) {
 #' Refactor pounds, shillings, and pence to correct values based
 #' on 12 pence in a shilling and 20 shillings in a pound.
 #'
-#' This function uses the nomenclature of l, s, and d to refer to pounds,
+#' This function uses the nomenclature of
+#' \href{https://en.wikipedia.org/wiki/£sd}{l, s, and d} to refer to pounds,
 #' shillings, and pence. This derives from the Latin terms for librae,
 #' solidi, and denarii. One solidus was equivalent to 12 denarii, and
 #' 240 denarii coins were made from on libra of silver. The nomenclature
 #' and values of 12 denarii to 1 solidus and 20 solidi to 1 libra was
 #' adopted by Charlemagne and spread throughout Europe under different names.
-#' For more information on the lsd noemclature see
-#' \url{https://en.wikipedia.org/wiki/£sd}.
 #'
-#' @param l Pounds: numeric vector of the same length as s and d.
-#' @param s Shillings: numeric vector of the same length as l and d.
-#' @param d Pence: numeric vector of the same length as l and s.
+#' @param l Pounds: numeric vector of the same length as \code{s} and
+#'   \code{d}.
+#' @param s Shillings: numeric vector of the same length as \code{l}
+#'   and \code{d}.
+#' @param d Pence: numeric vector of the same length as \code{l} and \code{s}.
 #' @param round Round pence to specified number of decimal places.
 #' Default is 3. Set to 0 to return pence as whole numbers.
 #' @param vector Logical (default \code{FALSE}): when \code{FALSE} the output
 #'   will be a tibble. When \code{TRUE} the output will be a named numeric
-#'   vector or list of named numeric vectors if the length of l, s, and d is
-#'   greater than 1.
+#'   vector or list of named numeric vectors if the length of \code{l},
+#'   \code{s}, \code{d} is greater than 1.
 #'
 #' @return Returns either a tibble with columns for the pounds, shillings, and
 #'   pence values labeled as l, s, and d or a named numeric vector with values
 #'   for pounds, shillings, and pence. If the input lsd value is negative, the
 #'   pounds, shillings, and pence values will all be negative. The number of
 #'   rows in the resulting tibble will be equal to the length of the input
-#'   vectors. If the length of l, s, and d is greater than 1 and
-#'   \code{vector = TRUE}, the result will be a list of named vectors of length
-#'   equal to the input vectors.
+#'   vectors. If the length of \code{l}, \code{s}, \code{d} is greater than 1
+#'   and \code{vector = TRUE}, the result will be a list of named vectors of
+#'   length equal to the input vectors.
 #'
 #' @examples
 #' # Use to calculate the correct number of pounds, shillings, and pence

@@ -1,9 +1,71 @@
 ## lsd-account functions ##
 
+#' Calculate credit, debit, and current value of an account
+#'
+#' Calculate the total credit, debit, and the current value of a given account
+#' in the form of pounds, shillings, and pence.
+#'
+#' \code{deb_account()} is similar to \code{\link{deb_account_summary}}, but
+#' it only returns the information for one account instead of all accounts in
+#' the credit and/or debit variables of a transactions data frame.
+#'
+#' \code{deb_account()} is part of a family of functions meant to be used on
+#' data frames that contain transactions between accounts likely contained in
+#' an account book. The data frame should possess a similar structure to a
+#' \href{https://www.jessesadler.com/post/network-analysis-with-r/#nodes-edges}{directed edge list}.
+#' In this context, credit and debit variables filled with the ids of the
+#' accounts act as the edges of the network. Following the
+#' \href{https://en.wikipedia.org/wiki/Debits_and_credits}{nomenclature of accounting},
+#' the credit variable represents the account from which a value goes out,
+#' while the debit variable represents the account that receives the value.
+#' Thus, from the credit account to the debit account.
+#'
+#' The value for the transactions should be in the non-decimal currency of
+#' pounds, shillings, and pence. These functions use the nomenclature of
+#' \href{https://en.wikipedia.org/wiki/£sd}{l, s, and d} to refer to pounds,
+#' shillings, and pence. This derives from the Latin terms for librae,
+#' solidi, and denarii. One solidus was equivalent to 12 denarii, and
+#' 240 denarii coins were made from on libra of silver. The nomenclature
+#' and values of 12 denarii to 1 solidus and 20 solidi to 1 libra was
+#' adopted by Charlemagne and spread throughout Europe under different names.
+#'
+#' @family lsd account functions
+#'
+#' @inheritParams deb_sum
+#' @param account_id The id of the account to be used to calculate the credit,
+#'   debit, and current values. The value for the account should be present in
+#'   the credit and/or debit variables.
+#' @param credit credit column: Unquoted name of the credit variable. This is
+#'   the column from which the value of the transaction is from. Default
+#'   is credit. The credit column must be of the same class as the debit
+#'   column.
+#' @param debit debit column: Unquoted name of the debit variable. This is
+#'   the column to which the value of the transaction goes. Default
+#'   is debit. The debit column must be of the same class as the credit
+#'   column.
+#'
+#' @return Returns a tibble with three rows and four columns. The rows
+#'   correspond to credit, debit, and current values in the form of
+#'   pounds, shillings, and pence. The names for the pounds, shillings,
+#'   and pence columns correspond to the input for \code{l}, \code{s},
+#'   \code{d}.
+#'
+#' @examples
+#' # Create tibble in format of a transactions data frame
+#' trans <- tibble::tibble(credit = c("a", "b", "a", "c"),
+#'                         debit = c("b", "a", "c", "a"),
+#'                         l = c(10, 10, 7, 9),
+#'                         s = c(15, 15, 11, 2),
+#'                         d = c(6, 6, 8, 11))
+#' # Credit, debit, and current value of account "a"
+#' deb_account(trans, account_id = "a")
+#'
+#' @export
+
 deb_account <- function(df,
                         account_id,
-                        credit = from,
-                        debit = to,
+                        credit = credit,
+                        debit = debit,
                         l = l,
                         s = s,
                         d = d,
@@ -17,6 +79,11 @@ deb_account <- function(df,
   l_column <- dplyr::quo_name(l)
   s_column <- dplyr::quo_name(s)
   d_column <- dplyr::quo_name(d)
+
+  # Checks
+  lsd_column_check(df, l, s, d, column_names = c(l_column, s_column, d_column))
+  edge_columns <- c(dplyr::quo_name(credit), dplyr::quo_name(debit))
+  credit_check(df, credit, debit, edge_columns, account_id)
 
   credit <- df %>%
     dplyr::filter((!! credit) == account_id) %>%
@@ -46,18 +113,81 @@ deb_account <- function(df,
     dplyr::rename(!! l_column := l, !! s_column := s, !! d_column := d)
 }
 
+#' Calculate credit, debit, and current values of accounts
+#'
+#' Calculate the total credit, debit, and the current values in the form of
+#' pounds, shillings, and pence for all accounts in a data frame of financial
+#' transactions.
+#'
+#' \code{deb_account_summary()} is similar to \code{\link{deb_account}}, but
+#' it returns the information for all accounts in a transaction data frame
+#' instead of one. If you only want to see the current values for each account,
+#' see \code{\link{deb_current}}.
+#'
+#' \code{deb_account_summary()} is part of a family of functions meant to be used on
+#' data frames that contain transactions between accounts likely contained in
+#' an account book. The data frame should possess a similar structure to a
+#' \href{https://www.jessesadler.com/post/network-analysis-with-r/#nodes-edges}{directed edge list}.
+#' In this context, credit and debit variables filled with the ids of the
+#' accounts act as the edges of the network. Following the
+#' \href{https://en.wikipedia.org/wiki/Debits_and_credits}{nomenclature of accounting},
+#' the credit variable represents the account from which a value goes out,
+#' while the debit variable represents the account that receives the value.
+#' Thus, from the credit account to the debit account.
+#'
+#' The value for the transactions should be in the non-decimal currency of
+#' pounds, shillings, and pence. These functions use the nomenclature of
+#' \href{https://en.wikipedia.org/wiki/£sd}{l, s, and d} to refer to pounds,
+#' shillings, and pence. This derives from the Latin terms for librae,
+#' solidi, and denarii. One solidus was equivalent to 12 denarii, and
+#' 240 denarii coins were made from on libra of silver. The nomenclature
+#' and values of 12 denarii to 1 solidus and 20 solidi to 1 libra was
+#' adopted by Charlemagne and spread throughout Europe under different names.
+#'
+#' @family lsd account functions
+#'
+#' @inheritParams deb_account
+#'
+#' @return Returns a tibble with five columns and three rows for each account
+#'   present in the credit and/or debit variables representing the total
+#'   credit, debit, and current values of the accounts in the form of
+#'   pounds, shillings, and pence. The names for the pounds, shillings,
+#'   and pence columns correspond to the input for \code{l}, \code{s},
+#'   \code{d}.
+#'
+#' @examples
+#' # Create tibble in format of a transactions data frame
+#' trans <- tibble::tibble(credit = c("a", "b", "a", "c"),
+#'                         debit = c("b", "a", "c", "a"),
+#'                         l = c(10, 10, 7, 9),
+#'                         s = c(15, 15, 11, 2),
+#'                         d = c(6, 6, 8, 11))
+#' # Current values of accounts present in trans
+#' deb_account_summary(trans)
+#'
+#' @export
+
 deb_account_summary <- function(df,
-                                credit = from,
-                                debit = to,
+                                credit = credit,
+                                debit = debit,
                                 l = l,
                                 s = s,
                                 d = d,
                                 round = 3) {
+
   credit <- dplyr::enquo(credit)
   debit <- dplyr::enquo(debit)
   l <- dplyr::enquo(l)
   s <- dplyr::enquo(s)
   d <- dplyr::enquo(d)
+
+  # Checks
+  lsd_column_check(df, l, s, d,
+                   column_names = c(dplyr::quo_name(l),
+                                    dplyr::quo_name(s),
+                                    dplyr::quo_name(d)))
+  edge_columns <- c(dplyr::quo_name(credit), dplyr::quo_name(debit))
+  credit_check(df, credit, debit, edge_columns)
 
   credits <- df %>%
     dplyr::group_by(!! credit) %>%
@@ -87,9 +217,61 @@ deb_account_summary <- function(df,
     dplyr::select(-denarii)
 }
 
+#' Calculate the current values of accounts
+#'
+#' Calculate the current values in the form of pounds, shillings, and pence
+#' for all accounts in a data frame of financial transactions.
+#'
+#' \code{deb_current()} is similar to \code{\link{deb_account_summary}}, but
+#' it only returns the current values for the accounts. If you want to see
+#' only the open accounts—only those accounts that have a current value
+#' greater than or less than zero—see \code{\link{deb_open}}.
+#'
+#' \code{deb_current()} is part of a family of functions meant to be used on
+#' data frames that contain transactions between accounts likely contained in
+#' an account book. The data frame should possess a similar structure to a
+#' \href{https://www.jessesadler.com/post/network-analysis-with-r/#nodes-edges}{directed edge list}.
+#' In this context, credit and debit variables filled with the ids of the
+#' accounts act as the edges of the network. Following the
+#' \href{https://en.wikipedia.org/wiki/Debits_and_credits}{nomenclature of accounting},
+#' the credit variable represents the account from which a value goes out,
+#' while the debit variable represents the account that receives the value.
+#' Thus, from the credit account to the debit account.
+#'
+#' The value for the transactions should be in the non-decimal currency of
+#' pounds, shillings, and pence. These functions use the nomenclature of
+#' \href{https://en.wikipedia.org/wiki/£sd}{l, s, and d} to refer to pounds,
+#' shillings, and pence. This derives from the Latin terms for librae,
+#' solidi, and denarii. One solidus was equivalent to 12 denarii, and
+#' 240 denarii coins were made from on libra of silver. The nomenclature
+#' and values of 12 denarii to 1 solidus and 20 solidi to 1 libra was
+#' adopted by Charlemagne and spread throughout Europe under different names.
+#'
+#' @family lsd account functions
+#'
+#' @inheritParams deb_account
+#'
+#' @return Returns a tibble with five columns and one row for each account
+#'   present in the credit and/or debit variables representing the current
+#'   value of the accounts in the form of pounds, shillings, and pence. The
+#'   names for the pounds, shillings, and pence columns correspond to the
+#'   input for \code{l}, \code{s}, \code{d}.
+#'
+#' @examples
+#' # Create tibble in format of a transactions data frame
+#' trans <- tibble::tibble(credit = c("a", "b", "a", "c"),
+#'                         debit = c("b", "a", "c", "a"),
+#'                         l = c(10, 10, 7, 9),
+#'                         s = c(15, 15, 11, 2),
+#'                         d = c(6, 6, 8, 11))
+#' # Current values of accounts present in trans
+#' deb_current(trans)
+#'
+#' @export
+
 deb_current <- function(df,
-                        credit = from,
-                        debit = to,
+                        credit = credit,
+                        debit = debit,
                         l = l,
                         s = s,
                         d = d,
@@ -111,10 +293,63 @@ deb_current <- function(df,
     dplyr::select(-relation)
 }
 
+#' Calculate the current values of open accounts
+#'
+#' Calculate the current values in the form of pounds, shillings, and pence
+#' for all accounts in a data frame of financial transactions and show only
+#' those accounts that are open.
+#'
+#' \code{deb_open()} is similar to \code{\link{deb_current}}, but it only
+#' returns current values for accounts that have a value that is not balanced,
+#' and thus not equal to zero. If accounts that should be closed appear in the
+#' results with only a small fraction of a pence remaining, set the
+#' \code{round} argument to a lower decimal place.
+#'
+#' \code{deb_open()} is part of a family of functions meant to be used on
+#' data frames that contain transactions between accounts likely contained in
+#' an account book. The data frame should possess a similar structure to a
+#' \href{https://www.jessesadler.com/post/network-analysis-with-r/#nodes-edges}{directed edge list}.
+#' In this context, credit and debit variables filled with the ids of the
+#' accounts act as the edges of the network. Following the
+#' \href{https://en.wikipedia.org/wiki/Debits_and_credits}{nomenclature of accounting},
+#' the credit variable represents the account from which a value goes out,
+#' while the debit variable represents the account that receives the value.
+#' Thus, from the credit account to the debit account.
+#'
+#' The value for the transactions should be in the non-decimal currency of
+#' pounds, shillings, and pence. These functions use the nomenclature of
+#' \href{https://en.wikipedia.org/wiki/£sd}{l, s, and d} to refer to pounds,
+#' shillings, and pence. This derives from the Latin terms for librae,
+#' solidi, and denarii. One solidus was equivalent to 12 denarii, and
+#' 240 denarii coins were made from on libra of silver. The nomenclature
+#' and values of 12 denarii to 1 solidus and 20 solidi to 1 libra was
+#' adopted by Charlemagne and spread throughout Europe under different names.
+#'
+#' @family lsd account functions
+#'
+#' @inheritParams deb_account
+#'
+#' @return Returns a tibble with five columns and one row for each account
+#'   present in the credit and/or debit variables in which the current
+#'   value of pounds, shillings, and pence does not equal zero. The names
+#'   for the pounds, shillings, and pence columns correspond to the input
+#'   for \code{l}, \code{s}, \code{d}.
+#'
+#' @examples
+#' # Create tibble in format of a transactions data frame
+#' trans <- tibble::tibble(credit = c("a", "b", "a", "c"),
+#'                         debit = c("b", "a", "c", "a"),
+#'                         l = c(10, 10, 7, 9),
+#'                         s = c(15, 15, 11, 2),
+#'                         d = c(6, 6, 8, 11))
+#' # Current values of open accounts present in trans
+#' deb_open(trans)
+#'
+#' @export
 
 deb_open <- function(df,
-                     credit = from,
-                     debit = to,
+                     credit = credit,
+                     debit = debit,
                      l = l,
                      s = s,
                      d = d,

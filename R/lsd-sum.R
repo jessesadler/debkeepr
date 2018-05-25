@@ -28,16 +28,20 @@ deb_denarii_sum <- function(l, s, d, round = 3) {
 #'
 #' @param df A data frame that contains columns with pounds, shillings,
 #'   and pence variables.
-#' @param l Pounds column: Unquoted name of a numeric variable corresponding to pounds.
-#' @param s Shillings column: Unquoted name of numeric variable corresponding to shillings.
-#' @param d Pence column: Unquoted name of numeric variable corresponding to pence.
+#' @param l Pounds column: Unquoted name of a numeric variable corresponding
+#'   to pounds. Default is l.
+#' @param s Shillings column: Unquoted name of numeric variable corresponding
+#'   to shillings. Default is s.
+#' @param d Pence column: Unquoted name of numeric variable corresponding to
+#'   pence. Default is d.
 #' @param round round pence to specified number of decimal places.
 #'   Default is 3. Set to 0 if you want pence to always be a whole number.
 #'
-#' @return Returns a data frame with one level of grouping dropped.
-#'   Any variables other than l, s, and d that are not grouped will
-#'   be dropped. If the sum of any group is a negative value, the l,
-#'   s, and d values for that group will all be returned as negative.
+#' @return Returns a data frame with one level of grouping dropped. Any
+#'   variables other than \code{l}, \code{s}, \code{d} that are not grouped
+#'   will be dropped. If the sum of any group is a negative value, the
+#'   \code{l}, \code{s}, \code{d} values for that group will all be returned
+#'   as negative.
 #'
 #' @examples
 #' # Use on an ungrouped data frame adds all values of pounds, shillings,
@@ -81,7 +85,7 @@ deb_sum <- function(df, l = l, s = s, d = d, round = 3) {
   s_column <- dplyr::quo_name(s)
   d_column <- dplyr::quo_name(d)
 
-  lsd_column_check(df, l, s, d, l_column, s_column, d_column)
+  lsd_column_check(df, l, s, d, column_names = c(l_column, s_column, d_column))
 
   # Use temp columns and rename so that l, s, and d do not get overwritten
   df %>%

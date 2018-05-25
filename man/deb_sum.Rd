@@ -10,20 +10,24 @@ deb_sum(df, l = l, s = s, d = d, round = 3)
 \item{df}{A data frame that contains columns with pounds, shillings,
 and pence variables.}
 
-\item{l}{Pounds column: Unquoted name of a numeric variable corresponding to pounds.}
+\item{l}{Pounds column: Unquoted name of a numeric variable corresponding
+to pounds. Default is l.}
 
-\item{s}{Shillings column: Unquoted name of numeric variable corresponding to shillings.}
+\item{s}{Shillings column: Unquoted name of numeric variable corresponding
+to shillings. Default is s.}
 
-\item{d}{Pence column: Unquoted name of numeric variable corresponding to pence.}
+\item{d}{Pence column: Unquoted name of numeric variable corresponding to
+pence. Default is d.}
 
 \item{round}{round pence to specified number of decimal places.
 Default is 3. Set to 0 if you want pence to always be a whole number.}
 }
 \value{
-Returns a data frame with one level of grouping dropped.
-Any variables other than l, s, and d that are not grouped will
-be dropped. If the sum of any group is a negative value, the l,
-s, and d values for that group will all be returned as negative.
+Returns a data frame with one level of grouping dropped. Any
+variables other than \code{l}, \code{s}, \code{d} that are not grouped
+will be dropped. If the sum of any group is a negative value, the
+\code{l}, \code{s}, \code{d} values for that group will all be returned
+as negative.
 }
 \description{
 Uses \code{\link[dplyr]{summarise()}} to add pounds, shillings, and pence

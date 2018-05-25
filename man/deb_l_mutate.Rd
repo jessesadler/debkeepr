@@ -14,14 +14,14 @@ deb_l_mutate(df, librae, l_column = l, s_column = s, d_column = d,
 variable corresponding to pounds. This is the variable that will be
 mutated into pounds, shillings, and pence variables.}
 
-\item{l_column}{A name for the pounds column created by the function.
-Default is l.}
+\item{l_column}{An unquoted name for the pounds column created by the
+function. Default is l.}
 
-\item{s_column}{A name for the shillings column created by the function.
-Default is s.}
+\item{s_column}{An unquoted name for the shillings column created by
+the function. Default is s.}
 
-\item{d_column}{A name for the pence column created by the function.
-Default is d.}
+\item{d_column}{An unquoted name for the pence column created by the
+function. Default is d.}
 
 \item{suffix}{If the data frame already contains variables with the same
 names as \code{l_column}, \code{s_column}, or \code{d_column}, this
