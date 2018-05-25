@@ -39,4 +39,5 @@ df <- tibble::tibble(l = c(3, 5, 6, 2),
                      s = c(10, 18, 11, 16),
                      d = c(9, 11, 10, 5))
 dplyr::mutate(df, shillings = deb_lsd_s(l, s, d))
+
 }

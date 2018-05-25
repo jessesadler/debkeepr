@@ -13,7 +13,7 @@
 #' @param duration Duration over which the interest is calculated, or
 #'   number of times that the interest should be added. A numeric vector
 #'   of length 1. Default is 1.
-#' @param with_principle Logical (default \code{TRUE}: when \code{TRUE}
+#' @param with_principal Logical (default \code{TRUE}: when \code{TRUE}
 #'   the resulting pounds, shillings and pence will include the interest
 #'   charged as well as the principal. When \code{FALSE} only the interest
 #'   will be shown.

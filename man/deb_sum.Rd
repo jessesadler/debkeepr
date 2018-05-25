@@ -53,14 +53,14 @@ deb_sum(example1, l, s, d)
 # Use with group_by() summarizes the values of pounds, shillings,
 # and pence for each group.
 example1 \%>\%
-  group_by(group) \%>\%
+  dplyr::group_by(group) \%>\%
   deb_sum(l, s, d)
 
 # The default for the function is to have pounds, shillings, and pence
 # columns labeled as l, s, d. If this is true, you do not need to
 # include these arguments.
 example1 \%>\%
-  group_by(group) \%>\%
+  dplyr::group_by(group) \%>\%
   deb_sum()
 
 # The function can take into account negative values
@@ -69,7 +69,7 @@ example2 <- tibble::tibble(group = c(1, 2, 1, 2),
                            s = c(-10, 18, -11, 16),
                            d = c(-9, 11, -10, 5))
 example2 \%>\%
-  group_by(group) \%>\%
+  dplyr::group_by(group) \%>\%
   deb_sum(l, s, d)
 
 }

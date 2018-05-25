@@ -28,6 +28,11 @@ interest rate in the Low Countries at the end of the sixteenth century.}
 number of times that the interest should be added. A numeric vector
 of length 1. Default is 1.}
 
+\item{with_principal}{Logical (default \code{TRUE}: when \code{TRUE}
+the resulting pounds, shillings and pence will include the interest
+charged as well as the principal. When \code{FALSE} only the interest
+will be shown.}
+
 \item{suffix}{Suffix added to the column names for the pounds,
 shillings, and pence columns representing the interest so that
 they are distinguished from the pounds, shillings, and pence

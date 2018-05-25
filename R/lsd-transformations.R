@@ -108,6 +108,8 @@ deb_l_lsd <- function(l, round = 3, vector = FALSE) {
 #'                      s = c(10, 18, 11, 16),
 #'                      d = c(9, 11, 10, 5))
 #' dplyr::mutate(df, shillings = deb_lsd_s(l, s, d))
+#'
+#' @export
 
 deb_lsd_s <- function(l, s, d) {
   lsd_check(l = l,
