@@ -120,13 +120,13 @@ deb_interest_mutate <- function(df,
                                 with_principal = TRUE,
                                 suffix = ".interest",
                                 round = 3) {
-  l <- dplyr::enquo(l)
-  s <- dplyr::enquo(s)
-  d <- dplyr::enquo(d)
+  l <- rlang::enquo(l)
+  s <- rlang::enquo(s)
+  d <- rlang::enquo(d)
   # Column names
-  l_column <- dplyr::quo_name(l)
-  s_column <- dplyr::quo_name(s)
-  d_column <- dplyr::quo_name(d)
+  l_column <- rlang::quo_name(l)
+  s_column <- rlang::quo_name(s)
+  d_column <- rlang::quo_name(d)
 
   lsd_column_check(df, l, s, d, column_names = c(l_column, s_column, d_column))
   interest_check(interest, duration, with_principal)

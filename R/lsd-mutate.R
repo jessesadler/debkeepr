@@ -113,7 +113,7 @@ deb_denarii_d <- function(d, round = 3) {
 # and check that column names and suffix are character vectors of length 1
 lsd_column_names <- function(df, l, s, d, suffix) {
 
-  lsd_names <- c(dplyr::quo_name(l), dplyr::quo_name(s), dplyr::quo_name(d))
+  lsd_names <- c(rlang::quo_name(l), rlang::quo_name(s), rlang::quo_name(d))
 
   if (!is.character(lsd_names)) {
     stop(call. = FALSE, "Column names must be character vectors")
@@ -187,13 +187,13 @@ deb_l_mutate <- function(df, librae,
                          d_column = d,
                          suffix = ".1",
                          round = 3) {
-  l <- dplyr::enquo(librae)
+  l <- rlang::enquo(librae)
 
   # Column names: avoid overwriting l, s, and d columns
   lsd_names <- lsd_column_names(df,
-                                dplyr::enquo(l_column),
-                                dplyr::enquo(s_column),
-                                dplyr::enquo(d_column),
+                                rlang::enquo(l_column),
+                                rlang::enquo(s_column),
+                                rlang::enquo(d_column),
                                 suffix)
 
   df %>%
@@ -240,13 +240,13 @@ deb_s_mutate <- function(df, solidi,
                          d_column = d,
                          suffix = ".1",
                          round = 3) {
-  s <- dplyr::enquo(solidi)
+  s <- rlang::enquo(solidi)
 
   # Column names: avoid overwriting l, s, and d columns
   lsd_names <- lsd_column_names(df,
-                                dplyr::enquo(l_column),
-                                dplyr::enquo(s_column),
-                                dplyr::enquo(d_column),
+                                rlang::enquo(l_column),
+                                rlang::enquo(s_column),
+                                rlang::enquo(d_column),
                                 suffix)
 
   df %>%
@@ -293,13 +293,13 @@ deb_d_mutate <- function(df, denarii,
                          d_column = d,
                          suffix = ".1",
                          round = 3) {
-  d <- dplyr::enquo(denarii)
+  d <- rlang::enquo(denarii)
 
   # Column names: avoid overwriting l, s, and d columns
   lsd_names <- lsd_column_names(df,
-                                dplyr::enquo(l_column),
-                                dplyr::enquo(s_column),
-                                dplyr::enquo(d_column),
+                                rlang::enquo(l_column),
+                                rlang::enquo(s_column),
+                                rlang::enquo(d_column),
                                 suffix)
 
   df %>%

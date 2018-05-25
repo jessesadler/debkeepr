@@ -70,19 +70,19 @@ deb_account <- function(df,
                         s = s,
                         d = d,
                         round = 3) {
-  credit <- dplyr::enquo(credit)
-  debit <- dplyr::enquo(debit)
-  l <- dplyr::enquo(l)
-  s <- dplyr::enquo(s)
-  d <- dplyr::enquo(d)
+  credit <- rlang::enquo(credit)
+  debit <- rlang::enquo(debit)
+  l <- rlang::enquo(l)
+  s <- rlang::enquo(s)
+  d <- rlang::enquo(d)
   # Column names
-  l_column <- dplyr::quo_name(l)
-  s_column <- dplyr::quo_name(s)
-  d_column <- dplyr::quo_name(d)
+  l_column <- rlang::quo_name(l)
+  s_column <- rlang::quo_name(s)
+  d_column <- rlang::quo_name(d)
 
   # Checks
   lsd_column_check(df, l, s, d, column_names = c(l_column, s_column, d_column))
-  edge_columns <- c(dplyr::quo_name(credit), dplyr::quo_name(debit))
+  edge_columns <- c(rlang::quo_name(credit), rlang::quo_name(debit))
   credit_check(df, credit, debit, edge_columns, account_id)
 
   credit <- df %>%
@@ -175,18 +175,18 @@ deb_account_summary <- function(df,
                                 d = d,
                                 round = 3) {
 
-  credit <- dplyr::enquo(credit)
-  debit <- dplyr::enquo(debit)
-  l <- dplyr::enquo(l)
-  s <- dplyr::enquo(s)
-  d <- dplyr::enquo(d)
+  credit <- rlang::enquo(credit)
+  debit <- rlang::enquo(debit)
+  l <- rlang::enquo(l)
+  s <- rlang::enquo(s)
+  d <- rlang::enquo(d)
 
   # Checks
   lsd_column_check(df, l, s, d,
-                   column_names = c(dplyr::quo_name(l),
-                                    dplyr::quo_name(s),
-                                    dplyr::quo_name(d)))
-  edge_columns <- c(dplyr::quo_name(credit), dplyr::quo_name(debit))
+                   column_names = c(rlang::quo_name(l),
+                                    rlang::quo_name(s),
+                                    rlang::quo_name(d)))
+  edge_columns <- c(rlang::quo_name(credit), rlang::quo_name(debit))
   credit_check(df, credit, debit, edge_columns)
 
   credits <- df %>%
@@ -276,11 +276,11 @@ deb_current <- function(df,
                         s = s,
                         d = d,
                         round = 3) {
-  credit <- dplyr::enquo(credit)
-  debit <- dplyr::enquo(debit)
-  l <- dplyr::enquo(l)
-  s <- dplyr::enquo(s)
-  d <- dplyr::enquo(d)
+  credit <- rlang::enquo(credit)
+  debit <- rlang::enquo(debit)
+  l <- rlang::enquo(l)
+  s <- rlang::enquo(s)
+  d <- rlang::enquo(d)
 
   deb_account_summary(df,
                       credit = !! credit,
@@ -354,11 +354,11 @@ deb_open <- function(df,
                      s = s,
                      d = d,
                      round = 3) {
-  credit <- dplyr::enquo(credit)
-  debit <- dplyr::enquo(debit)
-  l <- dplyr::enquo(l)
-  s <- dplyr::enquo(s)
-  d <- dplyr::enquo(d)
+  credit <- rlang::enquo(credit)
+  debit <- rlang::enquo(debit)
+  l <- rlang::enquo(l)
+  s <- rlang::enquo(s)
+  d <- rlang::enquo(d)
 
   deb_current(df,
               credit = !! credit,
