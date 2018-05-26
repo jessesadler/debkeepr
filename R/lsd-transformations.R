@@ -1,12 +1,12 @@
 ## lsd transformations ##
 
-### Refactor through librae ###
+### Normalize through librae ###
 
 #' Convert from pounds, shillings and pence to pounds
 #'
 #' Convert pounds, shillings, and pence to decimalized pounds.
 #'
-#' @inheritParams deb_refactor
+#' @inheritParams deb_normalize
 #'
 #' @return Returns a numeric vector of decimalized pounds of length
 #'   equivalent to that of \code{l}, \code{s}, \code{d}.
@@ -43,9 +43,9 @@ deb_lsd_l <- function(l, s, d) {
 #' Convert decimalized pounds to the lsd system of pounds, shillings,
 #' and pence. The function returns the value from a decimal currency to the
 #' non-decimal currency of pounds, shillings, and pence.
-#' This is a wrapper around \code{\link{deb_refactor}}.
+#' This is a wrapper around \code{\link{deb_normalize}}.
 #'
-#' @inheritParams deb_refactor
+#' @inheritParams deb_normalize
 #'
 #' @return Returns either a tibble with columns for the pounds, shillings, and
 #'   pence values labeled as l, s, and d or a named numeric vector with values
@@ -77,16 +77,16 @@ deb_lsd_l <- function(l, s, d) {
 
 deb_l_lsd <- function(l, round = 3, vector = FALSE) {
   # repeat 0 of length l for vectorization
-  deb_refactor(l, rep(0, length(l)), rep(0, length(l)), round, vector)
+  deb_normalize(l, rep(0, length(l)), rep(0, length(l)), round, vector)
 }
 
-### Refactor through solidi ###
+### Normalize through solidi ###
 
 #' Convert from pounds, shillings and pence to shillings
 #'
 #' Convert pounds, shillings, and pence to decimalized shillings.
 #'
-#' @inheritParams deb_refactor
+#' @inheritParams deb_normalize
 #'
 #' @return Returns a numeric vector of decimalized shillings of length
 #'   equivalent to that of \code{l}, \code{s}, \code{d}.
@@ -123,9 +123,9 @@ deb_lsd_s <- function(l, s, d) {
 #' Convert decimalized shillings to the lsd system of pounds, shillings,
 #' and pence. The function returns the value from a decimal currency to the
 #' non-decimal currency of pounds, shillings, and pence.
-#' This is a wrapper around \code{\link{deb_refactor}}.
+#' This is a wrapper around \code{\link{deb_normalize}}.
 #'
-#' @inheritParams deb_refactor
+#' @inheritParams deb_normalize
 #'
 #' @return Returns either a tibble with columns for the pounds, shillings, and
 #'   pence values labeled as l, s, and d or a named numeric vector with values
@@ -159,10 +159,10 @@ deb_lsd_s <- function(l, s, d) {
 
 deb_s_lsd <- function(s, round = 3, vector = FALSE) {
   # repeat 0 of length s for vectorization
-  deb_refactor(rep(0, length(s)), s, rep(0, length(s)), round, vector)
+  deb_normalize(rep(0, length(s)), s, rep(0, length(s)), round, vector)
 }
 
-### Refactor through denarii ###
+### Normalize through denarii ###
 
 #' Convert from pounds, shillings, and pence to pence
 #'
@@ -170,7 +170,7 @@ deb_s_lsd <- function(s, round = 3, vector = FALSE) {
 #' Converting to the lowest denomination turns the non-decimal
 #' pounds, shillings, and pence currency into a decimal currency.
 #'
-#' @inheritParams deb_refactor
+#' @inheritParams deb_normalize
 #'
 #' @return Returns a numeric vector of decimalized pence of length
 #'   equivalent to that of \code{l}, \code{s}, \code{d}.
@@ -204,9 +204,9 @@ deb_lsd_d <- function(l, s, d) {
 #' Convert pence to the lsd system of pounds, shillings, and pence.
 #' The function returns the value from a decimal currency to the
 #' non-decimal currency of pounds, shillings, and pence.
-#' This is a wrapper around \code{\link{deb_refactor}}.
+#' This is a wrapper around \code{\link{deb_normalize}}.
 #'
-#' @inheritParams deb_refactor
+#' @inheritParams deb_normalize
 #'
 #'
 #' @return Returns either a tibble with columns for the pounds, shillings, and
@@ -238,5 +238,5 @@ deb_lsd_d <- function(l, s, d) {
 
 deb_d_lsd <- function(d, round = 3, vector = FALSE) {
   # repeat 0 of length d for vectorization
-  deb_refactor(rep(0, length(d)), rep(0, length(d)), d, round, vector)
+  deb_normalize(rep(0, length(d)), rep(0, length(d)), d, round, vector)
 }

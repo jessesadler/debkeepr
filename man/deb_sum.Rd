@@ -31,14 +31,14 @@ as negative.
 }
 \description{
 Uses \code{\link[dplyr]{summarise()}} to add pounds, shillings, and pence
-columns in a data frame and refactor the values so that the result has
+columns in a data frame and normalize the values so that the result has
 properly formatted values.
 }
 \details{
 When used on a data frame without any grouping, the result will be a data
 frame with a single row consisting of columns for pounds, shillings, and
-pence. When used in conjunction with \code{\link[dplyr]{group_by()}},
-\code{deb_sum()} will summarize the pounds, shillings, and pence columns
+pence. When used in conjunction with \code{\link[dplyr:group_by]{dplyr::group_by()}},
+\code{\link{deb_sum()}} will summarize the pounds, shillings, and pence columns
 for each group.
 }
 \examples{

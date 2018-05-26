@@ -1,6 +1,6 @@
 ## Checks ##
 
-# Check that l, s, and d values are numeric in deb_refactor
+# Check that l, s, and d values are numeric in deb_normalize
 lsd_check <- function(l, s, d, round = 3, vector = FALSE) {
   if (!is.numeric(round)) {
     stop(call. = FALSE, "round must be numeric")

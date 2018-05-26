@@ -1,6 +1,6 @@
 context("test-lsd-transformations.R")
 
-# These are all based on deb_refactor
+# These are all based on deb_normalize
 test_that("decimalized to lsd works", {
   # deb_l_lsd
   expect_equal(deb_l_lsd(8, vector = TRUE), c(l = 8, s = 0, d = 0))

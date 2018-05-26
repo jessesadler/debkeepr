@@ -15,10 +15,10 @@ test_that("interest calculation works", {
                c(l = 0, s = 13, d = 4.812))
   # duration
   expect_equal(deb_interest(10, 14, 5, vector = TRUE, with_principal = FALSE, duration = 5),
-               deb_refactor(0, 5 * 13, 5 * 4.8125, vector = TRUE))
+               deb_normalize(0, 5 * 13, 5 * 4.8125, vector = TRUE))
   # interest
   expect_equal(deb_interest(10, 14, 5, vector = TRUE, with_principal = FALSE, interest = 0.125),
-               deb_refactor(0, 2 * 13, 2 * 4.8125, vector = TRUE))
+               deb_normalize(0, 2 * 13, 2 * 4.8125, vector = TRUE))
   # round
   expect_equal(deb_interest(10, 14, 5, vector = TRUE, round = 4),
                c(l = 11, s = 7, d = 9.8125))

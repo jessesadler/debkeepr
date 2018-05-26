@@ -30,7 +30,7 @@ result will be a list of named vectors of length equal to \code{d}.
 Convert pence to the lsd system of pounds, shillings, and pence.
 The function returns the value from a decimal currency to the
 non-decimal currency of pounds, shillings, and pence.
-This is a wrapper around \code{\link{deb_refactor}}.
+This is a wrapper around \code{\link{deb_normalize}}.
 }
 \examples{
 # Pounds, shillings, and pence as a tibble

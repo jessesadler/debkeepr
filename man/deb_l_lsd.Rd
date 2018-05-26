@@ -31,7 +31,7 @@ be a list of named vectors of length equal to \code{l}.
 Convert decimalized pounds to the lsd system of pounds, shillings,
 and pence. The function returns the value from a decimal currency to the
 non-decimal currency of pounds, shillings, and pence.
-This is a wrapper around \code{\link{deb_refactor}}.
+This is a wrapper around \code{\link{deb_normalize}}.
 }
 \examples{
 # Conversion from pounds to pounds, shillings, and pence

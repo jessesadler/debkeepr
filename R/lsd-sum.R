@@ -17,13 +17,13 @@ deb_denarii_sum <- function(l, s, d, round = 3) {
 #' Sum of pounds, shillings, and pence columns in a data frame
 #'
 #' Uses \code{\link[dplyr]{summarise()}} to add pounds, shillings, and pence
-#' columns in a data frame and refactor the values so that the result has
+#' columns in a data frame and normalize the values so that the result has
 #' properly formatted values.
 #'
 #' When used on a data frame without any grouping, the result will be a data
 #' frame with a single row consisting of columns for pounds, shillings, and
-#' pence. When used in conjunction with \code{\link[dplyr]{group_by()}},
-#' \code{deb_sum()} will summarize the pounds, shillings, and pence columns
+#' pence. When used in conjunction with [dplyr::group_by()],
+#' \code{\link{deb_sum()}} will summarize the pounds, shillings, and pence columns
 #' for each group.
 #'
 #' @param df A data frame that contains columns with pounds, shillings,

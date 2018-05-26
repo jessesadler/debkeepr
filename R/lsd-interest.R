@@ -6,7 +6,7 @@
 #' given an interest rate and a duration. The function does not
 #' calculate compound interest.
 #'
-#' @inheritParams deb_refactor
+#' @inheritParams deb_normalize
 #' @param interest Interest rate in decimal form. A numeric vector
 #'   of length 1. Default is 0.0625, or 6.25 percent, which was default
 #'   interest rate in the Low Countries at the end of the sixteenth century.
