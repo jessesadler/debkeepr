@@ -51,11 +51,11 @@ Calculate the total credit, debit, and the current value of a given account
 in the form of pounds, shillings, and pence.
 }
 \details{
-\code{deb_account()} is similar to \code{\link{deb_account_summary()}}, but
+`deb_account()`` is similar to \code{\link[=deb_account_summary]{deb_account_summary()}}, but
 it only returns the information for one account instead of all accounts in
 the credit and/or debit variables of a transactions data frame.
 
-\code{deb_account()} is part of a family of functions meant to be used on
+`deb_account()`` is part of a family of functions meant to be used on
 data frames that contain transactions between accounts likely contained in
 an account book. The data frame should possess a similar structure to a
 \href{https://www.jessesadler.com/post/network-analysis-with-r/#nodes-edges}{directed edge list}.

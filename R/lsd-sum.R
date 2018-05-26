@@ -16,15 +16,13 @@ deb_denarii_sum <- function(l, s, d, round = 3) {
 
 #' Sum of pounds, shillings, and pence columns in a data frame
 #'
-#' Uses \code{\link[dplyr]{summarise()}} to add pounds, shillings, and pence
-#' columns in a data frame and normalize the values so that the result has
-#' properly formatted values.
+#' Uses [dplyr::summarise()] to add pounds, shillings, and pence
+#' columns in a data frame and normalizes the values.
 #'
 #' When used on a data frame without any grouping, the result will be a data
 #' frame with a single row consisting of columns for pounds, shillings, and
-#' pence. When used in conjunction with [dplyr::group_by()],
-#' \code{\link{deb_sum()}} will summarize the pounds, shillings, and pence columns
-#' for each group.
+#' pence. When used in conjunction with [dplyr::group_by()], [deb_sum()] will
+#' summarize the pounds, shillings, and pence columns for each group.
 #'
 #' @param df A data frame that contains columns with pounds, shillings,
 #'   and pence variables.
@@ -38,10 +36,9 @@ deb_denarii_sum <- function(l, s, d, round = 3) {
 #'   Default is 3. Set to 0 if you want pence to always be a whole number.
 #'
 #' @return Returns a data frame with one level of grouping dropped. Any
-#'   variables other than \code{l}, \code{s}, \code{d} that are not grouped
-#'   will be dropped. If the sum of any group is a negative value, the
-#'   \code{l}, \code{s}, \code{d} values for that group will all be returned
-#'   as negative.
+#'   variables other than `l`, `s`, and `d` that are not grouped will be
+#'   dropped. If the sum of any group is a negative value, the `l`, `s`,
+#'   and `d` values for that group will all be returned as negative.
 #'
 #' @examples
 #' # Use on an ungrouped data frame adds all values of pounds, shillings,

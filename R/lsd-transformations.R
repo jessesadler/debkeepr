@@ -9,7 +9,7 @@
 #' @inheritParams deb_normalize
 #'
 #' @return Returns a numeric vector of decimalized pounds of length
-#'   equivalent to that of \code{l}, \code{s}, \code{d}.
+#'   equivalent to that of `l`, `s`, and `d`.
 #'
 #' @examples
 #' # Create decimalized pounds
@@ -43,7 +43,7 @@ deb_lsd_l <- function(l, s, d) {
 #' Convert decimalized pounds to the lsd system of pounds, shillings,
 #' and pence. The function returns the value from a decimal currency to the
 #' non-decimal currency of pounds, shillings, and pence.
-#' This is a wrapper around \code{\link{deb_normalize}}.
+#' This is a wrapper around [deb_normalize()].
 #'
 #' @inheritParams deb_normalize
 #'
@@ -51,9 +51,9 @@ deb_lsd_l <- function(l, s, d) {
 #'   pence values labeled as l, s, and d or a named numeric vector with values
 #'   for pounds, shillings, and pence. If the input value is negative, the
 #'   pounds, shillings, and pence values will all be negative. The number of
-#'   rows in the resulting tibble will be equal to the length of \code{l}. If the
-#'   length of \code{l} is greater than 1 and \code{vector = TRUE}, the result will
-#'   be a list of named vectors of length equal to \code{l}.
+#'   rows in the resulting tibble will be equal to the length of `l`. If the
+#'   length of `l` is greater than 1 and `vector = TRUE`, the result will
+#'   be a list of named vectors of length equal to `l`.
 #'
 #' @examples
 #' # Conversion from pounds to pounds, shillings, and pence
@@ -89,7 +89,7 @@ deb_l_lsd <- function(l, round = 3, vector = FALSE) {
 #' @inheritParams deb_normalize
 #'
 #' @return Returns a numeric vector of decimalized shillings of length
-#'   equivalent to that of \code{l}, \code{s}, \code{d}.
+#'   equivalent to that of `l`, `s`, and `d`.
 #'
 #' @examples
 #' # Create decimalized shillings
@@ -123,7 +123,7 @@ deb_lsd_s <- function(l, s, d) {
 #' Convert decimalized shillings to the lsd system of pounds, shillings,
 #' and pence. The function returns the value from a decimal currency to the
 #' non-decimal currency of pounds, shillings, and pence.
-#' This is a wrapper around \code{\link{deb_normalize}}.
+#' This is a wrapper around [deb_normalize()].
 #'
 #' @inheritParams deb_normalize
 #'
@@ -131,9 +131,9 @@ deb_lsd_s <- function(l, s, d) {
 #'   pence values labeled as l, s, and d or a named numeric vector with values
 #'   for pounds, shillings, and pence. If the input value is negative, the
 #'   pounds, shillings, and pence values will all be negative. The number of
-#'   rows in the resulting tibble will be equal to the length of \code{s}. If
-#'   the length of \code{s} is greater than 1 and \code{vector = TRUE}, the
-#'   result will be a list of named vectors of length equal to \code{s}.
+#'   rows in the resulting tibble will be equal to the length of `s`. If
+#'   the length of `s` is greater than 1 and `vector = TRUE``, the
+#'   result will be a list of named vectors of length equal to `s`.
 #'
 #' @examples
 #' # Pounds, shillings, and pence as a tibble
@@ -173,7 +173,7 @@ deb_s_lsd <- function(s, round = 3, vector = FALSE) {
 #' @inheritParams deb_normalize
 #'
 #' @return Returns a numeric vector of decimalized pence of length
-#'   equivalent to that of \code{l}, \code{s}, \code{d}.
+#'   equivalent to that of `l`, `s`, and `d`.
 #'
 #' @examples
 #' # Create decimalized pence
@@ -204,7 +204,7 @@ deb_lsd_d <- function(l, s, d) {
 #' Convert pence to the lsd system of pounds, shillings, and pence.
 #' The function returns the value from a decimal currency to the
 #' non-decimal currency of pounds, shillings, and pence.
-#' This is a wrapper around \code{\link{deb_normalize}}.
+#' This is a wrapper around [deb_normalize()].
 #'
 #' @inheritParams deb_normalize
 #'
@@ -213,9 +213,9 @@ deb_lsd_d <- function(l, s, d) {
 #'   pence values labeled as l, s, and d or a named numeric vector with values
 #'   for pounds, shillings, and pence. If the input value is negative, the
 #'   pounds, shillings, and pence values will all be negative. The number of
-#'   rows in the resulting tibble will be equal to the length of \code{d}. If
-#'   the length of \code{d} is greater than 1 and \code{vector = TRUE}, the
-#'   result will be a list of named vectors of length equal to \code{d}.
+#'   rows in the resulting tibble will be equal to the length of `d`. If
+#'   the length of `d` is greater than 1 and `vector = TRUE`, the result will
+#'   be a list of named vectors of length equal to `d`.
 #'
 #' @examples
 #' # Pounds, shillings, and pence as a tibble

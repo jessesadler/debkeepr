@@ -141,10 +141,10 @@ lsd_column_names <- function(df, l, s, d, suffix) {
 
 #' Mutate decimal pounds into pounds, shillings, and pence variables
 #'
-#' Uses \code{\link[dplyr]{mutate()}} to add equivalent pounds, shillings,
-#' and pence variables to a data frame that contains a decimalized pounds
-#' variable. Thus, the function converts decimalized pounds into the lsd
-#' system of pounds, shillings, and pence.
+#' Uses [dplyr::mutate()] to add equivalent pounds, shillings, and pence
+#' variables to a data frame that contains a decimalized pounds variable.
+#' Thus, the function converts decimalized pounds into the lsd system of
+#' pounds, shillings, and pence.
 #'
 #' @param df A data frame that contains a column of decimalized pounds.
 #' @param librae Decimalized pounds column: Unquoted name of a numeric
@@ -157,13 +157,13 @@ lsd_column_names <- function(df, l, s, d, suffix) {
 #' @param d_column An unquoted name for the pence column created by the
 #'   function. Default is d.
 #' @param suffix If the data frame already contains variables with the same
-#'   names as \code{l_column}, \code{s_column}, or \code{d_column}, this
-#'   suffix will be added to the new variables to distinguish them.
+#'   names as `l_column`, `s_column`, or `d_column`, this suffix will be
+#'   added to the new variables to distinguish them.
 #' @param round round pence to specified number of decimal places.
 #'   Default is 3. Set to 0 to return pence as whole numbers.
 #'
-#' @return Returns a data frame with three new variables of pounds, shillings,
-#'   and pence.
+#' @return Returns a data frame with three new variables of pounds,
+#'   shillings, and pence.
 #'
 #' @examples
 #' # Create equivalent pounds, shillings, and pence
@@ -204,10 +204,10 @@ deb_l_mutate <- function(df, librae,
 
 #' Mutate decimal shillings into pounds, shillings, and pence variables
 #'
-#' Uses \code{\link[dplyr]{mutate()}} to add equivalent pounds, shillings,
-#' and pence variables to a data frame that contains a decimalized shillings
-#' variable. Thus, the function converts decimalized shillings into the lsd
-#' system of pounds, shillings, and pence.
+#' Uses [dplyr::mutate()] to add equivalent pounds, shillings, and pence
+#' variables to a data frame that contains a decimalized shillings variable.
+#' Thus, the function converts decimalized shillings into the lsd system of
+#' pounds, shillings, and pence.
 #'
 #' @param df A data frame that contains a column of decimalized shillings.
 #' @param solidi Decimalized shillings column: Unquoted name of a numeric
@@ -257,10 +257,10 @@ deb_s_mutate <- function(df, solidi,
 
 #' Mutate decimal pence into pounds, shillings, and pence variables
 #'
-#' Uses \code{\link[dplyr]{mutate()}} to add equivalent pounds, shillings,
-#' and pence variables to a data frame that contains a pence
-#' variable. Thus, the function converts pence into the lsd
-#' system of pounds, shillings, and pence.
+#' Uses [dplyr::mutate()] to add equivalent pounds, shillings, and pence
+#' variables to a data frame that contains a pence variable. Thus, the
+#' function converts pence into the lsd system of pounds, shillings,
+#' and pence.
 #'
 #' @param df A data frame that contains a column of pence.
 #' @param denarii Pence column: Unquoted name of a numeric variable

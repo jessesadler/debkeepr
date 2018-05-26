@@ -59,6 +59,9 @@ test_that("deb_interest_mutate works", {
   expect_equal(deb_interest_mutate(example1),
                tibble::tibble(l = 10, s = 14, d = 5,
                               l.interest = 11, s.interest = 7, d.interest = 9.812))
+  expect_equal(deb_interest_mutate(example1, with_principal = FALSE),
+               tibble::tibble(l = 10, s = 14, d = 5,
+                              l.interest = 0, s.interest = 13, d.interest = 4.812))
   expect_equal(deb_interest_mutate(example1, round = 0),
                tibble::tibble(l = 10, s = 14, d = 5,
                               l.interest = 11, s.interest = 7, d.interest = 10))

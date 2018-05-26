@@ -7,16 +7,15 @@
 deb_s_lsd(s, round = 3, vector = FALSE)
 }
 \arguments{
-\item{s}{Shillings: numeric vector of the same length as \code{l}
-and \code{d}.}
+\item{s}{Shillings: numeric vector of the same length as \code{l} and \code{d}.}
 
 \item{round}{Round pence to specified number of decimal places.
 Default is 3. Set to 0 to return pence as whole numbers.}
 
-\item{vector}{Logical (default \code{FALSE}): when \code{FALSE} the output
-will be a tibble. When \code{TRUE} the output will be a named numeric
-vector or list of named numeric vectors if the length of \code{l},
-\code{s}, \code{d} is greater than 1.}
+\item{vector}{Logical (default \code{FALSE}): when \code{FALSE} the output will be
+a tibble. When \code{TRUE} the output will be a named numeric vector or list
+of named numeric vectors if the length of \code{l}, \code{s}, and \code{d} is greater
+than 1.}
 }
 \value{
 Returns either a tibble with columns for the pounds, shillings, and
@@ -24,14 +23,13 @@ pence values labeled as l, s, and d or a named numeric vector with values
 for pounds, shillings, and pence. If the input value is negative, the
 pounds, shillings, and pence values will all be negative. The number of
 rows in the resulting tibble will be equal to the length of \code{s}. If
-the length of \code{s} is greater than 1 and \code{vector = TRUE}, the
-result will be a list of named vectors of length equal to \code{s}.
+the length of \code{s} is greater than 1 and \code{vector = TRUE``, the result will be a list of named vectors of length equal to}s`.
 }
 \description{
 Convert decimalized shillings to the lsd system of pounds, shillings,
 and pence. The function returns the value from a decimal currency to the
 non-decimal currency of pounds, shillings, and pence.
-This is a wrapper around \code{\link{deb_normalize}}.
+This is a wrapper around \code{\link[=deb_normalize]{deb_normalize()}}.
 }
 \examples{
 # Pounds, shillings, and pence as a tibble

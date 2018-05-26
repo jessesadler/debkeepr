@@ -7,21 +7,19 @@
 deb_normalize(l, s, d, round = 3, vector = FALSE)
 }
 \arguments{
-\item{l}{Pounds: numeric vector of the same length as \code{s} and
-\code{d}.}
+\item{l}{Pounds: numeric vector of the same length as \code{s} and \code{d}.}
 
-\item{s}{Shillings: numeric vector of the same length as \code{l}
-and \code{d}.}
+\item{s}{Shillings: numeric vector of the same length as \code{l} and \code{d}.}
 
 \item{d}{Pence: numeric vector of the same length as \code{l} and \code{s}.}
 
 \item{round}{Round pence to specified number of decimal places.
 Default is 3. Set to 0 to return pence as whole numbers.}
 
-\item{vector}{Logical (default \code{FALSE}): when \code{FALSE} the output
-will be a tibble. When \code{TRUE} the output will be a named numeric
-vector or list of named numeric vectors if the length of \code{l},
-\code{s}, \code{d} is greater than 1.}
+\item{vector}{Logical (default \code{FALSE}): when \code{FALSE} the output will be
+a tibble. When \code{TRUE} the output will be a named numeric vector or list
+of named numeric vectors if the length of \code{l}, \code{s}, and \code{d} is greater
+than 1.}
 }
 \value{
 Returns either a tibble with columns for the pounds, shillings, and
@@ -29,9 +27,9 @@ pence values labeled as l, s, and d or a named numeric vector with values
 for pounds, shillings, and pence. If the input lsd value is negative, the
 pounds, shillings, and pence values will all be negative. The number of
 rows in the resulting tibble will be equal to the length of the input
-vectors. If the length of \code{l}, \code{s}, \code{d} is greater than 1
-and \code{vector = TRUE}, the result will be a list of named vectors of
-length equal to the input vectors.
+vectors. If the length of \code{l}, \code{s}, and \code{d}. is greater than 1 and
+\code{vector = TRUE}, the result will be a list of named vectors of length
+equal to the input vectors.
 }
 \description{
 Normalize pounds, shillings, and pence to correct values based
@@ -71,7 +69,7 @@ deb_normalize(l = c(8, 10), s = c(25, 86), d = c(34, 29))
 # Return a list with two vectors
 deb_normalize(l = c(8, 10), s = c(25, 86), d = c(34, 29), vector = TRUE)
 
-# This makes it possible to normalize a tibble of lsd values
+# This makes it possible to normalize a data frame of lsd values
 ex_tbl <- tibble::tibble(l = c(8, 10),
                          s = c(25, 86),
                          d = c(34, 29))

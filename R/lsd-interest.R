@@ -13,18 +13,16 @@
 #' @param duration Duration over which the interest is calculated, or
 #'   number of times that the interest should be added. A numeric vector
 #'   of length 1. Default is 1.
-#' @param with_principal Logical (default \code{TRUE}: when \code{TRUE}
-#'   the resulting pounds, shillings and pence will include the interest
-#'   charged as well as the principal. When \code{FALSE} only the interest
-#'   will be shown.
+#' @param with_principal Logical (default `TRUE`: when `TRUE` the resulting
+#'   pounds, shillings and pence will include the interest charged as well
+#'   as the principal. When `FALSE` only the interest will be shown.
 #'
 #' @return Returns either a tibble with columns for the pounds, shillings, and
 #'   pence values labeled as l, s, and d or a named numeric vector with values
 #'   for pounds, shillings, and pence. The number of rows in the resulting
 #'   tibble will be equal to the length of the input vectors. If the length of
-#'   \code{l}, \code{s}, \code{d} is greater than 1 and \code{vector = TRUE},
-#'   the result will be a list of named vectors of length equal to the input
-#'   vectors.
+#'   `l`, `s`, and `d` is greater than 1 and `vector = TRUE`, the result will
+#'   be a list of named vectors of length equal to the input vectors.
 #'
 #' @examples
 #' # Calculate the interest with the principal over a certain duration
@@ -70,7 +68,7 @@ deb_interest <- function(l, s, d,
 
 #' Calculate the interest of pounds, shillings, and pence
 #'
-#' Uses \code{\link[dplyr]{mutate()}} to calculate the interest of pounds,
+#' Uses [dplyr::mutate()] to calculate the interest of pounds,
 #' shillings, and pence variables given an interest rate and a duration.
 #' The interest—with or without the principal included—is returned in the
 #' form of three new variables representing the calculated pounds, shillings

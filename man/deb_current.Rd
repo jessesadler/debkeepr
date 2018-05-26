@@ -49,10 +49,10 @@ the current value will be returned as positive numbers. If the debits are
 greater, the current value will be returned as negative numbers.
 }
 \details{
-\code{deb_current()} is similar to \code{\link{deb_account_summary()}},
+\code{deb_current()} is similar to \code{\link[=deb_account_summary]{deb_account_summary()}},
 but it only returns the current values for the accounts in \code{df}.
 To see only the open accounts—only those accounts that have a current
-value greater than or less than zero—see \code{\link{deb_open()}}.
+value greater than or less than zero—see \code{\link[=deb_open]{deb_open()}}.
 
 \code{deb_current()} is part of a family of functions meant to be used on
 data frames that contain transactions between accounts likely contained in

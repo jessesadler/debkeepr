@@ -7,16 +7,15 @@
 deb_l_lsd(l, round = 3, vector = FALSE)
 }
 \arguments{
-\item{l}{Pounds: numeric vector of the same length as \code{s} and
-\code{d}.}
+\item{l}{Pounds: numeric vector of the same length as \code{s} and \code{d}.}
 
 \item{round}{Round pence to specified number of decimal places.
 Default is 3. Set to 0 to return pence as whole numbers.}
 
-\item{vector}{Logical (default \code{FALSE}): when \code{FALSE} the output
-will be a tibble. When \code{TRUE} the output will be a named numeric
-vector or list of named numeric vectors if the length of \code{l},
-\code{s}, \code{d} is greater than 1.}
+\item{vector}{Logical (default \code{FALSE}): when \code{FALSE} the output will be
+a tibble. When \code{TRUE} the output will be a named numeric vector or list
+of named numeric vectors if the length of \code{l}, \code{s}, and \code{d} is greater
+than 1.}
 }
 \value{
 Returns either a tibble with columns for the pounds, shillings, and
@@ -31,7 +30,7 @@ be a list of named vectors of length equal to \code{l}.
 Convert decimalized pounds to the lsd system of pounds, shillings,
 and pence. The function returns the value from a decimal currency to the
 non-decimal currency of pounds, shillings, and pence.
-This is a wrapper around \code{\link{deb_normalize}}.
+This is a wrapper around \code{\link[=deb_normalize]{deb_normalize()}}.
 }
 \examples{
 # Conversion from pounds to pounds, shillings, and pence

@@ -40,8 +40,8 @@ Returns a tibble with five columns and three rows for each account
 present in the credit and/or debit variables of \code{df}. This
 represents the total credit, debit, and current values of the accounts
 in the form of pounds, shillings, and pence. The names for the pounds,
-shillings, and pence columns correspond to the input for \code{l},
-\code{s}, and \code{d}.
+shillings, and pence columns correspond to the input for \code{l}, \code{s},
+and \code{d}.
 }
 \description{
 Calculate the total credit, debit, and the current values in the form of
@@ -52,10 +52,10 @@ numbers. If the debits are greater, the current value will be returned
 as negative numbers.
 }
 \details{
-\code{deb_account_summary()} is similar to \code{\link{deb_account()}}, but
+\code{deb_account_summary()} is similar to \code{\link[=deb_account]{deb_account()}}, but
 it returns the information for all accounts in a transaction data frame
-instead of one. If you only want to see the current values for each account,
-see \code{\link{deb_current}}.
+instead of one. If you only want to see the current values for each
+account, see \code{\link[=deb_current]{deb_current()}}.
 
 \code{deb_account_summary()} is part of a family of functions meant to be used on
 data frames that contain transactions between accounts likely contained in

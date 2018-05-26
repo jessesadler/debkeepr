@@ -50,11 +50,10 @@ debits, the current value will be returned as positive numbers. If the
 debits are greater, the current value will be returned as negative numbers.
 }
 \details{
-\code{deb_open()} is similar to \code{\link{deb_current()}}, but it only
-returns current values for accounts that have a value that is not zero.
-If accounts that should be closed appear in the results with only a small
-fraction of a pence remaining, set then \code{round} argument to a lower
-decimal place.
+\code{deb_open()} is similar to \code{\link[=deb_current]{deb_current()}}, but it only returns current
+values for accounts that have a value that is not zero. If accounts that
+should be closed appear in the results with only a small fraction of a
+pence remaining, set then `round`` argument to a lower decimal place.
 
 \code{deb_open()} is part of a family of functions meant to be used on
 data frames that contain transactions between accounts likely contained in

@@ -47,11 +47,10 @@ shillings, and pence. This shows the total credit and debit remaining
 on the transactions data frame or account book.
 }
 \details{
-\code{deb_balance()} is based on \code{\link{deb_open()}}. The function
-adds the credits and debits of the accounts that remain open to calculate
-the capital remaining in the transactions data frame. The values for
-credit and debit should be the same, as each credit also has a
-corresponding debit.
+\code{deb_balance()} is based on \code{\link[=deb_open]{deb_open()}}. The function adds the credits
+and debits of the accounts that remain open to calculate the capital
+remaining in the transactions data frame. The values for credit and debit
+should be the same, as each credit also has a corresponding debit.
 
 \code{deb_balance()} is part of a family of functions meant to be used on
 data frames that contain transactions between accounts likely contained in

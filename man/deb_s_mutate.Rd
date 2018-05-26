@@ -24,8 +24,8 @@ the function. Default is s.}
 function. Default is d.}
 
 \item{suffix}{If the data frame already contains variables with the same
-names as \code{l_column}, \code{s_column}, or \code{d_column}, this
-suffix will be added to the new variables to distinguish them.}
+names as \code{l_column}, \code{s_column}, or \code{d_column}, this suffix will be
+added to the new variables to distinguish them.}
 
 \item{round}{round pence to specified number of decimal places.
 Default is 3. Set to 0 to return pence as whole numbers.}
@@ -35,10 +35,10 @@ Returns a data frame with three new variables of pounds, shillings,
 and pence.
 }
 \description{
-Uses \code{\link[dplyr]{mutate()}} to add equivalent pounds, shillings,
-and pence variables to a data frame that contains a decimalized shillings
-variable. Thus, the function converts decimalized shillings into the lsd
-system of pounds, shillings, and pence.
+Uses \code{\link[dplyr:mutate]{dplyr::mutate()}} to add equivalent pounds, shillings, and pence
+variables to a data frame that contains a decimalized shillings variable.
+Thus, the function converts decimalized shillings into the lsd system of
+pounds, shillings, and pence.
 }
 \examples{
 # Create equivalent pounds, shillings, and pence

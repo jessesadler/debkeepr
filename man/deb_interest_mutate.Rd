@@ -28,10 +28,9 @@ interest rate in the Low Countries at the end of the sixteenth century.}
 number of times that the interest should be added. A numeric vector
 of length 1. Default is 1.}
 
-\item{with_principal}{Logical (default \code{TRUE}: when \code{TRUE}
-the resulting pounds, shillings and pence will include the interest
-charged as well as the principal. When \code{FALSE} only the interest
-will be shown.}
+\item{with_principal}{Logical (default \code{TRUE}: when \code{TRUE} the resulting
+pounds, shillings and pence will include the interest charged as well
+as the principal. When \code{FALSE} only the interest will be shown.}
 
 \item{suffix}{Suffix added to the column names for the pounds,
 shillings, and pence columns representing the interest so that
@@ -47,7 +46,7 @@ Returns a data frame with three new variables of pounds, shillings,
 and pence representing the calculated interest.
 }
 \description{
-Uses \code{\link[dplyr]{mutate()}} to calculate the interest of pounds,
+Uses \code{\link[dplyr:mutate]{dplyr::mutate()}} to calculate the interest of pounds,
 shillings, and pence variables given an interest rate and a duration.
 The interest—with or without the principal included—is returned in the
 form of three new variables representing the calculated pounds, shillings
