@@ -8,8 +8,10 @@ deb_current(df, credit = credit, debit = debit, l = l, s = s, d = d,
   round = 3)
 }
 \arguments{
-\item{df}{A data frame that contains columns with pounds, shillings,
-and pence variables.}
+\item{df}{A data frame containing transactions between accounts that has
+values represented in the form of pounds, shillings, and pence variables.
+The data frame should have two variables for accounts (credit and debit)
+and variables for pounds, shillings, and pence.}
 
 \item{credit}{credit column: Unquoted name of the credit variable. This is
 the column from which the value of the transaction is from. Default
@@ -35,20 +37,22 @@ Default is 3. Set to 0 if you want pence to always be a whole number.}
 }
 \value{
 Returns a tibble with five columns and one row for each account
-present in the credit and/or debit variables representing the current
-value of the accounts in the form of pounds, shillings, and pence. The
-names for the pounds, shillings, and pence columns correspond to the
-input for \code{l}, \code{s}, \code{d}.
+present in the credit and/or debit variables of \code{df}. This
+represents the current value of the accounts in the form of pounds,
+shillings, and pence. The names for the pounds, shillings, and pence
+columns correspond to the input for \code{l}, \code{s}, and \code{d}.
 }
 \description{
 Calculate the current values in the form of pounds, shillings, and pence
-for all accounts in a data frame of financial transactions.
+for all accounts in \code{df}. If an account has more credits than debits,
+the current value will be returned as positive numbers. If the debits are
+greater, the current value will be returned as negative numbers.
 }
 \details{
-\code{deb_current()} is similar to \code{\link{deb_account_summary}}, but
-it only returns the current values for the accounts. If you want to see
-only the open accounts—only those accounts that have a current value
-greater than or less than zero—see \code{\link{deb_open}}.
+\code{deb_current()} is similar to \code{\link{deb_account_summary()}},
+but it only returns the current values for the accounts in \code{df}.
+To see only the open accounts—only those accounts that have a current
+value greater than or less than zero—see \code{\link{deb_open()}}.
 
 \code{deb_current()} is part of a family of functions meant to be used on
 data frames that contain transactions between accounts likely contained in
@@ -83,5 +87,6 @@ deb_current(trans)
 }
 \seealso{
 Other lsd account functions: \code{\link{deb_account_summary}},
-  \code{\link{deb_account}}, \code{\link{deb_open}}
+  \code{\link{deb_account}}, \code{\link{deb_balance}},
+  \code{\link{deb_open}}
 }

@@ -8,8 +8,10 @@ deb_account(df, account_id, credit = credit, debit = debit, l = l,
   s = s, d = d, round = 3)
 }
 \arguments{
-\item{df}{A data frame that contains columns with pounds, shillings,
-and pence variables.}
+\item{df}{A data frame containing transactions between accounts that has
+values represented in the form of pounds, shillings, and pence variables.
+The data frame should have two variables for accounts (credit and debit)
+and variables for pounds, shillings, and pence.}
 
 \item{account_id}{The id of the account to be used to calculate the credit,
 debit, and current values. The value for the account should be present in
@@ -42,14 +44,14 @@ Returns a tibble with three rows and four columns. The rows
 correspond to credit, debit, and current values in the form of
 pounds, shillings, and pence. The names for the pounds, shillings,
 and pence columns correspond to the input for \code{l}, \code{s},
-\code{d}.
+and \code{d}.
 }
 \description{
 Calculate the total credit, debit, and the current value of a given account
 in the form of pounds, shillings, and pence.
 }
 \details{
-\code{deb_account()} is similar to \code{\link{deb_account_summary}}, but
+\code{deb_account()} is similar to \code{\link{deb_account_summary()}}, but
 it only returns the information for one account instead of all accounts in
 the credit and/or debit variables of a transactions data frame.
 
@@ -86,5 +88,6 @@ deb_account(trans, account_id = "a")
 }
 \seealso{
 Other lsd account functions: \code{\link{deb_account_summary}},
-  \code{\link{deb_current}}, \code{\link{deb_open}}
+  \code{\link{deb_balance}}, \code{\link{deb_current}},
+  \code{\link{deb_open}}
 }

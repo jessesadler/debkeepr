@@ -5,7 +5,7 @@
 #' Calculate the total credit, debit, and the current value of a given account
 #' in the form of pounds, shillings, and pence.
 #'
-#' \code{deb_account()} is similar to \code{\link{deb_account_summary}}, but
+#' \code{deb_account()} is similar to \code{\link{deb_account_summary()}}, but
 #' it only returns the information for one account instead of all accounts in
 #' the credit and/or debit variables of a transactions data frame.
 #'
@@ -30,7 +30,10 @@
 #' adopted by Charlemagne and spread throughout Europe under different names.
 #'
 #' @family lsd account functions
-#'
+#' @param df A data frame containing transactions between accounts that has
+#'   values represented in the form of pounds, shillings, and pence variables.
+#'   The data frame should have two variables for accounts (credit and debit)
+#'   and variables for pounds, shillings, and pence.
 #' @inheritParams deb_sum
 #' @param account_id The id of the account to be used to calculate the credit,
 #'   debit, and current values. The value for the account should be present in
@@ -48,7 +51,7 @@
 #'   correspond to credit, debit, and current values in the form of
 #'   pounds, shillings, and pence. The names for the pounds, shillings,
 #'   and pence columns correspond to the input for \code{l}, \code{s},
-#'   \code{d}.
+#'   and \code{d}.
 #'
 #' @examples
 #' # Create tibble in format of a transactions data frame
@@ -116,10 +119,13 @@ deb_account <- function(df,
 #' Calculate credit, debit, and current values of accounts
 #'
 #' Calculate the total credit, debit, and the current values in the form of
-#' pounds, shillings, and pence for all accounts in a data frame of financial
-#' transactions.
+#' pounds, shillings, and pence for all accounts in \code{df}. Credits and
+#' debits are both returned as positive numbers. If an account has more
+#' credits than debits, the current value will be returned as positive
+#' numbers. If the debits are greater, the current value will be returned
+#' as negative numbers.
 #'
-#' \code{deb_account_summary()} is similar to \code{\link{deb_account}}, but
+#' \code{deb_account_summary()} is similar to \code{\link{deb_account()}}, but
 #' it returns the information for all accounts in a transaction data frame
 #' instead of one. If you only want to see the current values for each account,
 #' see \code{\link{deb_current}}.
@@ -149,11 +155,11 @@ deb_account <- function(df,
 #' @inheritParams deb_account
 #'
 #' @return Returns a tibble with five columns and three rows for each account
-#'   present in the credit and/or debit variables representing the total
-#'   credit, debit, and current values of the accounts in the form of
-#'   pounds, shillings, and pence. The names for the pounds, shillings,
-#'   and pence columns correspond to the input for \code{l}, \code{s},
-#'   \code{d}.
+#'   present in the credit and/or debit variables of \code{df}. This
+#'   represents the total credit, debit, and current values of the accounts
+#'   in the form of pounds, shillings, and pence. The names for the pounds,
+#'   shillings, and pence columns correspond to the input for \code{l},
+#'   \code{s}, and \code{d}.
 #'
 #' @examples
 #' # Create tibble in format of a transactions data frame
@@ -162,7 +168,7 @@ deb_account <- function(df,
 #'                         l = c(10, 10, 7, 9),
 #'                         s = c(15, 15, 11, 2),
 #'                         d = c(6, 6, 8, 11))
-#' # Current values of accounts present in trans
+#' # Credit, debit, and current values of accounts present in trans
 #' deb_account_summary(trans)
 #'
 #' @export
@@ -200,10 +206,11 @@ deb_account_summary <- function(df,
     dplyr::group_by(!! debit) %>%
     dplyr::summarise(
       relation = "debit",
-      denarii = -(round(deb_lsd_d(sum(!!l), sum(!!s), sum(!!d)), round))) %>%
+      denarii = round(deb_lsd_d(sum(!!l), sum(!!s), sum(!!d)), round)) %>%
     dplyr::rename(account_id = !! debit)
 
-  accounts_sum <- dplyr::bind_rows(credits, debits)
+  accounts_sum <- dplyr::mutate(debits, denarii = -denarii) %>%
+    dplyr::bind_rows(credits)
 
   current <- accounts_sum %>%
     dplyr::group_by(account_id) %>%
@@ -211,7 +218,7 @@ deb_account_summary <- function(df,
       relation = "current",
       denarii = sum(denarii))
 
-  dplyr::bind_rows(accounts_sum, current) %>%
+  dplyr::bind_rows(credits, debits, current) %>%
     deb_d_mutate(denarii, l_column = !! l, s_column = !! s, d_column = !! d) %>%
     dplyr::arrange(account_id) %>%
     dplyr::select(-denarii)
@@ -220,12 +227,14 @@ deb_account_summary <- function(df,
 #' Calculate the current values of accounts
 #'
 #' Calculate the current values in the form of pounds, shillings, and pence
-#' for all accounts in a data frame of financial transactions.
+#' for all accounts in \code{df}. If an account has more credits than debits,
+#' the current value will be returned as positive numbers. If the debits are
+#' greater, the current value will be returned as negative numbers.
 #'
-#' \code{deb_current()} is similar to \code{\link{deb_account_summary}}, but
-#' it only returns the current values for the accounts. If you want to see
-#' only the open accounts—only those accounts that have a current value
-#' greater than or less than zero—see \code{\link{deb_open}}.
+#' \code{deb_current()} is similar to \code{\link{deb_account_summary()}},
+#' but it only returns the current values for the accounts in \code{df}.
+#' To see only the open accounts—only those accounts that have a current
+#' value greater than or less than zero—see \code{\link{deb_open()}}.
 #'
 #' \code{deb_current()} is part of a family of functions meant to be used on
 #' data frames that contain transactions between accounts likely contained in
@@ -252,10 +261,10 @@ deb_account_summary <- function(df,
 #' @inheritParams deb_account
 #'
 #' @return Returns a tibble with five columns and one row for each account
-#'   present in the credit and/or debit variables representing the current
-#'   value of the accounts in the form of pounds, shillings, and pence. The
-#'   names for the pounds, shillings, and pence columns correspond to the
-#'   input for \code{l}, \code{s}, \code{d}.
+#'   present in the credit and/or debit variables of \code{df}. This
+#'   represents the current value of the accounts in the form of pounds,
+#'   shillings, and pence. The names for the pounds, shillings, and pence
+#'   columns correspond to the input for \code{l}, \code{s}, and \code{d}.
 #'
 #' @examples
 #' # Create tibble in format of a transactions data frame
@@ -296,14 +305,16 @@ deb_current <- function(df,
 #' Calculate the current values of open accounts
 #'
 #' Calculate the current values in the form of pounds, shillings, and pence
-#' for all accounts in a data frame of financial transactions and show only
-#' those accounts that are open.
+#' for all accounts in \code{df} and show only those accounts that have a
+#' positive or negative balance. If an account has more credits than
+#' debits, the current value will be returned as positive numbers. If the
+#' debits are greater, the current value will be returned as negative numbers.
 #'
-#' \code{deb_open()} is similar to \code{\link{deb_current}}, but it only
-#' returns current values for accounts that have a value that is not balanced,
-#' and thus not equal to zero. If accounts that should be closed appear in the
-#' results with only a small fraction of a pence remaining, set the
-#' \code{round} argument to a lower decimal place.
+#' \code{deb_open()} is similar to \code{\link{deb_current()}}, but it only
+#' returns current values for accounts that have a value that is not zero.
+#' If accounts that should be closed appear in the results with only a small
+#' fraction of a pence remaining, set then \code{round} argument to a lower
+#' decimal place.
 #'
 #' \code{deb_open()} is part of a family of functions meant to be used on
 #' data frames that contain transactions between accounts likely contained in
@@ -330,10 +341,10 @@ deb_current <- function(df,
 #' @inheritParams deb_account
 #'
 #' @return Returns a tibble with five columns and one row for each account
-#'   present in the credit and/or debit variables in which the current
-#'   value of pounds, shillings, and pence does not equal zero. The names
-#'   for the pounds, shillings, and pence columns correspond to the input
-#'   for \code{l}, \code{s}, \code{d}.
+#'   present in the credit and/or debit variables in \code{df} in which the
+#'   current value of pounds, shillings, and pence does not equal zero. The
+#'   names for the pounds, shillings, and pence columns correspond to the
+#'   input for \code{l}, \code{s}, and \code{d}.
 #'
 #' @examples
 #' # Create tibble in format of a transactions data frame
@@ -367,5 +378,104 @@ deb_open <- function(df,
               s = !! s,
               d = !! d,
               round = round) %>%
-    dplyr::filter(l + s/20 + d/240 != 0)
+    dplyr::filter(!!l + !!s/20 + !!d/240 != 0)
+}
+
+#' Calculate the balance of a transactions data frame
+#'
+#' Calculate the balance remaining on \code{df} in the form of pounds,
+#' shillings, and pence. This shows the total credit and debit remaining
+#' on the transactions data frame or account book.
+#'
+#' \code{deb_balance()} is based on \code{\link{deb_open()}}. The function
+#' adds the credits and debits of the accounts that remain open to calculate
+#' the capital remaining in the transactions data frame. The values for
+#' credit and debit should be the same, as each credit also has a
+#' corresponding debit.
+#'
+#' \code{deb_balance()} is part of a family of functions meant to be used on
+#' data frames that contain transactions between accounts likely contained in
+#' an account book. The data frame should possess a similar structure to a
+#' \href{https://www.jessesadler.com/post/network-analysis-with-r/#nodes-edges}{directed edge list}.
+#' In this context, credit and debit variables filled with the ids of the
+#' accounts act as the edges of the network. Following the
+#' \href{https://en.wikipedia.org/wiki/Debits_and_credits}{nomenclature of accounting},
+#' the credit variable represents the account from which a value goes out,
+#' while the debit variable represents the account that receives the value.
+#' Thus, from the credit account to the debit account.
+#'
+#' The value for the transactions should be in the non-decimal currency of
+#' pounds, shillings, and pence. These functions use the nomenclature of
+#' \href{https://en.wikipedia.org/wiki/£sd}{l, s, and d} to refer to pounds,
+#' shillings, and pence. This derives from the Latin terms for librae,
+#' solidi, and denarii. One solidus was equivalent to 12 denarii, and
+#' 240 denarii coins were made from on libra of silver. The nomenclature
+#' and values of 12 denarii to 1 solidus and 20 solidi to 1 libra was
+#' adopted by Charlemagne and spread throughout Europe under different names.
+#'
+#' @family lsd account functions
+#'
+#' @inheritParams deb_account
+#'
+#' @return Returns a tibble with two rows showing the credit and debit
+#'   remaining in \code{df} in the form of pounds, shillings, and pence.
+#'   The names for the pounds, shillings, and pence columns correspond to
+#'   the input for \code{l}, \code{s}, and \code{d}.
+#'
+#' @examples
+#' # Create tibble in format of a transactions data frame
+#' trans <- tibble::tibble(credit = c("a", "b", "a", "c"),
+#'                         debit = c("b", "a", "c", "a"),
+#'                         l = c(10, 10, 7, 9),
+#'                         s = c(15, 15, 11, 2),
+#'                         d = c(6, 6, 8, 11))
+#' # Credit and debit remaining on trans
+#' deb_balance(trans)
+#'
+#' @export
+
+deb_balance <- function(df,
+                        credit = credit,
+                        debit = debit,
+                        l = l,
+                        s = s,
+                        d = d,
+                        round = 3) {
+  credit <- rlang::enquo(credit)
+  debit <- rlang::enquo(debit)
+  l <- rlang::enquo(l)
+  s <- rlang::enquo(s)
+  d <- rlang::enquo(d)
+  # Column names used to mutate debit lsd to positive values
+  l_column <- rlang::quo_name(l)
+  s_column <- rlang::quo_name(s)
+  d_column <- rlang::quo_name(d)
+
+  open <- deb_open(df,
+                     credit = !! credit,
+                     debit = !! debit,
+                     l = !! l,
+                     s = !! s,
+                     d = !! d,
+                     round = round)
+  credit <- open %>%
+    dplyr::filter(!! l + !! s + !! d > 0) %>%
+    deb_sum(l = !! l,
+            s = !! s,
+            d = !! d,
+            round = round)
+
+  debit <- open %>%
+    dplyr::filter(!! l + !! s + !! d < 0) %>%
+    deb_sum(l = !! l,
+            s = !! s,
+            d = !! d,
+            round = round) %>%
+    # Make lsd positive
+    dplyr::mutate(!! l_column := -(!!l),
+                  !! s_column := -(!!s),
+                  !! d_column := -(!!d))
+
+  dplyr::bind_rows(credit, debit) %>%
+    tibble::add_column(relation = c("credit", "debit"), .before = 1)
 }

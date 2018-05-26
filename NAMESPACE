@@ -3,6 +3,7 @@
 export("%>%")
 export(deb_account)
 export(deb_account_summary)
+export(deb_balance)
 export(deb_current)
 export(deb_d_lsd)
 export(deb_d_mutate)

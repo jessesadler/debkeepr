@@ -8,8 +8,10 @@ deb_account_summary(df, credit = credit, debit = debit, l = l, s = s,
   d = d, round = 3)
 }
 \arguments{
-\item{df}{A data frame that contains columns with pounds, shillings,
-and pence variables.}
+\item{df}{A data frame containing transactions between accounts that has
+values represented in the form of pounds, shillings, and pence variables.
+The data frame should have two variables for accounts (credit and debit)
+and variables for pounds, shillings, and pence.}
 
 \item{credit}{credit column: Unquoted name of the credit variable. This is
 the column from which the value of the transaction is from. Default
@@ -35,19 +37,22 @@ Default is 3. Set to 0 if you want pence to always be a whole number.}
 }
 \value{
 Returns a tibble with five columns and three rows for each account
-present in the credit and/or debit variables representing the total
-credit, debit, and current values of the accounts in the form of
-pounds, shillings, and pence. The names for the pounds, shillings,
-and pence columns correspond to the input for \code{l}, \code{s},
-\code{d}.
+present in the credit and/or debit variables of \code{df}. This
+represents the total credit, debit, and current values of the accounts
+in the form of pounds, shillings, and pence. The names for the pounds,
+shillings, and pence columns correspond to the input for \code{l},
+\code{s}, and \code{d}.
 }
 \description{
 Calculate the total credit, debit, and the current values in the form of
-pounds, shillings, and pence for all accounts in a data frame of financial
-transactions.
+pounds, shillings, and pence for all accounts in \code{df}. Credits and
+debits are both returned as positive numbers. If an account has more
+credits than debits, the current value will be returned as positive
+numbers. If the debits are greater, the current value will be returned
+as negative numbers.
 }
 \details{
-\code{deb_account_summary()} is similar to \code{\link{deb_account}}, but
+\code{deb_account_summary()} is similar to \code{\link{deb_account()}}, but
 it returns the information for all accounts in a transaction data frame
 instead of one. If you only want to see the current values for each account,
 see \code{\link{deb_current}}.
@@ -79,11 +84,12 @@ trans <- tibble::tibble(credit = c("a", "b", "a", "c"),
                         l = c(10, 10, 7, 9),
                         s = c(15, 15, 11, 2),
                         d = c(6, 6, 8, 11))
-# Current values of accounts present in trans
+# Credit, debit, and current values of accounts present in trans
 deb_account_summary(trans)
 
 }
 \seealso{
 Other lsd account functions: \code{\link{deb_account}},
-  \code{\link{deb_current}}, \code{\link{deb_open}}
+  \code{\link{deb_balance}}, \code{\link{deb_current}},
+  \code{\link{deb_open}}
 }
