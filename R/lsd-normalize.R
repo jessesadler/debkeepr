@@ -117,7 +117,7 @@ deb_denarii <- function(l, s, d, round = 3) {
 #'   for pounds, shillings, and pence. If the input lsd value is negative, the
 #'   pounds, shillings, and pence values will all be negative. The number of
 #'   rows in the resulting tibble will be equal to the length of the input
-#'   vectors. If the length of `l`, `s`, and `d`. is greater than 1 and
+#'   vectors. If the length of `l`, `s`, and `d` is greater than 1 and
 #'   `vector = TRUE`, the result will be a list of named vectors of length
 #'   equal to the input vectors.
 #'

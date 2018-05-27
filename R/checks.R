@@ -101,3 +101,12 @@ interest_check <- function(interest, duration, with_principal) {
     stop(call. = FALSE, "with_principal must be logical, either TRUE or FALSE")
   }
 }
+
+arithmetic_check <- function(x) {
+  if (!is.numeric(x)) {
+    stop(call. = FALSE, "x must be a numeric vector")
+  }
+  if (length(x) != 1) {
+    stop(call. = FALSE, "x must be a numeric vector of length 1")
+  }
+}
