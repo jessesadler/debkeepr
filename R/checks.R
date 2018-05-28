@@ -60,19 +60,21 @@ lsd_column_check <- function(df,
 }
 
 # Check credit and debit columns
-credit_check <- function(df, credit, debit, edge_columns, account_id = NULL) {
+credit_check <- function(df, credit = NULL, debit = NULL, edge_columns, account_id = NULL) {
 
   if (all(edge_columns %in% names(df)) == FALSE) {
-    stop(call. = FALSE, "Column names for credit and debit must be provided if
-         the default names of credit and debit are not present in the data frame")
+    stop(call. = FALSE, "Column names for credit and/or debit must be provided if
+         the default names of credit and/or debit are not present in the data frame")
   }
 
-  credit <- rlang::eval_tidy(credit, df)
-  debit <- rlang::eval_tidy(debit, df)
+  if (!is.null(credit) & !is.null(debit)) {
+    credit <- rlang::eval_tidy(credit, df)
+    debit <- rlang::eval_tidy(debit, df)
+    if (class(credit) != class(debit)) {
+      stop(call. = FALSE, "credit and debit variables must be of the same class")
+      }
+    }
 
-  if (class(credit) != class(debit)) {
-    stop(call. = FALSE, "credit and debit variables must be of the same class")
-  }
   if (!is.null(account_id)) {
     id_present <- account_id %in% credit | account_id %in% debit
     if (id_present == FALSE) {

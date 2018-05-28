@@ -61,7 +61,7 @@
 #'                         s = c(15, 15, 11, 2),
 #'                         d = c(6, 6, 8, 11))
 #' # Credit, debit, and current value of account "a"
-#' deb_account(trans, account_id = "a")
+#' deb_account(trans, account_id = "a", credit, debit, l , s, d)
 #'
 #' @export
 
@@ -169,7 +169,7 @@ deb_account <- function(df,
 #'                         s = c(15, 15, 11, 2),
 #'                         d = c(6, 6, 8, 11))
 #' # Credit, debit, and current values of accounts present in trans
-#' deb_account_summary(trans)
+#' deb_account_summary(trans, credit, debit, l, s, d)
 #'
 #' @export
 
@@ -224,6 +224,166 @@ deb_account_summary <- function(df,
     dplyr::select(-denarii)
 }
 
+#' Calculate the total credit sent by accounts
+#'
+#' Calculate the total credit sent by accounts to other accounts in a
+#' transactions data frame (`df`) in the form of pounds, shillings, and
+#' pence.
+#'
+#' `deb_credit()` is similar to [deb_account_summary()], but it only returns
+#' the credit values for the accounts in `df`. See [deb_debit()] to return
+#' the debit totals for the accounts in `df`.
+#'
+#' `deb_credit()` is part of a family of functions meant to be used on
+#' data frames that contain transactions between accounts likely contained in
+#' an account book. The data frame should possess a similar structure to a
+#' [directed edge list](https://www.jessesadler.com/post/network-analysis-with-r/#nodes-edges).
+#' In this context, credit and debit variables filled with the ids of the
+#' accounts act as the edges of the network. Following the
+#' [nomenclature of accounting](https://en.wikipedia.org/wiki/Debits_and_credits),
+#' the credit variable represents the account from which a value goes out,
+#' while the debit variable represents the account that receives the value.
+#' Thus, from the credit account to the debit account.
+#'
+#' The value for the transactions should be in the non-decimal currency of
+#' pounds, shillings, and pence. These functions use the nomenclature of
+#' [l, s, and d](https://en.wikipedia.org/wiki/£sd) to refer to pounds,
+#' shillings, and pence. This derives from the Latin terms for librae,
+#' solidi, and denarii. One solidus was equivalent to 12 denarii, and
+#' 240 denarii coins were made from on libra of silver. The nomenclature
+#' and values of 12 denarii to 1 solidus and 20 solidi to 1 libra was
+#' adopted by Charlemagne and spread throughout Europe under different names.
+#'
+#' @family lsd account functions
+#'
+#' @inheritParams deb_account
+#'
+#' @return Returns a tibble with four columns and one row for each account
+#'   present in the transactions data frame (`df`). The values represent the
+#'   total value sent by each account to other accounts within `df` in the
+#'   form of pounds, shillings, and pence. The names for the pounds,
+#'   shillings, and pence columns correspond to the input for `l`, `s`,
+#'   and `d`.
+#'
+#' @examples
+#' # Create tibble in format of a transactions data frame
+#' trans <- tibble::tibble(credit = c("a", "b", "a", "c"),
+#'                         debit = c("b", "a", "c", "a"),
+#'                         l = c(10, 10, 7, 9),
+#'                         s = c(15, 15, 11, 2),
+#'                         d = c(6, 6, 8, 11))
+#' # Total credit of accounts present in trans
+#' deb_credit(trans, credit, l, s, d)
+#'
+#' @export
+
+deb_credit <- function(df,
+                       credit = credit,
+                       l = l,
+                       s = s,
+                       d = d,
+                       round = 3) {
+  credit <- rlang::enquo(credit)
+  l <- rlang::enquo(l)
+  s <- rlang::enquo(s)
+  d <- rlang::enquo(d)
+
+  # Checks
+  lsd_column_check(df, l, s, d,
+                   column_names = c(rlang::quo_name(l),
+                                    rlang::quo_name(s),
+                                    rlang::quo_name(d)))
+  edge_columns <- rlang::quo_name(credit)
+  credit_check(df, credit, debit = NULL, edge_columns)
+
+  dplyr::group_by(df, !! credit) %>%
+    dplyr::summarise(
+      l = deb_librae_sum(!!l, !!s, !!d),
+      s = deb_solidi_sum(!!l, !!s, !!d),
+      d = deb_denarii_sum(!!l, !!s, !!d, round)) %>%
+    dplyr::rename(account_id = credit)
+}
+
+#' Calculate the total debit received by accounts
+#'
+#' Calculate the total debit received by accounts from other accounts in
+#' a transactions data frame (`df`) in the form of pounds, shillings, and
+#' pence.
+#'
+#' `deb_debit()` is similar to [deb_account_summary()], but it only returns
+#' the debit totals for the accounts in `df`. See [deb_credit()] to return
+#' the credit totals for the accounts in `df`.
+#'
+#' `deb_debit()` is part of a family of functions meant to be used on
+#' data frames that contain transactions between accounts likely contained in
+#' an account book. The data frame should possess a similar structure to a
+#' [directed edge list](https://www.jessesadler.com/post/network-analysis-with-r/#nodes-edges).
+#' In this context, credit and debit variables filled with the ids of the
+#' accounts act as the edges of the network. Following the
+#' [nomenclature of accounting](https://en.wikipedia.org/wiki/Debits_and_credits),
+#' the credit variable represents the account from which a value goes out,
+#' while the debit variable represents the account that receives the value.
+#' Thus, from the credit account to the debit account.
+#'
+#' The value for the transactions should be in the non-decimal currency of
+#' pounds, shillings, and pence. These functions use the nomenclature of
+#' [l, s, and d](https://en.wikipedia.org/wiki/£sd) to refer to pounds,
+#' shillings, and pence. This derives from the Latin terms for librae,
+#' solidi, and denarii. One solidus was equivalent to 12 denarii, and
+#' 240 denarii coins were made from on libra of silver. The nomenclature
+#' and values of 12 denarii to 1 solidus and 20 solidi to 1 libra was
+#' adopted by Charlemagne and spread throughout Europe under different names.
+#'
+#' @family lsd account functions
+#'
+#' @inheritParams deb_account
+#'
+#' @return Returns a tibble with four columns and one row for each account
+#'   present in the transactions data frame (`df`). The values represent the
+#'   total value sent by each account to other accounts within `df` in the
+#'   form of pounds, shillings, and pence. The names for the pounds,
+#'   shillings, and pence columns correspond to the input for `l`, `s`,
+#'   and `d`.
+#'
+#' @examples
+#' # Create tibble in format of a transactions data frame
+#' trans <- tibble::tibble(credit = c("a", "b", "a", "c"),
+#'                         debit = c("b", "a", "c", "a"),
+#'                         l = c(10, 10, 7, 9),
+#'                         s = c(15, 15, 11, 2),
+#'                         d = c(6, 6, 8, 11))
+#' # Total debit of accounts present in trans
+#' deb_debit(trans, debit, l, s, d)
+#'
+#' @export
+
+deb_debit <- function(df,
+                      debit = debit,
+                      l = l,
+                      s = s,
+                      d = d,
+                      round = 3) {
+  debit <- rlang::enquo(debit)
+  l <- rlang::enquo(l)
+  s <- rlang::enquo(s)
+  d <- rlang::enquo(d)
+
+  # Checks
+  lsd_column_check(df, l, s, d,
+                   column_names = c(rlang::quo_name(l),
+                                    rlang::quo_name(s),
+                                    rlang::quo_name(d)))
+  edge_columns <- rlang::quo_name(debit)
+  credit_check(df, credit = NULL, debit, edge_columns)
+
+  dplyr::group_by(df, !! debit) %>%
+    dplyr::summarise(
+      l = deb_librae_sum(!!l, !!s, !!d),
+      s = deb_solidi_sum(!!l, !!s, !!d),
+      d = deb_denarii_sum(!!l, !!s, !!d, round)) %>%
+    dplyr::rename(account_id = debit)
+}
+
 #' Calculate the current values of accounts
 #'
 #' Calculate the current values in the form of pounds, shillings, and pence
@@ -274,7 +434,7 @@ deb_account_summary <- function(df,
 #'                         s = c(15, 15, 11, 2),
 #'                         d = c(6, 6, 8, 11))
 #' # Current values of accounts present in trans
-#' deb_current(trans)
+#' deb_current(trans, credit, debit, l, s, d)
 #'
 #' @export
 
@@ -353,7 +513,7 @@ deb_current <- function(df,
 #'                         s = c(15, 15, 11, 2),
 #'                         d = c(6, 6, 8, 11))
 #' # Current values of open accounts present in trans
-#' deb_open(trans)
+#' deb_open(trans, credit, debit, l, s, d)
 #'
 #' @export
 
@@ -428,7 +588,7 @@ deb_open <- function(df,
 #'                         s = c(15, 15, 11, 2),
 #'                         d = c(6, 6, 8, 11))
 #' # Credit and debit remaining on trans
-#' deb_balance(trans)
+#' deb_balance(trans, credit, debit, l, s, d)
 #'
 #' @export
 

@@ -80,11 +80,12 @@ trans <- tibble::tibble(credit = c("a", "b", "a", "c"),
                         s = c(15, 15, 11, 2),
                         d = c(6, 6, 8, 11))
 # Credit and debit remaining on trans
-deb_balance(trans)
+deb_balance(trans, credit, debit, l, s, d)
 
 }
 \seealso{
 Other lsd account functions: \code{\link{deb_account_summary}},
-  \code{\link{deb_account}}, \code{\link{deb_current}},
+  \code{\link{deb_account}}, \code{\link{deb_credit}},
+  \code{\link{deb_current}}, \code{\link{deb_debit}},
   \code{\link{deb_open}}
 }
