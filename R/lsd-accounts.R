@@ -84,9 +84,9 @@ deb_account <- function(df,
   d_column <- rlang::quo_name(d)
 
   # Checks
-  lsd_column_check(df, l, s, d, column_names = c(l_column, s_column, d_column))
   edge_columns <- c(rlang::quo_name(credit), rlang::quo_name(debit))
   credit_check(df, credit, debit, edge_columns, account_id)
+  lsd_column_check(df, l, s, d, column_names = c(l_column, s_column, d_column))
 
   credit <- df %>%
     dplyr::filter((!! credit) == account_id) %>%
@@ -224,11 +224,10 @@ deb_account_summary <- function(df,
     dplyr::select(-denarii)
 }
 
-#' Calculate the total credit sent by accounts
+#' Calculate the total credit of accounts
 #'
-#' Calculate the total credit sent by accounts to other accounts in a
-#' transactions data frame (`df`) in the form of pounds, shillings, and
-#' pence.
+#' Calculate the total credit of accounts in a transactions data frame (`df`)
+#' in the form of pounds, shillings, and pence.
 #'
 #' `deb_credit()` is similar to [deb_account_summary()], but it only returns
 #' the credit values for the accounts in `df`. See [deb_debit()] to return
@@ -289,12 +288,12 @@ deb_credit <- function(df,
   d <- rlang::enquo(d)
 
   # Checks
+  edge_columns <- rlang::quo_name(credit)
+  credit_check(df, credit, debit = NULL, edge_columns)
   lsd_column_check(df, l, s, d,
                    column_names = c(rlang::quo_name(l),
                                     rlang::quo_name(s),
                                     rlang::quo_name(d)))
-  edge_columns <- rlang::quo_name(credit)
-  credit_check(df, credit, debit = NULL, edge_columns)
 
   dplyr::group_by(df, !! credit) %>%
     dplyr::summarise(
@@ -304,11 +303,10 @@ deb_credit <- function(df,
     dplyr::rename(account_id = credit)
 }
 
-#' Calculate the total debit received by accounts
+#' Calculate the total debit of accounts
 #'
-#' Calculate the total debit received by accounts from other accounts in
-#' a transactions data frame (`df`) in the form of pounds, shillings, and
-#' pence.
+#' Calculate the total debit of accounts in a transactions data frame (`df`)
+#' in the form of pounds, shillings, and pence.
 #'
 #' `deb_debit()` is similar to [deb_account_summary()], but it only returns
 #' the debit totals for the accounts in `df`. See [deb_credit()] to return
@@ -369,12 +367,12 @@ deb_debit <- function(df,
   d <- rlang::enquo(d)
 
   # Checks
+  edge_columns <- rlang::quo_name(debit)
+  credit_check(df, credit = NULL, debit, edge_columns)
   lsd_column_check(df, l, s, d,
                    column_names = c(rlang::quo_name(l),
                                     rlang::quo_name(s),
                                     rlang::quo_name(d)))
-  edge_columns <- rlang::quo_name(debit)
-  credit_check(df, credit = NULL, debit, edge_columns)
 
   dplyr::group_by(df, !! debit) %>%
     dplyr::summarise(

@@ -81,4 +81,8 @@ test_that("decimalization works", {
 test_that("non-numeric is an error", {
   expect_error(deb_sum(example_error, l, s, d),
                "l must be a numeric variable")
+  expect_error(deb_sum(example_error, d, l, s),
+               "s must be a numeric variable")
+  expect_error(deb_sum(example_error, s, d, l),
+               "d must be a numeric variable")
 })

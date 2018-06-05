@@ -71,6 +71,9 @@ test_that("credit_check work", {
   expect_error(deb_account(example1, "a", credit = credit, debit = l),
                "credit and debit variables must be of the same class")
   expect_error(deb_account(example2, "a"),
+               "Column names for credit and/or debit must be provided if
+         the default names of credit and/or debit are not present in the data frame")
+  expect_error(deb_account(example2, "a", credit = from, debit = to),
                "Column names for l, s, and d must be provided if the
          default names of l, s, and d are not present in the data frame")
 })
@@ -83,6 +86,24 @@ test_that("deb_account_summary works", {
   # One set of deb_account_summary is equal to deb_account for that account
   expect_equal(deb_account_summary(example4, from, to, pounds, shillings, pence)[7:9, 2:5],
                deb_account(example4, "c", from, to, pounds, shillings, pence))
+})
+
+test_that("deb_credit works", {
+  expect_equal(nrow(deb_credit(example1)), 3)
+  expect_equal(deb_credit(example1),
+               summary_answer[c(1, 4, 7), c(1, 3, 4, 5)])
+  expect_error(deb_credit(example2),
+               "Column names for credit and/or debit must be provided if
+         the default names of credit and/or debit are not present in the data frame")
+})
+
+test_that("deb_debit works", {
+  expect_equal(nrow(deb_debit(example1)), 3)
+  expect_equal(deb_debit(example1),
+               summary_answer[c(2, 5, 8), c(1, 3, 4, 5)])
+  expect_error(deb_debit(example2),
+               "Column names for credit and/or debit must be provided if
+         the default names of credit and/or debit are not present in the data frame")
 })
 
 test_that("deb_current works", {

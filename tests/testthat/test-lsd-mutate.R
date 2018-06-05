@@ -9,6 +9,7 @@ test_that("separate librae functions work", {
 
   expect_equal(deb_librae_s(8), 0)
   expect_equal(deb_librae_s(8.325), 6)
+  expect_equal(deb_librae_s(8.5), 10)
   expect_equal(deb_librae_s(-8.325), -6)
 
   expect_equal(deb_librae_d(8), 0)
@@ -128,4 +129,11 @@ test_that("column names change with lsd_column_names function", {
   # Can change suffix
   expect_equal(names(deb_d_mutate(d_solution_tbl, pence, suffix = ".x")),
                c("pence", "l", "s", "d", "l.x", "s.x", "d.x"))
+})
+
+test_that("lsd_column_names check works", {
+  expect_error(deb_l_mutate(l_tbl, pounds, suffix = 7),
+               "suffix must be a character vector")
+  expect_error(deb_l_mutate(l_tbl, pounds, suffix = c("hello", "you")),
+               "suffix must be a character vector of length 1")
 })

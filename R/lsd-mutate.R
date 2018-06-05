@@ -109,36 +109,6 @@ deb_denarii_d <- function(d, round = 3) {
 
 ## Mutate l, s, and d, to separate l, s, and d ##
 
-# Avoid overwriting l, s, and d columns
-# and check that column names and suffix are character vectors of length 1
-lsd_column_names <- function(df, l, s, d, suffix) {
-
-  lsd_names <- c(rlang::quo_name(l), rlang::quo_name(s), rlang::quo_name(d))
-
-  if (!is.character(lsd_names)) {
-    stop(call. = FALSE, "Column names must be character vectors")
-  }
-
-  if (length(lsd_names) != 3) {
-    stop(call. = FALSE, "Column names must be character vectors of length 1")
-  }
-
-  if (!is.character(suffix)) {
-    stop(call. = FALSE, "suffix must be a character vector")
-  }
-
-  if (length(suffix) != 1) {
-    stop(call. = FALSE, "suffix must be a character vector of length 1")
-  }
-
-  if (any(lsd_names %in% names(df)) == TRUE) {
-    lsd_names[1] <- paste0(lsd_names[1], suffix)
-    lsd_names[2] <- paste0(lsd_names[2], suffix)
-    lsd_names[3] <- paste0(lsd_names[3], suffix)
-  }
-  lsd_names
-}
-
 #' Mutate decimal pounds into pounds, shillings, and pence variables
 #'
 #' Uses [dplyr::mutate()] to add equivalent pounds, shillings, and pence

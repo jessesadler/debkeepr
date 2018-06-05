@@ -155,6 +155,7 @@ deb_denarii <- function(l, s, d, round = 3) {
 #' @export
 
 deb_normalize <- function(l, s, d, round = 3, vector = FALSE) {
+
   lsd_check(l, s, d, round, vector)
   # Create values with different names so that l, s, and d are not overwritten
   librae <- deb_librae(l, s, d)

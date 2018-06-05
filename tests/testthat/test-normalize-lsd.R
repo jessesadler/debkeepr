@@ -46,6 +46,7 @@ test_that("librae with decimal", {
   expect_equal(deb_librae(-10.7, -38, -22), -12)
   expect_equal(deb_solidi(10.7, 38, 22), 13)
   expect_equal(deb_solidi(-10.7, -38, -22), -13)
+  expect_equal(deb_solidi(10.5, 38, 22), 9)
   expect_equal(deb_denarii(10.7, 38, 22), 10)
   expect_equal(deb_denarii(-10.7, -38, -22), -10)
 })

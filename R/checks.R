@@ -10,10 +10,6 @@ lsd_check <- function(l, s, d, round = 3, vector = FALSE) {
     stop(call. = FALSE, "vector must be logical, either TRUE or FALSE")
   }
 
-  if (is.null(l) | is.null(s) | is.null(d)) {
-    stop(call. = FALSE, "Values for l, s, and d must be provided. Maybe you need a 0.")
-  }
-
   if (!is.numeric(l)) {
     stop(call. = FALSE, "l must be numeric")
   }
@@ -57,6 +53,29 @@ lsd_column_check <- function(df,
   if (!is.numeric(d)) {
     stop(call. = FALSE, "d must be a numeric variable")
   }
+}
+
+# Avoid overwriting l, s, and d columns in mutate functions,
+# and check that column names and suffix are character vectors of length 1
+lsd_column_names <- function(df, l, s, d, suffix) {
+
+  # Turn l, s, and d column name arguments into character vector of length 3
+  lsd_names <- c(rlang::quo_name(l), rlang::quo_name(s), rlang::quo_name(d))
+
+  if (!is.character(suffix)) {
+    stop(call. = FALSE, "suffix must be a character vector")
+  }
+
+  if (length(suffix) != 1) {
+    stop(call. = FALSE, "suffix must be a character vector of length 1")
+  }
+
+  if (any(lsd_names %in% names(df)) == TRUE) {
+    lsd_names[1] <- paste0(lsd_names[1], suffix)
+    lsd_names[2] <- paste0(lsd_names[2], suffix)
+    lsd_names[3] <- paste0(lsd_names[3], suffix)
+  }
+  lsd_names
 }
 
 # Check credit and debit columns
