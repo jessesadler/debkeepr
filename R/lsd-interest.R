@@ -91,7 +91,8 @@ deb_interest <- function(l, s, d,
 #' example <- tibble::tibble(l = c(3, 10, 26, 12),
 #'                           s = c(10, 18, 11, 16),
 #'                           d = c(9, 11, 10, 5))
-#' deb_interest_mutate(example, l, s, d, duration = 5)
+#' deb_interest_mutate(example, l, s, d,
+#'                     duration = 5)
 #'
 #' # Calculate the interest without the principal
 #' example %>%
@@ -141,22 +142,42 @@ deb_interest_mutate <- function(df,
   s_column <- paste0(s_column, suffix)
   d_column <- paste0(d_column, suffix)
 
+  # Multiply interest by duration to get value by which
+  # to multiply l, s, and d
+  x <- interest * duration
+
   if (with_principal == TRUE) {
-    temp <- df %>%
-      dplyr::mutate(temp_principle_d = deb_lsd_d(!! l, !! s, !! d),
-                    temp_interest_d = temp_principle_d * interest * duration,
-                    !! l_column := deb_denarii_l(temp_principle_d + temp_interest_d),
-                    !! s_column := deb_denarii_s(temp_principle_d + temp_interest_d),
-                    !! d_column := deb_denarii_d(temp_principle_d + temp_interest_d, round))
+    lsd_mutate_columns(df,
+                       (!! l * x) + !! l,
+                       (!! s * x) + !! s,
+                       (!! d * x) + !! d,
+                       l_column, s_column, d_column,
+                       round = round)
   } else {
-    temp <- df %>%
-      dplyr::mutate(temp_principle_d = deb_lsd_d(!! l, !! s, !! d),
-                    temp_interest_d = temp_principle_d * interest * duration,
-                    !! l_column := deb_denarii_l(temp_interest_d),
-                    !! s_column := deb_denarii_s(temp_interest_d),
-                    !! d_column := deb_denarii_d(temp_interest_d, round))
+    lsd_mutate_columns(df,
+                       !! l * x,
+                       !! s * x,
+                       !! d * x,
+                       l_column, s_column, d_column,
+                       round = round)
   }
-  # Remove denarii columns
-  temp %>%
-    dplyr::select(-temp_principle_d, -temp_interest_d)
+}
+
+lsd_mutate_columns <- function(df,
+                               l, s, d,
+                               l_column, s_column, d_column,
+                               round = 3) {
+  l <- rlang::enquo(l)
+  s <- rlang::enquo(s)
+  d <- rlang::enquo(d)
+
+  dplyr::mutate(df,
+                temp_denarii = deb_lsd_d(!! l, !! s, !! d),
+                temp_l_column = deb_denarii_l(temp_denarii),
+                temp_s_column = deb_denarii_s(temp_denarii),
+                temp_d_column = deb_denarii_d(temp_denarii, round)) %>%
+    dplyr::select(-temp_denarii) %>%
+    dplyr::rename(!! l_column := temp_l_column,
+                  !! s_column := temp_s_column,
+                  !! d_column := temp_d_column)
 }
