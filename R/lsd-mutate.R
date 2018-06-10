@@ -157,7 +157,18 @@ deb_l_mutate <- function(df, librae,
                          d_column = d,
                          suffix = ".1",
                          round = 3) {
-  l <- rlang::enquo(librae)
+
+  librae <- rlang::enquo(librae)
+
+  # Check that librae exists in df
+  if (rlang::quo_name(librae) %in% names(df) == FALSE) {
+    stop(call. = FALSE, "librae column must exist the in df")
+  }
+
+  # Check that librae is numeric
+  if (!is.numeric(rlang::eval_tidy(librae, df))) {
+    stop(call. = FALSE, "librae must be numeric")
+  }
 
   # Column names: avoid overwriting l, s, and d columns
   lsd_names <- lsd_column_names(df,
@@ -167,9 +178,9 @@ deb_l_mutate <- function(df, librae,
                                 suffix)
 
   df %>%
-    dplyr::mutate(!! lsd_names[1] := deb_librae_l(!!l),
-                  !! lsd_names[2] := deb_librae_s(!!l),
-                  !! lsd_names[3] := deb_librae_d(!!l, round))
+    dplyr::mutate(!! lsd_names[1] := deb_librae_l(!! librae),
+                  !! lsd_names[2] := deb_librae_s(!! librae),
+                  !! lsd_names[3] := deb_librae_d(!! librae, round))
 }
 
 #' Mutate decimal shillings into pounds, shillings, and pence variables
@@ -210,7 +221,17 @@ deb_s_mutate <- function(df, solidi,
                          d_column = d,
                          suffix = ".1",
                          round = 3) {
-  s <- rlang::enquo(solidi)
+  solidi <- rlang::enquo(solidi)
+
+  # Check that solidi exists in df
+  if (rlang::quo_name(solidi) %in% names(df) == FALSE) {
+    stop(call. = FALSE, "solidi column must exist the in df")
+  }
+
+  # Check that solidi is numeric
+  if (!is.numeric(rlang::eval_tidy(solidi, df))) {
+    stop(call. = FALSE, "solidi must be numeric")
+  }
 
   # Column names: avoid overwriting l, s, and d columns
   lsd_names <- lsd_column_names(df,
@@ -220,9 +241,9 @@ deb_s_mutate <- function(df, solidi,
                                 suffix)
 
   df %>%
-    dplyr::mutate(!! lsd_names[1] := deb_solidi_l(!!s),
-                  !! lsd_names[2] := deb_solidi_s(!!s),
-                  !! lsd_names[3] := deb_solidi_d(!!s, round))
+    dplyr::mutate(!! lsd_names[1] := deb_solidi_l(!! solidi),
+                  !! lsd_names[2] := deb_solidi_s(!! solidi),
+                  !! lsd_names[3] := deb_solidi_d(!! solidi, round))
 }
 
 #' Mutate decimal pence into pounds, shillings, and pence variables
@@ -263,7 +284,17 @@ deb_d_mutate <- function(df, denarii,
                          d_column = d,
                          suffix = ".1",
                          round = 3) {
-  d <- rlang::enquo(denarii)
+  denarii <- rlang::enquo(denarii)
+
+  # Check that denarii exists in df
+  if (rlang::quo_name(denarii) %in% names(df) == FALSE) {
+    stop(call. = FALSE, "denarii column must exist the in df")
+  }
+
+  # Check that denarii is numeric
+  if (!is.numeric(rlang::eval_tidy(denarii, df))) {
+    stop(call. = FALSE, "denarii must be numeric")
+  }
 
   # Column names: avoid overwriting l, s, and d columns
   lsd_names <- lsd_column_names(df,
@@ -273,7 +304,7 @@ deb_d_mutate <- function(df, denarii,
                                 suffix)
 
   df %>%
-    dplyr::mutate(!! lsd_names[1] := deb_denarii_l(!!d),
-                  !! lsd_names[2] := deb_denarii_s(!!d),
-                  !! lsd_names[3] := deb_denarii_d(!!d, round))
+    dplyr::mutate(!! lsd_names[1] := deb_denarii_l(!! denarii),
+                  !! lsd_names[2] := deb_denarii_s(!! denarii),
+                  !! lsd_names[3] := deb_denarii_d(!! denarii, round))
 }

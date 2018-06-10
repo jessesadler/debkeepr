@@ -137,3 +137,23 @@ test_that("lsd_column_names check works", {
   expect_error(deb_l_mutate(l_tbl, pounds, suffix = c("hello", "you")),
                "suffix must be a character vector of length 1")
 })
+
+test_that("decimal column exists", {
+  expect_error(deb_l_mutate(l_tbl, librae = hello),
+               "librae column must exist the in df")
+  expect_error(deb_s_mutate(s_tbl, solidi = hello),
+               "solidi column must exist the in df")
+  expect_error(deb_d_mutate(d_tbl, denarii = hello),
+               "denarii column must exist the in df")
+})
+
+id_tbl <- add_column(l_tbl, id = letters[1:5])
+
+test_that("decimal column is numeric", {
+  expect_error(deb_l_mutate(id_tbl, librae = id),
+               "librae must be numeric")
+  expect_error(deb_s_mutate(id_tbl, solidi = id),
+               "solidi must be numeric")
+  expect_error(deb_d_mutate(id_tbl, denarii = id),
+               "denarii must be numeric")
+})
