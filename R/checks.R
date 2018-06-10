@@ -28,9 +28,11 @@ lsd_check <- function(l, s, d, round = 3, vector = FALSE) {
 }
 
 # Check l, s, and d values and column names
-lsd_column_check <- function(df,
-                             l, s, d,
-                             column_names = NULL) {
+lsd_column_check <- function(df, l, s, d) {
+
+  column_names <- c(rlang::quo_name(l),
+                    rlang::quo_name(s),
+                    rlang::quo_name(d))
 
   # Ensure that l, s, and d columns exist in the data frame
   if (all(column_names %in% names(df)) == FALSE) {

@@ -122,25 +122,13 @@ deb_interest_mutate <- function(df,
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)
-  # Column names
-  l_column <- rlang::quo_name(l)
-  s_column <- rlang::quo_name(s)
-  d_column <- rlang::quo_name(d)
 
-  lsd_column_check(df, l, s, d, column_names = c(l_column, s_column, d_column))
+  # Checks
+  lsd_column_check(df, l, s, d)
+  # Column names: avoid overwriting l, s, and d columns
+  lsd_names <- lsd_column_names(df, l, s, d, suffix)
+
   interest_check(interest, duration, with_principal)
-
-  if (!is.character(suffix)) {
-    stop(call. = FALSE, "suffix must be a character vector")
-  }
-  if (length(suffix) != 1) {
-    stop(call. = FALSE, "suffix must be a character vector of length 1")
-  }
-
-  # Create column names with suffix
-  l_column <- paste0(l_column, suffix)
-  s_column <- paste0(s_column, suffix)
-  d_column <- paste0(d_column, suffix)
 
   # Multiply interest by duration to get value by which
   # to multiply l, s, and d
@@ -151,14 +139,14 @@ deb_interest_mutate <- function(df,
                        (!! l * x) + !! l,
                        (!! s * x) + !! s,
                        (!! d * x) + !! d,
-                       l_column, s_column, d_column,
+                       lsd_names[1], lsd_names[2], lsd_names[3],
                        round = round)
   } else {
     lsd_mutate_columns(df,
                        !! l * x,
                        !! s * x,
                        !! d * x,
-                       l_column, s_column, d_column,
+                       lsd_names[1], lsd_names[2], lsd_names[3],
                        round = round)
   }
 }

@@ -77,12 +77,13 @@ deb_sum <- function(df, l = l, s = s, d = d, round = 3) {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)
+
+  lsd_column_check(df, l, s, d)
+
   # Column names
   l_column <- rlang::quo_name(l)
   s_column <- rlang::quo_name(s)
   d_column <- rlang::quo_name(d)
-
-  lsd_column_check(df, l, s, d, column_names = c(l_column, s_column, d_column))
 
   # Use temp columns and rename so that l, s, and d do not get overwritten
   df %>%

@@ -78,15 +78,16 @@ deb_account <- function(df,
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)
-  # Column names
-  l_column <- rlang::quo_name(l)
-  s_column <- rlang::quo_name(s)
-  d_column <- rlang::quo_name(d)
 
   # Checks
   edge_columns <- c(rlang::quo_name(credit), rlang::quo_name(debit))
   credit_check(df, credit, debit, edge_columns, account_id)
-  lsd_column_check(df, l, s, d, column_names = c(l_column, s_column, d_column))
+  lsd_column_check(df, l, s, d)
+
+  # Column names
+  l_column <- rlang::quo_name(l)
+  s_column <- rlang::quo_name(s)
+  d_column <- rlang::quo_name(d)
 
   credit <- df %>%
     dplyr::filter((!! credit) == account_id) %>%
@@ -188,10 +189,7 @@ deb_account_summary <- function(df,
   d <- rlang::enquo(d)
 
   # Checks
-  lsd_column_check(df, l, s, d,
-                   column_names = c(rlang::quo_name(l),
-                                    rlang::quo_name(s),
-                                    rlang::quo_name(d)))
+  lsd_column_check(df, l, s, d)
   edge_columns <- c(rlang::quo_name(credit), rlang::quo_name(debit))
   credit_check(df, credit, debit, edge_columns)
 
@@ -290,10 +288,7 @@ deb_credit <- function(df,
   # Checks
   edge_columns <- rlang::quo_name(credit)
   credit_check(df, credit, debit = NULL, edge_columns)
-  lsd_column_check(df, l, s, d,
-                   column_names = c(rlang::quo_name(l),
-                                    rlang::quo_name(s),
-                                    rlang::quo_name(d)))
+  lsd_column_check(df, l, s, d)
 
   dplyr::group_by(df, !! credit) %>%
     dplyr::summarise(
@@ -369,10 +364,7 @@ deb_debit <- function(df,
   # Checks
   edge_columns <- rlang::quo_name(debit)
   credit_check(df, credit = NULL, debit, edge_columns)
-  lsd_column_check(df, l, s, d,
-                   column_names = c(rlang::quo_name(l),
-                                    rlang::quo_name(s),
-                                    rlang::quo_name(d)))
+  lsd_column_check(df, l, s, d)
 
   dplyr::group_by(df, !! debit) %>%
     dplyr::summarise(
@@ -628,9 +620,9 @@ deb_balance <- function(df,
             d = !! d,
             round = round) %>%
     # Make lsd positive
-    dplyr::mutate(!! l_column := -(!!l),
-                  !! s_column := -(!!s),
-                  !! d_column := -(!!d))
+    dplyr::mutate(!! l_column := -(!! l),
+                  !! s_column := -(!! s),
+                  !! d_column := -(!! d))
 
   dplyr::bind_rows(credit, debit) %>%
     tibble::add_column(relation = c("credit", "debit"), .before = 1)
