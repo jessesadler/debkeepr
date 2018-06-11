@@ -139,33 +139,14 @@ deb_interest_mutate <- function(df,
                        (!! l * x) + !! l,
                        (!! s * x) + !! s,
                        (!! d * x) + !! d,
-                       lsd_names[1], lsd_names[2], lsd_names[3],
+                       lsd_names,
                        round = round)
   } else {
     lsd_mutate_columns(df,
                        !! l * x,
                        !! s * x,
                        !! d * x,
-                       lsd_names[1], lsd_names[2], lsd_names[3],
+                       lsd_names,
                        round = round)
   }
-}
-
-lsd_mutate_columns <- function(df,
-                               l, s, d,
-                               l_column, s_column, d_column,
-                               round = 3) {
-  l <- rlang::enquo(l)
-  s <- rlang::enquo(s)
-  d <- rlang::enquo(d)
-
-  dplyr::mutate(df,
-                temp_denarii = deb_lsd_d(!! l, !! s, !! d),
-                temp_l_column = deb_denarii_l(temp_denarii),
-                temp_s_column = deb_denarii_s(temp_denarii),
-                temp_d_column = deb_denarii_d(temp_denarii, round)) %>%
-    dplyr::select(-temp_denarii) %>%
-    dplyr::rename(!! l_column := temp_l_column,
-                  !! s_column := temp_s_column,
-                  !! d_column := temp_d_column)
 }
