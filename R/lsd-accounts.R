@@ -47,19 +47,20 @@
 #'   is debit. The debit column must be of the same class as the credit
 #'   column.
 #'
-#' @return Returns a tibble with three rows and four columns. The rows
+#' @return Returns a data frame with three rows and four columns. The rows
 #'   correspond to credit, debit, and current values in the form of
 #'   pounds, shillings, and pence. The names for the pounds, shillings,
 #'   and pence columns correspond to the input for `l`, `s`,
 #'   and `d`.
 #'
 #' @examples
-#' # Create tibble in format of a transactions data frame
-#' trans <- tibble::tibble(credit = c("a", "b", "a", "c"),
-#'                         debit = c("b", "a", "c", "a"),
-#'                         l = c(10, 10, 7, 9),
-#'                         s = c(15, 15, 11, 2),
-#'                         d = c(6, 6, 8, 11))
+#' # Create a transactions data frame
+#' trans <- data.frame(credit = c("a", "b", "a", "c"),
+#'                     debit = c("b", "a", "c", "a"),
+#'                     l = c(10, 10, 7, 9),
+#'                     s = c(15, 15, 11, 2),
+#'                     d = c(6, 6, 8, 11))
+#'
 #' # Credit, debit, and current value of account "a"
 #' deb_account(trans, account_id = "a", credit, debit, l , s, d)
 #'
@@ -163,12 +164,13 @@ deb_account <- function(df,
 #'   and `d`.
 #'
 #' @examples
-#' # Create tibble in format of a transactions data frame
-#' trans <- tibble::tibble(credit = c("a", "b", "a", "c"),
-#'                         debit = c("b", "a", "c", "a"),
-#'                         l = c(10, 10, 7, 9),
-#'                         s = c(15, 15, 11, 2),
-#'                         d = c(6, 6, 8, 11))
+#' # Create a transactions data frame
+#' trans <- data.frame(credit = c("a", "b", "a", "c"),
+#'                     debit = c("b", "a", "c", "a"),
+#'                     l = c(10, 10, 7, 9),
+#'                     s = c(15, 15, 11, 2),
+#'                     d = c(6, 6, 8, 11))
+#'
 #' # Credit, debit, and current values of accounts present in trans
 #' deb_account_summary(trans, credit, debit, l, s, d)
 #'
@@ -263,12 +265,13 @@ deb_account_summary <- function(df,
 #'   and `d`.
 #'
 #' @examples
-#' # Create tibble in format of a transactions data frame
-#' trans <- tibble::tibble(credit = c("a", "b", "a", "c"),
-#'                         debit = c("b", "a", "c", "a"),
-#'                         l = c(10, 10, 7, 9),
-#'                         s = c(15, 15, 11, 2),
-#'                         d = c(6, 6, 8, 11))
+#' # Create a transactions data frame
+#' trans <- data.frame(credit = c("a", "b", "a", "c"),
+#'                     debit = c("b", "a", "c", "a"),
+#'                     l = c(10, 10, 7, 9),
+#'                     s = c(15, 15, 11, 2),
+#'                     d = c(6, 6, 8, 11))
+#'
 #' # Total credit of accounts present in trans
 #' deb_credit(trans, credit, l, s, d)
 #'
@@ -339,12 +342,13 @@ deb_credit <- function(df,
 #'   and `d`.
 #'
 #' @examples
-#' # Create tibble in format of a transactions data frame
-#' trans <- tibble::tibble(credit = c("a", "b", "a", "c"),
-#'                         debit = c("b", "a", "c", "a"),
-#'                         l = c(10, 10, 7, 9),
-#'                         s = c(15, 15, 11, 2),
-#'                         d = c(6, 6, 8, 11))
+#' # Create a transactions data frame
+#' trans <- data.frame(credit = c("a", "b", "a", "c"),
+#'                     debit = c("b", "a", "c", "a"),
+#'                     l = c(10, 10, 7, 9),
+#'                     s = c(15, 15, 11, 2),
+#'                     d = c(6, 6, 8, 11))
+#'
 #' # Total debit of accounts present in trans
 #' deb_debit(trans, debit, l, s, d)
 #'
@@ -417,12 +421,13 @@ deb_debit <- function(df,
 #'   columns correspond to the input for `l`, `s`, and `d`.
 #'
 #' @examples
-#' # Create tibble in format of a transactions data frame
-#' trans <- tibble::tibble(credit = c("a", "b", "a", "c"),
-#'                         debit = c("b", "a", "c", "a"),
-#'                         l = c(10, 10, 7, 9),
-#'                         s = c(15, 15, 11, 2),
-#'                         d = c(6, 6, 8, 11))
+#' # Create a transactions data frame
+#' trans <- data.frame(credit = c("a", "b", "a", "c"),
+#'                     debit = c("b", "a", "c", "a"),
+#'                     l = c(10, 10, 7, 9),
+#'                     s = c(15, 15, 11, 2),
+#'                     d = c(6, 6, 8, 11))
+#'
 #' # Current values of accounts present in trans
 #' deb_current(trans, credit, debit, l, s, d)
 #'
@@ -496,12 +501,13 @@ deb_current <- function(df,
 #'   input for `l`, `s`, and `d`.
 #'
 #' @examples
-#' # Create tibble in format of a transactions data frame
-#' trans <- tibble::tibble(credit = c("a", "b", "a", "c"),
-#'                         debit = c("b", "a", "c", "a"),
-#'                         l = c(10, 10, 7, 9),
-#'                         s = c(15, 15, 11, 2),
-#'                         d = c(6, 6, 8, 11))
+#' # Create a transactions data frame
+#' trans <- data.frame(credit = c("a", "b", "a", "c"),
+#'                     debit = c("b", "a", "c", "a"),
+#'                     l = c(10, 10, 7, 9),
+#'                     s = c(15, 15, 11, 2),
+#'                     d = c(6, 6, 8, 11))
+#'
 #' # Current values of open accounts present in trans
 #' deb_open(trans, credit, debit, l, s, d)
 #'
@@ -571,12 +577,13 @@ deb_open <- function(df,
 #'   the input for `l`, `s`, and `d`.
 #'
 #' @examples
-#' # Create tibble in format of a transactions data frame
-#' trans <- tibble::tibble(credit = c("a", "b", "a", "c"),
-#'                         debit = c("b", "a", "c", "a"),
-#'                         l = c(10, 10, 7, 9),
-#'                         s = c(15, 15, 11, 2),
-#'                         d = c(6, 6, 8, 11))
+#' # Create a transactions data frame
+#' trans <- data.frame(credit = c("a", "b", "a", "c"),
+#'                     debit = c("b", "a", "c", "a"),
+#'                     l = c(10, 10, 7, 9),
+#'                     s = c(15, 15, 11, 2),
+#'                     d = c(6, 6, 8, 11))
+#'
 #' # Credit and debit remaining on trans
 #' deb_balance(trans, credit, debit, l, s, d)
 #'

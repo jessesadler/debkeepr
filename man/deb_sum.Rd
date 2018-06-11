@@ -41,10 +41,10 @@ summarize the pounds, shillings, and pence columns for each group.
 \examples{
 # Use on an ungrouped data frame adds all values of pounds, shillings,
 # and pence, resulting in a data frame with one row.
-example1 <- tibble::tibble(group = c(1, 2, 1, 2),
-                           l = c(3, 5, 6, 2),
-                           s = c(10, 18, 11, 16),
-                           d = c(9, 11, 10, 5))
+example1 <- data.frame(group = c(1, 2, 1, 2),
+                       l = c(3, 5, 6, 2),
+                       s = c(10, 18, 11, 16),
+                       d = c(9, 11, 10, 5))
 deb_sum(example1, l, s, d)
 
 # Use with group_by() summarizes the values of pounds, shillings,
@@ -61,10 +61,10 @@ example1 \%>\%
   deb_sum()
 
 # The function can take into account negative values
-example2 <- tibble::tibble(group = c(1, 2, 1, 2),
-                           l = c(-3, 5, -6, 2),
-                           s = c(-10, 18, -11, 16),
-                           d = c(-9, 11, -10, 5))
+example2 <- data.frame(group = c(1, 2, 1, 2),
+                       l = c(-3, 5, -6, 2),
+                       s = c(-10, 18, -11, 16),
+                       d = c(-9, 11, -10, 5))
 example2 \%>\%
   dplyr::group_by(group) \%>\%
   deb_sum(l, s, d)

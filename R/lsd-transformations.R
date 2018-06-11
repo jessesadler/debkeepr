@@ -24,9 +24,9 @@
 #' # Can be used with mutate() on a data frame with
 #' # pounds, shillings, and pence columns to create
 #' # a column for the equivalent decimalized pounds.
-#' df <- tibble::tibble(l = c(3, 5, 6, 2),
-#'                      s = c(10, 18, 11, 16),
-#'                      d = c(9, 11, 10, 5))
+#' df <- data.frame(l = c(3, 5, 6, 2),
+#'                  s = c(10, 18, 11, 16),
+#'                  d = c(9, 11, 10, 5))
 #'  dplyr::mutate(df, pounds = deb_lsd_l(l, s, d))
 #'
 #' @export
@@ -104,9 +104,9 @@ deb_l_lsd <- function(l, round = 3, vector = FALSE) {
 #' # Can be used with mutate() on a data frame with
 #' # pounds, shillings, and pence columns to create
 #' # a column for the equivalent decimalized shillings.
-#' df <- tibble::tibble(l = c(3, 5, 6, 2),
-#'                      s = c(10, 18, 11, 16),
-#'                      d = c(9, 11, 10, 5))
+#' df <- data.frame(l = c(3, 5, 6, 2),
+#'                  s = c(10, 18, 11, 16),
+#'                  d = c(9, 11, 10, 5))
 #' dplyr::mutate(df, shillings = deb_lsd_s(l, s, d))
 #'
 #' @export
@@ -185,9 +185,9 @@ deb_s_lsd <- function(s, round = 3, vector = FALSE) {
 #' # Can be used with mutate() on a data frame with
 #' # pounds, shillings, and pence columns to create
 #' # a column for the equivalent decimalized pence.
-#' df <- tibble::tibble(l = c(3, 5, 6, 2),
-#'                      s = c(10, 18, 11, 16),
-#'                      d = c(9, 11, 10, 5))
+#' df <- data.frame(l = c(3, 5, 6, 2),
+#'                  s = c(10, 18, 11, 16),
+#'                  d = c(9, 11, 10, 5))
 #'  dplyr::mutate(df, pence = deb_lsd_d(l, s, d))
 #'
 #' @export
