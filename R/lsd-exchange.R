@@ -2,10 +2,10 @@
 
 # Exchange rate by shillings
 # This is set up to go from sterling to vlaams
-deb_lsd_exchange <- function(l, s, d,
-                             rate_per_solidi,
-                             round = 3,
-                             vector = FALSE) {
+deb_exchange <- function(l, s, d,
+                         rate_per_solidi,
+                         round = 3,
+                         vector = FALSE) {
   deb_multiply(x = rate_per_solidi/20,
                l, s, d,
                round = round,
@@ -13,13 +13,13 @@ deb_lsd_exchange <- function(l, s, d,
 }
 
 
-deb_lsd_exchange_mutate <- function(df,
-                                    l = l,
-                                    s = s,
-                                    d = d,
-                                    rate_per_solidi,
-                                    suffix = ".1",
-                                    round = 3) {
+deb_exchange_mutate <- function(df,
+                                l = l,
+                                s = s,
+                                d = d,
+                                rate_per_solidi,
+                                suffix = ".exchange",
+                                round = 3) {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)

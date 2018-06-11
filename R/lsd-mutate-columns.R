@@ -4,6 +4,8 @@
 # that take l, s, and d columns, use mutate to modify the values
 # and create new l, s, and d columns.
 #
+# The calculations are done by changing to denarii
+#
 # This should be used with lsd_column_names function to create lsd_names
 
 lsd_mutate_columns <- function(df,

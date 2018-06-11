@@ -64,6 +64,30 @@ deb_multiply <- function(x, l, s, d, round = 3, vector = FALSE) {
   deb_normalize(l * x , s * x, d * x, round = round, vector = vector)
 }
 
+deb_multiply_mutate <- function(df,
+                                l = l,
+                                s = s,
+                                d = d,
+                                x,
+                                suffix = ".1",
+                                round = 3) {
+  l <- rlang::enquo(l)
+  s <- rlang::enquo(s)
+  d <- rlang::enquo(d)
+
+  # Checks
+  lsd_column_check(df, l, s, d)
+  # Column names: avoid overwriting l, s, and d columns
+  lsd_names <- lsd_column_names(df, l, s, d, suffix)
+
+  lsd_mutate_columns(df,
+                     !! l * x,
+                     !! s * x,
+                     !! d * x,
+                     lsd_names,
+                     round = round)
+}
+
 #' Division of pounds, shillings, and pence
 #'
 #' Divide pounds, shillings, and pence by a given divisor (`x`).
@@ -127,6 +151,30 @@ deb_divide <- function(x, l, s, d, round = 3, vector = FALSE) {
   arithmetic_check(x)
 
   deb_normalize(l / x , s / x, d / x, round = round, vector = vector)
+}
+
+deb_divide_mutate <- function(df,
+                              l = l,
+                              s = s,
+                              d = d,
+                              x,
+                              suffix = ".1",
+                              round = 3) {
+  l <- rlang::enquo(l)
+  s <- rlang::enquo(s)
+  d <- rlang::enquo(d)
+
+  # Checks
+  lsd_column_check(df, l, s, d)
+  # Column names: avoid overwriting l, s, and d columns
+  lsd_names <- lsd_column_names(df, l, s, d, suffix)
+
+  lsd_mutate_columns(df,
+                     !! l / x,
+                     !! s / x,
+                     !! d / x,
+                     lsd_names,
+                     round = round)
 }
 
 #' Subtract two values of pounds, shillings, and pence

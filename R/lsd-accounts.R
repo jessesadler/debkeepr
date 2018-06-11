@@ -108,7 +108,7 @@ deb_account <- function(df,
   credit_d <- deb_lsd_d(credit$l, credit$s, credit$d)
   debit_d <- deb_lsd_d(debit$l, debit$s, debit$d)
 
-  denarii <- (credit_d - debit_d)
+  denarii <- credit_d - debit_d
 
   current <- dplyr::bind_cols(relation = "current", deb_d_lsd(denarii, vector = FALSE, round))
 
