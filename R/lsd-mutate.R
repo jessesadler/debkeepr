@@ -138,7 +138,7 @@ deb_denarii_d <- function(d, round = 3) {
 #' @examples
 #' # Create equivalent pounds, shillings, and pence
 #' # variables from a decimalized pounds variable
-#' example <- tibble::tibble(pounds = c(8, 8.325, -8.325, 5.425, 4.5678))
+#' example <- data.frame(pounds = c(8, 8.325, -8.325, 5.425, 4.5678))
 #'
 #' deb_l_mutate(example, pounds)
 #'
@@ -202,7 +202,7 @@ deb_l_mutate <- function(df, librae,
 #' @examples
 #' # Create equivalent pounds, shillings, and pence
 #' # variables from a decimalized shillings variable
-#' example <- tibble::tibble(shillings = c(166, -166, 166.5, 236.35, -354.845))
+#' example <- data.frame(shillings = c(166, -166, 166.5, 236.35, -354.845))
 #'
 #' deb_s_mutate(example, shillings)
 #'
@@ -265,7 +265,7 @@ deb_s_mutate <- function(df, solidi,
 #' @examples
 #' # Create equivalent pounds, shillings, and pence
 #' # variables from a pence variable
-#' example <- tibble::tibble(pence = c(1998, -1998, 387, -5378))
+#' example <- data.frame(pence = c(1998, -1998, 387, -5378))
 #'
 #' deb_d_mutate(example, pence)
 #'

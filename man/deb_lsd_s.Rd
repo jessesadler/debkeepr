@@ -33,9 +33,9 @@ deb_lsd_s(l = c(8, 4, 6), s = c(87, 35, 64), d = c(46, 58, 96))
 # Can be used with mutate() on a data frame with
 # pounds, shillings, and pence columns to create
 # a column for the equivalent decimalized shillings.
-df <- tibble::tibble(l = c(3, 5, 6, 2),
-                     s = c(10, 18, 11, 16),
-                     d = c(9, 11, 10, 5))
+df <- data.frame(l = c(3, 5, 6, 2),
+                 s = c(10, 18, 11, 16),
+                 d = c(9, 11, 10, 5))
 dplyr::mutate(df, shillings = deb_lsd_s(l, s, d))
 
 }

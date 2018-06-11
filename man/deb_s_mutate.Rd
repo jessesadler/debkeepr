@@ -43,7 +43,7 @@ pounds, shillings, and pence.
 \examples{
 # Create equivalent pounds, shillings, and pence
 # variables from a decimalized shillings variable
-example <- tibble::tibble(shillings = c(166, -166, 166.5, 236.35, -354.845))
+example <- data.frame(shillings = c(166, -166, 166.5, 236.35, -354.845))
 
 deb_s_mutate(example, shillings)
 

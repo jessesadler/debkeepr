@@ -70,9 +70,9 @@ deb_normalize(l = c(8, 10), s = c(25, 86), d = c(34, 29))
 deb_normalize(l = c(8, 10), s = c(25, 86), d = c(34, 29), vector = TRUE)
 
 # This makes it possible to normalize a data frame of lsd values
-ex_tbl <- tibble::tibble(l = c(8, 10),
-                         s = c(25, 86),
-                         d = c(34, 29))
+ex_tbl <- data.frame(l = c(8, 10),
+                     s = c(25, 86),
+                     d = c(34, 29))
 deb_normalize(ex_tbl$l, ex_tbl$s, ex_tbl$d)
 
 }

@@ -59,9 +59,9 @@ for the interest. The function does not calculate compound interest.
 }
 \examples{
 # Calculate the interest of a set of values in a data frame
-example <- tibble::tibble(l = c(3, 10, 26, 12),
-                          s = c(10, 18, 11, 16),
-                          d = c(9, 11, 10, 5))
+example <- data.frame(l = c(3, 10, 26, 12),
+                      s = c(10, 18, 11, 16),
+                      d = c(9, 11, 10, 5))
 deb_interest_mutate(example, l, s, d,
                     duration = 5)
 

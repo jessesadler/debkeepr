@@ -75,12 +75,13 @@ and values of 12 denarii to 1 solidus and 20 solidi to 1 libra was
 adopted by Charlemagne and spread throughout Europe under different names.
 }
 \examples{
-# Create tibble in format of a transactions data frame
-trans <- tibble::tibble(credit = c("a", "b", "a", "c"),
-                        debit = c("b", "a", "c", "a"),
-                        l = c(10, 10, 7, 9),
-                        s = c(15, 15, 11, 2),
-                        d = c(6, 6, 8, 11))
+# Create a transactions data frame
+trans <- data.frame(credit = c("a", "b", "a", "c"),
+                    debit = c("b", "a", "c", "a"),
+                    l = c(10, 10, 7, 9),
+                    s = c(15, 15, 11, 2),
+                    d = c(6, 6, 8, 11))
+
 # Current values of accounts present in trans
 deb_current(trans, credit, debit, l, s, d)
 

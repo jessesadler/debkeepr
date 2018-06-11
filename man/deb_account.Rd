@@ -40,7 +40,7 @@ pence. Default is d.}
 Default is 3. Set to 0 if you want pence to always be a whole number.}
 }
 \value{
-Returns a tibble with three rows and four columns. The rows
+Returns a data frame with three rows and four columns. The rows
 correspond to credit, debit, and current values in the form of
 pounds, shillings, and pence. The names for the pounds, shillings,
 and pence columns correspond to the input for \code{l}, \code{s},
@@ -76,12 +76,13 @@ and values of 12 denarii to 1 solidus and 20 solidi to 1 libra was
 adopted by Charlemagne and spread throughout Europe under different names.
 }
 \examples{
-# Create tibble in format of a transactions data frame
-trans <- tibble::tibble(credit = c("a", "b", "a", "c"),
-                        debit = c("b", "a", "c", "a"),
-                        l = c(10, 10, 7, 9),
-                        s = c(15, 15, 11, 2),
-                        d = c(6, 6, 8, 11))
+# Create a transactions data frame
+trans <- data.frame(credit = c("a", "b", "a", "c"),
+                    debit = c("b", "a", "c", "a"),
+                    l = c(10, 10, 7, 9),
+                    s = c(15, 15, 11, 2),
+                    d = c(6, 6, 8, 11))
+
 # Credit, debit, and current value of account "a"
 deb_account(trans, account_id = "a", credit, debit, l , s, d)
 
