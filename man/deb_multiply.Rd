@@ -48,9 +48,12 @@ and values of 12 denarii to 1 solidus and 20 solidi to 1 libra was
 adopted by Charlemagne and spread throughout Europe under different names.
 }
 \examples{
-# Multiply pounds, shillings, and pence by a multiplier
+# Multiply pounds, shillings, and pence by 5
 deb_multiply(x = 5, l = 5, s = 15, d = 8)
 deb_multiply(x = 5, 5, 15, 8, vector = TRUE)
+
+# Calculate commission of 3\% of sales of £3095 17s 6d
+deb_multiply(x = 0.03, 3095, 17, 6)
 
 # The l, s, and d values do not have to be normalized
 deb_multiply(x = 8, 10, 38, 65)
@@ -77,6 +80,8 @@ deb_multiply(x = 6,
 
 }
 \seealso{
-Other lsd arithmetic functions: \code{\link{deb_divide}},
+Other lsd arithmetic functions: \code{\link{deb_divide_mutate}},
+  \code{\link{deb_divide}},
+  \code{\link{deb_multiply_mutate}},
   \code{\link{deb_subtract}}
 }

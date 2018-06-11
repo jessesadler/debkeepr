@@ -29,9 +29,12 @@
 #'   be a list of named vectors of length equal to the input vectors.
 #'
 #' @examples
-#' # Multiply pounds, shillings, and pence by a multiplier
+#' # Multiply pounds, shillings, and pence by 5
 #' deb_multiply(x = 5, l = 5, s = 15, d = 8)
 #' deb_multiply(x = 5, 5, 15, 8, vector = TRUE)
+#'
+#' # Calculate commission of 3% of sales of £3095 17s 6d
+#' deb_multiply(x = 0.03, 3095, 17, 6)
 #'
 #' # The l, s, and d values do not have to be normalized
 #' deb_multiply(x = 8, 10, 38, 65)
@@ -64,19 +67,63 @@ deb_multiply <- function(x, l, s, d, round = 3, vector = FALSE) {
   deb_normalize(l * x , s * x, d * x, round = round, vector = vector)
 }
 
+
+#' Multiplication of pounds, shillings, and pence in a data frame
+#'
+#' Uses [dplyr::mutate()] to multiply pounds, shillings, and pence by a given
+#' multiplier (`x`). The value is returned in the form of three new variables
+#' representing the calculated pounds, shillings and pence.
+#'
+#' @family lsd arithmetic functions
+#'
+#' @inheritParams deb_interest_mutate
+#' @inheritParams deb_multiply
+#' @param suffix Suffix added to the column names for the pounds, shillings, and
+#'   pence columns representing the multiplied values so that they are
+#'   distinguished from the original pounds, shillings, and pence columns.
+#'   Default is ".1". Should be a character vector of length 1.
+#'
+#' @return Returns a data frame with three new variables of pounds, shillings,
+#'   and pence representing the multiplied values.
+#'
+#' @examples
+#' # Multiply a data frame of values by 5
+#' example <- data.frame(l = c(35, 10, 26, 12),
+#'                       s = c(10, 18, 11, 16),
+#'                       d = c(9, 11, 10, 5))
+#' deb_multiply_mutate(example, x = 5, l, s, d)
+#'
+#' # Change the suffix added to the new variables
+#' deb_multiply_mutate(example, x = 5, l, s, d,
+#'                     suffix = ".x5")
+#'
+#' # Replace the existing pounds, shillings, and pence
+#' # with multiplied values
+#' deb_multiply_mutate(example, x = 5, l, s, d,
+#'                     replace = TRUE)
+#'
+#' @export
+
 deb_multiply_mutate <- function(df,
                                 l = l,
                                 s = s,
                                 d = d,
                                 x,
                                 suffix = ".1",
-                                round = 3) {
+                                round = 3,
+                                replace = FALSE) {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)
 
   # Checks
+  arithmetic_check(x)
   lsd_column_check(df, l, s, d)
+
+  if (replace == TRUE) {
+    suffix <- ""
+  }
+
   # Column names: avoid overwriting l, s, and d columns
   lsd_names <- lsd_column_names(df, l, s, d, suffix)
 
@@ -153,19 +200,63 @@ deb_divide <- function(x, l, s, d, round = 3, vector = FALSE) {
   deb_normalize(l / x , s / x, d / x, round = round, vector = vector)
 }
 
+
+#' Division of pounds, shillings, and pence in a data frame
+#'
+#' Uses [dplyr::mutate()] to divide pounds, shillings, and pence by a given
+#' divisor (`x`). The value is returned in the form of three new variables
+#' representing the calculated pounds, shillings and pence.
+#'
+#' @family lsd arithmetic functions
+#'
+#' @inheritParams deb_interest_mutate
+#' @inheritParams deb_divide
+#' @param suffix Suffix added to the column names for the pounds, shillings, and
+#'   pence columns representing the divided values so that they are
+#'   distinguished from the original pounds, shillings, and pence columns.
+#'   Default is ".1". Should be a character vector of length 1.
+#'
+#' @return Returns a data frame with three new variables of pounds, shillings,
+#'   and pence representing the divided values.
+#'
+#' @examples
+#' # Divide a data frame of values by 5
+#' example <- data.frame(l = c(356, 10, 26, 12),
+#'                       s = c(100, 18, 11, 16),
+#'                       d = c(98, 11, 10, 5))
+#' deb_divide_mutate(example, x = 5, l, s, d)
+#'
+#' # Change the suffix added to the new variables
+#' deb_divide_mutate(example, x = 5, l, s, d,
+#'                   suffix = ".div5")
+#'
+#' # Replace the existing pounds, shillings, and pence
+#' # with divided values
+#' deb_divide_mutate(example, x = 5, l, s, d,
+#'                   replace = TRUE)
+#'
+#' @export
+
 deb_divide_mutate <- function(df,
                               l = l,
                               s = s,
                               d = d,
                               x,
                               suffix = ".1",
-                              round = 3) {
+                              round = 3,
+                              replace = FALSE) {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)
 
   # Checks
+  arithmetic_check(x)
   lsd_column_check(df, l, s, d)
+
+  if (replace == TRUE) {
+    suffix <- ""
+  }
+
   # Column names: avoid overwriting l, s, and d columns
   lsd_names <- lsd_column_names(df, l, s, d, suffix)
 

@@ -133,3 +133,13 @@ arithmetic_check <- function(x) {
     stop(call. = FALSE, "x must be a numeric vector of length 1")
   }
 }
+
+exchange_rate_check <- function(x) {
+  if (!is.numeric(x)) {
+    stop(call. = FALSE, "rate_per_solidi must be numeric")
+  }
+
+  if (length(x) != 1) {
+    stop(call. = FALSE, "rate_per_solidi must be a numeric vector of length 1")
+  }
+}

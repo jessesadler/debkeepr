@@ -78,6 +78,7 @@ deb_divide(x = 6,
 
 }
 \seealso{
-Other lsd arithmetic functions: \code{\link{deb_multiply}},
-  \code{\link{deb_subtract}}
+Other lsd arithmetic functions: \code{\link{deb_divide_mutate}},
+  \code{\link{deb_multiply_mutate}},
+  \code{\link{deb_multiply}}, \code{\link{deb_subtract}}
 }

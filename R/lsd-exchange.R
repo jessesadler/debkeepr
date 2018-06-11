@@ -1,17 +1,99 @@
 ## lsd conversions ##
 
-# Exchange rate by shillings
-# This is set up to go from sterling to vlaams
+#' Convert between pounds, shillings and pence currencies
+#'
+#' Convert between different currencies that are in the form of pounds,
+#' shillings, and pence given an exchange rate calculated on the basis of
+#' shillings.
+#'
+#' `deb_exchange()` is a wrapper around [deb_multiply()].
+#'
+#' @inheritParams deb_normalize
+#' @param rate_per_solidi The exchange rate. This follows the common practice
+#'   of calculating the exchange rate between different currencies in terms
+#'   of shillings. Thus, in terms of a given number over 20. A numeric vector
+#'   of length 1.
+#'
+#' @return Returns either a tibble with columns for the pounds, shillings, and
+#'   pence values labeled as l, s, and d or a named numeric vector with values
+#'   for pounds, shillings, and pence. The number of rows in the resulting
+#'   tibble will be equal to the length of the input vectors. If the length of
+#'   `l`, `s`, and `d` is greater than 1 and `vector = TRUE`, the result will
+#'   be a list of named vectors of length equal to the input vectors.
+#'
+#' @examples
+#' # Exchange at the rate of 31 shillings
+#' deb_exchange(850, 16, 5, rate_per_solidi = 31)
+#' deb_exchange(850, 16, 5, rate_per_solidi = 31, vector = TRUE)
+#'
+#' # If the exchange rate is in shillings and pence, you can either
+#' # decimalize the shillings or add the pence and divide by 12 in
+#' # the rate_per_solidi argument. If the decimalized shillings has
+#' # a repeating decimal, the latter approach is preferable.
+#'
+#' # Exchange at the rate of 31 shillings 4 pence
+#' deb_exchange(850, 16, 5, rate_per_solidi = 31.3333)
+#' deb_exchange(850, 16, 5, rate_per_solidi = 31 + 4/12)
+#'
+#' @export
+
 deb_exchange <- function(l, s, d,
                          rate_per_solidi,
                          round = 3,
                          vector = FALSE) {
+  # Check exchange rate
+  exchange_rate_check(rate_per_solidi)
+
   deb_multiply(x = rate_per_solidi/20,
                l, s, d,
                round = round,
                vector = vector)
 }
 
+#' Convert between pounds, shillings and pence currencies in a data frame
+#'
+#' Uses [dplyr::mutate()] to convert between different currencies that are in
+#' the form of pounds, shillings, and pence variables in a data frame given
+#' an exchange rate calculated on the basis of shillings. The converted value
+#' is returned in the form of three new variables representing the calculated
+#' pounds, shillings and pence for the interest.
+#'
+#' @inheritParams deb_interest_mutate
+#' @inheritParams deb_exchange
+#' @param suffix Suffix added to the column names for the pounds, shillings, and pence
+#'   columns representing the converted currency so that they are distinguished
+#'   from the pounds, shillings, and pence columns of the original currency.
+#'   Default is ".exchange". Should be a character vector of length 1.
+#'
+#' @return Returns a data frame with three new variables of pounds, shillings,
+#'   and pence representing the converted currency.
+#'
+#' @examples
+#' # Exchange rate of 31 shillings
+#' example <- data.frame(l = c(35, 10, 26, 12),
+#'                       s = c(10, 18, 11, 16),
+#'                       d = c(9, 11, 10, 5))
+#' deb_exchange_mutate(example, l, s, d,
+#'                     rate_per_solidi = 31)
+#'
+#' # If the exchange rate is in shillings and pence, you can either
+#' # decimalize the shillings or add the pence and divide by 12 in
+#' # the rate_per_solidi argument. If the decimalized shillings has
+#' # a repeating decimal, the latter approach is preferable.
+#'
+#' # Exchange at the rate of 31 shillings 4 pence
+#' deb_exchange_mutate(example, l, s, d,
+#'                     rate_per_solidi = 31.3333)
+#' deb_exchange_mutate(example, l, s, d,
+#'                     rate_per_solidi = 31 + 4/12)
+#'
+#' # Replace the existing pounds, shillings, and pence
+#' # with the converted values through replace argument
+#' deb_exchange_mutate(example, l, s, d,
+#'                     rate_per_solidi = 31,
+#'                     replace = TRUE)
+#'
+#' @export
 
 deb_exchange_mutate <- function(df,
                                 l = l,
@@ -19,13 +101,20 @@ deb_exchange_mutate <- function(df,
                                 d = d,
                                 rate_per_solidi,
                                 suffix = ".exchange",
-                                round = 3) {
+                                round = 3,
+                                replace = FALSE) {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)
 
   # Checks
+  exchange_rate_check(rate_per_solidi)
   lsd_column_check(df, l, s, d)
+
+  if (replace == TRUE) {
+    suffix <- ""
+  }
+
   # Column names: avoid overwriting l, s, and d columns
   lsd_names <- lsd_column_names(df, l, s, d, suffix)
 

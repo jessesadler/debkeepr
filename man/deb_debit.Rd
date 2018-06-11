@@ -2,7 +2,7 @@
 % Please edit documentation in R/lsd-accounts.R
 \name{deb_debit}
 \alias{deb_debit}
-\title{Calculate the total debit received by accounts}
+\title{Calculate the total debit of accounts}
 \usage{
 deb_debit(df, debit = debit, l = l, s = s, d = d, round = 3)
 }
@@ -26,7 +26,7 @@ to shillings. Default is s.}
 \item{d}{Pence column: Unquoted name of numeric variable corresponding to
 pence. Default is d.}
 
-\item{round}{round pence to specified number of decimal places.
+\item{round}{Round pence to specified number of decimal places.
 Default is 3. Set to 0 if you want pence to always be a whole number.}
 }
 \value{
@@ -38,9 +38,8 @@ shillings, and pence columns correspond to the input for \code{l}, \code{s},
 and \code{d}.
 }
 \description{
-Calculate the total debit received by accounts from other accounts in
-a transactions data frame (\code{df}) in the form of pounds, shillings, and
-pence.
+Calculate the total debit of accounts in a transactions data frame (\code{df})
+in the form of pounds, shillings, and pence.
 }
 \details{
 \code{deb_debit()} is similar to \code{\link[=deb_account_summary]{deb_account_summary()}}, but it only returns

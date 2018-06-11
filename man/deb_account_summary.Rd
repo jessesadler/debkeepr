@@ -32,7 +32,7 @@ to shillings. Default is s.}
 \item{d}{Pence column: Unquoted name of numeric variable corresponding to
 pence. Default is d.}
 
-\item{round}{round pence to specified number of decimal places.
+\item{round}{Round pence to specified number of decimal places.
 Default is 3. Set to 0 if you want pence to always be a whole number.}
 }
 \value{

@@ -66,14 +66,13 @@ deb_interest <- function(l, s, d,
   }
 }
 
-#' Calculate the interest of pounds, shillings, and pence
+#' Calculate the interest of pounds, shillings, and pence in a data frame
 #'
-#' Uses [dplyr::mutate()] to calculate the interest of pounds,
-#' shillings, and pence variables given an interest rate and a duration.
-#' The interest—with or without the principal included—is returned in the
-#' form of three new variables representing the calculated pounds, shillings
-#' and pence for the interest. The function does not calculate
-#' compound interest.
+#' Uses [dplyr::mutate()] to calculate the interest of pounds, shillings, and
+#' pence variables in a data frame given an interest rate and a duration. The
+#' interest—with or without the principal included—is returned in the form of
+#' three new variables representing the calculated pounds, shillings and pence
+#' for the interest. The function does not calculate compound interest.
 #'
 #' @inheritParams deb_sum
 #' @inheritParams deb_interest
@@ -82,6 +81,9 @@ deb_interest <- function(l, s, d,
 #'   they are distinguished from the pounds, shillings, and pence
 #'   columns of the principal used to make the calculation. Default is
 #'   ".interest". Should be a character vector of length 1.
+#' @param replace Logical (default `FALSE`): when `TRUE` the new pounds,
+#'   shillings, and pence values will replace the original ones. This is
+#'   equivalent to setting `suffix = ""`.
 #'
 #' @return Returns a data frame with three new variables of pounds, shillings,
 #'   and pence representing the calculated interest.
@@ -108,6 +110,12 @@ deb_interest <- function(l, s, d,
 #'                     suffix = "_5years",
 #'                     round = 0)
 #'
+#' # Replace the existing pounds, shillings, and pence
+#' # with the interest values through replace argument
+#' deb_interest_mutate(example, l, s, d,
+#'                     duration = 5,
+#'                     replace = TRUE)
+#'
 #' @export
 
 deb_interest_mutate <- function(df,
@@ -118,13 +126,19 @@ deb_interest_mutate <- function(df,
                                 duration = 1,
                                 with_principal = TRUE,
                                 suffix = ".interest",
-                                round = 3) {
+                                round = 3,
+                                replace = FALSE) {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)
 
   # Checks
   lsd_column_check(df, l, s, d)
+
+  if (replace == TRUE) {
+    suffix <- ""
+  }
+
   # Column names: avoid overwriting l, s, and d columns
   lsd_names <- lsd_column_names(df, l, s, d, suffix)
 

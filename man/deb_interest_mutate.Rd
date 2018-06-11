@@ -2,10 +2,11 @@
 % Please edit documentation in R/lsd-interest.R
 \name{deb_interest_mutate}
 \alias{deb_interest_mutate}
-\title{Calculate the interest of pounds, shillings, and pence}
+\title{Calculate the interest of pounds, shillings, and pence in a data frame}
 \usage{
 deb_interest_mutate(df, l = l, s = s, d = d, interest = 0.0625,
-  duration = 1, with_principal = TRUE, suffix = ".interest", round = 3)
+  duration = 1, with_principal = TRUE, suffix = ".interest", round = 3,
+  replace = FALSE)
 }
 \arguments{
 \item{df}{A data frame that contains columns with pounds, shillings,
@@ -38,27 +39,31 @@ they are distinguished from the pounds, shillings, and pence
 columns of the principal used to make the calculation. Default is
 ".interest". Should be a character vector of length 1.}
 
-\item{round}{round pence to specified number of decimal places.
+\item{round}{Round pence to specified number of decimal places.
 Default is 3. Set to 0 if you want pence to always be a whole number.}
+
+\item{replace}{Logical (default \code{FALSE}): when \code{TRUE} the new pounds,
+shillings, and pence values will replace the original ones. This is
+equivalent to setting \code{suffix = ""}.}
 }
 \value{
 Returns a data frame with three new variables of pounds, shillings,
 and pence representing the calculated interest.
 }
 \description{
-Uses \code{\link[dplyr:mutate]{dplyr::mutate()}} to calculate the interest of pounds,
-shillings, and pence variables given an interest rate and a duration.
-The interest—with or without the principal included—is returned in the
-form of three new variables representing the calculated pounds, shillings
-and pence for the interest. The function does not calculate
-compound interest.
+Uses \code{\link[dplyr:mutate]{dplyr::mutate()}} to calculate the interest of pounds, shillings, and
+pence variables in a data frame given an interest rate and a duration. The
+interest—with or without the principal included—is returned in the form of
+three new variables representing the calculated pounds, shillings and pence
+for the interest. The function does not calculate compound interest.
 }
 \examples{
 # Calculate the interest of a set of values in a data frame
 example <- tibble::tibble(l = c(3, 10, 26, 12),
                           s = c(10, 18, 11, 16),
                           d = c(9, 11, 10, 5))
-deb_interest_mutate(example, l, s, d, duration = 5)
+deb_interest_mutate(example, l, s, d,
+                    duration = 5)
 
 # Calculate the interest without the principal
 example \%>\%
@@ -73,5 +78,11 @@ deb_interest_mutate(example,
                     duration = 5,
                     suffix = "_5years",
                     round = 0)
+
+# Replace the existing pounds, shillings, and pence
+# with the interest values through replace argument
+deb_interest_mutate(example, l, s, d,
+                    duration = 5,
+                    replace = TRUE)
 
 }

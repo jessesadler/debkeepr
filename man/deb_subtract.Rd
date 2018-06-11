@@ -75,6 +75,8 @@ deb_subtract(lsd1 = list(c(56, 8, 5), c(27, 12, 4)),
 
 }
 \seealso{
-Other lsd arithmetic functions: \code{\link{deb_divide}},
+Other lsd arithmetic functions: \code{\link{deb_divide_mutate}},
+  \code{\link{deb_divide}},
+  \code{\link{deb_multiply_mutate}},
   \code{\link{deb_multiply}}
 }

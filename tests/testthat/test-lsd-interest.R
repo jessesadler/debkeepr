@@ -66,13 +66,19 @@ test_that("deb_interest_mutate works", {
                tibble::tibble(l = 10, s = 14, d = 5,
                               l.interest = 11, s.interest = 7, d.interest = 10))
   expect_equal(ncol(deb_interest_mutate(example1)), 6)
+  expect_equal(nrow(deb_interest_mutate(example2, l = pounds, s = shillings, d = pence)), 4)
+})
+
+test_that("naming for deb_interest_mutate works", {
   expect_equal(names(deb_interest_mutate(example1)),
-                     c("l", "s", "d", "l.interest", "s.interest", "d.interest"))
+               c("l", "s", "d", "l.interest", "s.interest", "d.interest"))
   expect_equal(names(deb_interest_mutate(example1, suffix = "_x")),
                c("l", "s", "d", "l_x", "s_x", "d_x"))
-  expect_equal(nrow(deb_interest_mutate(example2, l = pounds, s = shillings, d = pence)), 4)
   expect_equal(names(deb_interest_mutate(example2, l = pounds, s = shillings, d = pence, suffix = "_x")),
                c("pounds", "shillings", "pence", "pounds_x", "shillings_x", "pence_x"))
+  # Replace works
+  expect_equal(names(deb_interest_mutate(example2, l = pounds, s = shillings, d = pence, replace = TRUE)),
+               c("pounds", "shillings", "pence"))
 })
 
 test_that("checks work for mutate", {

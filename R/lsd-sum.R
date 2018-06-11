@@ -32,7 +32,7 @@ deb_denarii_sum <- function(l, s, d, round = 3) {
 #'   to shillings. Default is s.
 #' @param d Pence column: Unquoted name of numeric variable corresponding to
 #'   pence. Default is d.
-#' @param round round pence to specified number of decimal places.
+#' @param round Round pence to specified number of decimal places.
 #'   Default is 3. Set to 0 if you want pence to always be a whole number.
 #'
 #' @return Returns a data frame with one level of grouping dropped. Any

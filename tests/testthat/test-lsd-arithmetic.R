@@ -1,5 +1,18 @@
 context("test-lsd-arithmetic.R")
 
+df <- data.frame(l = c(30, 10, 26, 12),
+                 s = c(10, 18, 11, 16),
+                 d = c(9, 11, 10, 5))
+answer_x2 <- data.frame(l = c(30, 10, 26, 12),
+                        s = c(10, 18, 11, 16),
+                        d = c(9, 11, 10, 5),
+                        l.1 = c(61, 21, 53, 25),
+                        s.1 = c(1, 17, 3, 12),
+                        d.1 = c(6, 10, 8, 10))
+answer_d2 <- data.frame(l = c(15, 5, 13, 6),
+                        s = c(5, 9, 5, 8),
+                        d = c(4.5, 5.5, 11, 2.5))
+
 test_that("lsd multiplication works", {
   expect_equal(deb_multiply(x = 3, 10, 3, 2, vector = TRUE),
                c(l = 30, s = 9, d = 6))
@@ -11,6 +24,12 @@ test_that("lsd multiplication works", {
                c(l = 55, s = 17, d = 5))
 })
 
+test_that("deb_multiply_mutate works", {
+  expect_equal(ncol(deb_multiply_mutate(df, l, s, d, x = 2)), 6)
+  expect_equal(ncol(deb_multiply_mutate(df, l, s, d, x = 2, replace = TRUE)), 3)
+  expect_equal(deb_multiply_mutate(df, l, s, d, x = 2), answer_x2)
+})
+
 test_that("lsd division works", {
   expect_equal(deb_divide(x = 3, 9, 3, 6, vector = TRUE),
                c(l = 3, s = 1, d = 2))
@@ -18,6 +37,12 @@ test_that("lsd division works", {
                c(l = -3, s = -1, d = -2))
   expect_equal(deb_divide(x = 3, 104, 33, 52, vector = TRUE, round = 5),
                c(l = 35, s = 5, d = 9.33333))
+})
+
+test_that("deb_divide_mutate works", {
+  expect_equal(ncol(deb_divide_mutate(df, l, s, d, x = 2)), 6)
+  expect_equal(ncol(deb_divide_mutate(df, l, s, d, x = 2, replace = TRUE)), 3)
+  expect_equal(deb_divide_mutate(df, l, s, d, x = 2, replace = TRUE), answer_d2)
 })
 
 test_that("arithmetic checks work", {
