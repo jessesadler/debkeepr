@@ -1,7 +1,6 @@
 context("test-lsd-interest.R")
 
 suppressPackageStartupMessages(library(tibble))
-suppressPackageStartupMessages(library(dplyr))
 
 test_that("interest calculation works", {
   # with principal

@@ -93,7 +93,6 @@ test_that("denarii functions are vectorized", {
 ## Test mutate functions ##
 
 suppressPackageStartupMessages(library(tibble))
-suppressPackageStartupMessages(library(dplyr))
 
 l_tbl <- tibble(pounds = l_vector)
 s_tbl <- tibble(shillings = s_vector)
