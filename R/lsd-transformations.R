@@ -31,11 +31,13 @@
 #'
 #' @export
 
-deb_lsd_l <- function(l, s, d) {
-  lsd_check(l = l,
-            s = s,
-            d = d)
-  l + s/20 + d/240
+deb_lsd_l <- function(lsd) {
+  lsd_check(lsd)
+  if (is.list(lsd) == TRUE) {
+    return(purrr::map_dbl(lsd, deb_lsd_l))
+  }
+
+  lsd[1] + lsd[2]/20 + lsd[3]/240
 }
 
 #' Convert from decimalized pounds to pounds, shillings, and pence
@@ -75,9 +77,13 @@ deb_lsd_l <- function(l, s, d) {
 #'
 #' @export
 
-deb_l_lsd <- function(l, round = 3, vector = FALSE) {
+deb_l_lsd <- function(l, round = 3) {
+  if (length(l) > 1) {
+    return(purrr::map(l, deb_l_lsd))
+  }
+
   # repeat 0 of length l for vectorization
-  deb_normalize(l, rep(0, length(l)), rep(0, length(l)), round, vector)
+  deb_normalize(c(l, rep(0, length(l)), rep(0, length(l))), round)
 }
 
 ### Normalize through solidi ###
@@ -111,11 +117,13 @@ deb_l_lsd <- function(l, round = 3, vector = FALSE) {
 #'
 #' @export
 
-deb_lsd_s <- function(l, s, d) {
-  lsd_check(l = l,
-            s = s,
-            d = d)
-  l * 20 + s + d/12
+deb_lsd_s <- function(lsd) {
+  lsd_check(lsd)
+  if (is.list(lsd) == TRUE) {
+    return(purrr::map_dbl(lsd, deb_lsd_s))
+  }
+
+  lsd[1] * 20 + lsd[2] + lsd[3]/12
 }
 
 #' Convert from decimalized shillings to pounds, shillings, and pence
@@ -157,9 +165,13 @@ deb_lsd_s <- function(l, s, d) {
 #'
 #' @export
 
-deb_s_lsd <- function(s, round = 3, vector = FALSE) {
+deb_s_lsd <- function(s, round = 3) {
+  if (length(s) > 1) {
+    return(purrr::map(s, deb_s_lsd))
+  }
+
   # repeat 0 of length s for vectorization
-  deb_normalize(rep(0, length(s)), s, rep(0, length(s)), round, vector)
+  deb_normalize(c(rep(0, length(s)), s, rep(0, length(s))), round)
 }
 
 ### Normalize through denarii ###
@@ -192,11 +204,13 @@ deb_s_lsd <- function(s, round = 3, vector = FALSE) {
 #'
 #' @export
 
-deb_lsd_d <- function(l, s, d) {
-  lsd_check(l = l,
-            s = s,
-            d = d)
-  l * 240 + s * 12 + d
+deb_lsd_d <- function(lsd) {
+  lsd_check(lsd)
+  if (is.list(lsd) == TRUE) {
+    return(purrr::map_dbl(lsd, deb_lsd_d))
+  }
+
+  lsd[1] * 240 + lsd[2] * 12 + lsd[3]
 }
 
 #' Convert from pence to pounds, shillings, and pence
@@ -236,7 +250,11 @@ deb_lsd_d <- function(l, s, d) {
 #'
 #' @export
 
-deb_d_lsd <- function(d, round = 3, vector = FALSE) {
+deb_d_lsd <- function(d, round = 3) {
+  if (length(d) > 1) {
+    return(purrr::map(d, deb_d_lsd))
+  }
+
   # repeat 0 of length d for vectorization
-  deb_normalize(rep(0, length(d)), rep(0, length(d)), d, round, vector)
+  deb_normalize(c(rep(0, length(d)), rep(0, length(d)), d), round)
 }
