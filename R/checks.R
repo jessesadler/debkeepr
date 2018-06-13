@@ -31,6 +31,10 @@ lsd_check <- function(lsd, round = NULL) {
 # Check l, s, and d values and column names
 lsd_column_check <- function(df, l, s, d) {
 
+  if (!is.data.frame(df)) {
+    stop(call. = FALSE, "df must be a data frame or data-frame like object")
+  }
+
   column_names <- c(rlang::quo_name(l),
                     rlang::quo_name(s),
                     rlang::quo_name(d))

@@ -2,12 +2,38 @@
 
 ## Helper functions to sum l, s, and d ##
 
+## Librae ##
+deb_librae <- function(l, s, d) {
+  lsd <- deb_decimal_check(c(l, s, d))
+
+  librae <- lsd[1] + ((lsd[2] + lsd[3] %/% 12) %/% 20)
+  dplyr::if_else(l + s/20 + d/240 > 0, librae, -librae)
+}
+
 deb_librae_sum <- function(l, s, d) {
   deb_librae(sum(l), sum(s), sum(d))
 }
 
+## Solidi ##
+deb_solidi <- function(l, s, d) {
+  lsd <- c(l, s, d)
+  lsd <- deb_decimal_check(lsd)
+
+  solidi <- (lsd[2] + lsd[3] %/% 12) %% 20
+  dplyr::if_else(l + s/20 + d/240 > 0, solidi, -solidi)
+}
+
 deb_solidi_sum <- function(l, s, d) {
   deb_solidi(sum(l), sum(s), sum(d))
+}
+
+## Denarii ##
+deb_denarii <- function(l, s, d, round = 3) {
+  lsd <- c(l, s, d)
+  lsd <- deb_decimal_check(lsd)
+
+  denarii <- round(lsd[3] %% 12, round)
+  dplyr::if_else(l + s/20 + d/240 > 0, denarii, -denarii)
 }
 
 deb_denarii_sum <- function(l, s, d, round = 3) {

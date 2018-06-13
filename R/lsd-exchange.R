@@ -112,7 +112,6 @@ deb_exchange_mutate <- function(df,
   if (replace == TRUE) {
     suffix <- ""
   }
-
   # Column names: avoid overwriting l, s, and d columns
   lsd_names <- lsd_column_names(df, l, s, d, suffix)
 

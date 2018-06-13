@@ -6,7 +6,7 @@
 #
 # The calculations are done by changing to denarii
 #
-# This should be used with lsd_column_names function to create lsd_names
+# This must be used with lsd_column_names function to create lsd_names
 
 lsd_mutate_columns <- function(df,
                                l, s, d,
@@ -17,9 +17,7 @@ lsd_mutate_columns <- function(df,
   d <- rlang::enquo(d)
 
   dplyr::mutate(df,
-                temp_denarii = deb_lsd_d(!! l, !! s, !! d),
-                !! lsd_names[1] := deb_denarii_l(temp_denarii),
-                !! lsd_names[2] := deb_denarii_s(temp_denarii),
-                !! lsd_names[3] := deb_denarii_d(temp_denarii, round)) %>%
-    dplyr::select(-temp_denarii)
+                !! lsd_names[1] := deb_librae(!! l, !! s, !! d),
+                !! lsd_names[2] := deb_solidi(!! l, !! s, !! d),
+                !! lsd_names[3] := deb_denarii(!! l, !! s, !! d, round))
 }

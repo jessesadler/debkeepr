@@ -123,20 +123,45 @@ deb_normalize <- function(lsd, round = 3) {
 
   if (is.list(lsd) == FALSE) {
     # vector
-    modified <- lsd_normalize(checked, round)
+    normalized <- lsd_normalize(checked, round)
 
     # Positive and negative
     if (sum(lsd / c(1, 20, 240)) > 0) {
-      modified
+      normalized
     } else {
-      -modified
+      -normalized
     }
   } else {
-    modified <- purrr::map(checked, ~ lsd_normalize(., round))
+    # list
+    normalized <- purrr::map(checked, ~ lsd_normalize(., round))
 
     # Positive and negative
     dplyr::if_else(purrr::map(lsd, ~ sum(. / c(1, 20, 240))) > 0,
-                   purrr::map(modified, `+`),
-                   purrr::map(modified, `-`))
+                   purrr::map(normalized, `+`),
+                   purrr::map(normalized, `-`))
   }
+}
+
+deb_normalize_df <- function(df,
+                             l = l, s = s, d = d,
+                             round = 3,
+                             replace = TRUE,
+                             suffix = ".1") {
+  l <- rlang::enquo(l)
+  s <- rlang::enquo(s)
+  d <- rlang::enquo(d)
+
+  # Checks
+  lsd_column_check(df, l, s, d)
+
+  if (replace == TRUE) {
+    suffix <- ""
+  }
+  # Column names: avoid overwriting l, s, and d columns
+  lsd_names <- lsd_column_names(df, l, s, d, suffix)
+
+  lsd_mutate_columns(df,
+                     !! l, !! s, !! d,
+                     lsd_names,
+                     round = round)
 }
