@@ -3,10 +3,20 @@
 # Check and deal with decimals in l or s
 # If value is negative, turn l, s, and d positive
 # Returns vector in form c(l, s, d)
-deb_decimal_check <- function(l, s, d) {
+deb_decimal_check <- function(lsd) {
+  if (is.list(lsd) == TRUE) {
+    l <- purrr::map_dbl(lsd, 1)
+    s <- purrr::map_dbl(lsd, 2)
+    d <- purrr::map_dbl(lsd, 3)
+  } else {
+    l <- lsd[1]
+    s <- lsd[2]
+    d <- lsd[3]
+  }
+
   # vectorize
   if (length(l) > 1) {
-    return(purrr::pmap(list(l, s, d), deb_decimal_check))
+    return(purrr::map(lsd, deb_decimal_check))
   }
 
   # Check if the value is positive
@@ -35,58 +45,13 @@ deb_decimal_check <- function(l, s, d) {
   c(l, s, d)
 }
 
+lsd_normalize <- function(lsd, round) {
+  # vector
+  lsd[1] <- lsd[1] + ((lsd[2] + lsd[3] %/% 12) %/% 20)
+  lsd[2] <- (lsd[2] + lsd[3] %/% 12) %% 20
+  lsd[3] <- round(lsd[3] %% 12, round)
 
-## Transform lsd to separate l, s, and d ##
-# Decimal check, split whether l, s, and d are > 1 or 1,
-# normalize to correct value, and return to negative is necessary.
-# Returns either single value or numeric vector
-
-deb_librae <- function(l, s, d) {
-  lsd <- deb_decimal_check(l, s, d)
-
-  if (is.list(lsd) == FALSE) {
-    librae <- lsd[1] + ((lsd[2] + lsd[3] %/% 12) %/% 20)
-    dplyr::if_else(l + s/20 + d/240 > 0,
-                   librae,
-                   -librae)
-  } else {
-    librae <- purrr::map_dbl(lsd, ~ .[1] + ((.[2] + .[3] %/% 12) %/% 20))
-    dplyr::if_else(l + s/20 + d/240 > 0,
-                   librae,
-                   purrr::map_dbl(librae, `-`))
-  }
-}
-
-deb_solidi <- function(l, s, d) {
-  lsd <- deb_decimal_check(l, s, d)
-
-  if (is.list(lsd) == FALSE) {
-    solidi <- (lsd[2] + lsd[3] %/% 12) %% 20
-    dplyr::if_else(l + s/20 + d/240 > 0,
-                   solidi,
-                   -solidi)
-  } else {
-    solidi <- purrr::map_dbl(lsd, ~ (.[2] + .[3] %/% 12) %% 20)
-    dplyr::if_else(l + s/20 + d/240 > 0,
-                   solidi,
-                   purrr::map_dbl(solidi, `-`))
-  }
-}
-
-deb_denarii <- function(l, s, d, round = 3) {
-  lsd <- deb_decimal_check(l, s, d)
-
-  if (is.list(lsd) == FALSE) {
-    denarii <- round(lsd[3] %% 12, round)
-    dplyr::if_else(l + s/20 + d/240 > 0,
-                   denarii,
-                   -denarii)
-  } else {
-    denarii <- purrr::map_dbl(lsd, ~ round(.[3] %% 12, round))
-    dplyr::if_else(l + s/20 + d/240 > 0,
-                   denarii,
-                   purrr::map_dbl(denarii, `-`))
-  }
+  setNames(lsd, c("l", "s", "d"))
 }
 
 #' Normalize pounds, shillings, and pence
@@ -107,10 +72,6 @@ deb_denarii <- function(l, s, d, round = 3) {
 #' @param d Pence: numeric vector of the same length as `l` and `s`.
 #' @param round Round pence to specified number of decimal places.
 #'   Default is 3. Set to 0 to return pence as whole numbers.
-#' @param vector Logical (default `FALSE`): when `FALSE` the output will be
-#'   a tibble. When `TRUE` the output will be a named numeric vector or list
-#'   of named numeric vectors if the length of `l`, `s`, and `d` is greater
-#'   than 1.
 #'
 #' @return Returns either a tibble with columns for the pounds, shillings, and
 #'   pence values labeled as l, s, and d or a named numeric vector with values
@@ -154,31 +115,28 @@ deb_denarii <- function(l, s, d, round = 3) {
 #'
 #' @export
 
-deb_normalize <- function(l, s, d, round = 3, vector = FALSE) {
+deb_normalize <- function(lsd, round = 3) {
 
-  lsd_check(l, s, d, round, vector)
-  # Create values with different names so that l, s, and d are not overwritten
-  librae <- deb_librae(l, s, d)
-  solidi <- deb_solidi(l, s, d)
-  denarii <- deb_denarii(l, s, d, round)
-  if (vector == FALSE) {
-    tibble::tibble(
-      l = librae,
-      s = solidi,
-      d = denarii)
-  } else {
-    if (length(l) > 1) {
-      # Create list of lsd vectors
-      list(l = librae,
-           s = solidi,
-           d = denarii) %>%
-        purrr::transpose() %>%
-        purrr::simplify_all()
+  lsd_check(lsd, round)
+  checked <- deb_decimal_check(lsd)
+
+  if (is.list(lsd) == FALSE) {
+    # vector
+    modified <- lsd_normalize(checked, round)
+
+    # Positive and negative
+    if (sum(lsd / c(1, 20, 240)) > 0) {
+      modified
     } else {
-      # single lsd vector
-      c(l = librae,
-        s = solidi,
-        d = denarii)
+      -modified
     }
+
+  } else {
+    modified <- purrr::map(checked, ~ lsd_normalize(., round))
+
+    # Positive and negative
+    dplyr::if_else(purrr::map(lsd, ~ sum(. / c(1, 20, 240))) > 0,
+                   purrr::map(modified, `+`),
+                   purrr::map(modified, `-`))
   }
 }

@@ -1,30 +1,30 @@
 ## Checks ##
 
 # Check that l, s, and d values are numeric in deb_normalize
-lsd_check <- function(l, s, d, round = 3, vector = FALSE) {
+lsd_check <- function(lsd, round) {
   if (!is.numeric(round)) {
     stop(call. = FALSE, "round must be numeric")
   }
 
-  if (!is.logical(vector)) {
-    stop(call. = FALSE, "vector must be logical, either TRUE or FALSE")
+  # Vector
+  if (is.list(lsd) == FALSE & is.vector(lsd) == TRUE) {
+    if (!is.numeric(lsd)) {
+      stop(call. = FALSE, "lsd must be numeric")
+    }
+    if (length(lsd) != 3) {
+      stop(call. = FALSE, "length of lsd must be 3. There must be a value for pounds, shillings, and pence")
+    }
   }
 
-  if (!is.numeric(l)) {
-    stop(call. = FALSE, "l must be numeric")
+  if (is.list(lsd) == TRUE) {
+    if (!all(purrr::map_lgl(lsd, is.numeric))) {
+      stop(call. = FALSE, "lsd must be numeric")
+    }
+    if (all.equal(purrr::map_dbl(lsd, length), rep(3, length(lsd))) == FALSE) {
+      stop(call. = FALSE, "length of vectors in lsd must be 3. There must be a value for pounds, shillings, and pence")
+    }
   }
 
-  if (!is.numeric(s)) {
-    stop(call. = FALSE, "s must be numeric")
-  }
-
-  if (!is.numeric(d)) {
-    stop(call. = FALSE, "d must be numeric")
-  }
-
-  if (length(l) != length(s) | length(l) != length(d)) {
-    stop(call. = FALSE, "l, s, and d must be numeric vectors of the same length")
-  }
 }
 
 # Check l, s, and d values and column names
