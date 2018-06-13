@@ -45,24 +45,19 @@
 #'
 #' @export
 
-deb_interest <- function(l, s, d,
+deb_interest <- function(lsd,
                          interest = 0.0625,
                          duration = 1,
                          with_principal = TRUE,
-                         round = 3,
-                         vector = FALSE) {
+                         round = 3) {
   # Checks
-  lsd_check(l, s, d, round, vector)
+  lsd_check(lsd, round)
   interest_check(interest, duration, with_principal)
 
-  principle_d <- deb_lsd_d(l, s, d)
-
-  interest_d <-  principle_d * interest * duration
-
   if (with_principal == TRUE) {
-    deb_d_lsd(principle_d + interest_d, round, vector)
+    deb_normalize(lsd + lsd * interest * duration, round = round)
   } else {
-    deb_d_lsd(interest_d, round, vector)
+    deb_normalize(lsd * interest * duration, round = round)
   }
 }
 

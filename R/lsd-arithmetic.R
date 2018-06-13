@@ -61,10 +61,10 @@
 #'
 #' @export
 
-deb_multiply <- function(x, l, s, d, round = 3, vector = FALSE) {
+deb_multiply <- function(lsd, x, round = 3) {
   arithmetic_check(x)
 
-  deb_normalize(l * x , s * x, d * x, round = round, vector = vector)
+  deb_normalize(lsd * x, round = round)
 }
 
 
@@ -194,10 +194,10 @@ deb_multiply_mutate <- function(df,
 #'
 #' @export
 
-deb_divide <- function(x, l, s, d, round = 3, vector = FALSE) {
+deb_divide <- function(lsd, x, round = 3) {
   arithmetic_check(x)
 
-  deb_normalize(l / x , s / x, d / x, round = round, vector = vector)
+  deb_normalize(lsd / x, round = round)
 }
 
 

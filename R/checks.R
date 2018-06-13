@@ -1,9 +1,11 @@
 ## Checks ##
 
 # Check that l, s, and d values are numeric in deb_normalize
-lsd_check <- function(lsd, round) {
-  if (!is.numeric(round)) {
-    stop(call. = FALSE, "round must be numeric")
+lsd_check <- function(lsd, round = NULL) {
+  if (!is.null(round)) {
+    if (!is.numeric(round)) {
+      stop(call. = FALSE, "round must be numeric")
+    }
   }
 
   # Vector
@@ -12,7 +14,7 @@ lsd_check <- function(lsd, round) {
       stop(call. = FALSE, "lsd must be numeric")
     }
     if (length(lsd) != 3) {
-      stop(call. = FALSE, "length of lsd must be 3. There must be a value for pounds, shillings, and pence")
+      stop(call. = FALSE, "length of lsd must be 3. There must be a value for pounds, shillings, and pence.")
     }
   }
 
@@ -21,10 +23,9 @@ lsd_check <- function(lsd, round) {
       stop(call. = FALSE, "lsd must be numeric")
     }
     if (all.equal(purrr::map_dbl(lsd, length), rep(3, length(lsd))) == FALSE) {
-      stop(call. = FALSE, "length of vectors in lsd must be 3. There must be a value for pounds, shillings, and pence")
+      stop(call. = FALSE, "length of vectors in lsd must be 3. There must be a value for pounds, shillings, and pence.")
     }
   }
-
 }
 
 # Check l, s, and d values and column names

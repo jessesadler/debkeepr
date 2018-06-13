@@ -45,6 +45,7 @@ deb_decimal_check <- function(lsd) {
   c(l, s, d)
 }
 
+# Actual normalization
 lsd_normalize <- function(lsd, round) {
   # vector
   lsd[1] <- lsd[1] + ((lsd[2] + lsd[3] %/% 12) %/% 20)
@@ -130,7 +131,6 @@ deb_normalize <- function(lsd, round = 3) {
     } else {
       -modified
     }
-
   } else {
     modified <- purrr::map(checked, ~ lsd_normalize(., round))
 

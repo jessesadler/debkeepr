@@ -37,17 +37,15 @@
 #'
 #' @export
 
-deb_exchange <- function(l, s, d,
+deb_exchange <- function(lsd,
                          rate_per_solidi,
-                         round = 3,
-                         vector = FALSE) {
+                         round = 3) {
   # Check exchange rate
   exchange_rate_check(rate_per_solidi)
 
-  deb_multiply(x = rate_per_solidi/20,
-               l, s, d,
-               round = round,
-               vector = vector)
+  deb_multiply(lsd,
+               x = rate_per_solidi/20,
+               round = round)
 }
 
 #' Convert between pounds, shillings and pence currencies in a data frame
