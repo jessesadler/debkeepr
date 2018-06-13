@@ -11,7 +11,7 @@
 lsd_mutate_columns <- function(df,
                                l, s, d,
                                lsd_names,
-                               round = 3) {
+                               round) {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)

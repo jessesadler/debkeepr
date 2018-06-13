@@ -4,6 +4,10 @@
 
 ## Librae ##
 deb_librae <- function(l, s, d) {
+  if (length(l) > 1) {
+    return(purrr::pmap_dbl(list(l, s, d), deb_librae))
+  }
+
   lsd <- deb_decimal_check(c(l, s, d))
 
   librae <- lsd[1] + ((lsd[2] + lsd[3] %/% 12) %/% 20)
@@ -16,8 +20,11 @@ deb_librae_sum <- function(l, s, d) {
 
 ## Solidi ##
 deb_solidi <- function(l, s, d) {
-  lsd <- c(l, s, d)
-  lsd <- deb_decimal_check(lsd)
+  if (length(l) > 1) {
+    return(purrr::pmap_dbl(list(l, s, d), deb_solidi))
+  }
+
+  lsd <- deb_decimal_check(c(l, s, d))
 
   solidi <- (lsd[2] + lsd[3] %/% 12) %% 20
   dplyr::if_else(l + s/20 + d/240 > 0, solidi, -solidi)
@@ -29,8 +36,11 @@ deb_solidi_sum <- function(l, s, d) {
 
 ## Denarii ##
 deb_denarii <- function(l, s, d, round = 3) {
-  lsd <- c(l, s, d)
-  lsd <- deb_decimal_check(lsd)
+  if (length(l) > 1) {
+    return(purrr::pmap_dbl(list(l, s, d), deb_solidi))
+  }
+
+  lsd <- deb_decimal_check(c(l, s, d))
 
   denarii <- round(lsd[3] %% 12, round)
   dplyr::if_else(l + s/20 + d/240 > 0, denarii, -denarii)
