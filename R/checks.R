@@ -1,10 +1,14 @@
 ## Checks ##
 
-# Check that l, s, and d values are numeric in deb_normalize
+# Check that lsd is numeric vector of length 3 or
+# list of numeric vectors of length 3
 lsd_check <- function(lsd, round = NULL) {
   if (!is.null(round)) {
     if (!is.numeric(round)) {
       stop(call. = FALSE, "round must be numeric")
+    }
+    if (length(round) > 1) {
+      stop(call. = FALSE, "round must be numeric vector of length 1")
     }
   }
 
@@ -14,16 +18,18 @@ lsd_check <- function(lsd, round = NULL) {
       stop(call. = FALSE, "lsd must be numeric")
     }
     if (length(lsd) != 3) {
-      stop(call. = FALSE, "length of lsd must be 3. There must be a value for pounds, shillings, and pence.")
+      stop(call. = FALSE, "length of lsd must be 3.
+           There must be a value for pounds, shillings, and pence.")
     }
   }
 
   if (is.list(lsd) == TRUE) {
     if (!all(purrr::map_lgl(lsd, is.numeric))) {
-      stop(call. = FALSE, "lsd must be numeric")
+      stop(call. = FALSE, "lsd must be a list of numeric vectors")
     }
     if (all.equal(purrr::map_dbl(lsd, length), rep(3, length(lsd))) == FALSE) {
-      stop(call. = FALSE, "length of vectors in lsd must be 3. There must be a value for pounds, shillings, and pence.")
+      stop(call. = FALSE, "lsd must be a list of numeric vectors of length 3.
+           There must be a value for pounds, shillings, and pence.")
     }
   }
 }
@@ -69,6 +75,15 @@ lsd_column_names <- function(df, l, s, d, suffix) {
   # Turn l, s, and d column name arguments into character vector of length 3
   lsd_names <- c(rlang::quo_name(l), rlang::quo_name(s), rlang::quo_name(d))
 
+  if (any(lsd_names %in% names(df)) == TRUE) {
+    lsd_names[1] <- paste0(lsd_names[1], suffix)
+    lsd_names[2] <- paste0(lsd_names[2], suffix)
+    lsd_names[3] <- paste0(lsd_names[3], suffix)
+  }
+  lsd_names
+}
+
+suffix_check <- function(suffix, replace) {
   if (!is.character(suffix)) {
     stop(call. = FALSE, "suffix must be a character vector")
   }
@@ -77,12 +92,17 @@ lsd_column_names <- function(df, l, s, d, suffix) {
     stop(call. = FALSE, "suffix must be a character vector of length 1")
   }
 
-  if (any(lsd_names %in% names(df)) == TRUE) {
-    lsd_names[1] <- paste0(lsd_names[1], suffix)
-    lsd_names[2] <- paste0(lsd_names[2], suffix)
-    lsd_names[3] <- paste0(lsd_names[3], suffix)
+  # Make sure suffix has a value so that variables are not overwritten during
+  # the function, resulting in wrong results if l or s have decimals.
+  if (suffix == "") {
+    stop(call. = FALSE, "suffix cannot be an empty character vector.
+         To keep the same variable names and replace the original variables use replace = TRUE")
   }
-  lsd_names
+  # Use same variable names if replace is TRUE
+  if (replace == TRUE) {
+    suffix <- ""
+  }
+  suffix
 }
 
 # Check credit and debit columns

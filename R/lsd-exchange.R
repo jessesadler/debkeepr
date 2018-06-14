@@ -108,11 +108,7 @@ deb_exchange_mutate <- function(df,
   # Checks
   exchange_rate_check(rate_per_solidi)
   lsd_column_check(df, l, s, d)
-
-  if (replace == TRUE) {
-    suffix <- ""
-  }
-  # Column names: avoid overwriting l, s, and d columns
+  suffix <- suffix_check(suffix, replace)
   lsd_names <- lsd_column_names(df, l, s, d, suffix)
 
   x <- rate_per_solidi/20
@@ -122,5 +118,6 @@ deb_exchange_mutate <- function(df,
                      !! s * x,
                      !! d * x,
                      lsd_names,
-                     round = round)
+                     replace,
+                     round)
 }

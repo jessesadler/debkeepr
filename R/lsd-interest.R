@@ -77,8 +77,7 @@ deb_interest <- function(lsd,
 #'   columns of the principal used to make the calculation. Default is
 #'   ".interest". Should be a character vector of length 1.
 #' @param replace Logical (default `FALSE`): when `TRUE` the new pounds,
-#'   shillings, and pence values will replace the original ones. This is
-#'   equivalent to setting `suffix = ""`.
+#'   shillings, and pence variables will replace the original ones.
 #'
 #' @return Returns a data frame with three new variables of pounds, shillings,
 #'   and pence representing the calculated interest.
@@ -128,16 +127,10 @@ deb_interest_mutate <- function(df,
   d <- rlang::enquo(d)
 
   # Checks
-  lsd_column_check(df, l, s, d)
-
-  if (replace == TRUE) {
-    suffix <- ""
-  }
-
-  # Column names: avoid overwriting l, s, and d columns
-  lsd_names <- lsd_column_names(df, l, s, d, suffix)
-
   interest_check(interest, duration, with_principal)
+  lsd_column_check(df, l, s, d)
+  suffix <- suffix_check(suffix, replace)
+  lsd_names <- lsd_column_names(df, l, s, d, suffix)
 
   # Multiply interest by duration to get value by which
   # to multiply l, s, and d
@@ -149,13 +142,15 @@ deb_interest_mutate <- function(df,
                        (!! s * x) + !! s,
                        (!! d * x) + !! d,
                        lsd_names,
-                       round = round)
+                       replace,
+                       round)
   } else {
     lsd_mutate_columns(df,
                        !! l * x,
                        !! s * x,
                        !! d * x,
                        lsd_names,
+                       replace,
                        round = round)
   }
 }

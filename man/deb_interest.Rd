@@ -4,15 +4,14 @@
 \alias{deb_interest}
 \title{Calculate the interest of pounds, shillings, and pence}
 \usage{
-deb_interest(l, s, d, interest = 0.0625, duration = 1,
-  with_principal = TRUE, round = 3, vector = FALSE)
+deb_interest(lsd, interest = 0.0625, duration = 1, with_principal = TRUE,
+  round = 3)
 }
 \arguments{
-\item{l}{Pounds: numeric vector of the same length as \code{s} and \code{d}.}
-
-\item{s}{Shillings: numeric vector of the same length as \code{l} and \code{d}.}
-
-\item{d}{Pence: numeric vector of the same length as \code{l} and \code{s}.}
+\item{lsd}{Numeric vector of length 3 or list of numeric vectors of length
+3. The first position of the vector represents the pounds value or l. The
+second position represents the shillings value or s. And the third
+position represents the pence value or d.}
 
 \item{interest}{Interest rate in decimal form. A numeric vector
 of length 1. Default is 0.0625, or 6.25 percent, which was default
@@ -28,11 +27,6 @@ as the principal. When \code{FALSE} only the interest will be shown.}
 
 \item{round}{Round pence to specified number of decimal places.
 Default is 3. Set to 0 to return pence as whole numbers.}
-
-\item{vector}{Logical (default \code{FALSE}): when \code{FALSE} the output will be
-a tibble. When \code{TRUE} the output will be a named numeric vector or list
-of named numeric vectors if the length of \code{l}, \code{s}, and \code{d} is greater
-than 1.}
 }
 \value{
 Returns either a tibble with columns for the pounds, shillings, and

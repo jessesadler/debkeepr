@@ -43,8 +43,7 @@ columns of the principal used to make the calculation. Default is
 Default is 3. Set to 0 if you want pence to always be a whole number.}
 
 \item{replace}{Logical (default \code{FALSE}): when \code{TRUE} the new pounds,
-shillings, and pence values will replace the original ones. This is
-equivalent to setting \code{suffix = ""}.}
+shillings, and pence variables will replace the original ones.}
 }
 \value{
 Returns a data frame with three new variables of pounds, shillings,

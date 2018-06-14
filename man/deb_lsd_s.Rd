@@ -4,14 +4,13 @@
 \alias{deb_lsd_s}
 \title{Convert from pounds, shillings and pence to shillings}
 \usage{
-deb_lsd_s(l, s, d)
+deb_lsd_s(lsd)
 }
 \arguments{
-\item{l}{Pounds: numeric vector of the same length as \code{s} and \code{d}.}
-
-\item{s}{Shillings: numeric vector of the same length as \code{l} and \code{d}.}
-
-\item{d}{Pence: numeric vector of the same length as \code{l} and \code{s}.}
+\item{lsd}{Numeric vector of length 3 or list of numeric vectors of length
+3. The first position of the vector represents the pounds value or l. The
+second position represents the shillings value or s. And the third
+position represents the pence value or d.}
 }
 \value{
 Returns a numeric vector of decimalized shillings of length

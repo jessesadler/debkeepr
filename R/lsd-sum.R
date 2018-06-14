@@ -3,49 +3,16 @@
 ## Helper functions to sum l, s, and d ##
 
 ## Librae ##
-deb_librae <- function(l, s, d) {
-  if (length(l) > 1) {
-    return(purrr::pmap_dbl(list(l, s, d), deb_librae))
-  }
-
-  lsd <- deb_decimal_check(c(l, s, d))
-
-  librae <- lsd[1] + ((lsd[2] + lsd[3] %/% 12) %/% 20)
-  dplyr::if_else(l + s/20 + d/240 > 0, librae, -librae)
-}
-
 deb_librae_sum <- function(l, s, d) {
   deb_librae(sum(l), sum(s), sum(d))
 }
 
 ## Solidi ##
-deb_solidi <- function(l, s, d) {
-  if (length(l) > 1) {
-    return(purrr::pmap_dbl(list(l, s, d), deb_solidi))
-  }
-
-  lsd <- deb_decimal_check(c(l, s, d))
-
-  solidi <- (lsd[2] + lsd[3] %/% 12) %% 20
-  dplyr::if_else(l + s/20 + d/240 > 0, solidi, -solidi)
-}
-
 deb_solidi_sum <- function(l, s, d) {
   deb_solidi(sum(l), sum(s), sum(d))
 }
 
 ## Denarii ##
-deb_denarii <- function(l, s, d, round = 3) {
-  if (length(l) > 1) {
-    return(purrr::pmap_dbl(list(l, s, d), deb_solidi))
-  }
-
-  lsd <- deb_decimal_check(c(l, s, d))
-
-  denarii <- round(lsd[3] %% 12, round)
-  dplyr::if_else(l + s/20 + d/240 > 0, denarii, -denarii)
-}
-
 deb_denarii_sum <- function(l, s, d, round = 3) {
   deb_denarii(sum(l), sum(s), sum(d), round)
 }
@@ -123,10 +90,10 @@ deb_sum <- function(df, l = l, s = s, d = d, round = 3) {
 
   # Use temp columns and rename so that l, s, and d do not get overwritten
   df %>%
-    dplyr::summarise(temp_l_col = deb_librae_sum(!!l, !!s, !!d),
-                     temp_s_col = deb_solidi_sum(!!l, !!s, !!d),
-                     temp_d_col = deb_denarii_sum(!!l, !!s, !!d, round)) %>%
-    dplyr::rename(!! l_column := temp_l_col,
-                  !! s_column := temp_s_col,
-                  !! d_column := temp_d_col)
+    dplyr::summarise(temp_librae_col = deb_librae_sum(!!l, !!s, !!d),
+                     temp_solidi_col = deb_solidi_sum(!!l, !!s, !!d),
+                     temp_denarii_col = deb_denarii_sum(!!l, !!s, !!d, round)) %>%
+    dplyr::rename(!! l_column := temp_librae_col,
+                  !! s_column := temp_solidi_col,
+                  !! d_column := temp_denarii_col)
 }

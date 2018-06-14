@@ -119,12 +119,7 @@ deb_multiply_mutate <- function(df,
   # Checks
   arithmetic_check(x)
   lsd_column_check(df, l, s, d)
-
-  if (replace == TRUE) {
-    suffix <- ""
-  }
-
-  # Column names: avoid overwriting l, s, and d columns
+  suffix <- suffix_check(suffix, replace)
   lsd_names <- lsd_column_names(df, l, s, d, suffix)
 
   lsd_mutate_columns(df,
@@ -132,7 +127,8 @@ deb_multiply_mutate <- function(df,
                      !! s * x,
                      !! d * x,
                      lsd_names,
-                     round = round)
+                     replace,
+                     round)
 }
 
 #' Division of pounds, shillings, and pence
@@ -252,12 +248,7 @@ deb_divide_mutate <- function(df,
   # Checks
   arithmetic_check(x)
   lsd_column_check(df, l, s, d)
-
-  if (replace == TRUE) {
-    suffix <- ""
-  }
-
-  # Column names: avoid overwriting l, s, and d columns
+  suffix <- suffix_check(suffix, replace)
   lsd_names <- lsd_column_names(df, l, s, d, suffix)
 
   lsd_mutate_columns(df,
@@ -265,7 +256,8 @@ deb_divide_mutate <- function(df,
                      !! s / x,
                      !! d / x,
                      lsd_names,
-                     round = round)
+                     replace,
+                     round)
 }
 
 #' Subtract two values of pounds, shillings, and pence

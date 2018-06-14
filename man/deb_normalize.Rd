@@ -4,35 +4,25 @@
 \alias{deb_normalize}
 \title{Normalize pounds, shillings, and pence}
 \usage{
-deb_normalize(l, s, d, round = 3, vector = FALSE)
+deb_normalize(lsd, round = 3)
 }
 \arguments{
-\item{l}{Pounds: numeric vector of the same length as \code{s} and \code{d}.}
-
-\item{s}{Shillings: numeric vector of the same length as \code{l} and \code{d}.}
-
-\item{d}{Pence: numeric vector of the same length as \code{l} and \code{s}.}
+\item{lsd}{Numeric vector of length 3 or list of numeric vectors of length
+3. The first position of the vector represents the pounds value or l. The
+second position represents the shillings value or s. And the third
+position represents the pence value or d.}
 
 \item{round}{Round pence to specified number of decimal places.
 Default is 3. Set to 0 to return pence as whole numbers.}
-
-\item{vector}{Logical (default \code{FALSE}): when \code{FALSE} the output will be
-a tibble. When \code{TRUE} the output will be a named numeric vector or list
-of named numeric vectors if the length of \code{l}, \code{s}, and \code{d} is greater
-than 1.}
 }
 \value{
-Returns either a tibble with columns for the pounds, shillings, and
-pence values labeled as l, s, and d or a named numeric vector with values
-for pounds, shillings, and pence. If the input lsd value is negative, the
-pounds, shillings, and pence values will all be negative. The number of
-rows in the resulting tibble will be equal to the length of the input
-vectors. If the length of \code{l}, \code{s}, and \code{d} is greater than 1 and
-\code{vector = TRUE}, the result will be a list of named vectors of length
-equal to the input vectors.
+Returns either a named numeric vector of length 3 or a list of
+named numeric vectors representing the values of pounds, shillings,
+and pence. If the input lsd value is negative, the l, s, and d values
+will all be negative.
 }
 \description{
-Normalize pounds, shillings, and pence to correct values based
+Normalize pounds, shillings, and pence to the correct values based
 on 12 pence in a shilling and 20 shillings in a pound.
 }
 \details{
@@ -41,38 +31,32 @@ This function uses the nomenclature of
 shillings, and pence. This derives from the Latin terms for librae,
 solidi, and denarii. One solidus was equivalent to 12 denarii, and
 240 denarii coins were made from on libra of silver. The nomenclature
-and values of 12 denarii to 1 solidus and 20 solidi to 1 libra was
-adopted by Charlemagne and spread throughout Europe under different names.
+and values of 12 denarii to 1 solidus and 20 solidi to 1 libra were adopted
+by at least the 8th century and spread throughout Europe through the
+Carolingian Empire.
 }
 \examples{
 # Use to calculate the correct number of pounds, shillings, and pence
-deb_normalize(l = 5, s = 25, d = 22)
-deb_normalize(5, 25, 22, vector = TRUE)
+deb_normalize(c(5, 55, 22))
 
 # It is possible to perform math within the function
-deb_normalize(5 + 6, 20 + 18, 8 + 11)
-# Or even
-deb_normalize(sum(4, 9, 0), sum(12, 16, 5), sum(11, 0, 6))
+deb_normalize(c(5 + 6, 20 + 18, 8 + 11))
 
 # deb_normalize can deal with negative values
-deb_normalize(-5, -25, -22)
-# Or a mixture of positive and negative if that occurs for some reason
-deb_normalize(5, -25, 22)
+deb_normalize(c(-5, -25, -22))
+
+# Or a mixture of positive and negative values
+# if that occurs for some reason
+deb_normalize(c(5, -25, 22))
 
 # deb_normalize can also properly normalize decimalized pounds and shillings
-deb_normalize(8.7, 33.65, 15)
+deb_normalize(c(8.7, 33.65, 15))
 
-# l, s, and d can be vectors of length > 1
-# Return a tibble with two rows
-deb_normalize(l = c(8, 10), s = c(25, 86), d = c(34, 29))
+# Use the round argument to return whole pence
+deb_normalize(c(8.7, 33.65, 15), round = 0)
 
-# Return a list with two vectors
-deb_normalize(l = c(8, 10), s = c(25, 86), d = c(34, 29), vector = TRUE)
-
-# This makes it possible to normalize a data frame of lsd values
-ex_tbl <- data.frame(l = c(8, 10),
-                     s = c(25, 86),
-                     d = c(34, 29))
-deb_normalize(ex_tbl$l, ex_tbl$s, ex_tbl$d)
+# To normalize multiple lsd values use a list of lsd vectors
+lsd_list <- list(c(4, 34, 89), c(-9, -75, -19), c(15.85, 36.15, 56))
+deb_normalize(lsd_list)
 
 }

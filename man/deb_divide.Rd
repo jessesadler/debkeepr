@@ -4,25 +4,19 @@
 \alias{deb_divide}
 \title{Division of pounds, shillings, and pence}
 \usage{
-deb_divide(x, l, s, d, round = 3, vector = FALSE)
+deb_divide(lsd, x, round = 3)
 }
 \arguments{
+\item{lsd}{Numeric vector of length 3 or list of numeric vectors of length
+3. The first position of the vector represents the pounds value or l. The
+second position represents the shillings value or s. And the third
+position represents the pence value or d.}
+
 \item{x}{Divisor. The value by which the given pounds, shillings, and
 pence will be divided. Should be a numeric vector of length 1.}
 
-\item{l}{Pounds: numeric vector of the same length as \code{s} and \code{d}.}
-
-\item{s}{Shillings: numeric vector of the same length as \code{l} and \code{d}.}
-
-\item{d}{Pence: numeric vector of the same length as \code{l} and \code{s}.}
-
 \item{round}{Round pence to specified number of decimal places.
 Default is 3. Set to 0 to return pence as whole numbers.}
-
-\item{vector}{Logical (default \code{FALSE}): when \code{FALSE} the output will be
-a tibble. When \code{TRUE} the output will be a named numeric vector or list
-of named numeric vectors if the length of \code{l}, \code{s}, and \code{d} is greater
-than 1.}
 }
 \value{
 Returns either a tibble with columns for the pounds, shillings, and
