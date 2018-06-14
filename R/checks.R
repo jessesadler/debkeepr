@@ -27,7 +27,7 @@ lsd_check <- function(lsd, round = NULL) {
     if (!all(purrr::map_lgl(lsd, is.numeric))) {
       stop(call. = FALSE, "lsd must be a list of numeric vectors")
     }
-    if (all.equal(purrr::map_dbl(lsd, length), rep(3, length(lsd))) == FALSE) {
+    if (identical(purrr::map_dbl(lsd, length), rep(3, length(lsd))) == FALSE) {
       stop(call. = FALSE, "lsd must be a list of numeric vectors of length 3.
            There must be a value for pounds, shillings, and pence.")
     }

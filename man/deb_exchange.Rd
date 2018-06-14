@@ -21,12 +21,10 @@ of length 1.}
 Default is 3. Set to 0 to return pence as whole numbers.}
 }
 \value{
-Returns either a tibble with columns for the pounds, shillings, and
-pence values labeled as l, s, and d or a named numeric vector with values
-for pounds, shillings, and pence. The number of rows in the resulting
-tibble will be equal to the length of the input vectors. If the length of
-\code{l}, \code{s}, and \code{d} is greater than 1 and \code{vector = TRUE}, the result will
-be a list of named vectors of length equal to the input vectors.
+Returns either a named numeric vector of length 3 or a list of
+named numeric vectors representing the values of pounds, shillings,
+and pence. If the input lsd value is negative, the l, s, and d values
+will all be negative.
 }
 \description{
 Convert between different currencies that are in the form of pounds,
@@ -38,8 +36,7 @@ shillings.
 }
 \examples{
 # Exchange at the rate of 31 shillings
-deb_exchange(850, 16, 5, rate_per_solidi = 31)
-deb_exchange(850, 16, 5, rate_per_solidi = 31, vector = TRUE)
+deb_exchange(lsd = c(850, 16, 5), rate_per_solidi = 31)
 
 # If the exchange rate is in shillings and pence, you can either
 # decimalize the shillings or add the pence and divide by 12 in
@@ -47,7 +44,13 @@ deb_exchange(850, 16, 5, rate_per_solidi = 31, vector = TRUE)
 # a repeating decimal, the latter approach is preferable.
 
 # Exchange at the rate of 31 shillings 4 pence
-deb_exchange(850, 16, 5, rate_per_solidi = 31.3333)
-deb_exchange(850, 16, 5, rate_per_solidi = 31 + 4/12)
+deb_exchange(lsd = c(850, 16, 5), rate_per_solidi = 31.3333)
+deb_exchange(lsd = c(850, 16, 5), rate_per_solidi = 31 + 4/12)
+
+# Exchange of a list of lsd vectors at a single rate
+# This returns a list of named lsd values
+lsd_list <- list(c(40, 5, 9), c(29, 7, 1), c(35, 6, 5))
+
+deb_exchange(lsd = lsd_list, rate_per_solidi = 31)
 
 }

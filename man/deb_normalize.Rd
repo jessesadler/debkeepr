@@ -37,26 +37,26 @@ Carolingian Empire.
 }
 \examples{
 # Use to calculate the correct number of pounds, shillings, and pence
-deb_normalize(c(5, 55, 22))
+deb_normalize(lsd = c(5, 55, 22))
 
 # It is possible to perform math within the function
-deb_normalize(c(5 + 6, 20 + 18, 8 + 11))
+deb_normalize(lsd = c(5 + 6, 20 + 18, 8 + 11))
 
 # deb_normalize can deal with negative values
-deb_normalize(c(-5, -25, -22))
+deb_normalize(lsd = c(-5, -25, -22))
 
 # Or a mixture of positive and negative values
 # if that occurs for some reason
-deb_normalize(c(5, -25, 22))
+deb_normalize(lsd = c(5, -25, 22))
 
 # deb_normalize can also properly normalize decimalized pounds and shillings
-deb_normalize(c(8.7, 33.65, 15))
+deb_normalize(lsd = c(8.7, 33.65, 15))
 
 # Use the round argument to return whole pence
-deb_normalize(c(8.7, 33.65, 15), round = 0)
+deb_normalize(lsd = c(8.7, 33.65, 15), round = 0)
 
 # To normalize multiple lsd values use a list of lsd vectors
 lsd_list <- list(c(4, 34, 89), c(-9, -75, -19), c(15.85, 36.15, 56))
-deb_normalize(lsd_list)
+deb_normalize(lsd = lsd_list)
 
 }

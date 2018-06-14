@@ -22,19 +22,17 @@ number of times that the interest should be added. A numeric vector
 of length 1. Default is 1.}
 
 \item{with_principal}{Logical (default \code{TRUE}: when \code{TRUE} the resulting
-pounds, shillings and pence will include the interest charged as well
-as the principal. When \code{FALSE} only the interest will be shown.}
+pounds, shillings and pence will include the principal as well as the
+interest. When \code{FALSE} only the interest will be shown.}
 
 \item{round}{Round pence to specified number of decimal places.
 Default is 3. Set to 0 to return pence as whole numbers.}
 }
 \value{
-Returns either a tibble with columns for the pounds, shillings, and
-pence values labeled as l, s, and d or a named numeric vector with values
-for pounds, shillings, and pence. The number of rows in the resulting
-tibble will be equal to the length of the input vectors. If the length of
-\code{l}, \code{s}, and \code{d} is greater than 1 and \code{vector = TRUE}, the result will
-be a list of named vectors of length equal to the input vectors.
+Returns either a named numeric vector of length 3 or a list of
+named numeric vectors representing the values of pounds, shillings,
+and pence. If the input lsd value is negative, the l, s, and d values
+will all be negative.
 }
 \description{
 Calculate the interest of pounds, shillings, and pence
@@ -43,21 +41,19 @@ calculate compound interest.
 }
 \examples{
 # Calculate the interest with the principal over a certain duration
-# If £10.14.5 were lent over a period of 5 years
-deb_interest(l = 10, s = 14, d = 5, duration = 5)
-deb_interest(l = 10, s = 14, d = 5, duration = 5, vector = TRUE)
+# If £10.14.5 were lent over a period of 5 years at 6.25\%
+deb_interest(c(10, 14, 5), duration = 5)
 
 # Or you can calculate only the interest
-deb_interest(l = 10, s = 14, d = 5, duration = 5, with_principal = FALSE)
-
-# l, s, and d can be vectors of length > 1
-# Return a tibble with two rows
-deb_interest(l = c(8, 10), s = c(15, 6), d = c(4, 9))
-
-# Return a list with two vectors
-deb_interest(l = c(8, 10), s = c(15, 6), d = c(4, 9), vector = TRUE)
+deb_interest(c(10, 14, 5), duration = 5, with_principal = FALSE)
 
 # Use the round argument to return pence with the desired accuracy
-deb_interest(l = 10, s = 14, d = 5, duration = 5, round = 0)
+deb_interest(c(10, 14, 5), duration = 5, round = 0)
+
+# Interest of a list of lsd vectors at a single rate
+# This returns a list of named lsd values
+lsd_list <- list(c(40, 5, 9), c(29, 7, 1), c(35, 6, 5))
+
+deb_interest(lsd = lsd_list, duration = 5, rate = 0.08)
 
 }

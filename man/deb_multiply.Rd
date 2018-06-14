@@ -19,12 +19,9 @@ pence will be multiplied. Should be a numeric vector of length 1.}
 Default is 3. Set to 0 to return pence as whole numbers.}
 }
 \value{
-Returns either a tibble with columns for the pounds, shillings, and
-pence values labeled as l, s, and d or a named numeric vector with values
-for pounds, shillings, and pence. The number of rows in the resulting
-tibble will be equal to the length of the input vectors. If the length of
-\code{l}, \code{s}, and \code{d} is greater than 1 and \code{vector = TRUE}, the result will
-be a list of named vectors of length equal to the input vectors.
+Returns either a named numeric vector of length 3 or a list of
+named numeric vectors representing the values of pounds, shillings,
+and pence.
 }
 \description{
 Multiply pounds, shillings, and pence by a given multiplier (\code{x}).
@@ -32,45 +29,28 @@ The result is normalized to correct values based on 12 pence in a
 shilling and 20 shillings in a pound. This is a wrapper around
 \code{\link[=deb_normalize]{deb_normalize()}}.
 }
-\details{
-This function uses the nomenclature of
-\href{https://en.wikipedia.org/wiki/£sd}{l, s, and d} to refer to pounds,
-shillings, and pence. This derives from the Latin terms for librae,
-solidi, and denarii. One solidus was equivalent to 12 denarii, and
-240 denarii coins were made from on libra of silver. The nomenclature
-and values of 12 denarii to 1 solidus and 20 solidi to 1 libra was
-adopted by Charlemagne and spread throughout Europe under different names.
-}
 \examples{
 # Multiply pounds, shillings, and pence by 5
-deb_multiply(x = 5, l = 5, s = 15, d = 8)
-deb_multiply(x = 5, 5, 15, 8, vector = TRUE)
+deb_multiply(lsd = c(5, 15, 8), x = 5)
 
 # Calculate commission of 3\% of sales of £3095 17s 6d
-deb_multiply(x = 0.03, 3095, 17, 6)
+deb_multiply(lsd = c(3095, 17, 6), x = 0.03)
 
 # The l, s, and d values do not have to be normalized
-deb_multiply(x = 8, 10, 38, 65)
+deb_multiply(lsd = c(10, 38, 65), x = 5)
 
 # Like deb_normalize(), deb_multiply() can handle negative numbers
-deb_multiply(x = 5, -5, -15, -8)
+deb_multiply(lsd = c(-5, -15, -8), x = 5)
+deb_multiply(lsd = c(5, 15, 8), x = -5)
 
 # Or decimals
-deb_multiply(x = 5, l = 5.625, s = 15.35, d = 8)
+deb_multiply(lsd = c(5.625, 15.35, 8), x = 5)
 
-# l, s, and d can be vectors of length > 1
-# Return a tibble with two rows
-deb_multiply(x = 6,
-             l = c(8, 10),
-             s = c(15, 6),
-             d = c(3, 9))
+# Multiply a list of lsd vectors by a multiplier
+# This returns a list of named lsd values
+lsd_list <- list(c(40, 5, 9), c(29, 7, 1), c(35, 6, 5))
 
-# Return a list with two vectors
-deb_multiply(x = 6,
-             l = c(8, 10),
-             s = c(15, 6),
-             d = c(3, 9),
-             vector = TRUE)
+deb_multiply(lsd = lsd_list, x = 5)
 
 }
 \seealso{

@@ -8,8 +8,8 @@ deb_divide_mutate(df, l = l, s = s, d = d, x, suffix = ".1",
   round = 3, replace = FALSE)
 }
 \arguments{
-\item{df}{A data frame that contains columns with pounds, shillings,
-and pence variables.}
+\item{df}{A data frame that contains separate olumns with pounds,
+shillings, and pence variables.}
 
 \item{l}{Pounds column: Unquoted name of a numeric variable corresponding
 to pounds. Default is l.}
@@ -48,15 +48,17 @@ representing the calculated pounds, shillings and pence.
 example <- data.frame(l = c(356, 10, 26, 12),
                       s = c(100, 18, 11, 16),
                       d = c(98, 11, 10, 5))
-deb_divide_mutate(example, x = 5, l, s, d)
+deb_divide_mutate(example, l, s, d, x = 5)
 
 # Change the suffix added to the new variables
-deb_divide_mutate(example, x = 5, l, s, d,
+deb_divide_mutate(example, l, s, d,
+                  x = 5,
                   suffix = ".div5")
 
 # Replace the existing pounds, shillings, and pence
 # with divided values
-deb_divide_mutate(example, x = 5, l, s, d,
+deb_divide_mutate(example, l, s, d,
+                  x = 5,
                   replace = TRUE)
 
 }

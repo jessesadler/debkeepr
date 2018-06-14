@@ -1,115 +1,134 @@
 context("test deb_normalize lsd.R")
 
-## Error messages ##
-test_that("non-numeric is an error", {
-  expect_error(deb_normalize(9, 0, "t"),
-               "d must be numeric")
-})
+## Normalization functions, as well as basic checks for
+## lsd vector and lsd data frame
 
+ex_vector <- c(5, 84, 53)
+negative_vector <- c(-5, -84, -53)
+decimal_vector <- c(5.875, 84.1333, 55)
+ex_list <- list(c(35, 50, 89),
+                     c(-10, -48, -181),
+                     c(26.875, 84.1333, 55),
+                     c(12, 76, 205))
+list_answer <- list(c(l = 37, s = 17, d = 5),
+                    c(l = -13, s = -3, d = -1),
+                    c(l = 31, s = 6, d = 2.6),
+                    c(l = 16, s = 13, d = 1))
+transactions <- data.frame(credit = sample(letters[1:4]),
+                           debit = sample(letters[1:4]))
+
+## Error messages from lsd_check ##
 test_that("round argument is numeric", {
-  expect_error(deb_normalize(1, 34, 4, round = "t"),
+  expect_error(deb_normalize(ex_vector, round = "t"),
                "round must be numeric")
+  expect_error(deb_normalize(c(1, 34, 4), round = c(0, 2)),
+               "round must be numeric vector of length 1")
 })
 
-test_that("vector argument is logical", {
-  expect_error(deb_normalize(9, 0, 8, 2, 5),
-               "vector must be logical, either TRUE or FALSE")
+test_that("non-numeric is an error", {
+  expect_error(deb_normalize(c("hello", "goodbye")),
+               "lsd must be numeric")
+  expect_error(deb_normalize(list(c("hello", "goodbye"), c(TRUE, FALSE))),
+               "lsd must be a list of numeric vectors")
 })
 
-test_that("l, s, and d must be the same length", {
-  expect_error(deb_normalize(l = c(9, 0), s = 8, d = 2),
-               "l, s, and d must be numeric vectors of the same length")
+test_that("length of lsd is 3", {
+  expect_error(deb_normalize(c(10, 9, 3, 5)),
+               "length of lsd must be 3.
+           There must be a value for pounds, shillings, and pence.")
+  expect_error(deb_normalize(list(c(10, 9, 3, 5), c(6, 3), c(4, 6, 8))),
+               "lsd must be a list of numeric vectors of length 3.
+           There must be a value for pounds, shillings, and pence.")
 })
 
-## Different posible types of values ##
-test_that("positive and negative normalization", {
-  expect_equal(deb_librae(10, 25, 22), 11)
-  expect_equal(deb_librae(-10, -25, -22), -11)
-  expect_equal(deb_solidi(10, 25, 22), 6)
-  expect_equal(deb_solidi(-10, -25, -22), -6)
-  expect_equal(deb_denarii(10, 25, 22), 10)
-  expect_equal(deb_denarii(-10, -25, -22), -10)
+test_that("lsd_decimal_check", {
+  expect_equal(lsd_decimal_check(decimal_vector), c(5, 101, 62.5996))
+  expect_equal(lsd_decimal_check(-decimal_vector), c(5, 101, 62.5996))
+  expect_equal(lsd_decimal_check(c(8.5, 7, 0)), c(8, 17, 0))
+  expect_equal(lsd_decimal_check(c(8, 29.875, 30)), c(8, 29, 40.5))
 })
 
-test_that("mixed positive and negative values", {
-  expect_equal(deb_librae(10, -25, 22), 8)
-  expect_equal(deb_librae(0, -25, 22), -1)
-  expect_equal(deb_solidi(10, -25, 22), 16)
-  expect_equal(deb_solidi(0, -25, 22), -3)
-  expect_equal(deb_denarii(10, -25, 22), 10)
-  expect_equal(deb_denarii(0, -25, 22), -2)
-})
-
-test_that("librae with decimal", {
-  expect_equal(deb_decimal_check(10.7, 38, 22), c(10, 51, 34))
-  expect_equal(deb_librae(10.7, 38, 22), 12)
-  expect_equal(deb_librae(-10.7, -38, -22), -12)
-  expect_equal(deb_solidi(10.7, 38, 22), 13)
-  expect_equal(deb_solidi(-10.7, -38, -22), -13)
-  expect_equal(deb_solidi(10.5, 38, 22), 9)
-  expect_equal(deb_denarii(10.7, 38, 22), 10)
-  expect_equal(deb_denarii(-10.7, -38, -22), -10)
-})
-
-test_that("solidi with decimal", {
-  expect_equal(deb_decimal_check(10, 18.8, 32), c(10, 18, 41.6))
-  expect_equal(deb_librae(10, 18.8, 32), 11)
-  expect_equal(deb_librae(-10, -18.8, -32), -11)
-  expect_equal(deb_solidi(10, 18.8, 32), 1)
-  expect_equal(deb_solidi(-10, -18.8, -32), -1)
-  expect_equal(deb_denarii(10, 18.8, 32), 5.6)
-  expect_equal(deb_denarii(-10, -18.8, -32), -5.6)
-})
-
-test_that("round denarii decimal", {
-  expect_equal(deb_denarii(10, 18.4254254, 10), 3.105)
-  expect_equal(deb_denarii(10, 18.4254254, 10, round = 0), 3)
-  expect_equal(deb_denarii(10, 18.4254254, 10, round = 5), 3.1051)
-  expect_equal(deb_normalize(10, 18.4254254, 10), tibble::tibble(l = 10, s = 19, d = 3.105))
-  expect_equal(deb_normalize(10, 18.4254254, 10, vector = TRUE, round = 0), c(l = 10, s = 19, d = 3))
-  expect_equal(deb_normalize(10, 18.4254254, 10, vector = TRUE, round = 5), c(l = 10, s = 19, d = 3.1051))
-})
+## Normalization of lsd ##
 
 test_that("it goes together in deb_normalize", {
-  expect_equal(deb_normalize(10, 25, 22), tibble::tibble(l = 11, s = 6, d = 10))
-  expect_equal(deb_normalize(10, 25, 22, vector = TRUE), c(l = 11, s = 6, d = 10))
-  expect_equal(deb_normalize(10, -25, 22, vector = TRUE), c(l = 8, s = 16, d = 10))
-  expect_equal(deb_normalize(0, -25, 22), tibble::tibble(l = -1, s = -3, d = -2))
-  expect_equal(deb_normalize(10.7, 38, 22, vector = TRUE), c(l = 12, s = 13, d = 10))
-  expect_equal(deb_normalize(10, 18.8, 32), tibble::tibble(l = 11, s = 1, d = 5.6))
+  expect_equal(deb_normalize(ex_vector), c(l = 9, s = 8, d = 5))
+  expect_equal(deb_normalize(negative_vector), c(l = -9, s = -8, d = -5))
+  expect_equal(deb_normalize(decimal_vector), c(l = 10, s = 6, d = 2.6))
+  expect_equal(deb_normalize(decimal_vector, round = 5),
+               c(l = 10, s = 6, d = 2.5996))
+  expect_equal(deb_normalize(decimal_vector, round = 0),
+               c(l = 10, s = 6, d = 3))
 })
 
 ## Vectorization ##
 
-l_vector <- c(8, 8.325, -8.325, 10)
-s_vector <- c(36, 36.85, -36.85, 36.325)
-d_vector <- c(25, 25, -25, 18)
-
-answer_tbl <- tibble::tibble(l = c(9, 10, -10, 11),
-                             s = c(18, 5, -5, 17),
-                             d = c(1, 5.2, -5.2, 9.9))
-answer_list <- list(deb_normalize(8, 36, 25, vector = TRUE),
-                    deb_normalize(8.325, 36.85, 25, vector = TRUE),
-                    deb_normalize(-8.325, -36.85, -25, vector = TRUE),
-                    deb_normalize(10, 36.325, 18, vector = TRUE))
-
 test_that("vectorization works", {
-  expect_equal(is.list(deb_decimal_check(l_vector, s_vector, d_vector)), TRUE)
-  expect_equal(length(deb_decimal_check(l_vector, s_vector, d_vector)), 4)
-  expect_equal(deb_librae(l_vector, s_vector, d_vector), c(9, 10, -10, 11))
-  expect_equal(deb_solidi(l_vector, s_vector, d_vector), c(18, 5, -5, 17))
-  expect_equal(deb_denarii(l_vector, s_vector, d_vector), c(1, 5.2, -5.2, 9.9))
-  expect_equal(deb_denarii(l_vector, s_vector, d_vector, round = 0), c(1, 5, -5, 10))
+  expect_equal(is.list(deb_normalize(ex_list)), TRUE)
+  expect_equal(length(deb_normalize(ex_list)), 4)
+  expect_equal(deb_normalize(ex_list), list_answer)
 })
 
+## Normalization data frame ##
 
-test_that("vectorization of deb_normalize works", {
-  # tibble output
-  expect_equal(nrow(deb_normalize(l_vector, s_vector, d_vector)), 4)
-  expect_equal(deb_normalize(l_vector, s_vector, d_vector), answer_tbl)
-  # vector or list output
-  expect_equal(length(deb_normalize(l_vector, s_vector, d_vector, vector = TRUE)), 4)
-  expect_equal(is.list(deb_normalize(8, 35, 25, vector = TRUE)), FALSE)
-  expect_equal(is.list(deb_normalize(l_vector, s_vector, d_vector, vector = TRUE)), TRUE)
-  expect_equal(deb_normalize(l_vector, s_vector, d_vector, vector = TRUE), answer_list)
+ex_df <- data.frame(l = c(35, -10, 26.875, 12),
+                    s = c(50, -48, 84.1333, 76),
+                    d = c(89, -181, 55, 205))
+df_answer <- data.frame(l = c(37, -13, 31, 16),
+                        s = c(17, -3, 6, 13),
+                        d = c(5, -1, 2.6, 1))
+df_answer2 <- data.frame(l.1 = c(37, -13, 31, 16),
+                         s.1 = c(17, -3, 6, 13),
+                         d.1 = c(5, -1, 2.6, 1))
+character_df <- data.frame(ch = c("hello", "goodbye"),
+                           n1 = c(6, 7),
+                           n2 = c(3, 4))
+column_names <- data.frame(pounds = c(37, -13, 31, 16),
+                           shillings = c(17, -3, 6, 13),
+                           pence = c(5, -1, 2.6, 1))
+
+# Checks for data frames #
+
+test_that("lsd_column_check work", {
+  expect_error(deb_normalize_df(df, l, s, d),
+               "df must be a data frame or data-frame like object")
+  expect_error(deb_normalize_df(ex_df, pounds, shillings, pence),
+               "Column names for l, s, and d must be provided if the
+         default names of l, s, and d are not present in the data frame")
+  expect_error(deb_normalize_df(character_df, ch, n1, n2),
+               "l must be a numeric variable")
+  expect_error(deb_normalize_df(character_df, n1, ch, n2),
+               "s must be a numeric variable")
+  expect_error(deb_normalize_df(character_df, n1, n2, ch),
+               "d must be a numeric variable")
+})
+
+test_that("suffix check", {
+  expect_error(deb_normalize_df(ex_df, replace = FALSE, suffix = 1),
+               "suffix must be a character vector")
+  expect_error(deb_normalize_df(ex_df, replace = FALSE, suffix = c(".1", ".2")),
+               "suffix must be a character vector of length 1")
+  expect_error(deb_normalize_df(ex_df, replace = FALSE, suffix = ""),
+               "suffix cannot be an empty character vector.
+         To keep the same variable names and replace the original variables use replace = TRUE")
+})
+
+test_that("lsd_column_names works",{
+  expect_equal(names(deb_normalize_df(ex_df, replace = FALSE)),
+               c("l", "s", "d", "l.1", "s.1", "d.1"))
+  expect_equal(names(deb_normalize_df(ex_df, replace = FALSE, suffix = "_x")),
+               c("l", "s", "d", "l_x", "s_x", "d_x"))
+  expect_equal(names(deb_normalize_df(column_names, l = pounds, s = shillings, d = pence,
+                                      replace = FALSE, suffix = "_x")),
+               c("pounds", "shillings", "pence", "pounds_x", "shillings_x", "pence_x"))
+  # Replace works with other columns present
+  expect_equal(names(deb_normalize_df(cbind(transactions, ex_df), replace = TRUE)),
+                     c("credit", "debit", "l", "s", "d"))
+})
+
+# Normalization #
+
+test_that("normalization_df works", {
+  expect_equal(deb_normalize_df(ex_df, round = 5)[3, 3], 2.5996)
+  expect_equal(deb_normalize_df(ex_df, replace = TRUE), df_answer)
+  expect_equal(deb_normalize_df(ex_df, replace = FALSE), cbind(ex_df, df_answer2))
 })

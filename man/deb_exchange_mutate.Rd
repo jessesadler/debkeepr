@@ -8,8 +8,8 @@ deb_exchange_mutate(df, l = l, s = s, d = d, rate_per_solidi,
   suffix = ".exchange", round = 3, replace = FALSE)
 }
 \arguments{
-\item{df}{A data frame that contains columns with pounds, shillings,
-and pence variables.}
+\item{df}{A data frame that contains separate olumns with pounds,
+shillings, and pence variables.}
 
 \item{l}{Pounds column: Unquoted name of a numeric variable corresponding
 to pounds. Default is l.}
@@ -43,8 +43,8 @@ and pence representing the converted currency.
 \description{
 Uses \code{\link[dplyr:mutate]{dplyr::mutate()}} to convert between different currencies that are in
 the form of pounds, shillings, and pence variables in a data frame given
-an exchange rate calculated on the basis of shillings. The converted value
-is returned in the form of three new variables representing the calculated
+an exchange rate calculated on the basis of shillings. The converted values
+are returned in the form of three new variables representing the calculated
 pounds, shillings and pence for the interest.
 }
 \examples{

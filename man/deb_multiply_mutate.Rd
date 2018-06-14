@@ -8,8 +8,8 @@ deb_multiply_mutate(df, l = l, s = s, d = d, x, suffix = ".1",
   round = 3, replace = FALSE)
 }
 \arguments{
-\item{df}{A data frame that contains columns with pounds, shillings,
-and pence variables.}
+\item{df}{A data frame that contains separate olumns with pounds,
+shillings, and pence variables.}
 
 \item{l}{Pounds column: Unquoted name of a numeric variable corresponding
 to pounds. Default is l.}
@@ -40,7 +40,7 @@ and pence representing the multiplied values.
 }
 \description{
 Uses \code{\link[dplyr:mutate]{dplyr::mutate()}} to multiply pounds, shillings, and pence by a given
-multiplier (\code{x}). The value is returned in the form of three new variables
+multiplier (\code{x}). The values are returned in the form of three new variables
 representing the calculated pounds, shillings and pence.
 }
 \examples{
@@ -48,15 +48,17 @@ representing the calculated pounds, shillings and pence.
 example <- data.frame(l = c(35, 10, 26, 12),
                       s = c(10, 18, 11, 16),
                       d = c(9, 11, 10, 5))
-deb_multiply_mutate(example, x = 5, l, s, d)
+deb_multiply_mutate(example, l, s, d, x = 5)
 
 # Change the suffix added to the new variables
-deb_multiply_mutate(example, x = 5, l, s, d,
+deb_multiply_mutate(example, l, s, d,
+                    x = 5,
                     suffix = ".x5")
 
 # Replace the existing pounds, shillings, and pence
 # with multiplied values
-deb_multiply_mutate(example, x = 5, l, s, d,
+deb_multiply_mutate(example, l, s, d,
+                    x = 5,
                     replace = TRUE)
 
 }
