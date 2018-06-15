@@ -7,8 +7,7 @@
 deb_lsd_s_mutate(df, l = l, s = s, d = d, column_name = shillings)
 }
 \arguments{
-\item{df}{A data frame that contains separate olumns with pounds,
-shillings, and pence variables.}
+\item{df}{A data frame that contains pounds, shillings, and pence variables.}
 
 \item{l}{Pounds column: Unquoted name of a numeric variable corresponding
 to pounds. Default is l.}

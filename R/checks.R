@@ -12,24 +12,27 @@ lsd_check <- function(lsd, round = NULL) {
     }
   }
 
-  # Vector
+  # vector
   if (is.list(lsd) == FALSE & is.vector(lsd) == TRUE) {
     if (!is.numeric(lsd)) {
       stop(call. = FALSE, "lsd must be numeric")
     }
     if (length(lsd) != 3) {
-      stop(call. = FALSE, "length of lsd must be 3.
-           There must be a value for pounds, shillings, and pence.")
+      stop(call. = FALSE, paste("length of lsd must be 3.",
+                                "There must be a value for pounds, shillings, and pence.",
+                                sep = "\n"))
     }
   }
 
+  # list
   if (is.list(lsd) == TRUE) {
     if (!all(purrr::map_lgl(lsd, is.numeric))) {
       stop(call. = FALSE, "lsd must be a list of numeric vectors")
     }
     if (identical(purrr::map_dbl(lsd, length), rep(3, length(lsd))) == FALSE) {
-      stop(call. = FALSE, "lsd must be a list of numeric vectors of length 3.
-           There must be a value for pounds, shillings, and pence.")
+      stop(call. = FALSE, paste("lsd must be a list of numeric vectors of length 3.",
+                                "There must be a value for pounds, shillings, and pence.",
+                                sep = "\n"))
     }
   }
 }
@@ -47,8 +50,9 @@ lsd_column_check <- function(df, l, s, d) {
 
   # Ensure that l, s, and d columns exist in the data frame
   if (all(column_names %in% names(df)) == FALSE) {
-    stop(call. = FALSE, "Column names for l, s, and d must be provided if the
-         default names of l, s, and d are not present in the data frame")
+    stop(call. = FALSE, paste("Column names for l, s, and d must be provided if the",
+                              "default names of l, s, and d are not present in the data frame",
+                              sep = "\n"))
   }
 
   l <- rlang::eval_tidy(l, df)
@@ -95,8 +99,9 @@ suffix_check <- function(suffix, replace = FALSE) {
   # Make sure suffix has a value so that variables are not overwritten during
   # the function, resulting in wrong results if l or s have decimals.
   if (suffix == "") {
-    stop(call. = FALSE, "suffix cannot be an empty character vector.
-         To keep the same variable names and replace the original variables use replace = TRUE")
+    stop(call. = FALSE, paste("suffix cannot be an empty character vector.",
+         "To keep the same variable names and replace the original variables use replace = TRUE",
+         sep = "\n"))
   }
   # Use same variable names if replace is TRUE
   if (replace == TRUE) {
@@ -109,8 +114,9 @@ suffix_check <- function(suffix, replace = FALSE) {
 credit_check <- function(df, credit = NULL, debit = NULL, edge_columns, account_id = NULL) {
 
   if (all(edge_columns %in% names(df)) == FALSE) {
-    stop(call. = FALSE, "Column names for credit and/or debit must be provided if
-         the default names of credit and/or debit are not present in the data frame")
+    stop(call. = FALSE, paste("Column names for credit and/or debit must be provided if",
+                              "the default names of credit and/or debit are not present in the data frame",
+                              sep = "\n"))
   }
 
   if (!is.null(credit) & !is.null(debit)) {

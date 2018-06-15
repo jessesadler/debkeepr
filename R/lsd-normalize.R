@@ -149,8 +149,7 @@ deb_normalize <- function(lsd, round = 3) {
 #' by at least the 8th century and spread throughout Europe through the
 #' Carolingian Empire.
 #'
-#' @param df A data frame that contains separate olumns with pounds,
-#'   shillings, and pence variables.
+#' @param df A data frame that contains pounds, shillings, and pence variables.
 #' @param l Pounds column: Unquoted name of a numeric variable corresponding
 #'   to pounds. Default is l.
 #' @param s Shillings column: Unquoted name of numeric variable corresponding

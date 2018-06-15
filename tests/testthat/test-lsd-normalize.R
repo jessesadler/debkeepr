@@ -7,9 +7,9 @@ ex_vector <- c(5, 84, 53)
 negative_vector <- c(-5, -84, -53)
 decimal_vector <- c(5.875, 84.1333, 55)
 ex_list <- list(c(35, 50, 89),
-                     c(-10, -48, -181),
-                     c(26.875, 84.1333, 55),
-                     c(12, 76, 205))
+                c(-10, -48, -181),
+                c(26.875, 84.1333, 55),
+                c(12, 76, 205))
 list_answer <- list(c(l = 37, s = 17, d = 5),
                     c(l = -13, s = -3, d = -1),
                     c(l = 31, s = 6, d = 2.6),
@@ -34,11 +34,13 @@ test_that("non-numeric is an error", {
 
 test_that("length of lsd is 3", {
   expect_error(deb_normalize(c(10, 9, 3, 5)),
-               "length of lsd must be 3.
-           There must be a value for pounds, shillings, and pence.")
+               paste("length of lsd must be 3.",
+                     "There must be a value for pounds, shillings, and pence.",
+                     sep = "\n"))
   expect_error(deb_normalize(list(c(10, 9, 3, 5), c(6, 3), c(4, 6, 8))),
-               "lsd must be a list of numeric vectors of length 3.
-           There must be a value for pounds, shillings, and pence.")
+               paste("lsd must be a list of numeric vectors of length 3.",
+                     "There must be a value for pounds, shillings, and pence.",
+                     sep = "\n"))
 })
 
 test_that("lsd_decimal_check", {
@@ -92,8 +94,9 @@ test_that("lsd_column_check work", {
   expect_error(deb_normalize_df(df, l, s, d),
                "df must be a data frame or data-frame like object")
   expect_error(deb_normalize_df(ex_df, pounds, shillings, pence),
-               "Column names for l, s, and d must be provided if the
-         default names of l, s, and d are not present in the data frame")
+               paste("Column names for l, s, and d must be provided if the",
+                     "default names of l, s, and d are not present in the data frame",
+                     sep = "\n"))
   expect_error(deb_normalize_df(character_df, ch, n1, n2),
                "l must be a numeric variable")
   expect_error(deb_normalize_df(character_df, n1, ch, n2),
@@ -108,8 +111,9 @@ test_that("suffix check", {
   expect_error(deb_normalize_df(ex_df, replace = FALSE, suffix = c(".1", ".2")),
                "suffix must be a character vector of length 1")
   expect_error(deb_normalize_df(ex_df, replace = FALSE, suffix = ""),
-               "suffix cannot be an empty character vector.
-         To keep the same variable names and replace the original variables use replace = TRUE")
+               paste("suffix cannot be an empty character vector.",
+                     "To keep the same variable names and replace the original variables use replace = TRUE",
+                     sep = "\n"))
 })
 
 test_that("lsd_column_names works",{

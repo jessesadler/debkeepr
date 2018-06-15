@@ -27,16 +27,7 @@ deb_denarii_sum <- function(l, s, d, round = 3) {
 #' pence. When used in conjunction with [dplyr::group_by()], [deb_sum()] will
 #' summarize the pounds, shillings, and pence columns for each group.
 #'
-#' @param df A data frame that contains columns with pounds, shillings,
-#'   and pence variables.
-#' @param l Pounds column: Unquoted name of a numeric variable corresponding
-#'   to pounds. Default is l.
-#' @param s Shillings column: Unquoted name of numeric variable corresponding
-#'   to shillings. Default is s.
-#' @param d Pence column: Unquoted name of numeric variable corresponding to
-#'   pence. Default is d.
-#' @param round Round pence to specified number of decimal places.
-#'   Default is 3. Set to 0 if you want pence to always be a whole number.
+#' @inheritParams deb_normalize_df
 #'
 #' @return Returns a data frame with one level of grouping dropped. Any
 #'   variables other than `l`, `s`, and `d` that are not grouped will be

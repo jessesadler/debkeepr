@@ -8,8 +8,7 @@ deb_normalize_df(df, l = l, s = s, d = d, round = 3, replace = TRUE,
   suffix = ".1")
 }
 \arguments{
-\item{df}{A data frame that contains separate olumns with pounds,
-shillings, and pence variables.}
+\item{df}{A data frame that contains pounds, shillings, and pence variables.}
 
 \item{l}{Pounds column: Unquoted name of a numeric variable corresponding
 to pounds. Default is l.}
