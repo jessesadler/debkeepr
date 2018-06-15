@@ -171,6 +171,7 @@ deb_l_mutate <- function(df, librae,
   }
 
   # Column names: avoid overwriting l, s, and d columns
+  suffix <- suffix_check(suffix)
   lsd_names <- lsd_column_names(df,
                                 rlang::enquo(l_column),
                                 rlang::enquo(s_column),
@@ -234,6 +235,7 @@ deb_s_mutate <- function(df, solidi,
   }
 
   # Column names: avoid overwriting l, s, and d columns
+  suffix <- suffix_check(suffix)
   lsd_names <- lsd_column_names(df,
                                 rlang::enquo(l_column),
                                 rlang::enquo(s_column),
@@ -297,6 +299,7 @@ deb_d_mutate <- function(df, denarii,
   }
 
   # Column names: avoid overwriting l, s, and d columns
+  suffix <- suffix_check(suffix)
   lsd_names <- lsd_column_names(df,
                                 rlang::enquo(l_column),
                                 rlang::enquo(s_column),

@@ -2,64 +2,64 @@ context("test-lsd-accounts.R")
 
 suppressPackageStartupMessages(library(tibble))
 
-example1 <- tibble::tibble(credit = c("a", "b", "a", "c"),
-                           debit = c("b", "a", "c", "a"),
-                           l = c(10, 10, 7, 9),
-                           s = c(15, 15, 11, 2),
-                           d = c(6, 6, 8, 11))
-example2 <- tibble::tibble(from = c("a", "b", "a", "c"),
-                           to = c("b", "a", "c", "a"),
-                           pounds = c(10, 10, 7, 9),
-                           shillings = c(15, 15, 11, 2),
-                           pence = c(6, 6, 8, 11))
+example1 <- tibble(credit = c("a", "b", "a", "c"),
+                   debit = c("b", "a", "c", "a"),
+                   l = c(10, 10, 7, 9),
+                   s = c(15, 15, 11, 2),
+                   d = c(6, 6, 8, 11))
+example2 <- tibble(from = c("a", "b", "a", "c"),
+                   to = c("b", "a", "c", "a"),
+                   pounds = c(10, 10, 7, 9),
+                   shillings = c(15, 15, 11, 2),
+                   pence = c(6, 6, 8, 11))
 
 relation_v <- c("credit", "debit", "current")
 
-summary_answer <- tibble::tibble(account_id = rep(c("a", "b", "c"), each = 3),
-                                 relation = rep(c("credit", "debit", "current"), 3),
-                                 l = c(18, 19, -1, 10, 10, 0, 9, 7, 1),
-                                 s = c(7, 18, -11, 15, 15, 0, 2, 11, 11),
-                                 d = c(2, 5, -3, 6, 6, 0, 11, 8, 3))
+summary_answer <- tibble(account_id = rep(c("a", "b", "c"), each = 3),
+                         relation = rep(c("credit", "debit", "current"), 3),
+                         l = c(18, 19, -1, 10, 10, 0, 9, 7, 1),
+                         s = c(7, 18, -11, 15, 15, 0, 2, 11, 11),
+                         d = c(2, 5, -3, 6, 6, 0, 11, 8, 3))
 
 set.seed(240)
-example3 <- tibble::tibble(credit = sample(letters[1:4], 15, replace = TRUE),
-                           debit = sample(letters[1:4], 15, replace = TRUE),
-                           l = sample(1:30, 15, replace = TRUE),
-                           s = sample(1:19, 15, replace = TRUE),
-                           d = sample(1:11, 15, replace = TRUE))
+example3 <- tibble(credit = sample(letters[1:4], 15, replace = TRUE),
+                   debit = sample(letters[1:4], 15, replace = TRUE),
+                   l = sample(1:30, 15, replace = TRUE),
+                   s = sample(1:19, 15, replace = TRUE),
+                   d = sample(1:11, 15, replace = TRUE))
 set.seed(240)
-example4 <- tibble::tibble(from = sample(letters[1:4], 15, replace = TRUE),
-                           to = sample(letters[1:4], 15, replace = TRUE),
-                           pounds = sample(1:30, 15, replace = TRUE),
-                           shillings = sample(1:19, 15, replace = TRUE),
-                           pence = sample(1:11, 15, replace = TRUE))
+example4 <- tibble(from = sample(letters[1:4], 15, replace = TRUE),
+                   to = sample(letters[1:4], 15, replace = TRUE),
+                   pounds = sample(1:30, 15, replace = TRUE),
+                   shillings = sample(1:19, 15, replace = TRUE),
+                   pence = sample(1:11, 15, replace = TRUE))
 
 test_that("deb_account works", {
   expect_equal(deb_account(example1, "a"),
-               tibble::tibble(relation = relation_v,
-                              l = c(18, 19, -1),
-                              s = c(7, 18, -11),
-                              d = c(2, 5, -3)))
+               tibble(relation = relation_v,
+                      l = c(18, 19, -1),
+                      s = c(7, 18, -11),
+                      d = c(2, 5, -3)))
   expect_equal(deb_account(example3, "a"),
-               tibble::tibble(relation = relation_v,
-                              l = c(23, 22, 1),
-                              s = c(4, 3, 0),
-                              d = c(2, 8, 6)))
+               tibble(relation = relation_v,
+                      l = c(23, 22, 1),
+                      s = c(4, 3, 0),
+                      d = c(2, 8, 6)))
 })
 
 test_that("deb_account accepts different column names", {
   expect_equal(names(deb_account(example2, "a", from, to, pounds, shillings, pence)),
                c("relation", "pounds", "shillings", "pence"))
   expect_equal(deb_account(example2, "a", from, to, pounds, shillings, pence),
-               tibble::tibble(relation = relation_v,
-                              pounds = c(18, 19, -1),
-                              shillings = c(7, 18, -11),
-                              pence = c(2, 5, -3)))
+               tibble(relation = relation_v,
+                      pounds = c(18, 19, -1),
+                      shillings = c(7, 18, -11),
+                      pence = c(2, 5, -3)))
   expect_equal(deb_account(example4, "a", from, to, pounds, shillings, pence),
-               tibble::tibble(relation = relation_v,
-                              pounds = c(23, 22, 1),
-                              shillings = c(4, 3, 0),
-                              pence = c(2, 8, 6)))
+               tibble(relation = relation_v,
+                      pounds = c(23, 22, 1),
+                      shillings = c(4, 3, 0),
+                      pence = c(2, 8, 6)))
 })
 
 # credit_check makes checks for all lsd-account functions
@@ -127,13 +127,13 @@ test_that("deb_balance works", {
   expect_equal(names(deb_balance(example1)),
                      c("relation", "l", "s", "d"))
   expect_equal(deb_balance(example1),
-               tibble::tibble(relation = c("credit", "debit"),
-                              l = c(1, 1),
-                              s = c(11, 11),
-                              d = c(3, 3)))
+               tibble(relation = c("credit", "debit"),
+                      l = c(1, 1),
+                      s = c(11, 11),
+                      d = c(3, 3)))
   expect_equal(deb_balance(example3),
-               tibble::tibble(relation = c("credit", "debit"),
-                              l = c(54, 54),
-                              s = c(8, 8),
-                              d = c(9, 9)))
+               tibble(relation = c("credit", "debit"),
+                      l = c(54, 54),
+                      s = c(8, 8),
+                      d = c(9, 9)))
 })

@@ -74,7 +74,7 @@ deb_interest <- function(lsd,
 #' three new variables representing the calculated pounds, shillings and pence
 #' for the interest. The function does not calculate compound interest.
 #'
-#' @inheritParams deb_normalize_mutate
+#' @inheritParams deb_normalize_df
 #' @inheritParams deb_interest
 #' @param suffix Suffix added to the column names for the pounds,
 #'   shillings, and pence columns representing the interest so that

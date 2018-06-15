@@ -83,7 +83,7 @@ lsd_column_names <- function(df, l, s, d, suffix) {
   lsd_names
 }
 
-suffix_check <- function(suffix, replace) {
+suffix_check <- function(suffix, replace = FALSE) {
   if (!is.character(suffix)) {
     stop(call. = FALSE, "suffix must be a character vector")
   }

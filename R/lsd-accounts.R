@@ -106,12 +106,13 @@ deb_account <- function(df,
       s = deb_solidi_sum(!!l, !!s, !!d),
       d = deb_denarii_sum(!!l, !!s, !!d, round))
 
-  credit_d <- deb_lsd_d(credit$l, credit$s, credit$d)
-  debit_d <- deb_lsd_d(debit$l, debit$s, debit$d)
+  credit_d <- deb_lsd_d(c(credit$l, credit$s, credit$d))
+  debit_d <- deb_lsd_d(c(debit$l, debit$s, debit$d))
 
   denarii <- credit_d - debit_d
+  lsd <- deb_d_lsd(denarii, round)
 
-  current <- dplyr::bind_cols(relation = "current", deb_d_lsd(denarii, vector = FALSE, round))
+  current <- tibble::tibble(relation = "current", l = lsd[1], s = lsd[2], d = lsd[3])
 
   # Create account tibble and rename columns
   dplyr::bind_rows(credit, debit, current) %>%
@@ -199,14 +200,14 @@ deb_account_summary <- function(df,
     dplyr::group_by(!! credit) %>%
     dplyr::summarise(
       relation = "credit",
-      denarii = round(deb_lsd_d(sum(!!l), sum(!!s), sum(!!d)), round)) %>%
+      denarii = round(decimalize_d(sum(!!l), sum(!!s), sum(!!d)), round)) %>%
     dplyr::rename(account_id = !! credit)
 
   debits <- df %>%
     dplyr::group_by(!! debit) %>%
     dplyr::summarise(
       relation = "debit",
-      denarii = round(deb_lsd_d(sum(!!l), sum(!!s), sum(!!d)), round)) %>%
+      denarii = round(decimalize_d(sum(!!l), sum(!!s), sum(!!d)), round)) %>%
     dplyr::rename(account_id = !! debit)
 
   accounts_sum <- dplyr::mutate(debits, denarii = -denarii) %>%

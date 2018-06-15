@@ -9,6 +9,18 @@ deb_interest_mutate(df, l = l, s = s, d = d, interest = 0.0625,
   replace = FALSE)
 }
 \arguments{
+\item{df}{A data frame that contains separate olumns with pounds,
+shillings, and pence variables.}
+
+\item{l}{Pounds column: Unquoted name of a numeric variable corresponding
+to pounds. Default is l.}
+
+\item{s}{Shillings column: Unquoted name of numeric variable corresponding
+to shillings. Default is s.}
+
+\item{d}{Pence column: Unquoted name of numeric variable corresponding to
+pence. Default is d.}
+
 \item{interest}{Interest rate in decimal form. A numeric vector
 of length 1. Default is 0.0625, or 6.25 percent, which was default
 interest rate in the Low Countries at the end of the sixteenth century.}
@@ -28,7 +40,7 @@ columns of the principal used to make the calculation. Default is
 ".interest". Should be a character vector of length 1.}
 
 \item{round}{Round pence to specified number of decimal places.
-Default is 3. Set to 0 to return pence as whole numbers.}
+Default is 3. Set to 0 if you want pence to always be a whole number.}
 
 \item{replace}{Logical (default \code{FALSE}): when \code{TRUE} the new pounds,
 shillings, and pence variables will replace the original ones.}
