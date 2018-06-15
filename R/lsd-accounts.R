@@ -34,7 +34,7 @@
 #'   values represented in the form of pounds, shillings, and pence variables.
 #'   The data frame should have two variables for accounts (credit and debit)
 #'   and variables for pounds, shillings, and pence.
-#' @inheritParams deb_sum
+#' @inheritParams deb_normalize_df
 #' @param account_id The id of the account to be used to calculate the credit,
 #'   debit, and current values. The value for the account should be present in
 #'   the credit and/or debit variables.
@@ -92,31 +92,24 @@ deb_account <- function(df,
 
   credit <- df %>%
     dplyr::filter((!! credit) == account_id) %>%
-    dplyr::summarise(
-      relation = "credit",
-      l = deb_librae_sum(!!l, !!s, !!d),
-      s = deb_solidi_sum(!!l, !!s, !!d),
-      d = deb_denarii_sum(!!l, !!s, !!d, round))
+    deb_sum(!! l, !! s, !! d) %>%
+    dplyr::mutate(denarii = decimalize_d(!! l, !! s, !! d))
 
   debit <- df %>%
     dplyr::filter((!! debit) == account_id) %>%
-    dplyr::summarise(
-      relation = "debit",
-      l = deb_librae_sum(!!l, !!s, !!d),
-      s = deb_solidi_sum(!!l, !!s, !!d),
-      d = deb_denarii_sum(!!l, !!s, !!d, round))
+    deb_sum(!! l, !! s, !! d) %>%
+    dplyr::mutate(denarii = decimalize_d(!! l, !! s, !! d))
 
-  credit_d <- deb_lsd_d(c(credit$l, credit$s, credit$d))
-  debit_d <- deb_lsd_d(c(debit$l, debit$s, debit$d))
+  lsd <- deb_d_lsd(credit$denarii - debit$denarii, round)
 
-  denarii <- credit_d - debit_d
-  lsd <- deb_d_lsd(denarii, round)
-
-  current <- tibble::tibble(relation = "current", l = lsd[1], s = lsd[2], d = lsd[3])
+  current <- tibble::tibble(!! l_column := lsd[1],
+                            !! s_column := lsd[2],
+                            !! d_column := lsd[3])
 
   # Create account tibble and rename columns
   dplyr::bind_rows(credit, debit, current) %>%
-    dplyr::rename(!! l_column := l, !! s_column := s, !! d_column := d)
+    tibble::add_column(relation = c("credit", "debit", "current"), .before = 1) %>%
+    dplyr::select(-denarii)
 }
 
 #' Calculate credit, debit, and current values of accounts
@@ -295,11 +288,8 @@ deb_credit <- function(df,
   lsd_column_check(df, l, s, d)
 
   dplyr::group_by(df, !! credit) %>%
-    dplyr::summarise(
-      l = deb_librae_sum(!!l, !!s, !!d),
-      s = deb_solidi_sum(!!l, !!s, !!d),
-      d = deb_denarii_sum(!!l, !!s, !!d, round)) %>%
-    dplyr::rename(account_id = credit)
+    deb_sum(!! l, !! s, !! d) %>%
+    dplyr::rename(account_id = !! credit)
 }
 
 #' Calculate the total debit of accounts
@@ -372,11 +362,8 @@ deb_debit <- function(df,
   lsd_column_check(df, l, s, d)
 
   dplyr::group_by(df, !! debit) %>%
-    dplyr::summarise(
-      l = deb_librae_sum(!!l, !!s, !!d),
-      s = deb_solidi_sum(!!l, !!s, !!d),
-      d = deb_denarii_sum(!!l, !!s, !!d, round)) %>%
-    dplyr::rename(account_id = debit)
+    deb_sum(!! l, !! s, !! d) %>%
+    dplyr::rename(account_id = !! debit)
 }
 
 #' Calculate the current values of accounts
