@@ -1,16 +1,11 @@
 context("test-lsd-interest.R")
 
 ex_vector <- c(10, 3, 2)
-neg_vector <- c(-8, -16, -6)
-dec_vector <- c(5.85, 17.35, 10)
-
 ex_list <- list(c(30, 10, 9), c(10.725, 18.65, 11), c(-26, -11, -10))
 
 ex_df <- data.frame(l = c(30, 10.725, -26),
                     s = c(10, 18.65, -11),
                     d = c(9, 11, -10))
-
-
 
 test_that("interest checks work", {
   expect_error(deb_interest(ex_vector, interest = "t"),

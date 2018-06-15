@@ -95,7 +95,7 @@ lsd_normalize <- function(lsd, round) {
 #' # if that occurs for some reason
 #' deb_normalize(lsd = c(5, -25, 22))
 #'
-#' # deb_normalize can also properly normalize decimalized pounds and shillings
+#' # Can also properly normalize decimalized pounds and shillings
 #' deb_normalize(lsd = c(8.7, 33.65, 15))
 #'
 #' # Use the round argument to return whole pence
