@@ -98,9 +98,9 @@ deb_multiply_mutate <- function(df,
                                 s = s,
                                 d = d,
                                 x,
-                                suffix = ".1",
                                 round = 3,
-                                replace = FALSE) {
+                                replace = FALSE,
+                                suffix = ".1") {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)
@@ -215,9 +215,9 @@ deb_divide_mutate <- function(df,
                               s = s,
                               d = d,
                               x,
-                              suffix = ".1",
                               round = 3,
-                              replace = FALSE) {
+                              replace = FALSE,
+                              suffix = ".1") {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)

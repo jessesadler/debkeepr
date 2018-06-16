@@ -37,7 +37,7 @@
 #' # This returns a list of named lsd values
 #' lsd_list <- list(c(40, 5, 9), c(29, 7, 1), c(35, 6, 5))
 #'
-#' deb_interest(lsd = lsd_list, duration = 5, rate = 0.08)
+#' deb_interest(lsd = lsd_list, duration = 5, interest = 0.08)
 #'
 #' @export
 
@@ -124,9 +124,9 @@ deb_interest_mutate <- function(df,
                                 interest = 0.0625,
                                 duration = 1,
                                 with_principal = TRUE,
-                                suffix = ".interest",
                                 round = 3,
-                                replace = FALSE) {
+                                replace = FALSE,
+                                suffix = ".interest") {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)

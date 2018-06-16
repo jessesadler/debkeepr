@@ -128,7 +128,7 @@ deb_denarii_d <- function(d, round = 3) {
 #'   function. Default is d.
 #' @param suffix If the data frame already contains variables with the same
 #'   names as `l_column`, `s_column`, or `d_column`, this suffix will be
-#'   added to the new variables to distinguish them.
+#'   added to the new variables to distinguish them. Default is ".1".
 #' @param round round pence to specified number of decimal places.
 #'   Default is 3. Set to 0 to return pence as whole numbers.
 #'
@@ -155,8 +155,8 @@ deb_l_mutate <- function(df, librae,
                          l_column = l,
                          s_column = s,
                          d_column = d,
-                         suffix = ".1",
-                         round = 3) {
+                         round = 3,
+                         suffix = ".1") {
 
   librae <- rlang::enquo(librae)
 
@@ -220,8 +220,8 @@ deb_s_mutate <- function(df, solidi,
                          l_column = l,
                          s_column = s,
                          d_column = d,
-                         suffix = ".1",
-                         round = 3) {
+                         round = 3,
+                         suffix = ".1") {
   solidi <- rlang::enquo(solidi)
 
   # Check that solidi exists in df
@@ -284,8 +284,8 @@ deb_d_mutate <- function(df, denarii,
                          l_column = l,
                          s_column = s,
                          d_column = d,
-                         suffix = ".1",
-                         round = 3) {
+                         round = 3,
+                         suffix = ".1") {
   denarii <- rlang::enquo(denarii)
 
   # Check that denarii exists in df

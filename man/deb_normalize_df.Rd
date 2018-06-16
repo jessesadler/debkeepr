@@ -28,7 +28,7 @@ shillings, and pence variables will replace the original ones.}
 \item{suffix}{Suffix added to the column names for the pounds, shillings,
 and pence columns to distinguish them from the original pounds, shillings,
 and pence columns if \code{replace = FALSE}. Default is ".1". Should be a
-charactern vector of length 1.}
+character vector of length 1.}
 }
 \value{
 Returns a data frame with normalized pounds, shillings, and pence,

@@ -4,8 +4,8 @@
 \alias{deb_exchange_mutate}
 \title{Convert between pounds, shillings and pence currencies in a data frame}
 \usage{
-deb_exchange_mutate(df, l = l, s = s, d = d, rate_per_solidi,
-  suffix = ".exchange", round = 3, replace = FALSE)
+deb_exchange_mutate(df, l = l, s = s, d = d, rate_per_solidi, round = 3,
+  replace = FALSE, suffix = ".exchange")
 }
 \arguments{
 \item{df}{A data frame that contains pounds, shillings, and pence variables.}
@@ -24,16 +24,16 @@ of calculating the exchange rate between different currencies in terms
 of shillings. Thus, in terms of a given number over 20. A numeric vector
 of length 1.}
 
-\item{suffix}{Suffix added to the column names for the pounds, shillings, and pence
-columns representing the converted currency so that they are distinguished
-from the pounds, shillings, and pence columns of the original currency.
-Default is ".exchange". Should be a character vector of length 1.}
-
 \item{round}{Round pence to specified number of decimal places.
 Default is 3. Set to 0 if you want pence to always be a whole number.}
 
 \item{replace}{Logical (default \code{FALSE}): when \code{TRUE} the new pounds,
 shillings, and pence variables will replace the original ones.}
+
+\item{suffix}{Suffix added to the column names for the pounds, shillings, and pence
+columns representing the converted currency so that they are distinguished
+from the pounds, shillings, and pence columns of the original currency.
+Default is ".exchange". Should be a character vector of length 1.}
 }
 \value{
 Returns a data frame with three new variables of pounds, shillings,

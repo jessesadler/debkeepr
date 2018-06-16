@@ -4,8 +4,8 @@
 \alias{deb_multiply_mutate}
 \title{Multiplication of pounds, shillings, and pence in a data frame}
 \usage{
-deb_multiply_mutate(df, l = l, s = s, d = d, x, suffix = ".1",
-  round = 3, replace = FALSE)
+deb_multiply_mutate(df, l = l, s = s, d = d, x, round = 3,
+  replace = FALSE, suffix = ".1")
 }
 \arguments{
 \item{df}{A data frame that contains pounds, shillings, and pence variables.}
@@ -22,16 +22,16 @@ pence. Default is d.}
 \item{x}{Multiplier. The value by which the given pounds, shillings, and
 pence will be multiplied. Should be a numeric vector of length 1.}
 
-\item{suffix}{Suffix added to the column names for the pounds, shillings, and
-pence columns representing the multiplied values so that they are
-distinguished from the original pounds, shillings, and pence columns.
-Default is ".1". Should be a character vector of length 1.}
-
 \item{round}{Round pence to specified number of decimal places.
 Default is 3. Set to 0 if you want pence to always be a whole number.}
 
 \item{replace}{Logical (default \code{FALSE}): when \code{TRUE} the new pounds,
 shillings, and pence variables will replace the original ones.}
+
+\item{suffix}{Suffix added to the column names for the pounds, shillings, and
+pence columns representing the multiplied values so that they are
+distinguished from the original pounds, shillings, and pence columns.
+Default is ".1". Should be a character vector of length 1.}
 }
 \value{
 Returns a data frame with three new variables of pounds, shillings,

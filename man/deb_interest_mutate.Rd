@@ -5,8 +5,8 @@
 \title{Calculate the interest of pounds, shillings, and pence in a data frame}
 \usage{
 deb_interest_mutate(df, l = l, s = s, d = d, interest = 0.0625,
-  duration = 1, with_principal = TRUE, suffix = ".interest", round = 3,
-  replace = FALSE)
+  duration = 1, with_principal = TRUE, round = 3, replace = FALSE,
+  suffix = ".interest")
 }
 \arguments{
 \item{df}{A data frame that contains pounds, shillings, and pence variables.}
@@ -32,17 +32,17 @@ of length 1. Default is 1.}
 pounds, shillings and pence will include the principal as well as the
 interest. When \code{FALSE} only the interest will be shown.}
 
-\item{suffix}{Suffix added to the column names for the pounds,
-shillings, and pence columns representing the interest so that
-they are distinguished from the pounds, shillings, and pence
-columns of the principal used to make the calculation. Default is
-".interest". Should be a character vector of length 1.}
-
 \item{round}{Round pence to specified number of decimal places.
 Default is 3. Set to 0 if you want pence to always be a whole number.}
 
 \item{replace}{Logical (default \code{FALSE}): when \code{TRUE} the new pounds,
 shillings, and pence variables will replace the original ones.}
+
+\item{suffix}{Suffix added to the column names for the pounds,
+shillings, and pence columns representing the interest so that
+they are distinguished from the pounds, shillings, and pence
+columns of the principal used to make the calculation. Default is
+".interest". Should be a character vector of length 1.}
 }
 \value{
 Returns a data frame with three new variables of pounds, shillings,

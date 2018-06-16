@@ -34,13 +34,13 @@ decimalize_d <- function(l, s, d) {
 #' deb_lsd_l_mutate(example, l, s, d)
 #'
 #' # Change the name of the decimlaized pounds variable
-#' deb_lsd_l_mutate(example, l, s, d, column_name = librae)
+#' deb_lsd_l_mutate(example, l, s, d, column_name = pounds)
 #'
 #' @export
 
 deb_lsd_l_mutate <- function(df,
                              l = l, s = s, d = d,
-                             column_name = pounds) {
+                             column_name = librae) {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)
@@ -72,13 +72,13 @@ deb_lsd_l_mutate <- function(df,
 #' deb_lsd_s_mutate(example, l, s, d)
 #'
 #' # Change the name of the decimlaized shillings variable
-#' deb_lsd_s_mutate(example, l, s, d, column_name = solidi)
+#' deb_lsd_s_mutate(example, l, s, d, column_name = shillings)
 #'
 #' @export
 
 deb_lsd_s_mutate <- function(df,
                              l = l, s = s, d = d,
-                             column_name = shillings) {
+                             column_name = solidi) {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)
@@ -112,13 +112,13 @@ deb_lsd_s_mutate <- function(df,
 #' deb_lsd_d_mutate(example, l, s, d)
 #'
 #' # Change the name of the decimlaized pence variable
-#' deb_lsd_d_mutate(example, l, s, d, column_name = solidi)
+#' deb_lsd_d_mutate(example, l, s, d, column_name = pence)
 #'
 #' @export
 
 deb_lsd_d_mutate <- function(df,
                              l = l, s = s, d = d,
-                             column_name = pence) {
+                             column_name = denarii) {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)

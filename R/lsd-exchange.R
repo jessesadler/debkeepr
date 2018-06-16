@@ -101,9 +101,9 @@ deb_exchange_mutate <- function(df,
                                 s = s,
                                 d = d,
                                 rate_per_solidi,
-                                suffix = ".exchange",
                                 round = 3,
-                                replace = FALSE) {
+                                replace = FALSE,
+                                suffix = ".exchange") {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)

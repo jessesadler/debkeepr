@@ -54,6 +54,6 @@ deb_interest(c(10, 14, 5), duration = 5, round = 0)
 # This returns a list of named lsd values
 lsd_list <- list(c(40, 5, 9), c(29, 7, 1), c(35, 6, 5))
 
-deb_interest(lsd = lsd_list, duration = 5, rate = 0.08)
+deb_interest(lsd = lsd_list, duration = 5, interest = 0.08)
 
 }

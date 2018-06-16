@@ -4,7 +4,7 @@
 \alias{deb_lsd_d_mutate}
 \title{Convert from pounds, shillings and pence to pence}
 \usage{
-deb_lsd_d_mutate(df, l = l, s = s, d = d, column_name = pence)
+deb_lsd_d_mutate(df, l = l, s = s, d = d, column_name = denarii)
 }
 \arguments{
 \item{df}{A data frame that contains pounds, shillings, and pence variables.}
@@ -38,6 +38,6 @@ example <- data.frame(l = c(35, 10, 26, 12),
 deb_lsd_d_mutate(example, l, s, d)
 
 # Change the name of the decimlaized pence variable
-deb_lsd_d_mutate(example, l, s, d, column_name = solidi)
+deb_lsd_d_mutate(example, l, s, d, column_name = pence)
 
 }
