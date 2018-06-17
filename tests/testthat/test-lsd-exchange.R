@@ -48,3 +48,22 @@ test_that("deb_exchange_mutate works", {
   expect_equal(ncol(deb_exchange_mutate(ex_df, l, s, d, rate_per_solidi = 30)), 6)
   expect_equal(deb_exchange_mutate(ex_df, rate_per_solidi = 30, replace = TRUE), exchange_30)
 })
+
+test_that("normalized_to_sd helper works",{
+  expect_equal(normalized_to_sd(c(1, 11, 0)), c(0, 31, 0))
+})
+
+test_that("deb_rate_per_shilling works", {
+  expect_equal(deb_rate_per_shilling(c(166, 13, 4), c(100, 0, 0)),
+               c(l = 0, s = 33, d = 4))
+  expect_equal(deb_rate_per_shilling(c(100, 0, 0), c(166, 13, 4)),
+               c(l = 0, s = 12, d = 0))
+})
+
+test_that("deb_rate_per_shilling is vectorized", {
+  expect_equal(length(deb_rate_per_shilling(ex_list, ex_list2)), 3)
+  expect_equal(deb_rate_per_shilling(ex_list, ex_list2, round = 0),
+               list(c(l = 0, s = 60, d = 1),
+                    c(l = 0, s = 34, d = 8),
+                    c(l = 0, s = -26, d = -3)))
+})

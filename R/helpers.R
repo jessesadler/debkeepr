@@ -29,6 +29,8 @@
 #' example <- list(c(4, 34, 89), c(-9, -75, -19), c(15.85, 36.15, 56))
 #' lsd_list_to_df(example)
 #'
+#' @importFrom stats setNames
+#'
 #' @export
 
 lsd_list_to_df <- function(lsd_list) {
@@ -77,6 +79,8 @@ lsd_list_to_df <- function(lsd_list) {
 #'                        s = c(15, 15, 11, 2),
 #'                        d = c(6, 6, 8, 11))
 #' df_to_lsd_list(example, l, s, d)
+#'
+#' @importFrom stats setNames
 #'
 #' @export
 

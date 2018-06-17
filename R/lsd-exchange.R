@@ -51,6 +51,74 @@ deb_exchange <- function(lsd,
                round = round)
 }
 
+# Helper function to go from lsd to lsd when l = 0
+normalized_to_sd <- function(lsd) {
+  if (is.list(lsd) == TRUE) {
+    return(purrr::map(lsd, normalized_to_sd))
+  }
+
+  lsd[2] <- lsd[1] * 20 + lsd[2]
+  lsd[1] <- 0
+  lsd
+}
+
+#' Conversion rate per shillings
+#'
+#' Calculate the exchange rate between two sets of values in the form of
+#' pounds, shillings, and pence. The rate is returned in the form of shillings
+#' and pence, which follows the contemporary practice and the form used in the
+#' `rate_per_solidi` argument in [deb_exchange()] and [deb_exchange_mutate()].
+#'
+#' If `lsd1` and `lsd2` are lists of different lengths or one is a vector,
+#' the shorter list will be recycled.
+#'
+#' @inheritParams deb_normalize
+#' @param lsd1,lsd2 Numeric vectors of length 3 or lists of numeric vectors of
+#'   length 3. The first position of the vectors represents the pounds value or
+#'   l. The second position represents the shillings value or s. And the third
+#'   position represents the pence value or d. `lsd2` is the value (or values)
+#'   that is reduced to £1 and against which `lsd1` is compared. Thus, `lsd2`
+#'   = £1 and `lsd1` = the returned value.
+#'
+#' @return Returns either a named numeric vector of length 3 or a list of
+#'   named numeric vectors representing the values of pounds, shillings,
+#'   and pence. The rate is returned in the form of shillings and pence, which
+#'   follows the contemporary practice and the form used in the
+#'   `rate_per_solidi` argument in [deb_exchange()] and
+#'   [deb_exchange_mutate()]. If `lsd1` > `lsd2` the returned vector will have
+#'   a shillings value greater than 20.
+#'
+#' @examples
+#' # Find the exchange rate if £166 13s 4d in one currency is
+#' # equivalent to £100 0s 0d in another currency
+#' deb_rate_per_shilling(lsd1 = c(166, 13, 4), lsd2 = c(100, 0, 0))
+#'
+#' # The rate returned is in the non-normalized form of shillings and pence
+#' # Can normalize the returned value by piping to `deb_normalize()`.
+#' deb_rate_per_shilling(lsd1 = c(166, 13, 4), lsd2 = c(100, 0, 0)) %>%
+#'   deb_normalize()
+#'
+#' # To find the exchange rate for multiple currencies
+#' # use a list of lsd vectors for `lsd1` or `lsd2`
+#' list_a <- list(c(150, 0, 0), c(125, 0, 0), c(175, 13, 4))
+#' list_b <- list(c(125, 0, 0), c(100, 8, 4), c(100, 0, 0))
+#'
+#' deb_rate_per_shilling(lsd1 = list_a, lsd2 = list_b)
+#'
+#' # Or find the exchange rate of multiple currencies to a
+#' # single currency by using a vector for `lsd2`
+#'
+#' deb_rate_per_shilling(lsd1 = list_a, lsd2 = c(100, 0, 0))
+#'
+#' @export
+
+deb_rate_per_shilling <- function(lsd1, lsd2, round = 3) {
+  rate <- deb_lsd_l(lsd1) / deb_lsd_l(lsd2)
+  normalized <- deb_l_lsd(rate, round)
+
+  normalized_to_sd(normalized)
+}
+
 #' Convert between pounds, shillings and pence currencies in a data frame
 #'
 #' Uses [dplyr::mutate()] to convert between different currencies that are in
