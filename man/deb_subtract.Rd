@@ -4,29 +4,23 @@
 \alias{deb_subtract}
 \title{Subtract two values of pounds, shillings, and pence}
 \usage{
-deb_subtract(lsd1, lsd2, round = 3, vector = FALSE)
+deb_subtract(lsd1, lsd2, round = 3)
 }
 \arguments{
-\item{lsd1, lsd2}{Either numeric vectors of length 3 representing the pounds,
-shillings, and pence of the two values or lists of numeric vectors
-of length 3. lsd2 is the value or values to be stubtracted from lsd1:
-\code{lsd1 - lsd2}.}
+\item{lsd1, lsd2}{Numeric vectors of length 3 or lists of numeric vectors of
+length 3. The first position of the vector represents the pounds value or
+l. The second position represents the shillings value or s. And the third
+position represents the pence value or d. lsd2 is the value or values to be
+subtracted from lsd1: \code{lsd1 - lsd2}.}
 
 \item{round}{Round pence to specified number of decimal places.
 Default is 3. Set to 0 to return pence as whole numbers.}
-
-\item{vector}{Logical (default \code{FALSE}): when \code{FALSE} the output will be
-a tibble. When \code{TRUE} the output will be a named numeric vector or list
-of named numeric vectors if the length of \code{l}, \code{s}, and \code{d} is greater
-than 1.}
 }
 \value{
-Returns either a tibble with columns for the pounds, shillings, and
-pence values labeled as l, s, and d or a named numeric vector with values
-for pounds, shillings, and pence. If \code{lsd1} and \code{lsd2} are lists, the
-number of rows in the resulting tibble will be the length of the longest
-list. If \code{lsd1} and \code{lsd2} are lists and \code{vector = TRUE}, the result will
-be a list of named vectors the length of the longest list.
+Returns either a named numeric vector of length 3 or a list of
+named numeric vectors representing the values of pounds, shillings,
+and pence. If the input lsd value is negative, the l, s, and d values
+will all be negative.
 }
 \description{
 Subtract and normalize two values of pounds, shillings, and pence
@@ -35,43 +29,31 @@ of numeric vectors (\code{lsd1} and \code{lsd2}). This is a wrapper around
 \code{\link[=deb_normalize]{deb_normalize()}}.
 }
 \details{
-If \code{lsd1} and \code{lsd2} are lists of different lengths, the shorter list
-will be recycled.
-
-\code{deb_subtract()} uses the nomenclature of
-\href{https://en.wikipedia.org/wiki/£sd}{l, s, and d} to refer to pounds,
-shillings, and pence. This derives from the Latin terms for librae,
-solidi, and denarii. One solidus was equivalent to 12 denarii, and
-240 denarii coins were made from on libra of silver. The nomenclature
-and values of 12 denarii to 1 solidus and 20 solidi to 1 libra was
-adopted by Charlemagne and spread throughout Europe under different names.
+If \code{lsd1} and \code{lsd2} are lists of different lengths or one is a vector,
+the shorter list will be recycled.
 }
 \examples{
 # Subtract pounds, shillings, and pence
 deb_subtract(lsd1 = c(56, 8, 5), lsd2 = c(19, 5, 7))
-deb_subtract(lsd1 = c(56, 8, 5), lsd2 = c(19, 5, 7), vector = TRUE)
 
 # The l, s, and d values do not have to be normalized
 deb_subtract(lsd1 = c(76, 65, 35), lsd2 = c(9, 54, 17))
-
-# A warning is given if any values in lsd1 or lsd2 are negative
-# to ensure that this is what the user wants.
-deb_subtract(lsd1 = c(56, 8, 5), lsd2 = c(-19, -5, -7))
 
 # Like deb_normalize(), deb_subtract can handle decimals
 deb_subtract(lsd1 = c(56.85, 8.4, 5), lsd2 = c(19.25, 5, 7))
 
 # lsd1 and lsd2 can be lists of numerical vectors
-# Each vector is lsd1 will be subtracted from the
+# Each vector in lsd1 will be subtracted from the
 # corresponding vector in lsd2.
-# Returns tibble with 2 rows
 deb_subtract(lsd1 = list(c(56, 8, 5), c(27, 12, 4)),
              lsd2 = list(c(19, 5, 7), c(6, 3, 2)))
 
-# Or a list with two numeric vectors
-deb_subtract(lsd1 = list(c(56, 8, 5), c(27, 12, 4)),
-             lsd2 = list(c(19, 5, 7), c(6, 3, 2)),
-             vector = TRUE)
+# If lsd1 and lsd2 are lists of different lengths
+# or one is a vector, the shorter argument is recycled.
+deb_subtract(lsd1 = list(c(56, 8, 5),
+                         c(27, 12, 4),
+                         c(78, 14, 11)),
+             lsd2 = c(6, 18, 10))
 
 }
 \seealso{

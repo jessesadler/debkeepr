@@ -4,12 +4,11 @@
 \alias{deb_exchange_mutate}
 \title{Convert between pounds, shillings and pence currencies in a data frame}
 \usage{
-deb_exchange_mutate(df, l = l, s = s, d = d, rate_per_solidi,
-  suffix = ".exchange", round = 3, replace = FALSE)
+deb_exchange_mutate(df, l = l, s = s, d = d, rate_per_shillings,
+  round = 3, replace = FALSE, suffix = ".exchange")
 }
 \arguments{
-\item{df}{A data frame that contains columns with pounds, shillings,
-and pence variables.}
+\item{df}{A data frame that contains pounds, shillings, and pence variables.}
 
 \item{l}{Pounds column: Unquoted name of a numeric variable corresponding
 to pounds. Default is l.}
@@ -20,22 +19,21 @@ to shillings. Default is s.}
 \item{d}{Pence column: Unquoted name of numeric variable corresponding to
 pence. Default is d.}
 
-\item{rate_per_solidi}{The exchange rate. This follows the common practice
+\item{rate_per_shillings}{The exchange rate. This follows the common practice
 of calculating the exchange rate between different currencies in terms
 of shillings. Thus, in terms of a given number over 20. A numeric vector
 of length 1.}
-
-\item{suffix}{Suffix added to the column names for the pounds, shillings, and pence
-columns representing the converted currency so that they are distinguished
-from the pounds, shillings, and pence columns of the original currency.
-Default is ".exchange". Should be a character vector of length 1.}
 
 \item{round}{Round pence to specified number of decimal places.
 Default is 3. Set to 0 if you want pence to always be a whole number.}
 
 \item{replace}{Logical (default \code{FALSE}): when \code{TRUE} the new pounds,
-shillings, and pence values will replace the original ones. This is
-equivalent to setting \code{suffix = ""}.}
+shillings, and pence variables will replace the original ones.}
+
+\item{suffix}{Suffix added to the column names for the pounds, shillings, and pence
+columns representing the converted currency so that they are distinguished
+from the pounds, shillings, and pence columns of the original currency.
+Default is ".exchange". Should be a character vector of length 1.}
 }
 \value{
 Returns a data frame with three new variables of pounds, shillings,
@@ -44,8 +42,8 @@ and pence representing the converted currency.
 \description{
 Uses \code{\link[dplyr:mutate]{dplyr::mutate()}} to convert between different currencies that are in
 the form of pounds, shillings, and pence variables in a data frame given
-an exchange rate calculated on the basis of shillings. The converted value
-is returned in the form of three new variables representing the calculated
+an exchange rate calculated on the basis of shillings. The converted values
+are returned in the form of three new variables representing the calculated
 pounds, shillings and pence for the interest.
 }
 \examples{
@@ -54,23 +52,23 @@ example <- data.frame(l = c(35, 10, 26, 12),
                       s = c(10, 18, 11, 16),
                       d = c(9, 11, 10, 5))
 deb_exchange_mutate(example, l, s, d,
-                    rate_per_solidi = 31)
+                    rate_per_shillings = 31)
 
 # If the exchange rate is in shillings and pence, you can either
 # decimalize the shillings or add the pence and divide by 12 in
-# the rate_per_solidi argument. If the decimalized shillings has
+# the rate_per_shillings argument. If the decimalized shillings has
 # a repeating decimal, the latter approach is preferable.
 
 # Exchange at the rate of 31 shillings 4 pence
 deb_exchange_mutate(example, l, s, d,
-                    rate_per_solidi = 31.3333)
+                    rate_per_shillings = 31.3333)
 deb_exchange_mutate(example, l, s, d,
-                    rate_per_solidi = 31 + 4/12)
+                    rate_per_shillings = 31 + 4/12)
 
 # Replace the existing pounds, shillings, and pence
 # with the converted values through replace argument
 deb_exchange_mutate(example, l, s, d,
-                    rate_per_solidi = 31,
+                    rate_per_shillings = 31,
                     replace = TRUE)
 
 }

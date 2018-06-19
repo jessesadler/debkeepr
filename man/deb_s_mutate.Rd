@@ -5,7 +5,7 @@
 \title{Mutate decimal shillings into pounds, shillings, and pence variables}
 \usage{
 deb_s_mutate(df, solidi, l_column = l, s_column = s, d_column = d,
-  suffix = ".1", round = 3)
+  round = 3, suffix = ".1")
 }
 \arguments{
 \item{df}{A data frame that contains a column of decimalized shillings.}
@@ -23,12 +23,12 @@ the function. Default is s.}
 \item{d_column}{An unquoted name for the pence column created by the
 function. Default is d.}
 
-\item{suffix}{If the data frame already contains variables with the same
-names as \code{l_column}, \code{s_column}, or \code{d_column}, this suffix will be
-added to the new variables to distinguish them.}
-
 \item{round}{round pence to specified number of decimal places.
 Default is 3. Set to 0 to return pence as whole numbers.}
+
+\item{suffix}{If the data frame already contains variables with the same
+names as \code{l_column}, \code{s_column}, or \code{d_column}, this suffix will be
+added to the new variables to distinguish them. Default is ".1".}
 }
 \value{
 Returns a data frame with three new variables of pounds, shillings,

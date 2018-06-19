@@ -1,34 +1,48 @@
 ## Checks ##
 
-# Check that l, s, and d values are numeric in deb_normalize
-lsd_check <- function(l, s, d, round = 3, vector = FALSE) {
-  if (!is.numeric(round)) {
-    stop(call. = FALSE, "round must be numeric")
+# Check that lsd is numeric vector of length 3 or
+# list of numeric vectors of length 3
+lsd_check <- function(lsd, round = NULL) {
+  if (!is.null(round)) {
+    if (!is.numeric(round)) {
+      stop(call. = FALSE, "round must be numeric")
+    }
+    if (length(round) > 1) {
+      stop(call. = FALSE, "round must be numeric vector of length 1")
+    }
   }
 
-  if (!is.logical(vector)) {
-    stop(call. = FALSE, "vector must be logical, either TRUE or FALSE")
+  # vector
+  if (is.list(lsd) == FALSE & is.vector(lsd) == TRUE) {
+    if (!is.numeric(lsd)) {
+      stop(call. = FALSE, "lsd must be numeric")
+    }
+    if (length(lsd) != 3) {
+      stop(call. = FALSE, paste("length of lsd must be 3.",
+                                "There must be a value for pounds, shillings, and pence.",
+                                sep = "\n"))
+    }
   }
 
-  if (!is.numeric(l)) {
-    stop(call. = FALSE, "l must be numeric")
-  }
-
-  if (!is.numeric(s)) {
-    stop(call. = FALSE, "s must be numeric")
-  }
-
-  if (!is.numeric(d)) {
-    stop(call. = FALSE, "d must be numeric")
-  }
-
-  if (length(l) != length(s) | length(l) != length(d)) {
-    stop(call. = FALSE, "l, s, and d must be numeric vectors of the same length")
+  # list
+  if (is.list(lsd) == TRUE) {
+    if (!all(purrr::map_lgl(lsd, is.numeric))) {
+      stop(call. = FALSE, "lsd must be a list of numeric vectors")
+    }
+    if (identical(purrr::map_dbl(lsd, length), rep(3, length(lsd))) == FALSE) {
+      stop(call. = FALSE, paste("lsd must be a list of numeric vectors of length 3.",
+                                "There must be a value for pounds, shillings, and pence.",
+                                sep = "\n"))
+    }
   }
 }
 
 # Check l, s, and d values and column names
 lsd_column_check <- function(df, l, s, d) {
+
+  if (!is.data.frame(df)) {
+    stop(call. = FALSE, "df must be a data frame or data-frame like object")
+  }
 
   column_names <- c(rlang::quo_name(l),
                     rlang::quo_name(s),
@@ -36,8 +50,9 @@ lsd_column_check <- function(df, l, s, d) {
 
   # Ensure that l, s, and d columns exist in the data frame
   if (all(column_names %in% names(df)) == FALSE) {
-    stop(call. = FALSE, "Column names for l, s, and d must be provided if the
-         default names of l, s, and d are not present in the data frame")
+    stop(call. = FALSE, paste("Column names for l, s, and d must be provided if the",
+                              "default names of l, s, and d are not present in the data frame",
+                              sep = "\n"))
   }
 
   l <- rlang::eval_tidy(l, df)
@@ -64,14 +79,6 @@ lsd_column_names <- function(df, l, s, d, suffix) {
   # Turn l, s, and d column name arguments into character vector of length 3
   lsd_names <- c(rlang::quo_name(l), rlang::quo_name(s), rlang::quo_name(d))
 
-  if (!is.character(suffix)) {
-    stop(call. = FALSE, "suffix must be a character vector")
-  }
-
-  if (length(suffix) != 1) {
-    stop(call. = FALSE, "suffix must be a character vector of length 1")
-  }
-
   if (any(lsd_names %in% names(df)) == TRUE) {
     lsd_names[1] <- paste0(lsd_names[1], suffix)
     lsd_names[2] <- paste0(lsd_names[2], suffix)
@@ -80,12 +87,36 @@ lsd_column_names <- function(df, l, s, d, suffix) {
   lsd_names
 }
 
+suffix_check <- function(suffix, replace = FALSE) {
+  if (!is.character(suffix)) {
+    stop(call. = FALSE, "suffix must be a character vector")
+  }
+
+  if (length(suffix) != 1) {
+    stop(call. = FALSE, "suffix must be a character vector of length 1")
+  }
+
+  # Make sure suffix has a value so that variables are not overwritten during
+  # the function, resulting in wrong results if l or s have decimals.
+  if (suffix == "") {
+    stop(call. = FALSE, paste("suffix cannot be an empty character vector.",
+         "To keep the same variable names and replace the original variables use replace = TRUE",
+         sep = "\n"))
+  }
+  # Use same variable names if replace is TRUE
+  if (replace == TRUE) {
+    suffix <- ""
+  }
+  suffix
+}
+
 # Check credit and debit columns
 credit_check <- function(df, credit = NULL, debit = NULL, edge_columns, account_id = NULL) {
 
   if (all(edge_columns %in% names(df)) == FALSE) {
-    stop(call. = FALSE, "Column names for credit and/or debit must be provided if
-         the default names of credit and/or debit are not present in the data frame")
+    stop(call. = FALSE, paste("Column names for credit and/or debit must be provided if",
+                              "the default names of credit and/or debit are not present in the data frame",
+                              sep = "\n"))
   }
 
   if (!is.null(credit) & !is.null(debit)) {
@@ -136,10 +167,10 @@ arithmetic_check <- function(x) {
 
 exchange_rate_check <- function(x) {
   if (!is.numeric(x)) {
-    stop(call. = FALSE, "rate_per_solidi must be numeric")
+    stop(call. = FALSE, "rate_per_shillings must be numeric")
   }
 
   if (length(x) != 1) {
-    stop(call. = FALSE, "rate_per_solidi must be a numeric vector of length 1")
+    stop(call. = FALSE, "rate_per_shillings must be a numeric vector of length 1")
   }
 }

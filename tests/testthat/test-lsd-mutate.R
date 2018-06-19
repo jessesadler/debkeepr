@@ -92,67 +92,65 @@ test_that("denarii functions are vectorized", {
 
 ## Test mutate functions ##
 
-suppressPackageStartupMessages(library(tibble))
+l_df <- data.frame(pounds = l_vector)
+s_df <- data.frame(shillings = s_vector)
+d_df <- data.frame(pence = d_vector)
 
-l_tbl <- tibble(pounds = l_vector)
-s_tbl <- tibble(shillings = s_vector)
-d_tbl <- tibble(pence = d_vector)
-
-l_solution_tbl <- tibble(pounds = l_vector,
-                         l = ll_solution,
-                         s = ls_solution,
-                         d = ld_solution)
-s_solution_tbl <- tibble(shillings = s_vector,
-                         l = sl_solution,
-                         s = ss_solution,
-                         d = sd_solution)
-d_solution_tbl <- tibble(pence = d_vector,
-                         l = dl_solution,
-                         s = ds_solution,
-                         d = dd_solution)
+l_solution_df <- data.frame(pounds = l_vector,
+                            l = ll_solution,
+                            s = ls_solution,
+                            d = ld_solution)
+s_solution_df <- data.frame(shillings = s_vector,
+                            l = sl_solution,
+                            s = ss_solution,
+                            d = sd_solution)
+d_solution_df <- data.frame(pence = d_vector,
+                            l = dl_solution,
+                            s = ds_solution,
+                            d = dd_solution)
 
 test_that("mutate functions work", {
-  expect_equal(deb_l_mutate(l_tbl, pounds), l_solution_tbl)
-  expect_equal(deb_s_mutate(s_tbl, shillings), s_solution_tbl)
-  expect_equal(deb_d_mutate(d_tbl, pence), d_solution_tbl)
+  expect_equal(deb_l_mutate(l_df, pounds), l_solution_df)
+  expect_equal(deb_s_mutate(s_df, shillings), s_solution_df)
+  expect_equal(deb_d_mutate(d_df, pence), d_solution_df)
 })
 
 test_that("column names change with lsd_column_names function", {
   # Can change names
-  expect_equal(names(deb_l_mutate(l_tbl, pounds,
+  expect_equal(names(deb_l_mutate(l_df, pounds,
                             l_column = "librae", s_column = "solidi", d_column = "denarii")),
                c("pounds", "librae", "solidi", "denarii"))
   # Suffix added if names already present
-  expect_equal(names(deb_s_mutate(s_solution_tbl, shillings)),
+  expect_equal(names(deb_s_mutate(s_solution_df, shillings)),
                c("shillings", "l", "s", "d", "l.1", "s.1", "d.1"))
   # Can change suffix
-  expect_equal(names(deb_d_mutate(d_solution_tbl, pence, suffix = ".x")),
+  expect_equal(names(deb_d_mutate(d_solution_df, pence, suffix = ".x")),
                c("pence", "l", "s", "d", "l.x", "s.x", "d.x"))
 })
 
 test_that("lsd_column_names check works", {
-  expect_error(deb_l_mutate(l_tbl, pounds, suffix = 7),
+  expect_error(deb_l_mutate(l_df, pounds, suffix = 7),
                "suffix must be a character vector")
-  expect_error(deb_l_mutate(l_tbl, pounds, suffix = c("hello", "you")),
+  expect_error(deb_l_mutate(l_df, pounds, suffix = c("hello", "you")),
                "suffix must be a character vector of length 1")
 })
 
 test_that("decimal column exists", {
-  expect_error(deb_l_mutate(l_tbl, librae = hello),
+  expect_error(deb_l_mutate(l_df, librae = hello),
                "librae column must exist the in df")
-  expect_error(deb_s_mutate(s_tbl, solidi = hello),
+  expect_error(deb_s_mutate(s_df, solidi = hello),
                "solidi column must exist the in df")
-  expect_error(deb_d_mutate(d_tbl, denarii = hello),
+  expect_error(deb_d_mutate(d_df, denarii = hello),
                "denarii column must exist the in df")
 })
 
-id_tbl <- add_column(l_tbl, id = letters[1:5])
+id_df <- add_column(l_df, id = letters[1:5])
 
 test_that("decimal column is numeric", {
-  expect_error(deb_l_mutate(id_tbl, librae = id),
+  expect_error(deb_l_mutate(id_df, librae = id),
                "librae must be numeric")
-  expect_error(deb_s_mutate(id_tbl, solidi = id),
+  expect_error(deb_s_mutate(id_df, solidi = id),
                "solidi must be numeric")
-  expect_error(deb_d_mutate(id_tbl, denarii = id),
+  expect_error(deb_d_mutate(id_df, denarii = id),
                "denarii must be numeric")
 })
