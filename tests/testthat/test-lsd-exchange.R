@@ -18,35 +18,35 @@ exchange_30 <- data.frame(l = c(45, 17, -39),
 
 
 test_that("exchange_rate_check works", {
-  expect_error(deb_exchange(ex_vector, rate_per_solidi = "a"),
-               "rate_per_solidi must be numeric")
-  expect_error(deb_exchange_mutate(ex_df, l, s, d, rate_per_solidi = "a"),
-               "rate_per_solidi must be numeric")
-  expect_error(deb_exchange(ex_vector, rate_per_solidi = c(31, 32)),
-               "rate_per_solidi must be a numeric vector of length 1")
-  expect_error(deb_exchange_mutate(ex_df, l, s, d, rate_per_solidi = c(31, 32)),
-               "rate_per_solidi must be a numeric vector of length 1")
+  expect_error(deb_exchange(ex_vector, rate_per_shillings = "a"),
+               "rate_per_shillings must be numeric")
+  expect_error(deb_exchange_mutate(ex_df, l, s, d, rate_per_shillings = "a"),
+               "rate_per_shillings must be numeric")
+  expect_error(deb_exchange(ex_vector, rate_per_shillings = c(31, 32)),
+               "rate_per_shillings must be a numeric vector of length 1")
+  expect_error(deb_exchange_mutate(ex_df, l, s, d, rate_per_shillings = c(31, 32)),
+               "rate_per_shillings must be a numeric vector of length 1")
 })
 
 test_that("deb_exchange works", {
-  expect_equal(deb_exchange(ex_vector, rate_per_solidi = 24),
+  expect_equal(deb_exchange(ex_vector, rate_per_shillings = 24),
                deb_multiply(ex_vector, x = 24/20))
-  expect_equal(deb_exchange(ex_vector, rate_per_solidi = 30),
+  expect_equal(deb_exchange(ex_vector, rate_per_shillings = 30),
                c(l = 15, s = 4, d = 9))
-  expect_equal(deb_exchange(ex_vector, rate_per_solidi = 30 + 3/12),
+  expect_equal(deb_exchange(ex_vector, rate_per_shillings = 30 + 3/12),
                c(l = 15, s = 7, d = 3.475))
 })
 
 test_that("deb_exchange is vectorized", {
-  expect_equal(deb_exchange(ex_list, rate_per_solidi = 30),
+  expect_equal(deb_exchange(ex_list, rate_per_shillings = 30),
                list(c(l = 45, s = 16, d = 1.5),
                     c(l = 17, s = 11, d = 1.2),
                     c(l = -39, s = -17, d = -9)))
 })
 
 test_that("deb_exchange_mutate works", {
-  expect_equal(ncol(deb_exchange_mutate(ex_df, l, s, d, rate_per_solidi = 30)), 6)
-  expect_equal(deb_exchange_mutate(ex_df, rate_per_solidi = 30, replace = TRUE), exchange_30)
+  expect_equal(ncol(deb_exchange_mutate(ex_df, l, s, d, rate_per_shillings = 30)), 6)
+  expect_equal(deb_exchange_mutate(ex_df, rate_per_shillings = 30, replace = TRUE), exchange_30)
 })
 
 test_that("normalized_to_sd helper works",{
