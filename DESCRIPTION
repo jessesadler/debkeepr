@@ -1,7 +1,7 @@
 Package: debkeepr
 Type: Package
 Title: Simplify Analysis of Accounting in Non-Decimal Currencies
-Version: 0.0.0.9003
+Version: 0.0.0.9004
 Authors@R: person("Jesse", "Sadler",
     email = "jsadler@ucla.edu",
     role = c("aut", "cre"),
@@ -22,8 +22,10 @@ Imports:
     magrittr,
     tibble,
     rlang (>= 0.1.2),
-    purrr
+    purrr,
+    stats
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.0.1
 Suggests: 
-    testthat
+    testthat,
+    knitr
