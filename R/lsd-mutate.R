@@ -7,19 +7,19 @@ deb_librae_l <- function(l) {
   dplyr::if_else(l < 0, ceiling(l), floor(l))
 }
 
-deb_librae_s <- function(l) {
+deb_librae_s <- function(l, lsd_ratio = c(20, 12)) {
   # vectorize
   if (length(l) > 1) {
-    return(purrr::map_dbl(l, deb_librae_s))
+    return(purrr::map_dbl(l, ~ deb_librae_s(., lsd_ratio)))
   }
 
   if (l == round(l)) {
     0
   } else {
     if (l > 0) {
-      solidi <- (l - floor(l)) * 20
+      solidi <- (l - floor(l)) * lsd_ratio[1]
     } else {
-      solidi <- (l - ceiling(l)) * 20
+      solidi <- (l - ceiling(l)) * lsd_ratio[1]
     }
     if (solidi == round(solidi)) {
       solidi
@@ -33,38 +33,38 @@ deb_librae_s <- function(l) {
   }
 }
 
-deb_librae_d <- function(l, round = 3) {
+deb_librae_d <- function(l, round = 3, lsd_ratio = c(20, 12)) {
   # vectorize
   if (length(l) > 1) {
-    return(purrr::map_dbl(l, deb_librae_d, round))
+    return(purrr::map_dbl(l, deb_librae_d, round, lsd_ratio))
   }
 
   if (l == round(l)) {
     return(0)
   } else {
     if (l > 0) {
-      solidi <- (l - floor(l)) * 20
-      denarii <- (solidi - floor(solidi)) * 12
+      solidi <- (l - floor(l)) * lsd_ratio[1]
+      denarii <- (solidi - floor(solidi)) * lsd_ratio[2]
     } else {
-      solidi <- (l - ceiling(l)) * 20
-      denarii <- (solidi - ceiling(solidi)) * 12
+      solidi <- (l - ceiling(l)) * lsd_ratio[1]
+      denarii <- (solidi - ceiling(solidi)) * lsd_ratio[2]
     }
     round(denarii, round)
   }
 }
 
 ## solidi to l, s, d ##
-deb_solidi_l <- function(s) {
-  dplyr::if_else(s < 0, -(-s %/% 20), s %/% 20)
+deb_solidi_l <- function(s, lsd_ratio = c(20, 12)) {
+  dplyr::if_else(s < 0, -(-s %/% lsd_ratio[1]), s %/% lsd_ratio[1])
 }
 
-deb_solidi_s <- function(s) {
+deb_solidi_s <- function(s, lsd_ratio = c(20, 12)) {
   # vectorize
   if (length(s) > 1) {
-    return(purrr::map_dbl(s, deb_solidi_s))
+    return(purrr::map_dbl(s, ~ deb_solidi_s(., lsd_ratio)))
   }
 
-  solidi <- dplyr::if_else(s < 0, -(-s %% 20), s %% 20)
+  solidi <- dplyr::if_else(s < 0, -(-s %% lsd_ratio[1]), s %% lsd_ratio[1])
   if (solidi == round(solidi)) {
     solidi
   } else {
@@ -76,34 +76,40 @@ deb_solidi_s <- function(s) {
   }
 }
 
-deb_solidi_d <- function(s, round = 3) {
+deb_solidi_d <- function(s, round = 3, lsd_ratio = c(20, 12)) {
   # vectorize
   if (length(s) > 1) {
-    return(purrr::map_dbl(s, deb_solidi_d, round))
+    return(purrr::map_dbl(s, deb_solidi_d, round, lsd_ratio))
   }
 
   if (s == round(s)) {
     return(0)
   } else {
     if (s > 0) {
-      denarii <- (s - floor(s)) * 12
+      denarii <- (s - floor(s)) * lsd_ratio[2]
     } else {
-      denarii <- (s - ceiling(s)) * 12
+      denarii <- (s - ceiling(s)) * lsd_ratio[2]
     }
     round(denarii, round)
   }
 }
 
 ## denarii to l, s, d ##
-deb_denarii_l <- function(d) {
-  dplyr::if_else(d < 0, -((-d %/% 12) %/% 20), (d %/% 12) %/% 20)
+deb_denarii_l <- function(d, lsd_ratio = c(20, 12)) {
+  dplyr::if_else(d < 0,
+                 -((-d %/% lsd_ratio[2]) %/% lsd_ratio[1]),
+                 (d %/% lsd_ratio[2]) %/% lsd_ratio[1])
 }
 
-deb_denarii_s <- function(d) {
-  dplyr::if_else(d < 0, -((-d %/% 12) %% 20), (d %/% 12) %% 20)
+deb_denarii_s <- function(d, lsd_ratio = c(20, 12)) {
+  dplyr::if_else(d < 0,
+                 -((-d %/% lsd_ratio[2]) %% lsd_ratio[1]),
+                 (d %/% lsd_ratio[2]) %% lsd_ratio[1])
 }
-deb_denarii_d <- function(d, round = 3) {
-  denarii <- dplyr::if_else(d < 0, -(-d %% 12), d %% 12)
+deb_denarii_d <- function(d, round = 3, lsd_ratio = c(20, 12)) {
+  denarii <- dplyr::if_else(d < 0,
+                            -(-d %% lsd_ratio[2]),
+                            d %% lsd_ratio[2])
   round(denarii, round)
 }
 
@@ -156,7 +162,8 @@ deb_l_mutate <- function(df, librae,
                          s_column = s,
                          d_column = d,
                          round = 3,
-                         suffix = ".1") {
+                         suffix = ".1",
+                         lsd_ratio = c(20, 12)) {
 
   librae <- rlang::enquo(librae)
 
@@ -180,8 +187,8 @@ deb_l_mutate <- function(df, librae,
 
   df %>%
     dplyr::mutate(!! lsd_names[1] := deb_librae_l(!! librae),
-                  !! lsd_names[2] := deb_librae_s(!! librae),
-                  !! lsd_names[3] := deb_librae_d(!! librae, round))
+                  !! lsd_names[2] := deb_librae_s(!! librae, lsd_ratio),
+                  !! lsd_names[3] := deb_librae_d(!! librae, round, lsd_ratio))
 }
 
 #' Mutate decimal shillings into pounds, shillings, and pence variables
@@ -221,7 +228,8 @@ deb_s_mutate <- function(df, solidi,
                          s_column = s,
                          d_column = d,
                          round = 3,
-                         suffix = ".1") {
+                         suffix = ".1",
+                         lsd_ratio = c(20, 12)) {
   solidi <- rlang::enquo(solidi)
 
   # Check that solidi exists in df
@@ -243,9 +251,9 @@ deb_s_mutate <- function(df, solidi,
                                 suffix)
 
   df %>%
-    dplyr::mutate(!! lsd_names[1] := deb_solidi_l(!! solidi),
-                  !! lsd_names[2] := deb_solidi_s(!! solidi),
-                  !! lsd_names[3] := deb_solidi_d(!! solidi, round))
+    dplyr::mutate(!! lsd_names[1] := deb_solidi_l(!! solidi, lsd_ratio),
+                  !! lsd_names[2] := deb_solidi_s(!! solidi, lsd_ratio),
+                  !! lsd_names[3] := deb_solidi_d(!! solidi, round, lsd_ratio))
 }
 
 #' Mutate decimal pence into pounds, shillings, and pence variables
@@ -285,7 +293,8 @@ deb_d_mutate <- function(df, denarii,
                          s_column = s,
                          d_column = d,
                          round = 3,
-                         suffix = ".1") {
+                         suffix = ".1",
+                         lsd_ratio = c(20, 12)) {
   denarii <- rlang::enquo(denarii)
 
   # Check that denarii exists in df
@@ -307,7 +316,7 @@ deb_d_mutate <- function(df, denarii,
                                 suffix)
 
   df %>%
-    dplyr::mutate(!! lsd_names[1] := deb_denarii_l(!! denarii),
-                  !! lsd_names[2] := deb_denarii_s(!! denarii),
-                  !! lsd_names[3] := deb_denarii_d(!! denarii, round))
+    dplyr::mutate(!! lsd_names[1] := deb_denarii_l(!! denarii, lsd_ratio),
+                  !! lsd_names[2] := deb_denarii_s(!! denarii, lsd_ratio),
+                  !! lsd_names[3] := deb_denarii_d(!! denarii, round, lsd_ratio))
 }

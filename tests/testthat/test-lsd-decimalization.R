@@ -1,4 +1,4 @@
-context("test-lsd-transformations.R")
+context("test-lsd-decimalization.R")
 
 # These are all based on deb_normalize
 test_that("decimalized to lsd works", {

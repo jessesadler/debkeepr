@@ -3,16 +3,16 @@
 ### From lsd to decimalized l, s, and d in a data frame ###
 
 ## Helper functions ##
-decimalize_l <- function(l, s, d) {
-  l + s/20 + d/240
+decimalize_l <- function(l, s, d, lsd_ratio = c(20, 12)) {
+  l + s / lsd_ratio[1] + d / prod(lsd_ratio)
 }
 
-decimalize_s <- function(l, s, d) {
-  l * 20 + s + d/12
+decimalize_s <- function(l, s, d, lsd_ratio = c(20, 12)) {
+  l * lsd_ratio[1] + s + d / lsd_ratio[2]
 }
 
-decimalize_d <- function(l, s, d) {
-  l * 240 + s * 12 + d
+decimalize_d <- function(l, s, d, lsd_ratio = c(20, 12)) {
+  l * prod(lsd_ratio) + s * lsd_ratio[2] + d
 }
 
 #' Convert from pounds, shillings and pence to pounds
@@ -40,7 +40,8 @@ decimalize_d <- function(l, s, d) {
 
 deb_lsd_l_mutate <- function(df,
                              l = l, s = s, d = d,
-                             column_name = librae) {
+                             column_name = librae,
+                             lsd_ratio = c(20, 12)) {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)
@@ -50,7 +51,7 @@ deb_lsd_l_mutate <- function(df,
   column_name <- rlang::enquo(column_name)
   column_name <- rlang::quo_name(column_name)
 
-  dplyr::mutate(df, !! column_name := decimalize_l(l, s, d))
+  dplyr::mutate(df, !! column_name := decimalize_l(l, s, d, lsd_ratio))
 }
 
 #' Convert from pounds, shillings and pence to shillings
@@ -78,7 +79,8 @@ deb_lsd_l_mutate <- function(df,
 
 deb_lsd_s_mutate <- function(df,
                              l = l, s = s, d = d,
-                             column_name = solidi) {
+                             column_name = solidi,
+                             lsd_ratio = c(20, 12)) {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)
@@ -88,7 +90,7 @@ deb_lsd_s_mutate <- function(df,
   column_name <- rlang::enquo(column_name)
   column_name <- rlang::quo_name(column_name)
 
-  dplyr::mutate(df, !! column_name := decimalize_s(l, s, d))
+  dplyr::mutate(df, !! column_name := decimalize_s(l, s, d, lsd_ratio))
 }
 
 #' Convert from pounds, shillings and pence to pence
@@ -118,7 +120,8 @@ deb_lsd_s_mutate <- function(df,
 
 deb_lsd_d_mutate <- function(df,
                              l = l, s = s, d = d,
-                             column_name = denarii) {
+                             column_name = denarii,
+                             lsd_ratio = c(20, 12)) {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)
@@ -128,5 +131,5 @@ deb_lsd_d_mutate <- function(df,
   column_name <- rlang::enquo(column_name)
   column_name <- rlang::quo_name(column_name)
 
-  dplyr::mutate(df, !! column_name := decimalize_d(l, s, d))
+  dplyr::mutate(df, !! column_name := decimalize_d(l, s, d, lsd_ratio))
 }

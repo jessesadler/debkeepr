@@ -42,22 +42,26 @@
 
 deb_exchange <- function(lsd,
                          rate_per_shillings,
-                         round = 3) {
+                         round = 3,
+                         lsd_ratio = c(20, 12)) {
   # Check exchange rate
   exchange_rate_check(rate_per_shillings)
 
+  rate_per_shillings <- rate_per_shillings / lsd_ratio[1]
+
   deb_multiply(lsd,
-               x = rate_per_shillings/20,
-               round = round)
+               x = rate_per_shillings,
+               round,
+               lsd_ratio)
 }
 
 # Helper function to go from lsd to lsd when l = 0
-normalized_to_sd <- function(lsd) {
+normalized_to_sd <- function(lsd, lsd_ratio = c(20, 12)) {
   if (is.list(lsd) == TRUE) {
-    return(purrr::map(lsd, normalized_to_sd))
+    return(purrr::map(lsd, ~ normalized_to_sd(., lsd_ratio)))
   }
 
-  lsd[2] <- lsd[1] * 20 + lsd[2]
+  lsd[2] <- lsd[1] * lsd_ratio[1] + lsd[2]
   lsd[1] <- 0
   lsd
 }
@@ -112,11 +116,11 @@ normalized_to_sd <- function(lsd) {
 #'
 #' @export
 
-deb_rate_per_shilling <- function(lsd1, lsd2, round = 3) {
+deb_rate_per_shilling <- function(lsd1, lsd2, round = 3, lsd_ratio = c(20, 12)) {
   rate <- deb_lsd_l(lsd1) / deb_lsd_l(lsd2)
-  normalized <- deb_l_lsd(rate, round)
+  normalized <- deb_l_lsd(rate, round, lsd_ratio)
 
-  normalized_to_sd(normalized)
+  normalized_to_sd(normalized, lsd_ratio)
 }
 
 #' Convert between pounds, shillings and pence currencies in a data frame
@@ -171,7 +175,8 @@ deb_exchange_mutate <- function(df,
                                 rate_per_shillings,
                                 round = 3,
                                 replace = FALSE,
-                                suffix = ".exchange") {
+                                suffix = ".exchange",
+                                lsd_ratio = c(20, 12)) {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)
@@ -190,5 +195,6 @@ deb_exchange_mutate <- function(df,
                      !! d * x,
                      lsd_names,
                      replace,
-                     round)
+                     round,
+                     lsd_ratio)
 }

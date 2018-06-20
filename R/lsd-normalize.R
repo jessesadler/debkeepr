@@ -3,7 +3,7 @@
 # Check and deal with decimals in l or s
 # If value is negative, turn l, s, and d positive
 # Returns vector in form c(l, s, d)
-lsd_decimal_check <- function(lsd) {
+lsd_decimal_check <- function(lsd, lsd_ratio = c(20, 12)) {
   if (is.list(lsd) == TRUE) {
     l <- purrr::map_dbl(lsd, 1)
     s <- purrr::map_dbl(lsd, 2)
@@ -16,41 +16,41 @@ lsd_decimal_check <- function(lsd) {
 
   # vectorize
   if (length(l) > 1) {
-    return(purrr::map(lsd, lsd_decimal_check))
+    return(purrr::map(lsd, ~ lsd_decimal_check(., lsd_ratio)))
   }
 
   # Check if the value is positive
   # Return positive values so only need to use floor
-  if (l + s/20 + d/240 < 0) {
+  if (l + s / lsd_ratio[1] + d / prod(lsd_ratio) < 0) {
     l <- -l
     s <- -s
     d <- -d
   }
   # Check for decimals in l
   if (l != round(l)) {
-    temp_s <- s + (l - floor(l)) * 20
+    temp_s <- s + (l - floor(l)) * lsd_ratio[1]
     l <- floor(l)
     if (temp_s != round(temp_s)) {
       s <- floor(temp_s)
-      d <- d + (temp_s - floor(temp_s)) * 12
+      d <- d + (temp_s - floor(temp_s)) * lsd_ratio[2]
     } else {
       s <- temp_s
     }
   }
   # Check for decimals in s
   if (s != round(s)) {
-    d <- d + (s - floor(s)) * 12
+    d <- d + (s - floor(s)) * lsd_ratio[2]
     s <- floor(s)
   }
   c(l, s, d)
 }
 
 # Actual normalization
-lsd_normalize <- function(lsd, round) {
+lsd_normalize <- function(lsd, round, lsd_ratio) {
   # vector
-  lsd[1] <- lsd[1] + ((lsd[2] + lsd[3] %/% 12) %/% 20)
-  lsd[2] <- (lsd[2] + lsd[3] %/% 12) %% 20
-  lsd[3] <- round(lsd[3] %% 12, round)
+  lsd[1] <- lsd[1] + ((lsd[2] + lsd[3] %/% lsd_ratio[2]) %/% lsd_ratio[1])
+  lsd[2] <- (lsd[2] + lsd[3] %/% lsd_ratio[2]) %% lsd_ratio[1]
+  lsd[3] <- round(lsd[3] %% lsd_ratio[2], round)
 
   setNames(lsd, c("l", "s", "d"))
 }
@@ -107,27 +107,27 @@ lsd_normalize <- function(lsd, round) {
 #'
 #' @export
 
-deb_normalize <- function(lsd, round = 3) {
+deb_normalize <- function(lsd, round = 3, lsd_ratio = c(20, 12)) {
 
   lsd_check(lsd, round)
-  checked <- lsd_decimal_check(lsd)
+  checked <- lsd_decimal_check(lsd, lsd_ratio)
 
   if (is.list(lsd) == FALSE) {
     # vector
-    normalized <- lsd_normalize(checked, round)
+    normalized <- lsd_normalize(checked, round, lsd_ratio)
 
     # Positive and negative
-    if (sum(lsd / c(1, 20, 240)) > 0) {
+    if (sum(lsd / c(1, lsd_ratio[1], prod(lsd_ratio))) > 0) {
       normalized
     } else {
       -normalized
     }
   } else {
     # list
-    normalized <- purrr::map(checked, ~ lsd_normalize(., round))
+    normalized <- purrr::map(checked, ~ lsd_normalize(., round, lsd_ratio))
 
     # Positive and negative
-    dplyr::if_else(purrr::map(lsd, ~ sum(. / c(1, 20, 240))) > 0,
+    dplyr::if_else(purrr::map(lsd, ~ sum(. / c(1, lsd_ratio[1], prod(lsd_ratio)))) > 0,
                    purrr::map(normalized, `+`),
                    purrr::map(normalized, `-`))
   }
@@ -182,7 +182,8 @@ deb_normalize_df <- function(df,
                              l = l, s = s, d = d,
                              round = 3,
                              replace = TRUE,
-                             suffix = ".1") {
+                             suffix = ".1",
+                             lsd_ratio = c(20, 12)) {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)
@@ -196,5 +197,6 @@ deb_normalize_df <- function(df,
                      !! l, !! s, !! d,
                      lsd_names,
                      replace,
-                     round)
+                     round,
+                     lsd_ratio)
 }

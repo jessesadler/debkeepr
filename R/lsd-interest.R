@@ -45,14 +45,16 @@ deb_interest <- function(lsd,
                          interest = 0.0625,
                          duration = 1,
                          with_principal = TRUE,
-                         round = 3) {
+                         round = 3,
+                         lsd_ratio = c(20, 12)) {
   # vectorize
   if (is.list(lsd) == TRUE) {
     return(purrr::map(lsd, ~ deb_interest(.,
                                           interest,
                                           duration,
                                           with_principal,
-                                          round)))
+                                          round,
+                                          lsd_ratio)))
   }
 
   # Checks
@@ -60,9 +62,9 @@ deb_interest <- function(lsd,
   interest_check(interest, duration, with_principal)
 
   if (with_principal == TRUE) {
-    deb_normalize(lsd + lsd * interest * duration, round)
+    deb_normalize(lsd + lsd * interest * duration, round, lsd_ratio)
   } else {
-    deb_normalize(lsd * interest * duration, round)
+    deb_normalize(lsd * interest * duration, round, lsd_ratio)
   }
 }
 
@@ -126,7 +128,8 @@ deb_interest_mutate <- function(df,
                                 with_principal = TRUE,
                                 round = 3,
                                 replace = FALSE,
-                                suffix = ".interest") {
+                                suffix = ".interest",
+                                lsd_ratio = c(20, 12)) {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)
@@ -148,7 +151,8 @@ deb_interest_mutate <- function(df,
                        (!! d * x) + !! d,
                        lsd_names,
                        replace,
-                       round)
+                       round,
+                       lsd_ratio)
   } else {
     lsd_mutate_columns(df,
                        !! l * x,
@@ -156,6 +160,7 @@ deb_interest_mutate <- function(df,
                        !! d * x,
                        lsd_names,
                        replace,
-                       round)
+                       round,
+                       lsd_ratio)
   }
 }

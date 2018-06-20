@@ -8,39 +8,39 @@
 ## Helper functions to normalize separate l, s, and d ##
 
 ## Librae ##
-deb_librae <- function(l, s, d) {
+deb_librae <- function(l, s, d, lsd_ratio = c(20, 12)) {
   if (length(l) > 1) {
-    return(purrr::pmap_dbl(list(l, s, d), deb_librae))
+    return(purrr::pmap_dbl(list(l, s, d), ~ deb_librae(..1, ..2, ..3, lsd_ratio)))
   }
 
-  lsd <- lsd_decimal_check(c(l, s, d))
+  lsd <- lsd_decimal_check(c(l, s, d), lsd_ratio)
 
-  librae <- lsd[1] + ((lsd[2] + lsd[3] %/% 12) %/% 20)
-  dplyr::if_else(l + s/20 + d/240 > 0, librae, -librae)
+  librae <- lsd[1] + ((lsd[2] + lsd[3] %/% lsd_ratio[2]) %/% lsd_ratio[1])
+  dplyr::if_else(l + s / lsd_ratio[1] + d / prod(lsd_ratio) > 0, librae, -librae)
 }
 
 ## Solidi ##
-deb_solidi <- function(l, s, d) {
+deb_solidi <- function(l, s, d, lsd_ratio = c(20, 12)) {
   if (length(l) > 1) {
-    return(purrr::pmap_dbl(list(l, s, d), deb_solidi))
+    return(purrr::pmap_dbl(list(l, s, d), ~ deb_solidi(..1, ..2, ..3, lsd_ratio)))
   }
 
-  lsd <- lsd_decimal_check(c(l, s, d))
+  lsd <- lsd_decimal_check(c(l, s, d), lsd_ratio)
 
-  solidi <- (lsd[2] + lsd[3] %/% 12) %% 20
-  dplyr::if_else(l + s/20 + d/240 > 0, solidi, -solidi)
+  solidi <- (lsd[2] + lsd[3] %/% lsd_ratio[2]) %% lsd_ratio[1]
+  dplyr::if_else(l + s / lsd_ratio[1] + d / prod(lsd_ratio) > 0, solidi, -solidi)
 }
 
 ## Denarii ##
-deb_denarii <- function(l, s, d, round) {
+deb_denarii <- function(l, s, d, round, lsd_ratio = c(20, 12)) {
   if (length(l) > 1) {
-    return(purrr::pmap_dbl(list(l, s, d), ~ deb_denarii(..1, ..2, ..3, round)))
+    return(purrr::pmap_dbl(list(l, s, d), ~ deb_denarii(..1, ..2, ..3, round, lsd_ratio)))
   }
 
-  lsd <- lsd_decimal_check(c(l, s, d))
+  lsd <- lsd_decimal_check(c(l, s, d), lsd_ratio)
 
-  denarii <- round(lsd[3] %% 12, round)
-  dplyr::if_else(l + s/20 + d/240 > 0, denarii, -denarii)
+  denarii <- round(lsd[3] %% lsd_ratio[2], round)
+  dplyr::if_else(l + s / lsd_ratio[1] + d / prod(lsd_ratio) > 0, denarii, -denarii)
 }
 
 ## Mutate columns to l, s, and d ##
@@ -51,21 +51,22 @@ lsd_mutate_columns <- function(df,
                                l, s, d,
                                lsd_names,
                                replace,
-                               round) {
+                               round,
+                               lsd_ratio) {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)
 
   if (replace == FALSE) {
     dplyr::mutate(df,
-                  !! lsd_names[1] := deb_librae(!! l, !! s, !! d),
-                  !! lsd_names[2] := deb_solidi(!! l, !! s, !! d),
-                  !! lsd_names[3] := deb_denarii(!! l, !! s, !! d, round))
+                  !! lsd_names[1] := deb_librae(!! l, !! s, !! d, lsd_ratio),
+                  !! lsd_names[2] := deb_solidi(!! l, !! s, !! d, lsd_ratio),
+                  !! lsd_names[3] := deb_denarii(!! l, !! s, !! d, round, lsd_ratio))
   } else {
     dplyr::mutate(df,
-                  temp_librae_col = deb_librae(!! l, !! s, !! d),
-                  temp_solidi_col = deb_solidi(!! l, !! s, !! d),
-                  temp_denarii_col = deb_denarii(!! l, !! s, !! d, round)) %>%
+                  temp_librae_col = deb_librae(!! l, !! s, !! d, lsd_ratio),
+                  temp_solidi_col = deb_solidi(!! l, !! s, !! d, lsd_ratio),
+                  temp_denarii_col = deb_denarii(!! l, !! s, !! d, round, lsd_ratio)) %>%
       # Get rid of original columns,
       # because they do not get overwritten with tidyeval
       dplyr::select(-!! lsd_names[1], -!! lsd_names[2], -!! lsd_names[3]) %>%
