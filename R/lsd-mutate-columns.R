@@ -53,6 +53,8 @@ lsd_mutate_columns <- function(df,
                                replace,
                                round,
                                lsd_ratio) {
+  paramenter_check(round, lsd_ratio)
+
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)

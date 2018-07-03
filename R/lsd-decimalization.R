@@ -31,10 +31,12 @@
 #' @export
 
 deb_lsd_l <- function(lsd, lsd_ratio = c(20, 12)) {
-  lsd_check(lsd)
   if (is.list(lsd) == TRUE) {
     return(purrr::map_dbl(lsd, ~ deb_lsd_l(., lsd_ratio)))
   }
+  # checks
+  lsd_check(lsd)
+  paramenter_check(lsd_ratio = lsd_ratio)
 
   lsd[1] + lsd[2] / lsd_ratio[1] + lsd[3] / prod(lsd_ratio)
 }
@@ -111,10 +113,13 @@ deb_l_lsd <- function(l, round = 3, lsd_ratio = c(20, 12)) {
 #' @export
 
 deb_lsd_s <- function(lsd, lsd_ratio = c(20, 12)) {
-  lsd_check(lsd)
   if (is.list(lsd) == TRUE) {
     return(purrr::map_dbl(lsd, ~ deb_lsd_s(., lsd_ratio)))
   }
+  # checks
+  lsd_check(lsd)
+  paramenter_check(lsd_ratio = lsd_ratio)
+
 
   lsd[1] * lsd_ratio[1] + lsd[2] + lsd[3] / lsd_ratio[2]
 }
@@ -195,10 +200,12 @@ deb_s_lsd <- function(s, round = 3, lsd_ratio = c(20, 12)) {
 #' @export
 
 deb_lsd_d <- function(lsd, lsd_ratio = c(20, 12)) {
-  lsd_check(lsd)
   if (is.list(lsd) == TRUE) {
     return(purrr::map_dbl(lsd, ~ deb_lsd_d(., lsd_ratio)))
   }
+  # checks
+  lsd_check(lsd)
+  paramenter_check(lsd_ratio = lsd_ratio)
 
   lsd[1] * prod(lsd_ratio) + lsd[2] * lsd_ratio[2] + lsd[3]
 }

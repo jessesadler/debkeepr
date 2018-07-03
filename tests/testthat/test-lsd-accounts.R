@@ -64,6 +64,8 @@ test_that("deb_account works", {
                               l = c(23, 22, 1),
                               s = c(4, 3, 0),
                               d = c(2, 8, 6)))
+  expect_false(identical(deb_account(example1, "a"),
+                         deb_account(example1, "a", lsd_ratio = c(8, 16))))
 })
 
 test_that("deb_account accepts different column names", {
@@ -84,6 +86,8 @@ test_that("deb_account accepts different column names", {
 test_that("deb_account_summary works", {
   expect_equal(nrow(deb_account_summary(example1)), 9)
   expect_equal(deb_account_summary(example1), summary_answer)
+  expect_false(identical(deb_account_summary(example1),
+                         deb_account_summary(example1, lsd_ratio = c(8, 16))))
   # Accepts different names
   expect_equal(names(deb_account_summary(example2, from, to, pounds, shillings, pence)),
                c("account_id", "relation", "pounds", "shillings", "pence"))
@@ -98,6 +102,8 @@ test_that("deb_credit works", {
   expect_equal(nrow(deb_credit(example1)), 3)
   expect_equal(deb_credit(example1),
                summary_answer[c(1, 4, 7), c(1, 3, 4, 5)])
+  expect_false(identical(deb_credit(example1),
+                         deb_credit(example1, lsd_ratio = c(8, 16))))
   # Accepts different names
   expect_equal(names(deb_credit(example2, from, pounds, shillings, pence)),
                c("account_id", "pounds", "shillings", "pence"))
@@ -107,6 +113,8 @@ test_that("deb_debit works", {
   expect_equal(nrow(deb_debit(example1)), 3)
   expect_equal(deb_debit(example1),
                summary_answer[c(2, 5, 8), c(1, 3, 4, 5)])
+  expect_false(identical(deb_debit(example1),
+                         deb_debit(example1, lsd_ratio = c(8, 16))))
   # Accepts different names
   expect_equal(names(deb_debit(example2, to, pounds, shillings, pence)),
                c("account_id", "pounds", "shillings", "pence"))
@@ -117,6 +125,8 @@ test_that("deb_current works", {
   # Do not need to test them.
   expect_equal(nrow(deb_current(example1)), 3)
   expect_equal(nrow(deb_current(example3)), 4)
+  expect_false(identical(deb_current(example3),
+                         deb_current(example3, lsd_ratio = c(8, 16))))
   expect_equal(names(deb_current(example1)),
                c("account_id", "l", "s", "d"))
 })
@@ -126,10 +136,14 @@ test_that("deb_open works", {
   # Do not need to test them.
   expect_equal(nrow(deb_open(example1)), 2)
   expect_equal(nrow(deb_open(example3)), 4)
+  expect_false(identical(deb_open(example3),
+                         deb_open(example3, lsd_ratio = c(8, 16))))
 })
 
 test_that("deb_balance works", {
   expect_equal(nrow(deb_balance(example1)), 2)
+  expect_false(identical(deb_balance(example1),
+                         deb_balance(example1, lsd_ratio = c(8, 16))))
   expect_equal(names(deb_balance(example1)),
                      c("relation", "l", "s", "d"))
   expect_equal(deb_balance(example1),

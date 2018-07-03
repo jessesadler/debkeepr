@@ -73,6 +73,7 @@ deb_sum <- function(df, l = l, s = s, d = d, round = 3, lsd_ratio = c(20, 12)) {
   d <- rlang::enquo(d)
 
   lsd_column_check(df, l, s, d)
+  paramenter_check(round, lsd_ratio)
 
   # Column names
   l_column <- rlang::quo_name(l)

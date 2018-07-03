@@ -32,6 +32,19 @@ answer_d2_replace <- data.frame(l = c(15, 5, -13),
                                 s = c(5, 17, -5),
                                 d = c(4.5, 0.4, -11))
 
+# Checks
+test_that("arithmetic checks work", {
+  expect_error(deb_multiply(c(9, 3, 6), x = "d"),
+               "x must be a numeric vector")
+  expect_error(deb_divide(c(9, 3, 6), x = "d"),
+               "x must be a numeric vector")
+  expect_error(deb_multiply(c(9, 3, 6), x = c(3, 5)),
+               "x must be a numeric vector of length 1")
+  expect_error(deb_divide(c(9, 3, 6), x = c(3, 5)),
+               "x must be a numeric vector of length 1")
+})
+
+# Multiplication
 test_that("lsd multiplication works", {
   expect_equal(deb_multiply(ex_vector, x = 3),
                c(l = 30, s = 9, d = 6))
@@ -45,6 +58,8 @@ test_that("lsd multiplication works", {
                c(l = 55, s = 17, d = 5))
   expect_equal(deb_multiply(dec_vector, x = 3.33, round = 0),
                c(l = 22, s = 10, d = 2))
+  expect_equal(deb_multiply(ex_vector2, x = 3, lsd_ratio = c(8, 16)),
+               c(l = 62, s = 0, d = 8))
 })
 
 test_that("lsd multiplication is vectorized", {
@@ -59,8 +74,13 @@ test_that("deb_multiply_mutate works", {
   expect_equal(ncol(deb_multiply_mutate(ex_df, l, s, d, x = 2, replace = TRUE)), 3)
   expect_equal(deb_multiply_mutate(ex_df, l, s, d, x = 3), answer_x3)
   expect_equal(deb_multiply_mutate(ex_df, l, s, d, x = 3, replace = TRUE), answer_x3_replace)
+  expect_equal(deb_multiply_mutate(ex_df, l, s, d, x = 3, replace = TRUE, round = 0)[2, 3], 2)
+  # lsd_ratio changes answer
+  expect_false(identical(deb_multiply_mutate(ex_df, l, s, d, x = 3),
+                         deb_multiply_mutate(ex_df, l, s, d, x = 3, lsd_ratio = c(8, 16))))
 })
 
+# Division
 test_that("lsd division works", {
   expect_equal(deb_divide(ex_vector, x = 3),
                c(l = 3, s = 7, d = 8.667))
@@ -70,6 +90,8 @@ test_that("lsd division works", {
                c(l = 2, s = 5, d = 0.733))
   expect_equal(deb_divide(dec_vector, x = 3, round = 0),
                c(l = 2, s = 5, d = 1))
+  expect_equal(deb_divide(ex_vector, x = 3, lsd_ratio = c(8, 16)),
+               c(l = 3, s = 3, d = 11.333))
 })
 
 test_that("lsd division is vectorized", {
@@ -84,26 +106,24 @@ test_that("deb_divide_mutate works", {
   expect_equal(ncol(deb_divide_mutate(ex_df, l, s, d, x = 2, replace = TRUE)), 3)
   expect_equal(deb_divide_mutate(ex_df, l, s, d, x = 2), answer_d2)
   expect_equal(deb_divide_mutate(ex_df, l, s, d, x = 2, replace = TRUE), answer_d2_replace)
+  expect_equal(deb_divide_mutate(ex_df, l, s, d, x = 2, replace = TRUE, round = 0)[2, 3], 0)
+  # lsd_ratio changes answer
+  expect_false(identical(deb_divide_mutate(ex_df, l, s, d, x = 3),
+                         deb_divide_mutate(ex_df, l, s, d, x = 3, lsd_ratio = c(8, 16))))
 })
 
-test_that("arithmetic checks work", {
-  expect_error(deb_multiply(c(9, 3, 6), x = "d"),
-               "x must be a numeric vector")
-  expect_error(deb_divide(c(9, 3, 6), x = "d"),
-               "x must be a numeric vector")
-  expect_error(deb_multiply(c(9, 3, 6), x = c(3, 5)),
-               "x must be a numeric vector of length 1")
-  expect_error(deb_divide(c(9, 3, 6), x = c(3, 5)),
-               "x must be a numeric vector of length 1")
-})
-
+# Subtraction
 test_that("lsd subtract works", {
   expect_equal(deb_subtract(ex_vector2, ex_vector),
                c(l = 10, s = 2, d = 6))
   expect_equal(deb_subtract(ex_vector, ex_vector2),
                c(l = -10, s = -2, d = -6))
-  expect_equal(deb_subtract(dec_vector, ex_vector),
-               c(l = -3, s = -7, d = -11.8))
+  expect_equal(deb_subtract(ex_vector, dec_vector),
+               c(l = 3, s = 7, d = 11.8))
+  expect_equal(deb_subtract(ex_vector, dec_vector, round = 0),
+               c(l = 3, s = 7, d = 12))
+  expect_equal(deb_subtract(ex_vector, c(5, 7, 15), lsd_ratio = c(8, 16)),
+               c(l = 4, s = 3, d = 3))
 })
 
 test_that("lsd subtract is vectorized", {

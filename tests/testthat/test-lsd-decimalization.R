@@ -6,16 +6,20 @@ test_that("decimalized to lsd works", {
   expect_equal(deb_l_lsd(8), c(l = 8, s = 0, d = 0))
   expect_equal(deb_l_lsd(-8), c(l = -8, s = 0, d = 0))
   expect_equal(deb_l_lsd(8.325), c(l = 8, s = 6, d = 6))
+  expect_equal(deb_l_lsd(8.562, round = 0), c(l = 8, s = 11, d = 3))
+  expect_equal(deb_l_lsd(8.325, lsd_ratio = c(8, 16)), c(l = 8, s = 2, d = 9.6))
 
   # deb_s_lsd
   expect_equal(deb_s_lsd(123), c(l = 6, s = 3, d = 0))
   expect_equal(deb_s_lsd(-123), c(l = -6, s = -3, d = 0))
   expect_equal(deb_s_lsd(123.325), c(l = 6, s = 3, d = 3.9))
+  expect_equal(deb_s_lsd(123.325, lsd_ratio = c(8, 16)), c(l = 15, s = 3, d = 5.2))
 
   # deb_d_lsd
   expect_equal(deb_d_lsd(1339), c(l = 5, s = 11, d = 7))
   expect_equal(deb_d_lsd(-1339), c(l = -5, s = -11, d = -7))
   expect_equal(deb_d_lsd(1339.25), c(l = 5, s = 11, d = 7.25))
+  expect_equal(deb_d_lsd(1339.25, lsd_ratio = c(8, 16)), c(l = 10, s = 3, d = 11.25))
 })
 
 test_that("vectorization works for separate l, s, d to lsd", {
@@ -38,16 +42,19 @@ test_that("lsd to decimalized l, s, and d works", {
   expect_equal(deb_lsd_l(c(8, 6, 6)), 8.325)
   expect_equal(deb_lsd_l(c(-8, -6, -6)), -8.325)
   expect_equal(deb_lsd_l(c(8.325, 6, 6)), 8.65)
+  expect_equal(deb_lsd_l(c(8, 4, 8), lsd_ratio = c(8, 16)), 8.5625)
 
   # deb_lsd_s
   expect_equal(deb_lsd_s(c(8, 6, 6)), 166.5)
   expect_equal(deb_lsd_s(c(-8, -6, -6)), -166.5)
   expect_equal(deb_lsd_s(c(8.325, 6, 6)), 173)
+  expect_equal(deb_lsd_s(c(8, 6, 6), lsd_ratio = c(8, 16)), 70.375)
 
   # deb_lsd_d
   expect_equal(deb_lsd_d(c(8, 6, 6)), 1998)
   expect_equal(deb_lsd_d(c(-8, -6, -6)), -1998)
   expect_equal(deb_lsd_d(c(8.325, 6, 6)), 2076)
+  expect_equal(deb_lsd_d(c(8, 6, 6), lsd_ratio = c(8, 16)), 1126)
 })
 
 ex_list <- list(c(30, 10, 9), c(10.725, 18.65, 11), c(-26, -11, -10))

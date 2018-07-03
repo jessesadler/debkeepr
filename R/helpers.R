@@ -80,8 +80,6 @@ lsd_list_to_df <- function(lsd_list) {
 #'                        d = c(6, 6, 8, 11))
 #' df_to_lsd_list(example, l, s, d)
 #'
-#' @importFrom stats setNames
-#'
 #' @export
 
 df_to_lsd_list <- function(df, l = l, s = s, d = d) {

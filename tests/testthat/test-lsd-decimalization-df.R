@@ -12,6 +12,10 @@ test_that("individual l, s, and d helper functions work", {
   expect_equal(decimalize_l(8, 10, 6), 8.525)
   expect_equal(decimalize_s(8, 10, 6), 170.5)
   expect_equal(decimalize_d(8, 10, 6), 2046)
+
+  expect_equal(round(decimalize_l(8, 10, 6, lsd_ratio = c(8, 16)), 3), 9.297)
+  expect_equal(decimalize_s(8, 10, 6, lsd_ratio = c(8, 16)), 74.375)
+  expect_equal(decimalize_d(8, 10, 6, lsd_ratio = c(8, 16)), 1190)
 })
 
 test_that("df pounds decimalization", {

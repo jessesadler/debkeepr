@@ -177,6 +177,8 @@ deb_l_mutate <- function(df, librae,
     stop(call. = FALSE, "librae must be numeric")
   }
 
+  paramenter_check(round, lsd_ratio)
+
   # Column names: avoid overwriting l, s, and d columns
   suffix <- suffix_check(suffix)
   lsd_names <- lsd_column_names(df,
@@ -242,6 +244,8 @@ deb_s_mutate <- function(df, solidi,
     stop(call. = FALSE, "solidi must be numeric")
   }
 
+  paramenter_check(round, lsd_ratio)
+
   # Column names: avoid overwriting l, s, and d columns
   suffix <- suffix_check(suffix)
   lsd_names <- lsd_column_names(df,
@@ -306,6 +310,8 @@ deb_d_mutate <- function(df, denarii,
   if (!is.numeric(rlang::eval_tidy(denarii, df))) {
     stop(call. = FALSE, "denarii must be numeric")
   }
+
+  paramenter_check(round, lsd_ratio)
 
   # Column names: avoid overwriting l, s, and d columns
   suffix <- suffix_check(suffix)

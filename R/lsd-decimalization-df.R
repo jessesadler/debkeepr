@@ -47,6 +47,7 @@ deb_lsd_l_mutate <- function(df,
   d <- rlang::enquo(d)
 
   lsd_column_check(df, l, s, d)
+  paramenter_check(lsd_ratio = lsd_ratio)
 
   column_name <- rlang::enquo(column_name)
   column_name <- rlang::quo_name(column_name)
@@ -86,6 +87,7 @@ deb_lsd_s_mutate <- function(df,
   d <- rlang::enquo(d)
 
   lsd_column_check(df, l, s, d)
+  paramenter_check(lsd_ratio = lsd_ratio)
 
   column_name <- rlang::enquo(column_name)
   column_name <- rlang::quo_name(column_name)
@@ -127,6 +129,7 @@ deb_lsd_d_mutate <- function(df,
   d <- rlang::enquo(d)
 
   lsd_column_check(df, l, s, d)
+  paramenter_check(lsd_ratio = lsd_ratio)
 
   column_name <- rlang::enquo(column_name)
   column_name <- rlang::quo_name(column_name)

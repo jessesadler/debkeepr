@@ -85,6 +85,7 @@ deb_account <- function(df,
   edge_columns <- c(rlang::quo_name(credit), rlang::quo_name(debit))
   credit_check(df, credit, debit, edge_columns, account_id)
   lsd_column_check(df, l, s, d)
+  paramenter_check(round, lsd_ratio)
 
   # Column names
   l_column <- rlang::quo_name(l)
@@ -196,6 +197,7 @@ deb_account_summary <- function(df,
   lsd_column_check(df, l, s, d)
   edge_columns <- c(rlang::quo_name(credit), rlang::quo_name(debit))
   credit_check(df, credit, debit, edge_columns)
+  paramenter_check(round, lsd_ratio)
 
   credits <- df %>%
     dplyr::group_by(!! credit) %>%
@@ -296,6 +298,7 @@ deb_credit <- function(df,
   edge_columns <- rlang::quo_name(credit)
   credit_check(df, credit, debit = NULL, edge_columns)
   lsd_column_check(df, l, s, d)
+  paramenter_check(round, lsd_ratio)
 
   dplyr::group_by(df, !! credit) %>%
     deb_sum(!! l, !! s, !! d, round = round, lsd_ratio = lsd_ratio) %>%
@@ -371,6 +374,7 @@ deb_debit <- function(df,
   edge_columns <- rlang::quo_name(debit)
   credit_check(df, credit = NULL, debit, edge_columns)
   lsd_column_check(df, l, s, d)
+  paramenter_check(round, lsd_ratio)
 
   dplyr::group_by(df, !! debit) %>%
     deb_sum(!! l, !! s, !! d, round, lsd_ratio) %>%

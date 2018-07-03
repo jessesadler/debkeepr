@@ -3,7 +3,7 @@
 # Check and deal with decimals in l or s
 # If value is negative, turn l, s, and d positive
 # Returns vector in form c(l, s, d)
-lsd_decimal_check <- function(lsd, lsd_ratio = c(20, 12)) {
+lsd_decimal_check <- function(lsd, lsd_ratio) {
   if (is.list(lsd) == TRUE) {
     l <- purrr::map_dbl(lsd, 1)
     s <- purrr::map_dbl(lsd, 2)
@@ -52,7 +52,7 @@ lsd_normalize <- function(lsd, round, lsd_ratio) {
   lsd[2] <- (lsd[2] + lsd[3] %/% lsd_ratio[2]) %% lsd_ratio[1]
   lsd[3] <- round(lsd[3] %% lsd_ratio[2], round)
 
-  setNames(lsd, c("l", "s", "d"))
+  stats::setNames(lsd, c("l", "s", "d"))
 }
 
 #' Normalize pounds, shillings, and pence
@@ -109,7 +109,8 @@ lsd_normalize <- function(lsd, round, lsd_ratio) {
 
 deb_normalize <- function(lsd, round = 3, lsd_ratio = c(20, 12)) {
 
-  lsd_check(lsd, round)
+  lsd_check(lsd)
+  paramenter_check(round, lsd_ratio)
   checked <- lsd_decimal_check(lsd, lsd_ratio)
 
   if (is.list(lsd) == FALSE) {

@@ -2,29 +2,20 @@
 
 # Check that lsd is numeric vector of length 3 or
 # list of numeric vectors of length 3
-lsd_check <- function(lsd, round = NULL) {
-  if (!is.null(round)) {
-    if (!is.numeric(round)) {
-      stop(call. = FALSE, "round must be numeric")
-    }
-    if (length(round) > 1) {
-      stop(call. = FALSE, "round must be numeric vector of length 1")
-    }
-  }
-
-  # vector
+lsd_check <- function(lsd) {
+  # check lsd vector
   if (is.list(lsd) == FALSE & is.vector(lsd) == TRUE) {
     if (!is.numeric(lsd)) {
-      stop(call. = FALSE, "lsd must be numeric")
+      stop(call. = FALSE, "lsd must be a numeric vector")
     }
     if (length(lsd) != 3) {
-      stop(call. = FALSE, paste("length of lsd must be 3.",
+      stop(call. = FALSE, paste("lsd must be a vector of length of 3.",
                                 "There must be a value for pounds, shillings, and pence.",
                                 sep = "\n"))
     }
   }
 
-  # list
+  # check lsd list
   if (is.list(lsd) == TRUE) {
     if (!all(purrr::map_lgl(lsd, is.numeric))) {
       stop(call. = FALSE, "lsd must be a list of numeric vectors")
@@ -34,6 +25,31 @@ lsd_check <- function(lsd, round = NULL) {
                                 "There must be a value for pounds, shillings, and pence.",
                                 sep = "\n"))
     }
+  }
+}
+
+# Check round and lsd_ratio parameters
+paramenter_check <- function(round = 3, lsd_ratio = c(20, 12)) {
+  # check round
+  if (!is.numeric(round)) {
+    stop(call. = FALSE, "round must be numeric")
+  }
+  if (length(round) > 1) {
+    stop(call. = FALSE, "round must be a numeric vector of length 1")
+  }
+
+  # check lsd_ratio
+  if (!is.numeric(lsd_ratio)) {
+    stop(call. = FALSE, "lsd_ratio must be a numeric vector")
+  }
+  if (length(lsd_ratio) != 2) {
+    stop(call. = FALSE, "lsd_ratio must be a numeric vector of length of 2")
+  }
+  if (any(lsd_ratio == 0)) {
+    stop(call. = FALSE, "Neither of the values in lsd_ratio can be 0")
+  }
+  if (any(lsd_ratio < 0)) {
+    stop(call. = FALSE, "The values in lsd_ratio must both be positive")
   }
 }
 

@@ -57,8 +57,6 @@ deb_interest <- function(lsd,
                                           lsd_ratio)))
   }
 
-  # Checks
-  lsd_check(lsd, round)
   interest_check(interest, duration, with_principal)
 
   if (with_principal == TRUE) {

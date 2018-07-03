@@ -35,6 +35,10 @@ test_that("deb_exchange works", {
                c(l = 15, s = 4, d = 9))
   expect_equal(deb_exchange(ex_vector, rate_per_shillings = 30 + 3/12),
                c(l = 15, s = 7, d = 3.475))
+  expect_equal(deb_exchange(ex_vector, rate_per_shillings = 30 + 3/12, round = 0),
+               c(l = 15, s = 7, d = 3))
+  expect_equal(deb_exchange(ex_vector, rate_per_shillings = 30, lsd_ratio = c(8, 16)),
+               c(l = 38, s = 7, d = 11.5))
 })
 
 test_that("deb_exchange is vectorized", {
@@ -47,6 +51,8 @@ test_that("deb_exchange is vectorized", {
 test_that("deb_exchange_mutate works", {
   expect_equal(ncol(deb_exchange_mutate(ex_df, l, s, d, rate_per_shillings = 30)), 6)
   expect_equal(deb_exchange_mutate(ex_df, rate_per_shillings = 30, replace = TRUE), exchange_30)
+  expect_false(identical(deb_exchange_mutate(ex_df, rate_per_shillings = 30),
+                         deb_exchange_mutate(ex_df, rate_per_shillings = 30, lsd_ratio = c(8, 16))))
 })
 
 test_that("normalized_to_sd helper works",{
@@ -58,6 +64,8 @@ test_that("deb_rate_per_shilling works", {
                c(l = 0, s = 33, d = 4))
   expect_equal(deb_rate_per_shilling(c(100, 0, 0), c(166, 13, 4)),
                c(l = 0, s = 12, d = 0))
+  expect_equal(deb_rate_per_shilling(c(166, 13, 4), c(100, 0, 0), lsd_ratio = c(8, 16)),
+               c(l = 0, s = 13, d = 5.333))
 })
 
 test_that("deb_rate_per_shilling is vectorized", {
