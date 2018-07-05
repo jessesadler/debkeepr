@@ -81,11 +81,18 @@ deb_sum <- function(df, l = l, s = s, d = d, lsd_bases = c(20, 12), round = 3) {
   d_column <- rlang::quo_name(d)
 
   # Use temp columns and rename so that l, s, and d do not get overwritten
-  df %>%
+  ret <- df %>%
     dplyr::summarise(temp_librae_col = deb_librae_sum(!!l, !!s, !!d, lsd_bases),
                      temp_solidi_col = deb_solidi_sum(!!l, !!s, !!d, lsd_bases),
                      temp_denarii_col = deb_denarii_sum(!!l, !!s, !!d, lsd_bases, round)) %>%
     dplyr::rename(!! l_column := temp_librae_col,
                   !! s_column := temp_solidi_col,
                   !! d_column := temp_denarii_col)
+
+  # Get rid of no visible binding for global variable from CMD check
+  temp_librae_col <- NULL
+  temp_solidi_col <- NULL
+  temp_denarii_col <- NULL
+
+  ret
 }

@@ -9,4 +9,5 @@
 #' @name tidyeval
 #' @keywords internal
 #' @importFrom rlang :=
+#' @importFrom rlang .data
 NULL

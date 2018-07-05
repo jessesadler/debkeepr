@@ -123,7 +123,7 @@ deb_account <- function(df,
   # Create account tibble and rename columns
   dplyr::bind_rows(credit, debit, current) %>%
     tibble::add_column(relation = c("credit", "debit", "current"), .before = 1) %>%
-    dplyr::select(-denarii)
+    dplyr::select(-.data$denarii)
 }
 
 #' Calculate credit, debit, and current values of accounts
@@ -214,7 +214,7 @@ deb_account_summary <- function(df,
     dplyr::bind_rows(credits)
 
   current <- accounts_sum %>%
-    dplyr::group_by(account_id) %>%
+    dplyr::group_by(.data$account_id) %>%
     dplyr::summarise(
       relation = "current",
       denarii = sum(denarii))
@@ -222,7 +222,7 @@ deb_account_summary <- function(df,
   dplyr::bind_rows(credits, debits, current) %>%
     deb_d_mutate(denarii, l_column = !! l, s_column = !! s, d_column = !! d,
                  lsd_bases = lsd_bases) %>%
-    dplyr::arrange(account_id) %>%
+    dplyr::arrange(.data$account_id) %>%
     dplyr::select(-denarii)
 }
 

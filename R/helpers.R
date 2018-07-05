@@ -99,5 +99,5 @@ df_to_lsd_list <- function(df, l = l, s = s, d = d) {
   as.list(df) %>%
     purrr::transpose() %>%
     purrr::simplify_all() %>%
-    purrr::map(., ~ stats::setNames(., c("l", "s", "d")))
+    purrr::map(~ stats::setNames(., c("l", "s", "d")))
 }

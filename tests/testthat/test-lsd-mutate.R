@@ -110,10 +110,10 @@ d_solution_df <- data.frame(pence = d_vector,
                             d = dd_solution)
 
 test_that("mutate functions work", {
-  expect_equal(deb_l_mutate(l_df, pounds), l_solution_df)
-  expect_equal(deb_l_mutate(l_df, pounds, round = 0)[5, 4], 4)
-  expect_false(identical(deb_l_mutate(l_df, pounds),
-                         deb_l_mutate(l_df, pounds, lsd_bases = c(8, 16))))
+  expect_equal(deb_l_mutate(l_df, pounds, l, s, d), l_solution_df)
+  expect_equal(deb_l_mutate(l_df, pounds, l, s, d, round = 0)[5, 4], 4)
+  expect_false(identical(deb_l_mutate(l_df, pounds, l, s, d),
+                         deb_l_mutate(l_df, pounds, l, s, d, lsd_bases = c(8, 16))))
 
   expect_equal(deb_s_mutate(s_df, shillings), s_solution_df)
   expect_equal(deb_s_mutate(s_df, shillings, round = 0)[ , 4], c(0, 0, 6, 4 , -10))

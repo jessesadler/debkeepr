@@ -52,7 +52,7 @@ deb_lsd_l_mutate <- function(df,
   column_name <- rlang::enquo(column_name)
   column_name <- rlang::quo_name(column_name)
 
-  dplyr::mutate(df, !! column_name := decimalize_l(l, s, d, lsd_bases))
+  dplyr::mutate(df, !! column_name := decimalize_l(!! l, !! s, !! d, lsd_bases))
 }
 
 #' Convert from pounds, shillings and pence to shillings
@@ -92,7 +92,7 @@ deb_lsd_s_mutate <- function(df,
   column_name <- rlang::enquo(column_name)
   column_name <- rlang::quo_name(column_name)
 
-  dplyr::mutate(df, !! column_name := decimalize_s(l, s, d, lsd_bases))
+  dplyr::mutate(df, !! column_name := decimalize_s(!! l, !! s, !! d, lsd_bases))
 }
 
 #' Convert from pounds, shillings and pence to pence
@@ -134,5 +134,5 @@ deb_lsd_d_mutate <- function(df,
   column_name <- rlang::enquo(column_name)
   column_name <- rlang::quo_name(column_name)
 
-  dplyr::mutate(df, !! column_name := decimalize_d(l, s, d, lsd_bases))
+  dplyr::mutate(df, !! column_name := decimalize_d(!! l, !! s, !! d, lsd_bases))
 }

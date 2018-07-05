@@ -65,16 +65,23 @@ lsd_mutate_columns <- function(df,
                   !! lsd_names[2] := deb_solidi(!! l, !! s, !! d, lsd_bases),
                   !! lsd_names[3] := deb_denarii(!! l, !! s, !! d, round, lsd_bases))
   } else {
-    dplyr::mutate(df,
-                  temp_librae_col = deb_librae(!! l, !! s, !! d, lsd_bases),
-                  temp_solidi_col = deb_solidi(!! l, !! s, !! d, lsd_bases),
-                  temp_denarii_col = deb_denarii(!! l, !! s, !! d, round, lsd_bases)) %>%
+    ret <- dplyr::mutate(df,
+                         temp_librae_col = deb_librae(!! l, !! s, !! d, lsd_bases),
+                         temp_solidi_col = deb_solidi(!! l, !! s, !! d, lsd_bases),
+                         temp_denarii_col = deb_denarii(!! l, !! s, !! d, round, lsd_bases)) %>%
       # Get rid of original columns,
       # because they do not get overwritten with tidyeval
       dplyr::select(-!! lsd_names[1], -!! lsd_names[2], -!! lsd_names[3]) %>%
       dplyr::rename(!! lsd_names[1] := temp_librae_col,
                     !! lsd_names[2] := temp_solidi_col,
                     !! lsd_names[3] := temp_denarii_col)
+
+    # Get rid of no visible binding for global variable from CMD check
+    temp_librae_col <- NULL
+    temp_solidi_col <- NULL
+    temp_denarii_col <- NULL
+
+    ret
   }
 
 }
