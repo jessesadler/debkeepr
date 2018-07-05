@@ -3,7 +3,7 @@
 # Check and deal with decimals in l or s
 # If value is negative, turn l, s, and d positive
 # Returns vector in form c(l, s, d)
-lsd_decimal_check <- function(lsd, lsd_ratio) {
+lsd_decimal_check <- function(lsd, lsd_bases) {
   if (is.list(lsd) == TRUE) {
     l <- purrr::map_dbl(lsd, 1)
     s <- purrr::map_dbl(lsd, 2)
@@ -16,63 +16,74 @@ lsd_decimal_check <- function(lsd, lsd_ratio) {
 
   # vectorize
   if (length(l) > 1) {
-    return(purrr::map(lsd, ~ lsd_decimal_check(., lsd_ratio)))
+    return(purrr::map(lsd, ~ lsd_decimal_check(., lsd_bases)))
   }
 
   # Check if the value is positive
   # Return positive values so only need to use floor
-  if (l + s / lsd_ratio[1] + d / prod(lsd_ratio) < 0) {
+  if (l + s / lsd_bases[1] + d / prod(lsd_bases) < 0) {
     l <- -l
     s <- -s
     d <- -d
   }
   # Check for decimals in l
   if (l != round(l)) {
-    temp_s <- s + (l - floor(l)) * lsd_ratio[1]
+    temp_s <- s + (l - floor(l)) * lsd_bases[1]
     l <- floor(l)
     if (temp_s != round(temp_s)) {
       s <- floor(temp_s)
-      d <- d + (temp_s - floor(temp_s)) * lsd_ratio[2]
+      d <- d + (temp_s - floor(temp_s)) * lsd_bases[2]
     } else {
       s <- temp_s
     }
   }
   # Check for decimals in s
   if (s != round(s)) {
-    d <- d + (s - floor(s)) * lsd_ratio[2]
+    d <- d + (s - floor(s)) * lsd_bases[2]
     s <- floor(s)
   }
   c(l, s, d)
 }
 
 # Actual normalization
-lsd_normalize <- function(lsd, round, lsd_ratio) {
+lsd_normalize <- function(lsd, round, lsd_bases) {
   # vector
-  lsd[1] <- lsd[1] + ((lsd[2] + lsd[3] %/% lsd_ratio[2]) %/% lsd_ratio[1])
-  lsd[2] <- (lsd[2] + lsd[3] %/% lsd_ratio[2]) %% lsd_ratio[1]
-  lsd[3] <- round(lsd[3] %% lsd_ratio[2], round)
+  lsd[1] <- lsd[1] + ((lsd[2] + lsd[3] %/% lsd_bases[2]) %/% lsd_bases[1])
+  lsd[2] <- (lsd[2] + lsd[3] %/% lsd_bases[2]) %% lsd_bases[1]
+  lsd[3] <- round(lsd[3] %% lsd_bases[2], round)
 
   stats::setNames(lsd, c("l", "s", "d"))
 }
 
 #' Normalize pounds, shillings, and pence
 #'
-#' Normalize pounds, shillings, and pence to the correct values based
-#' on 12 pence in a shilling and 20 shillings in a pound.
+#' Normalize pounds, shillings, and pence to standard unit bases.
 #'
-#' This function uses the nomenclature of
-#' [l, s, and d](https://en.wikipedia.org/wiki/£sd) to refer to pounds,
-#' shillings, and pence. This derives from the Latin terms for librae,
-#' solidi, and denarii. One solidus was equivalent to 12 denarii, and
-#' 240 denarii coins were made from on libra of silver. The nomenclature
-#' and values of 12 denarii to 1 solidus and 20 solidi to 1 libra were adopted
-#' by at least the 8th century and spread throughout Europe through the
-#' Carolingian Empire.
+#' `deb_normalize()` uses the nomenclature of
+#' [l, s, and d](https://en.wikipedia.org/wiki/£sd) to represent pounds,
+#' shillings, and pence, which derives from the Latin terms
+#' [libra](https://en.wikipedia.org/wiki/French_livre),
+#' [solidus](https://en.wikipedia.org/wiki/Solidus_(coin)), and
+#' [denarius](https://en.wikipedia.org/wiki/Denarius). In the 8th century a
+#' solidus came to represent 12 denarii, and 240 denarii were made from one
+#' libra or pound of silver. The custom of counting coins in dozens (solidi)
+#' and scores of dozens (libra) spread throughout the Carolingian Empire and
+#' became engrained in much of Europe. However,
+#' [other ratios](https://en.wikipedia.org/wiki/Non-decimal_currency) between
+#' libra, solidus, and denarius were also in use. The `lsd_bases` argument
+#' makes it possible to specify alternative bases for the solidus and denarius
+#' values.
 #'
 #' @param lsd Numeric vector of length 3 or list of numeric vectors of length
 #'   3. The first position of the vector represents the pounds value or l. The
 #'   second position represents the shillings value or s. And the third
 #'   position represents the pence value or d.
+#' @param lsd_bases Numeric vector of length 2 used to specify the bases for
+#'   the s or solidus and d or denarius values in `lsd` vectors. Default is
+#'   `c(20, 12)`, which conforms to the most widely used system of 1 libra =
+#'   20 solidi and 1 solidi = 12 denarii. This argument makes it possible to
+#'   use alternative bases for the solidus and denarius values that were also
+#'   in use.
 #' @param round Round pence to specified number of decimal places.
 #'   Default is 3. Set to 0 to return pence as whole numbers.
 #'
@@ -82,8 +93,12 @@ lsd_normalize <- function(lsd, round, lsd_ratio) {
 #'   will all be negative.
 #'
 #' @examples
-#' # Use to calculate the correct number of pounds, shillings, and pence
+#' # Use to normalize the values of pounds, shillings, and pence
 #' deb_normalize(lsd = c(5, 55, 22))
+#'
+#' # Normalize values with alternative bases for solidus and denarius
+#' # For instance, following Dutch system of gulden, stuivers, and penningen
+#' deb_normalize(lsd = c(5, 55, 22), lsd_bases = c(20, 16))
 #'
 #' # It is possible to perform math within the function
 #' deb_normalize(lsd = c(5 + 6, 20 + 18, 8 + 11))
@@ -107,28 +122,28 @@ lsd_normalize <- function(lsd, round, lsd_ratio) {
 #'
 #' @export
 
-deb_normalize <- function(lsd, round = 3, lsd_ratio = c(20, 12)) {
+deb_normalize <- function(lsd, lsd_bases = c(20, 12), round = 3) {
 
   lsd_check(lsd)
-  paramenter_check(round, lsd_ratio)
-  checked <- lsd_decimal_check(lsd, lsd_ratio)
+  paramenter_check(lsd_bases, round)
+  checked <- lsd_decimal_check(lsd, lsd_bases)
 
   if (is.list(lsd) == FALSE) {
     # vector
-    normalized <- lsd_normalize(checked, round, lsd_ratio)
+    normalized <- lsd_normalize(checked, round, lsd_bases)
 
     # Positive and negative
-    if (sum(lsd / c(1, lsd_ratio[1], prod(lsd_ratio))) > 0) {
+    if (sum(lsd / c(1, lsd_bases[1], prod(lsd_bases))) > 0) {
       normalized
     } else {
       -normalized
     }
   } else {
     # list
-    normalized <- purrr::map(checked, ~ lsd_normalize(., round, lsd_ratio))
+    normalized <- purrr::map(checked, ~ lsd_normalize(., lsd_bases = lsd_bases, round = round))
 
     # Positive and negative
-    dplyr::if_else(purrr::map(lsd, ~ sum(. / c(1, lsd_ratio[1], prod(lsd_ratio)))) > 0,
+    dplyr::if_else(purrr::map(lsd, ~ sum(. / c(1, lsd_bases[1], prod(lsd_bases)))) > 0,
                    purrr::map(normalized, `+`),
                    purrr::map(normalized, `-`))
   }
@@ -138,17 +153,23 @@ deb_normalize <- function(lsd, round = 3, lsd_ratio = c(20, 12)) {
 
 #' Normalize pounds, shillings, and pence variables in a data frame
 #'
-#' Normalize pounds, shillings, and pence variables in a data frame to the
-#' correct values based on 12 pence in a shilling and 20 shillings in a pound.
+#' Normalize pounds, shillings, and pence variables in a data frame to
+#' to standard unit bases.
 #'
-#' This function uses the nomenclature of
-#' [l, s, and d](https://en.wikipedia.org/wiki/£sd) to refer to pounds,
-#' shillings, and pence. This derives from the Latin terms for librae,
-#' solidi, and denarii. One solidus was equivalent to 12 denarii, and
-#' 240 denarii coins were made from on libra of silver. The nomenclature
-#' and values of 12 denarii to 1 solidus and 20 solidi to 1 libra were adopted
-#' by at least the 8th century and spread throughout Europe through the
-#' Carolingian Empire.
+#' `deb_normalize_df()` uses the nomenclature of
+#' [l, s, and d](https://en.wikipedia.org/wiki/£sd) to represent pounds,
+#' shillings, and pence, which derives from the Latin terms
+#' [libra](https://en.wikipedia.org/wiki/French_livre),
+#' [solidus](https://en.wikipedia.org/wiki/Solidus_(coin)), and
+#' [denarius](https://en.wikipedia.org/wiki/Denarius). In the 8th century a
+#' solidus came to represent 12 denarii, and 240 denarii were made from one
+#' libra or pound of silver. The custom of counting coins in dozens (solidi)
+#' and scores of dozens (libra) spread throughout the Carolingian Empire and
+#' became engrained in much of Europe. However,
+#' [other ratios](https://en.wikipedia.org/wiki/Non-decimal_currency) between
+#' libra, solidus, and denarius were also in use. The `lsd_bases` argument
+#' makes it possible to specify alternative bases for the solidus and denarius
+#' values.
 #'
 #' @param df A data frame that contains pounds, shillings, and pence variables.
 #' @param l Pounds column: Unquoted name of a numeric variable corresponding
@@ -157,14 +178,20 @@ deb_normalize <- function(lsd, round = 3, lsd_ratio = c(20, 12)) {
 #'   to shillings. Default is s.
 #' @param d Pence column: Unquoted name of numeric variable corresponding to
 #'   pence. Default is d.
+#' @param lsd_bases Numeric vector of length 2 used to specify the bases for
+#'   the s or solidus and d or denarius values in `lsd` vectors. Default is
+#'   `c(20, 12)`, which conforms to the most widely used system of 1 libra =
+#'   20 solidi and 1 solidi = 12 denarii. This argument makes it possible to
+#'   use alternative bases for the solidus and denarius values that were also
+#'   in use.
 #' @param round Round pence to specified number of decimal places.
 #'   Default is 3. Set to 0 if you want pence to always be a whole number.
 #' @param replace Logical (default `TRUE`): when `TRUE` the new pounds,
 #'   shillings, and pence variables will replace the original ones.
 #' @param suffix Suffix added to the column names for the pounds, shillings,
-#'   and pence columns to distinguish them from the original pounds, shillings,
-#'   and pence columns if `replace = FALSE`. Default is ".1". Should be a
-#'   character vector of length 1.
+#'   and pence columns to distinguish new variables from the original pounds,
+#'   shillings, and pence columns if `replace = FALSE`. Default is ".1".
+#'   Should be a character vector of length 1.
 #'
 #' @return Returns a data frame with normalized pounds, shillings, and pence,
 #'   variables.
@@ -174,17 +201,21 @@ deb_normalize <- function(lsd, round = 3, lsd_ratio = c(20, 12)) {
 #' example <- data.frame(l = c(35, -10, 26.725, 12),
 #'                       s = c(50, -48, 311.85, 76),
 #'                       d = c(89, -181, 70, 205))
-#' # Normalize lsd values
-#' deb_normalize_df(example, l, s, d)
+#' # Normalize the values of pounds, shillings, and pence
+#' deb_normalize_df(example, l = l, s = s, d = d)
+#'
+#' # Normalize values with alternative bases for solidus and denarius
+#' # For instance, following Dutch system of gulden, stuivers, and penningen
+#' deb_normalize_df(example, l = l, s = s, d = d, lsd_bases = c(20, 16))
 #'
 #' @export
 
 deb_normalize_df <- function(df,
                              l = l, s = s, d = d,
+                             lsd_bases = c(20, 12),
                              round = 3,
                              replace = TRUE,
-                             suffix = ".1",
-                             lsd_ratio = c(20, 12)) {
+                             suffix = ".1") {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)
@@ -196,8 +227,8 @@ deb_normalize_df <- function(df,
 
   lsd_mutate_columns(df,
                      !! l, !! s, !! d,
-                     lsd_names,
-                     replace,
-                     round,
-                     lsd_ratio)
+                     lsd_names = lsd_names,
+                     replace = replace,
+                     lsd_bases = lsd_bases,
+                     round = round)
 }

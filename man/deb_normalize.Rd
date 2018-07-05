@@ -4,13 +4,20 @@
 \alias{deb_normalize}
 \title{Normalize pounds, shillings, and pence}
 \usage{
-deb_normalize(lsd, round = 3)
+deb_normalize(lsd, lsd_bases = c(20, 12), round = 3)
 }
 \arguments{
 \item{lsd}{Numeric vector of length 3 or list of numeric vectors of length
 3. The first position of the vector represents the pounds value or l. The
 second position represents the shillings value or s. And the third
 position represents the pence value or d.}
+
+\item{lsd_bases}{Numeric vector of length 2 used to specify the bases for
+the s or solidus and d or denarius values in \code{lsd} vectors. Default is
+\code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
+20 solidi and 1 solidi = 12 denarii. This argument makes it possible to
+use alternative bases for the solidus and denarius values that were also
+in use.}
 
 \item{round}{Round pence to specified number of decimal places.
 Default is 3. Set to 0 to return pence as whole numbers.}
@@ -22,22 +29,31 @@ and pence. If the input lsd value is negative, the l, s, and d values
 will all be negative.
 }
 \description{
-Normalize pounds, shillings, and pence to the correct values based
-on 12 pence in a shilling and 20 shillings in a pound.
+Normalize pounds, shillings, and pence to standard unit bases.
 }
 \details{
-This function uses the nomenclature of
-\href{https://en.wikipedia.org/wiki/£sd}{l, s, and d} to refer to pounds,
-shillings, and pence. This derives from the Latin terms for librae,
-solidi, and denarii. One solidus was equivalent to 12 denarii, and
-240 denarii coins were made from on libra of silver. The nomenclature
-and values of 12 denarii to 1 solidus and 20 solidi to 1 libra were adopted
-by at least the 8th century and spread throughout Europe through the
-Carolingian Empire.
+\code{deb_normalize()} uses the nomenclature of
+\href{https://en.wikipedia.org/wiki/£sd}{l, s, and d} to represent pounds,
+shillings, and pence, which derives from the Latin terms
+\href{https://en.wikipedia.org/wiki/French_livre}{libra},
+\href{https://en.wikipedia.org/wiki/Solidus_(coin)}{solidus}, and
+\href{https://en.wikipedia.org/wiki/Denarius}{denarius}. In the 8th century a
+solidus came to represent 12 denarii, and 240 denarii were made from one
+libra or pound of silver. The custom of counting coins in dozens (solidi)
+and scores of dozens (libra) spread throughout the Carolingian Empire and
+became engrained in much of Europe. However,
+\href{https://en.wikipedia.org/wiki/Non-decimal_currency}{other ratios} between
+libra, solidus, and denarius were also in use. The \code{lsd_bases} argument
+makes it possible to specify alternative bases for the solidus and denarius
+values.
 }
 \examples{
-# Use to calculate the correct number of pounds, shillings, and pence
+# Use to normalize the values of pounds, shillings, and pence
 deb_normalize(lsd = c(5, 55, 22))
+
+# Normalize values with alternative bases for solidus and denarius
+# For instance, following Dutch system of gulden, stuivers, and penningen
+deb_normalize(lsd = c(5, 55, 22), lsd_bases = c(20, 16))
 
 # It is possible to perform math within the function
 deb_normalize(lsd = c(5 + 6, 20 + 18, 8 + 11))

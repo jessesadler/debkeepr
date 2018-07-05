@@ -4,11 +4,18 @@
 \alias{deb_d_lsd}
 \title{Convert from pence to pounds, shillings, and pence}
 \usage{
-deb_d_lsd(d, round = 3)
+deb_d_lsd(d, lsd_bases = c(20, 12), round = 3)
 }
 \arguments{
 \item{d}{Decimalized pence: numeric vector representing pence to be
 converted into an lsd value.}
+
+\item{lsd_bases}{Numeric vector of length 2 used to specify the bases for
+the s or solidus and d or denarius values in \code{lsd} vectors. Default is
+\code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
+20 solidi and 1 solidi = 12 denarii. This argument makes it possible to
+use alternative bases for the solidus and denarius values that were also
+in use.}
 
 \item{round}{Round pence to specified number of decimal places.
 Default is 3. Set to 0 to return pence as whole numbers.}

@@ -58,7 +58,7 @@ test_that("lsd multiplication works", {
                c(l = 55, s = 17, d = 5))
   expect_equal(deb_multiply(dec_vector, x = 3.33, round = 0),
                c(l = 22, s = 10, d = 2))
-  expect_equal(deb_multiply(ex_vector2, x = 3, lsd_ratio = c(8, 16)),
+  expect_equal(deb_multiply(ex_vector2, x = 3, lsd_bases = c(8, 16)),
                c(l = 62, s = 0, d = 8))
 })
 
@@ -75,9 +75,9 @@ test_that("deb_multiply_mutate works", {
   expect_equal(deb_multiply_mutate(ex_df, l, s, d, x = 3), answer_x3)
   expect_equal(deb_multiply_mutate(ex_df, l, s, d, x = 3, replace = TRUE), answer_x3_replace)
   expect_equal(deb_multiply_mutate(ex_df, l, s, d, x = 3, replace = TRUE, round = 0)[2, 3], 2)
-  # lsd_ratio changes answer
+  # lsd_bases changes answer
   expect_false(identical(deb_multiply_mutate(ex_df, l, s, d, x = 3),
-                         deb_multiply_mutate(ex_df, l, s, d, x = 3, lsd_ratio = c(8, 16))))
+                         deb_multiply_mutate(ex_df, l, s, d, x = 3, lsd_bases = c(8, 16))))
 })
 
 # Division
@@ -90,7 +90,7 @@ test_that("lsd division works", {
                c(l = 2, s = 5, d = 0.733))
   expect_equal(deb_divide(dec_vector, x = 3, round = 0),
                c(l = 2, s = 5, d = 1))
-  expect_equal(deb_divide(ex_vector, x = 3, lsd_ratio = c(8, 16)),
+  expect_equal(deb_divide(ex_vector, x = 3, lsd_bases = c(8, 16)),
                c(l = 3, s = 3, d = 11.333))
 })
 
@@ -107,9 +107,9 @@ test_that("deb_divide_mutate works", {
   expect_equal(deb_divide_mutate(ex_df, l, s, d, x = 2), answer_d2)
   expect_equal(deb_divide_mutate(ex_df, l, s, d, x = 2, replace = TRUE), answer_d2_replace)
   expect_equal(deb_divide_mutate(ex_df, l, s, d, x = 2, replace = TRUE, round = 0)[2, 3], 0)
-  # lsd_ratio changes answer
+  # lsd_bases changes answer
   expect_false(identical(deb_divide_mutate(ex_df, l, s, d, x = 3),
-                         deb_divide_mutate(ex_df, l, s, d, x = 3, lsd_ratio = c(8, 16))))
+                         deb_divide_mutate(ex_df, l, s, d, x = 3, lsd_bases = c(8, 16))))
 })
 
 # Subtraction
@@ -122,7 +122,7 @@ test_that("lsd subtract works", {
                c(l = 3, s = 7, d = 11.8))
   expect_equal(deb_subtract(ex_vector, dec_vector, round = 0),
                c(l = 3, s = 7, d = 12))
-  expect_equal(deb_subtract(ex_vector, c(5, 7, 15), lsd_ratio = c(8, 16)),
+  expect_equal(deb_subtract(ex_vector, c(5, 7, 15), lsd_bases = c(8, 16)),
                c(l = 4, s = 3, d = 3))
 })
 

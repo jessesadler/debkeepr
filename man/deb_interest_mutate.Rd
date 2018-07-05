@@ -5,8 +5,8 @@
 \title{Calculate the interest of pounds, shillings, and pence in a data frame}
 \usage{
 deb_interest_mutate(df, l = l, s = s, d = d, interest = 0.0625,
-  duration = 1, with_principal = TRUE, round = 3, replace = FALSE,
-  suffix = ".interest")
+  duration = 1, with_principal = TRUE, lsd_bases = c(20, 12), round = 3,
+  replace = FALSE, suffix = ".interest")
 }
 \arguments{
 \item{df}{A data frame that contains pounds, shillings, and pence variables.}
@@ -31,6 +31,13 @@ of length 1. Default is 1.}
 \item{with_principal}{Logical (default \code{TRUE}: when \code{TRUE} the resulting
 pounds, shillings and pence will include the principal as well as the
 interest. When \code{FALSE} only the interest will be shown.}
+
+\item{lsd_bases}{Numeric vector of length 2 used to specify the bases for
+the s or solidus and d or denarius values in \code{lsd} vectors. Default is
+\code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
+20 solidi and 1 solidi = 12 denarii. This argument makes it possible to
+use alternative bases for the solidus and denarius values that were also
+in use.}
 
 \item{round}{Round pence to specified number of decimal places.
 Default is 3. Set to 0 if you want pence to always be a whole number.}

@@ -3,8 +3,8 @@
 #' Multiplication of pounds, shillings, and pence
 #'
 #' Multiply pounds, shillings, and pence by a given multiplier (`x`).
-#' The result is normalized to correct values based on 12 pence in a
-#' shilling and 20 shillings in a pound. This is a wrapper around
+#' The result is normalized to standard bases for shillings and pence
+#' according to the `lsd_bases` argument. This is a wrapper around
 #' [deb_normalize()].
 #'
 #' @family lsd arithmetic functions
@@ -42,14 +42,16 @@
 #'
 #' @export
 
-deb_multiply <- function(lsd, x, round = 3, lsd_ratio = c(20, 12)) {
+deb_multiply <- function(lsd, x, lsd_bases = c(20, 12), round = 3) {
   if (is.list(lsd) == TRUE) {
-    return(purrr::map(lsd, ~ deb_multiply(., x, round, lsd_ratio)))
+    return(purrr::map(lsd, ~ deb_multiply(., x,
+                                          lsd_bases = lsd_bases,
+                                          round = round)))
   }
 
   arithmetic_check(x)
 
-  deb_normalize(lsd * x, round, lsd_ratio)
+  deb_normalize(lsd = lsd * x, lsd_bases = lsd_bases, round = round)
 }
 
 
@@ -98,10 +100,10 @@ deb_multiply_mutate <- function(df,
                                 s = s,
                                 d = d,
                                 x,
+                                lsd_bases = c(20, 12),
                                 round = 3,
                                 replace = FALSE,
-                                suffix = ".1",
-                                lsd_ratio = c(20, 12)) {
+                                suffix = ".1") {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)
@@ -116,17 +118,17 @@ deb_multiply_mutate <- function(df,
                      !! l * x,
                      !! s * x,
                      !! d * x,
-                     lsd_names,
-                     replace,
-                     round,
-                     lsd_ratio)
+                     lsd_names = lsd_names,
+                     replace = replace,
+                     lsd_bases = lsd_bases,
+                     round = round)
 }
 
 #' Division of pounds, shillings, and pence
 #'
 #' Divide pounds, shillings, and pence by a given divisor (`x`).
-#' The result is normalized to correct values based on 12 pence in a
-#' shilling and 20 shillings in a pound. This is a wrapper around
+#' The result is normalized to standard bases for shillings and pence
+#' according to the `lsd_bases` argument. This is a wrapper around
 #' [deb_normalize()].
 #'
 #' @family lsd arithmetic functions
@@ -161,14 +163,14 @@ deb_multiply_mutate <- function(df,
 #'
 #' @export
 
-deb_divide <- function(lsd, x, round = 3, lsd_ratio = c(20, 12)) {
+deb_divide <- function(lsd, x, lsd_bases = c(20, 12), round = 3) {
   if (is.list(lsd) == TRUE) {
-    return(purrr::map(lsd, ~ deb_divide(., x, round, lsd_ratio)))
+    return(purrr::map(lsd, ~ deb_divide(., x, lsd_bases, round)))
   }
 
   arithmetic_check(x)
 
-  deb_normalize(lsd / x, round, lsd_ratio)
+  deb_normalize(lsd / x, lsd_bases = lsd_bases, round = round)
 }
 
 
@@ -217,10 +219,10 @@ deb_divide_mutate <- function(df,
                               s = s,
                               d = d,
                               x,
+                              lsd_bases = c(20, 12),
                               round = 3,
                               replace = FALSE,
-                              suffix = ".1",
-                              lsd_ratio = c(20, 12)) {
+                              suffix = ".1") {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)
@@ -235,10 +237,10 @@ deb_divide_mutate <- function(df,
                      !! l / x,
                      !! s / x,
                      !! d / x,
-                     lsd_names,
-                     replace,
-                     round,
-                     lsd_ratio)
+                     lsd_names = lsd_names,
+                     replace = replace,
+                     lsd_bases = lsd_bases,
+                     round = round)
 }
 
 #' Subtract two values of pounds, shillings, and pence
@@ -290,7 +292,7 @@ deb_divide_mutate <- function(df,
 #'
 #' @export
 
-deb_subtract <- function(lsd1, lsd2, round = 3, lsd_ratio = c(20, 12)) {
+deb_subtract <- function(lsd1, lsd2, lsd_bases = c(20, 12), round = 3) {
 
   if (is.list(lsd1) | is.list(lsd2) == TRUE) {
     # ensure that both are lists to recycle correctly
@@ -300,8 +302,10 @@ deb_subtract <- function(lsd1, lsd2, round = 3, lsd_ratio = c(20, 12)) {
     if (is.list(lsd2) == FALSE) {
       lsd2 <- list(lsd2)
     }
-    return(purrr::map2(lsd1, lsd2, ~ deb_subtract(.x, .y, round, lsd_ratio)))
+    return(purrr::map2(lsd1, lsd2, ~ deb_subtract(.x, .y,
+                                                  lsd_bases = lsd_bases,
+                                                  round = round)))
   }
 
-  deb_normalize(lsd1 - lsd2, round, lsd_ratio)
+  deb_normalize(lsd1 - lsd2, lsd_bases = lsd_bases, round = round)
 }

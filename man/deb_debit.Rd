@@ -4,7 +4,8 @@
 \alias{deb_debit}
 \title{Calculate the total debit of accounts}
 \usage{
-deb_debit(df, debit = debit, l = l, s = s, d = d, round = 3)
+deb_debit(df, debit = debit, l = l, s = s, d = d, lsd_bases = c(20,
+  12), round = 3)
 }
 \arguments{
 \item{df}{A data frame containing transactions between accounts that has
@@ -25,6 +26,13 @@ to shillings. Default is s.}
 
 \item{d}{Pence column: Unquoted name of numeric variable corresponding to
 pence. Default is d.}
+
+\item{lsd_bases}{Numeric vector of length 2 used to specify the bases for
+the s or solidus and d or denarius values in \code{lsd} vectors. Default is
+\code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
+20 solidi and 1 solidi = 12 denarii. This argument makes it possible to
+use alternative bases for the solidus and denarius values that were also
+in use.}
 
 \item{round}{Round pence to specified number of decimal places.
 Default is 3. Set to 0 if you want pence to always be a whole number.}
@@ -56,15 +64,6 @@ accounts act as the edges of the network. Following the
 the credit variable represents the account from which a value goes out,
 while the debit variable represents the account that receives the value.
 Thus, from the credit account to the debit account.
-
-The value for the transactions should be in the non-decimal currency of
-pounds, shillings, and pence. These functions use the nomenclature of
-\href{https://en.wikipedia.org/wiki/£sd}{l, s, and d} to refer to pounds,
-shillings, and pence. This derives from the Latin terms for librae,
-solidi, and denarii. One solidus was equivalent to 12 denarii, and
-240 denarii coins were made from on libra of silver. The nomenclature
-and values of 12 denarii to 1 solidus and 20 solidi to 1 libra was
-adopted by Charlemagne and spread throughout Europe under different names.
 }
 \examples{
 # Create a transactions data frame

@@ -3,18 +3,18 @@
 ## Helper functions to sum l, s, and d ##
 
 ## Librae ##
-deb_librae_sum <- function(l, s, d, lsd_ratio = c(20, 12)) {
-  deb_librae(sum(l), sum(s), sum(d), lsd_ratio)
+deb_librae_sum <- function(l, s, d, lsd_bases = c(20, 12)) {
+  deb_librae(sum(l), sum(s), sum(d), lsd_bases = lsd_bases)
 }
 
 ## Solidi ##
-deb_solidi_sum <- function(l, s, d, lsd_ratio = c(20, 12)) {
-  deb_solidi(sum(l), sum(s), sum(d), lsd_ratio)
+deb_solidi_sum <- function(l, s, d, lsd_bases = c(20, 12)) {
+  deb_solidi(sum(l), sum(s), sum(d), lsd_bases = lsd_bases)
 }
 
 ## Denarii ##
-deb_denarii_sum <- function(l, s, d, round = 3, lsd_ratio = c(20, 12)) {
-  deb_denarii(sum(l), sum(s), sum(d), round, lsd_ratio)
+deb_denarii_sum <- function(l, s, d, lsd_bases = c(20, 12), round = 3) {
+  deb_denarii(sum(l), sum(s), sum(d), lsd_bases = lsd_bases, round = round)
 }
 
 #' Sum of pounds, shillings, and pence columns in a data frame
@@ -67,13 +67,13 @@ deb_denarii_sum <- function(l, s, d, round = 3, lsd_ratio = c(20, 12)) {
 #'
 #' @export
 
-deb_sum <- function(df, l = l, s = s, d = d, round = 3, lsd_ratio = c(20, 12)) {
+deb_sum <- function(df, l = l, s = s, d = d, lsd_bases = c(20, 12), round = 3) {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)
 
   lsd_column_check(df, l, s, d)
-  paramenter_check(round, lsd_ratio)
+  paramenter_check(lsd_bases, round)
 
   # Column names
   l_column <- rlang::quo_name(l)
@@ -82,9 +82,9 @@ deb_sum <- function(df, l = l, s = s, d = d, round = 3, lsd_ratio = c(20, 12)) {
 
   # Use temp columns and rename so that l, s, and d do not get overwritten
   df %>%
-    dplyr::summarise(temp_librae_col = deb_librae_sum(!!l, !!s, !!d, lsd_ratio),
-                     temp_solidi_col = deb_solidi_sum(!!l, !!s, !!d, lsd_ratio),
-                     temp_denarii_col = deb_denarii_sum(!!l, !!s, !!d, round, lsd_ratio)) %>%
+    dplyr::summarise(temp_librae_col = deb_librae_sum(!!l, !!s, !!d, lsd_bases),
+                     temp_solidi_col = deb_solidi_sum(!!l, !!s, !!d, lsd_bases),
+                     temp_denarii_col = deb_denarii_sum(!!l, !!s, !!d, lsd_bases, round)) %>%
     dplyr::rename(!! l_column := temp_librae_col,
                   !! s_column := temp_solidi_col,
                   !! d_column := temp_denarii_col)

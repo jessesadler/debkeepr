@@ -28,28 +28,28 @@ lsd_check <- function(lsd) {
   }
 }
 
-# Check round and lsd_ratio parameters
-paramenter_check <- function(round = 3, lsd_ratio = c(20, 12)) {
+# Check round and lsd_bases parameters
+paramenter_check <- function(lsd_bases = c(20, 12), round = 3) {
+  # check lsd_bases
+  if (!is.numeric(lsd_bases)) {
+    stop(call. = FALSE, "lsd_bases must be a numeric vector")
+  }
+  if (length(lsd_bases) != 2) {
+    stop(call. = FALSE, "lsd_bases must be a numeric vector of length of 2")
+  }
+  if (any(lsd_bases == 0)) {
+    stop(call. = FALSE, "Neither of the values in lsd_bases can be 0")
+  }
+  if (any(lsd_bases < 0)) {
+    stop(call. = FALSE, "The values in lsd_bases must both be positive")
+  }
+
   # check round
   if (!is.numeric(round)) {
     stop(call. = FALSE, "round must be numeric")
   }
   if (length(round) > 1) {
     stop(call. = FALSE, "round must be a numeric vector of length 1")
-  }
-
-  # check lsd_ratio
-  if (!is.numeric(lsd_ratio)) {
-    stop(call. = FALSE, "lsd_ratio must be a numeric vector")
-  }
-  if (length(lsd_ratio) != 2) {
-    stop(call. = FALSE, "lsd_ratio must be a numeric vector of length of 2")
-  }
-  if (any(lsd_ratio == 0)) {
-    stop(call. = FALSE, "Neither of the values in lsd_ratio can be 0")
-  }
-  if (any(lsd_ratio < 0)) {
-    stop(call. = FALSE, "The values in lsd_ratio must both be positive")
   }
 }
 

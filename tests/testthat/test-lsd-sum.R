@@ -26,7 +26,7 @@ test_that("basic functionality works", {
   expect_equal(nrow(deb_sum(example1, l, s, d)), 1)
   expect_equal(deb_sum(example1, l, s, d),
                data.frame(l = 18, s = 17, d = 11))
-  expect_equal(deb_sum(example1, l, s, d, lsd_ratio = c(20, 16)),
+  expect_equal(deb_sum(example1, l, s, d, lsd_bases = c(20, 16)),
                data.frame(l = 18, s = 17, d = 3))
 })
 

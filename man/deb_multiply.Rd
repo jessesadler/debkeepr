@@ -4,7 +4,7 @@
 \alias{deb_multiply}
 \title{Multiplication of pounds, shillings, and pence}
 \usage{
-deb_multiply(lsd, x, round = 3)
+deb_multiply(lsd, x, lsd_bases = c(20, 12), round = 3)
 }
 \arguments{
 \item{lsd}{Numeric vector of length 3 or list of numeric vectors of length
@@ -14,6 +14,13 @@ position represents the pence value or d.}
 
 \item{x}{Multiplier. The value by which the given pounds, shillings, and
 pence will be multiplied. Should be a numeric vector of length 1.}
+
+\item{lsd_bases}{Numeric vector of length 2 used to specify the bases for
+the s or solidus and d or denarius values in \code{lsd} vectors. Default is
+\code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
+20 solidi and 1 solidi = 12 denarii. This argument makes it possible to
+use alternative bases for the solidus and denarius values that were also
+in use.}
 
 \item{round}{Round pence to specified number of decimal places.
 Default is 3. Set to 0 to return pence as whole numbers.}
@@ -25,8 +32,8 @@ and pence.
 }
 \description{
 Multiply pounds, shillings, and pence by a given multiplier (\code{x}).
-The result is normalized to correct values based on 12 pence in a
-shilling and 20 shillings in a pound. This is a wrapper around
+The result is normalized to standard bases for shillings and pence
+according to the \code{lsd_bases} argument. This is a wrapper around
 \code{\link[=deb_normalize]{deb_normalize()}}.
 }
 \examples{

@@ -113,16 +113,16 @@ test_that("mutate functions work", {
   expect_equal(deb_l_mutate(l_df, pounds), l_solution_df)
   expect_equal(deb_l_mutate(l_df, pounds, round = 0)[5, 4], 4)
   expect_false(identical(deb_l_mutate(l_df, pounds),
-                         deb_l_mutate(l_df, pounds, lsd_ratio = c(8, 16))))
+                         deb_l_mutate(l_df, pounds, lsd_bases = c(8, 16))))
 
   expect_equal(deb_s_mutate(s_df, shillings), s_solution_df)
   expect_equal(deb_s_mutate(s_df, shillings, round = 0)[ , 4], c(0, 0, 6, 4 , -10))
   expect_false(identical(deb_s_mutate(s_df, shillings),
-                         deb_s_mutate(s_df, shillings, lsd_ratio = c(8, 16))))
+                         deb_s_mutate(s_df, shillings, lsd_bases = c(8, 16))))
 
   expect_equal(deb_d_mutate(d_df, pence), d_solution_df)
   expect_false(identical(deb_d_mutate(d_df, pence),
-                         deb_d_mutate(d_df, pence, lsd_ratio = c(8, 16))))
+                         deb_d_mutate(d_df, pence, lsd_bases = c(8, 16))))
 })
 
 test_that("column names change with lsd_column_names function", {

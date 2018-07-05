@@ -5,11 +5,11 @@
 #' Calculate the total credit, debit, and the current value of a given account
 #' in the form of pounds, shillings, and pence.
 #'
-#' `deb_account()`` is similar to [deb_account_summary()], but
+#' `deb_account()` is similar to [deb_account_summary()], but
 #' it only returns the information for one account instead of all accounts in
 #' the credit and/or debit variables of a transactions data frame.
 #'
-#' `deb_account()`` is part of a family of functions meant to be used on
+#' `deb_account()` is part of a family of functions meant to be used on
 #' data frames that contain transactions between accounts likely contained in
 #' an account book. The data frame should possess a similar structure to a
 #' [directed edge list](https://www.jessesadler.com/post/network-analysis-with-r/#nodes-edges).
@@ -20,14 +20,20 @@
 #' while the debit variable represents the account that receives the value.
 #' Thus, from the credit account to the debit account.
 #'
-#' The value for the transactions should be in the non-decimal currency of
-#' pounds, shillings, and pence. These functions use the nomenclature of
-#' [l, s, and d](https://en.wikipedia.org/wiki/£sd) to refer to pounds,
-#' shillings, and pence. This derives from the Latin terms for librae,
-#' solidi, and denarii. One solidus was equivalent to 12 denarii, and
-#' 240 denarii coins were made from on libra of silver. The nomenclature
-#' and values of 12 denarii to 1 solidus and 20 solidi to 1 libra was
-#' adopted by Charlemagne and spread throughout Europe under different names.
+#' `deb_account()` uses the nomenclature of
+#' [l, s, and d](https://en.wikipedia.org/wiki/£sd) to represent pounds,
+#' shillings, and pence, which derives from the Latin terms
+#' [libra](https://en.wikipedia.org/wiki/French_livre),
+#' [solidus](https://en.wikipedia.org/wiki/Solidus_(coin)), and
+#' [denarius](https://en.wikipedia.org/wiki/Denarius). In the 8th century a
+#' solidus came to represent 12 denarii, and 240 denarii were made from one
+#' libra or pound of silver. The custom of counting coins in dozens (solidi)
+#' and scores of dozens (libra) spread throughout the Carolingian Empire and
+#' became engrained in much of Europe. However,
+#' [other ratios](https://en.wikipedia.org/wiki/Non-decimal_currency) between
+#' libra, solidus, and denarius were also in use. The `lsd_bases` argument
+#' makes it possible to specify alternative bases for the solidus and denarius
+#' values.
 #'
 #' @family lsd account functions
 #' @param df A data frame containing transactions between accounts that has
@@ -73,8 +79,8 @@ deb_account <- function(df,
                         l = l,
                         s = s,
                         d = d,
-                        round = 3,
-                        lsd_ratio = c(20, 12)) {
+                        lsd_bases = c(20, 12),
+                        round = 3) {
   credit <- rlang::enquo(credit)
   debit <- rlang::enquo(debit)
   l <- rlang::enquo(l)
@@ -85,7 +91,7 @@ deb_account <- function(df,
   edge_columns <- c(rlang::quo_name(credit), rlang::quo_name(debit))
   credit_check(df, credit, debit, edge_columns, account_id)
   lsd_column_check(df, l, s, d)
-  paramenter_check(round, lsd_ratio)
+  paramenter_check(lsd_bases, round)
 
   # Column names
   l_column <- rlang::quo_name(l)
@@ -95,20 +101,20 @@ deb_account <- function(df,
   credit <- df %>%
     dplyr::filter((!! credit) == account_id) %>%
     deb_sum(!! l, !! s, !! d,
-            round = round,
-            lsd_ratio = lsd_ratio) %>%
-    dplyr::mutate(denarii = decimalize_d(!! l, !! s, !! d, lsd_ratio))
+            lsd_bases = lsd_bases,
+            round = round) %>%
+    dplyr::mutate(denarii = decimalize_d(!! l, !! s, !! d, lsd_bases))
 
   debit <- df %>%
     dplyr::filter((!! debit) == account_id) %>%
     deb_sum(!! l, !! s, !! d,
-            round = round,
-            lsd_ratio = lsd_ratio) %>%
-    dplyr::mutate(denarii = decimalize_d(!! l, !! s, !! d, lsd_ratio))
+            lsd_bases = lsd_bases,
+            round = round) %>%
+    dplyr::mutate(denarii = decimalize_d(!! l, !! s, !! d, lsd_bases))
 
   lsd <- deb_d_lsd(credit$denarii - debit$denarii,
-                   round = round,
-                   lsd_ratio = lsd_ratio)
+                   lsd_bases = lsd_bases,
+                   round = round)
 
   current <- tibble::tibble(!! l_column := lsd[1],
                             !! s_column := lsd[2],
@@ -145,15 +151,6 @@ deb_account <- function(df,
 #' while the debit variable represents the account that receives the value.
 #' Thus, from the credit account to the debit account.
 #'
-#' The value for the transactions should be in the non-decimal currency of
-#' pounds, shillings, and pence. These functions use the nomenclature of
-#' [l, s, and d](https://en.wikipedia.org/wiki/£sd) to refer to pounds,
-#' shillings, and pence. This derives from the Latin terms for librae,
-#' solidi, and denarii. One solidus was equivalent to 12 denarii, and
-#' 240 denarii coins were made from on libra of silver. The nomenclature
-#' and values of 12 denarii to 1 solidus and 20 solidi to 1 libra was
-#' adopted by Charlemagne and spread throughout Europe under different names.
-#'
 #' @family lsd account functions
 #'
 #' @inheritParams deb_account
@@ -184,8 +181,8 @@ deb_account_summary <- function(df,
                                 l = l,
                                 s = s,
                                 d = d,
-                                round = 3,
-                                lsd_ratio = c(20, 12)) {
+                                lsd_bases = c(20, 12),
+                                round = 3) {
 
   credit <- rlang::enquo(credit)
   debit <- rlang::enquo(debit)
@@ -197,20 +194,20 @@ deb_account_summary <- function(df,
   lsd_column_check(df, l, s, d)
   edge_columns <- c(rlang::quo_name(credit), rlang::quo_name(debit))
   credit_check(df, credit, debit, edge_columns)
-  paramenter_check(round, lsd_ratio)
+  paramenter_check(lsd_bases, round)
 
   credits <- df %>%
     dplyr::group_by(!! credit) %>%
     dplyr::summarise(
       relation = "credit",
-      denarii = round(decimalize_d(sum(!!l), sum(!!s), sum(!!d), lsd_ratio), round)) %>%
+      denarii = round(decimalize_d(sum(!!l), sum(!!s), sum(!!d), lsd_bases), round)) %>%
     dplyr::rename(account_id = !! credit)
 
   debits <- df %>%
     dplyr::group_by(!! debit) %>%
     dplyr::summarise(
       relation = "debit",
-      denarii = round(decimalize_d(sum(!!l), sum(!!s), sum(!!d), lsd_ratio), round)) %>%
+      denarii = round(decimalize_d(sum(!!l), sum(!!s), sum(!!d), lsd_bases), round)) %>%
     dplyr::rename(account_id = !! debit)
 
   accounts_sum <- dplyr::mutate(debits, denarii = -denarii) %>%
@@ -224,7 +221,7 @@ deb_account_summary <- function(df,
 
   dplyr::bind_rows(credits, debits, current) %>%
     deb_d_mutate(denarii, l_column = !! l, s_column = !! s, d_column = !! d,
-                 lsd_ratio = lsd_ratio) %>%
+                 lsd_bases = lsd_bases) %>%
     dplyr::arrange(account_id) %>%
     dplyr::select(-denarii)
 }
@@ -248,15 +245,6 @@ deb_account_summary <- function(df,
 #' the credit variable represents the account from which a value goes out,
 #' while the debit variable represents the account that receives the value.
 #' Thus, from the credit account to the debit account.
-#'
-#' The value for the transactions should be in the non-decimal currency of
-#' pounds, shillings, and pence. These functions use the nomenclature of
-#' [l, s, and d](https://en.wikipedia.org/wiki/£sd) to refer to pounds,
-#' shillings, and pence. This derives from the Latin terms for librae,
-#' solidi, and denarii. One solidus was equivalent to 12 denarii, and
-#' 240 denarii coins were made from on libra of silver. The nomenclature
-#' and values of 12 denarii to 1 solidus and 20 solidi to 1 libra was
-#' adopted by Charlemagne and spread throughout Europe under different names.
 #'
 #' @family lsd account functions
 #'
@@ -287,8 +275,8 @@ deb_credit <- function(df,
                        l = l,
                        s = s,
                        d = d,
-                       round = 3,
-                       lsd_ratio = c(20, 12)) {
+                       lsd_bases = c(20, 12),
+                       round = 3) {
   credit <- rlang::enquo(credit)
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
@@ -298,10 +286,10 @@ deb_credit <- function(df,
   edge_columns <- rlang::quo_name(credit)
   credit_check(df, credit, debit = NULL, edge_columns)
   lsd_column_check(df, l, s, d)
-  paramenter_check(round, lsd_ratio)
+  paramenter_check(lsd_bases, round)
 
   dplyr::group_by(df, !! credit) %>%
-    deb_sum(!! l, !! s, !! d, round = round, lsd_ratio = lsd_ratio) %>%
+    deb_sum(!! l, !! s, !! d, lsd_bases = lsd_bases, round = round) %>%
     dplyr::rename(account_id = !! credit)
 }
 
@@ -324,15 +312,6 @@ deb_credit <- function(df,
 #' the credit variable represents the account from which a value goes out,
 #' while the debit variable represents the account that receives the value.
 #' Thus, from the credit account to the debit account.
-#'
-#' The value for the transactions should be in the non-decimal currency of
-#' pounds, shillings, and pence. These functions use the nomenclature of
-#' [l, s, and d](https://en.wikipedia.org/wiki/£sd) to refer to pounds,
-#' shillings, and pence. This derives from the Latin terms for librae,
-#' solidi, and denarii. One solidus was equivalent to 12 denarii, and
-#' 240 denarii coins were made from on libra of silver. The nomenclature
-#' and values of 12 denarii to 1 solidus and 20 solidi to 1 libra was
-#' adopted by Charlemagne and spread throughout Europe under different names.
 #'
 #' @family lsd account functions
 #'
@@ -363,8 +342,8 @@ deb_debit <- function(df,
                       l = l,
                       s = s,
                       d = d,
-                      round = 3,
-                      lsd_ratio = c(20, 12)) {
+                      lsd_bases = c(20, 12),
+                      round = 3) {
   debit <- rlang::enquo(debit)
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
@@ -374,10 +353,10 @@ deb_debit <- function(df,
   edge_columns <- rlang::quo_name(debit)
   credit_check(df, credit = NULL, debit, edge_columns)
   lsd_column_check(df, l, s, d)
-  paramenter_check(round, lsd_ratio)
+  paramenter_check(lsd_bases, round)
 
   dplyr::group_by(df, !! debit) %>%
-    deb_sum(!! l, !! s, !! d, round, lsd_ratio) %>%
+    deb_sum(!! l, !! s, !! d, lsd_bases = lsd_bases, round = round) %>%
     dplyr::rename(account_id = !! debit)
 }
 
@@ -403,15 +382,6 @@ deb_debit <- function(df,
 #' the credit variable represents the account from which a value goes out,
 #' while the debit variable represents the account that receives the value.
 #' Thus, from the credit account to the debit account.
-#'
-#' The value for the transactions should be in the non-decimal currency of
-#' pounds, shillings, and pence. These functions use the nomenclature of
-#' [l, s, and d](https://en.wikipedia.org/wiki/£sd) to refer to pounds,
-#' shillings, and pence. This derives from the Latin terms for librae,
-#' solidi, and denarii. One solidus was equivalent to 12 denarii, and
-#' 240 denarii coins were made from on libra of silver. The nomenclature
-#' and values of 12 denarii to 1 solidus and 20 solidi to 1 libra was
-#' adopted by Charlemagne and spread throughout Europe under different names.
 #'
 #' @family lsd account functions
 #'
@@ -442,8 +412,8 @@ deb_current <- function(df,
                         l = l,
                         s = s,
                         d = d,
-                        round = 3,
-                        lsd_ratio = c(20, 12)) {
+                        lsd_bases = c(20, 12),
+                        round = 3) {
   credit <- rlang::enquo(credit)
   debit <- rlang::enquo(debit)
   l <- rlang::enquo(l)
@@ -456,8 +426,8 @@ deb_current <- function(df,
                       l = !! l,
                       s = !! s,
                       d = !! d,
-                      round,
-                      lsd_ratio) %>%
+                      lsd_bases = lsd_bases,
+                      round = round) %>%
     dplyr::filter(relation == "current") %>%
     dplyr::select(-relation)
 }
@@ -485,15 +455,6 @@ deb_current <- function(df,
 #' the credit variable represents the account from which a value goes out,
 #' while the debit variable represents the account that receives the value.
 #' Thus, from the credit account to the debit account.
-#'
-#' The value for the transactions should be in the non-decimal currency of
-#' pounds, shillings, and pence. These functions use the nomenclature of
-#' [l, s, and d](https://en.wikipedia.org/wiki/£sd) to refer to pounds,
-#' shillings, and pence. This derives from the Latin terms for librae,
-#' solidi, and denarii. One solidus was equivalent to 12 denarii, and
-#' 240 denarii coins were made from on libra of silver. The nomenclature
-#' and values of 12 denarii to 1 solidus and 20 solidi to 1 libra was
-#' adopted by Charlemagne and spread throughout Europe under different names.
 #'
 #' @family lsd account functions
 #'
@@ -524,8 +485,8 @@ deb_open <- function(df,
                      l = l,
                      s = s,
                      d = d,
-                     round = 3,
-                     lsd_ratio = c(20, 12)) {
+                     lsd_bases = c(20, 12),
+                     round = 3) {
   credit <- rlang::enquo(credit)
   debit <- rlang::enquo(debit)
   l <- rlang::enquo(l)
@@ -538,9 +499,9 @@ deb_open <- function(df,
               l = !! l,
               s = !! s,
               d = !! d,
-              round,
-              lsd_ratio) %>%
-    dplyr::filter(!! l + !! s / lsd_ratio[1] + !! d / prod(lsd_ratio) != 0)
+              lsd_bases = lsd_bases,
+              round = round) %>%
+    dplyr::filter(!! l + !! s / lsd_bases[1] + !! d / prod(lsd_bases) != 0)
 }
 
 #' Calculate the balance of a transactions data frame
@@ -564,15 +525,6 @@ deb_open <- function(df,
 #' the credit variable represents the account from which a value goes out,
 #' while the debit variable represents the account that receives the value.
 #' Thus, from the credit account to the debit account.
-#'
-#' The value for the transactions should be in the non-decimal currency of
-#' pounds, shillings, and pence. These functions use the nomenclature of
-#' [l, s, and d](https://en.wikipedia.org/wiki/£sd) to refer to pounds,
-#' shillings, and pence. This derives from the Latin terms for librae,
-#' solidi, and denarii. One solidus was equivalent to 12 denarii, and
-#' 240 denarii coins were made from on libra of silver. The nomenclature
-#' and values of 12 denarii to 1 solidus and 20 solidi to 1 libra was
-#' adopted by Charlemagne and spread throughout Europe under different names.
 #'
 #' @family lsd account functions
 #'
@@ -602,8 +554,8 @@ deb_balance <- function(df,
                         l = l,
                         s = s,
                         d = d,
-                        round = 3,
-                        lsd_ratio = c(20, 12)) {
+                        lsd_bases = c(20, 12),
+                        round = 3) {
   credit <- rlang::enquo(credit)
   debit <- rlang::enquo(debit)
   l <- rlang::enquo(l)
@@ -620,23 +572,23 @@ deb_balance <- function(df,
                    l = !! l,
                    s = !! s,
                    d = !! d,
-                   round,
-                   lsd_ratio)
+                   lsd_bases = lsd_bases,
+                   round = round)
   credit <- open %>%
     dplyr::filter(!! l + !! s + !! d > 0) %>%
     deb_sum(l = !! l,
             s = !! s,
             d = !! d,
-            round,
-            lsd_ratio)
+            lsd_bases = lsd_bases,
+            round = round)
 
   debit <- open %>%
     dplyr::filter(!! l + !! s + !! d < 0) %>%
     deb_sum(l = !! l,
             s = !! s,
             d = !! d,
-            round,
-            lsd_ratio) %>%
+            lsd_bases = lsd_bases,
+            round = round) %>%
     # Make lsd positive
     dplyr::mutate(!! l_column := -(!! l),
                   !! s_column := -(!! s),

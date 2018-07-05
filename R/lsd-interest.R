@@ -45,24 +45,24 @@ deb_interest <- function(lsd,
                          interest = 0.0625,
                          duration = 1,
                          with_principal = TRUE,
-                         round = 3,
-                         lsd_ratio = c(20, 12)) {
+                         lsd_bases = c(20, 12),
+                         round = 3) {
   # vectorize
   if (is.list(lsd) == TRUE) {
     return(purrr::map(lsd, ~ deb_interest(.,
-                                          interest,
-                                          duration,
-                                          with_principal,
-                                          round,
-                                          lsd_ratio)))
+                                          interest = interest,
+                                          duration = duration,
+                                          with_principal = with_principal,
+                                          lsd_bases = lsd_bases,
+                                          round = round)))
   }
 
   interest_check(interest, duration, with_principal)
 
   if (with_principal == TRUE) {
-    deb_normalize(lsd + lsd * interest * duration, round, lsd_ratio)
+    deb_normalize(lsd + lsd * interest * duration, lsd_bases = lsd_bases, round = round)
   } else {
-    deb_normalize(lsd * interest * duration, round, lsd_ratio)
+    deb_normalize(lsd * interest * duration, lsd_bases = lsd_bases, round = round)
   }
 }
 
@@ -124,10 +124,10 @@ deb_interest_mutate <- function(df,
                                 interest = 0.0625,
                                 duration = 1,
                                 with_principal = TRUE,
+                                lsd_bases = c(20, 12),
                                 round = 3,
                                 replace = FALSE,
-                                suffix = ".interest",
-                                lsd_ratio = c(20, 12)) {
+                                suffix = ".interest") {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)
@@ -144,21 +144,21 @@ deb_interest_mutate <- function(df,
 
   if (with_principal == TRUE) {
     lsd_mutate_columns(df,
-                       (!! l * x) + !! l,
-                       (!! s * x) + !! s,
-                       (!! d * x) + !! d,
-                       lsd_names,
-                       replace,
-                       round,
-                       lsd_ratio)
+                       l = (!! l * x) + !! l,
+                       s = (!! s * x) + !! s,
+                       d = (!! d * x) + !! d,
+                       lsd_names = lsd_names,
+                       replace = replace,
+                       lsd_bases = lsd_bases,
+                       round = round)
   } else {
     lsd_mutate_columns(df,
-                       !! l * x,
-                       !! s * x,
-                       !! d * x,
-                       lsd_names,
-                       replace,
-                       round,
-                       lsd_ratio)
+                       l = !! l * x,
+                       s = !! s * x,
+                       d = !! d * x,
+                       lsd_names = lsd_names,
+                       replace = replace,
+                       lsd_bases = lsd_bases,
+                       round = round)
   }
 }

@@ -4,7 +4,7 @@
 \alias{deb_rate_per_shilling}
 \title{Conversion rate per shillings}
 \usage{
-deb_rate_per_shilling(lsd1, lsd2, round = 3)
+deb_rate_per_shilling(lsd1, lsd2, lsd_bases = c(20, 12), round = 3)
 }
 \arguments{
 \item{lsd1, lsd2}{Numeric vectors of length 3 or lists of numeric vectors of
@@ -13,6 +13,13 @@ l. The second position represents the shillings value or s. And the third
 position represents the pence value or d. \code{lsd2} is the value (or values)
 that is reduced to £1 and against which \code{lsd1} is compared. Thus, \code{lsd2}
 = £1 and \code{lsd1} = the returned value.}
+
+\item{lsd_bases}{Numeric vector of length 2 used to specify the bases for
+the s or solidus and d or denarius values in \code{lsd} vectors. Default is
+\code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
+20 solidi and 1 solidi = 12 denarii. This argument makes it possible to
+use alternative bases for the solidus and denarius values that were also
+in use.}
 
 \item{round}{Round pence to specified number of decimal places.
 Default is 3. Set to 0 to return pence as whole numbers.}
@@ -24,7 +31,7 @@ and pence. The rate is returned in the form of shillings and pence, which
 follows the contemporary practice and the form used in the
 \code{rate_per_shillings} argument in \code{\link[=deb_exchange]{deb_exchange()}} and
 \code{\link[=deb_exchange_mutate]{deb_exchange_mutate()}}. If \code{lsd1} > \code{lsd2} the returned vector will have
-a shillings value greater than 20.
+a shillings value greater than the base for shillings.
 }
 \description{
 Calculate the exchange rate between two sets of values in the form of
