@@ -81,7 +81,7 @@ lsd_normalize <- function(lsd, round, lsd_bases) {
 #' @param lsd_bases Numeric vector of length 2 used to specify the bases for
 #'   the s or solidus and d or denarius values in `lsd` vectors. Default is
 #'   `c(20, 12)`, which conforms to the most widely used system of 1 libra =
-#'   20 solidi and 1 solidi = 12 denarii. This argument makes it possible to
+#'   20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
 #'   use alternative bases for the solidus and denarius values that were also
 #'   in use.
 #' @param round Round pence to specified number of decimal places.
@@ -119,6 +119,22 @@ lsd_normalize <- function(lsd, round, lsd_bases) {
 #' # To normalize multiple lsd values use a list of lsd vectors
 #' lsd_list <- list(c(4, 34, 89), c(-9, -75, -19), c(15.85, 36.15, 56))
 #' deb_normalize(lsd = lsd_list)
+#'
+#' # It is possible to do arithmetic within the lsd argument
+#' # if inputs are all vectors.
+#' deb_normalize(lsd = c(56, 8, 5) + c(19, 5, 7))
+#' deb_normalize(lsd = c(56, 8, 5) - c(19, 5, 7))
+#' deb_normalize(lsd = c(56, 8, 5) * 3)
+#' deb_normalize(lsd = c(56, 8, 5) / 3)
+#'
+#' # This will not work if one of the objects is a list
+#' # Use arithmetic functions for this
+#' \dontrun{
+#' deb_normalize(list(c(56, 8, 5), c(27, 12, 4)) + list(c(19, 5, 7), c(6, 3, 2)))
+#' deb_normalize(list(c(56, 8, 5), c(27, 12, 4)) - c(19, 5, 7))
+#' deb_normalize(list(c(56, 8, 5), c(27, 12, 4)) * 3)
+#' deb_normalize(list(c(56, 8, 5), c(27, 12, 4)) / 3)
+#' }
 #'
 #' @export
 
@@ -181,7 +197,7 @@ deb_normalize <- function(lsd, lsd_bases = c(20, 12), round = 3) {
 #' @param lsd_bases Numeric vector of length 2 used to specify the bases for
 #'   the s or solidus and d or denarius values in `lsd` vectors. Default is
 #'   `c(20, 12)`, which conforms to the most widely used system of 1 libra =
-#'   20 solidi and 1 solidi = 12 denarii. This argument makes it possible to
+#'   20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
 #'   use alternative bases for the solidus and denarius values that were also
 #'   in use.
 #' @param round Round pence to specified number of decimal places.

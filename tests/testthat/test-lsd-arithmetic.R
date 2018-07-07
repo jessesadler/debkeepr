@@ -112,6 +112,50 @@ test_that("deb_divide_mutate works", {
                          deb_divide_mutate(ex_df, l, s, d, x = 3, lsd_bases = c(8, 16))))
 })
 
+# Addition
+test_that("lsd addition works", {
+  expect_equal(deb_add(ex_vector2, ex_vector),
+               c(l = 30, s = 8, d = 10))
+  expect_equal(deb_add(ex_vector, dec_vector),
+               c(l = 16, s = 18, d = 4.2))
+  expect_equal(deb_add(ex_vector, dec_vector, round = 0),
+               c(l = 16, s = 18, d = 4))
+  expect_equal(deb_add(ex_vector, c(5, 7, 15), lsd_bases = c(8, 16)),
+               c(l = 16, s = 3, d = 1))
+})
+
+test_that("lsd addition is vectorized", {
+  expect_equal(deb_add(ex_list, ex_list2),
+               list(c(l = 40, s = 13, d = 11),
+                    c(l = 18, s = 9, d = 3),
+                    c(l = -6, s = -6, d = -2)))
+  expect_equal(deb_add(ex_list, ex_vector),
+               list(c(l = 40, s = 13, d = 11),
+                    c(l = 21, s = 17, d = 2.8),
+                    c(l = -16, s = -8, d = -8)))
+  expect_equal(deb_add(ex_vector, ex_list),
+               list(c(l = 40, s = 13, d = 11),
+                    c(l = 21, s = 17, d = 2.8),
+                    c(l = -16, s = -8, d = -8)))
+  expect_equal(deb_add(ex_list, ex_vector, lsd_bases = c(8, 16)),
+               list(c(l = 41, s = 5, d = 11),
+                    c(l = 23, s = 4, d = 4.2),
+                    c(l = -17, s = 0, d = -8)))
+})
+
+test_that("deb_add_mutate works", {
+  expect_equal(ncol(deb_add_mutate(ex_df, l, s, d, lsd = c(5, 15, 8))), 6)
+  expect_equal(ncol(deb_add_mutate(ex_df, l, s, d, lsd = c(5, 15, 8), replace = TRUE)), 3)
+  expect_equal(deb_add_mutate(ex_df, l, s, d, lsd = c(5, 15, 8), replace = TRUE),
+               data.frame(l = c(36, 17, -20),
+                          s = c(6, 9, -16),
+                          d = c(5, 8.8, -2)))
+  expect_equal(deb_add_mutate(ex_df, l, s, d, lsd = c(5, 15, 8), replace = TRUE, round = 0)[2, 3], 9)
+  # lsd_bases changes answer
+  expect_false(identical(deb_add_mutate(ex_df, l, s, d, lsd = c(5, 15, 8)),
+                         deb_add_mutate(ex_df, l, s, d, lsd = c(5, 15, 8), lsd_bases = c(8, 16))))
+})
+
 # Subtraction
 test_that("lsd subtract works", {
   expect_equal(deb_subtract(ex_vector2, ex_vector),
@@ -139,4 +183,32 @@ test_that("lsd subtract is vectorized", {
                list(c(l = -20, s = -7, d = -7),
                     c(l = -1, s = -10, d = -10.8),
                     c(l = 36, s = 15, d = 0)))
+})
+
+test_that("deb_subtraction_mutate works", {
+  expect_equal(ncol(deb_subtract_mutate(ex_df, l, s, d, lsd = c(5, 15, 8))), 6)
+  expect_equal(ncol(deb_subtract_mutate(ex_df, l, s, d, lsd = c(5, 15, 8), replace = TRUE)), 3)
+  expect_equal(deb_subtract_mutate(ex_df, l, s, d, lsd = c(5, 15, 8), replace = TRUE),
+               data.frame(l = c(24, 5, -32),
+                          s = c(15, 18, -7),
+                          d = c(1, 4.8, -6)))
+  expect_equal(deb_subtract_mutate(ex_df, l, s, d, lsd = c(5, 15, 8), replace = TRUE, round = 0)[2, 3], 5)
+  # lsd_bases changes answer
+  expect_false(identical(deb_subtract_mutate(ex_df, l, s, d, lsd = c(5, 15, 8)),
+                         deb_subtract_mutate(ex_df, l, s, d, lsd = c(5, 15, 8), lsd_bases = c(8, 16))))
+})
+
+test_that("lsd check works in add and subtract mutate", {
+  expect_error(deb_add_mutate(ex_df, l, s, d, lsd = list(ex_vector, ex_vector2)),
+               "lsd must be a numeric vector")
+  expect_error(deb_subtract_mutate(ex_df, l, s, d, lsd = list(ex_vector, ex_vector2)),
+               "lsd must be a numeric vector")
+  expect_error(deb_add_mutate(ex_df, l, s, d, lsd = c(8, 16)),
+               paste("lsd must be a vector of length of 3.",
+                     "There must be a value for pounds, shillings, and pence.",
+                     sep = "\n"))
+  expect_error(deb_subtract_mutate(ex_df, l, s, d, lsd = c(8, 16)),
+               paste("lsd must be a vector of length of 3.",
+                     "There must be a value for pounds, shillings, and pence.",
+                     sep = "\n"))
 })

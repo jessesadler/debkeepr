@@ -27,13 +27,13 @@
 #' # Convert a list of lsd vectors to a tibble with
 #' # pounds, shillings, and pence variables
 #' example <- list(c(4, 34, 89), c(-9, -75, -19), c(15.85, 36.15, 56))
-#' lsd_list_to_df(example)
+#' deb_list_to_df(example)
 #'
 #' @importFrom stats setNames
 #'
 #' @export
 
-lsd_list_to_df <- function(lsd_list) {
+deb_list_to_df <- function(lsd_list) {
   # checks
   if (is.list(lsd_list) == FALSE | is.data.frame(lsd_list) == TRUE) {
     stop(call. = FALSE, "lsd_list must be a list of numeric vectors")
@@ -70,7 +70,7 @@ lsd_list_to_df <- function(lsd_list) {
 #' example <- data.frame(l = c(35, -10, 26.725, 12),
 #'                       s = c(50, -48, 311.85, 76),
 #'                       d = c(89, -181, 70, 205))
-#' df_to_lsd_list(example, l, s, d)
+#' deb_df_to_list(example, l, s, d)
 #'
 #' # All variables aside from l, s, and d will be dropped
 #' example2 <- data.frame(credit = c("a", "b", "a", "c"),
@@ -78,11 +78,11 @@ lsd_list_to_df <- function(lsd_list) {
 #'                        l = c(10, 10, 7, 9),
 #'                        s = c(15, 15, 11, 2),
 #'                        d = c(6, 6, 8, 11))
-#' df_to_lsd_list(example, l, s, d)
+#' deb_df_to_list(example, l, s, d)
 #'
 #' @export
 
-df_to_lsd_list <- function(df, l = l, s = s, d = d) {
+deb_df_to_list <- function(df, l = l, s = s, d = d) {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)

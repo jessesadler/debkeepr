@@ -243,10 +243,154 @@ deb_divide_mutate <- function(df,
                      round = round)
 }
 
+#' Add two values of pounds, shillings, and pence
+#'
+#' Add and normalize two values of pounds, shillings, and pence
+#' that are given in the form of either numeric vectors or lists
+#' of numeric vectors (`lsd1` and `lsd2`). This is a wrapper around
+#' [deb_normalize()].
+#'
+#' If `lsd1` and `lsd2` are lists of different lengths or one is a vector,
+#' the shorter list will be recycled.
+#'
+#' @family lsd arithmetic functions
+#'
+#' @inheritParams deb_normalize
+#' @param lsd1,lsd2 Numeric vectors of length 3 or lists of numeric vectors of
+#'   length 3. The first position of the vector represents the pounds value or
+#'   l. The second position represents the shillings value or s. And the third
+#'   position represents the pence value or d.
+#'
+#' @return Returns either a named numeric vector of length 3 or a list of
+#'   named numeric vectors representing the values of pounds, shillings,
+#'   and pence. If the resulting lsd value is negative, the l, s, and d values
+#'   will all be negative.
+#'
+#' @examples
+#' # Add pounds, shillings, and pence
+#' deb_add(lsd1 = c(56, 8, 5), lsd2 = c(19, 5, 7))
+#'
+#' # This is equivalent to using deb_normalize
+#' deb_normalize(lsd = c(56, 8, 5) + c(19, 5, 7))
+#'
+#' # deb_add is useful when one or both of
+#' # lsd1 and lsd2 are lists of numerical vectors
+#'
+#' # With two lists of the same length each vector in lsd1
+#' # will be added to the corresponding vector in lsd2.
+#' deb_add(lsd1 = list(c(56, 8, 5), c(27, 12, 4)),
+#'         lsd2 = list(c(19, 5, 7), c(6, 3, 2)))
+#'
+#' # As opposed to using deb_normalize, which will not work
+#' \dontrun{
+#' deb_normalize(list(c(56, 8, 5), c(27, 12, 4)) + list(c(19, 5, 7), c(6, 3, 2)))
+#' }
+#'
+#' # If lsd1 and lsd2 are lists of different lengths
+#' # or one is a vector, the shorter argument is recycled.
+#' deb_add(lsd1 = list(c(56, 8, 5),
+#'                     c(27, 12, 4),
+#'                     c(78, 14, 11)),
+#'         lsd2 = c(6, 18, 10))
+#'
+#' @export
+
+deb_add <- function(lsd1, lsd2, lsd_bases = c(20, 12), round = 3) {
+
+  if (is.list(lsd1) | is.list(lsd2) == TRUE) {
+    # ensure that both are lists to recycle correctly
+    if (is.list(lsd1) == FALSE) {
+      lsd1 <- list(lsd1)
+    }
+    if (is.list(lsd2) == FALSE) {
+      lsd2 <- list(lsd2)
+    }
+    purrr::map2(lsd1, lsd2, ~ deb_normalize(lsd = .x + .y,
+                                            lsd_bases = lsd_bases,
+                                            round = round))
+  } else {
+    deb_normalize(lsd1 + lsd2, lsd_bases = lsd_bases, round = round)
+  }
+}
+
+#' Addition of pounds, shillings, and pence in a data frame
+#'
+#' Uses [dplyr::mutate()] to add pounds, shillings, and pence by a given
+#' pounds, shillings, and pence value. The values are returned in the form of
+#' three new variables representing the calculated pounds, shillings and pence.
+#'
+#' @family lsd arithmetic functions
+#'
+#' @inheritParams deb_normalize_df
+#' @param lsd Numeric vector of length 3. The first position of the vector
+#'   represents the pounds value or l. The second position represents the
+#'   shillings value or s. And the third position represents the pence value
+#'   or d.
+#' @param replace Logical (default `FALSE`): when `TRUE` the new pounds,
+#'   shillings, and pence variables will replace the original ones.
+#' @param suffix Suffix added to the column names for the pounds, shillings, and
+#'   pence columns representing the added values so that they are
+#'   distinguished from the original pounds, shillings, and pence columns.
+#'   Default is ".1". Should be a character vector of length 1.
+#'
+#' @return Returns a data frame with three new variables of pounds, shillings,
+#'   and pence representing the added values.
+#'
+#' @examples
+#' # Add a data frame of lsd values by £5 15s. 8d
+#' example <- data.frame(l = c(35, 10, 26, 12),
+#'                       s = c(10, 18, 11, 16),
+#'                       d = c(9, 11, 10, 5))
+#' deb_add_mutate(example, l, s, d, lsd = c(5, 15, 8))
+#'
+#' # Replace the existing pounds, shillings, and pence
+#' # with added values
+#' deb_add_mutate(example, l, s, d,
+#'                lsd = c(5, 15, 8),
+#'                replace = TRUE)
+#'
+#' @export
+
+deb_add_mutate <- function(df,
+                                l = l,
+                                s = s,
+                                d = d,
+                                lsd,
+                                lsd_bases = c(20, 12),
+                                round = 3,
+                                replace = FALSE,
+                                suffix = ".1") {
+  l <- rlang::enquo(l)
+  s <- rlang::enquo(s)
+  d <- rlang::enquo(d)
+
+  # Checks
+  if (!is.numeric(lsd)) {
+    stop(call. = FALSE, "lsd must be a numeric vector")
+  }
+  if (length(lsd) != 3) {
+    stop(call. = FALSE, paste("lsd must be a vector of length of 3.",
+                              "There must be a value for pounds, shillings, and pence.",
+                              sep = "\n"))
+  }
+  lsd_column_check(df, l, s, d)
+  suffix <- suffix_check(suffix, replace)
+  lsd_names <- lsd_column_names(df, l, s, d, suffix)
+
+  lsd_mutate_columns(df,
+                     !! l + lsd[1],
+                     !! s + lsd[2],
+                     !! d + lsd[3],
+                     lsd_names = lsd_names,
+                     replace = replace,
+                     lsd_bases = lsd_bases,
+                     round = round)
+}
+
 #' Subtract two values of pounds, shillings, and pence
 #'
 #' Subtract and normalize two values of pounds, shillings, and pence
-#' that are given in the form of either two numeric vectors or two lists
+#' that are given in the form of either numeric vectors or lists
 #' of numeric vectors (`lsd1` and `lsd2`). This is a wrapper around
 #' [deb_normalize()].
 #'
@@ -264,24 +408,28 @@ deb_divide_mutate <- function(df,
 #'
 #' @return Returns either a named numeric vector of length 3 or a list of
 #'   named numeric vectors representing the values of pounds, shillings,
-#'   and pence. If the input lsd value is negative, the l, s, and d values
+#'   and pence. If the resulting lsd value is negative, the l, s, and d values
 #'   will all be negative.
 #'
 #' @examples
 #' # Subtract pounds, shillings, and pence
 #' deb_subtract(lsd1 = c(56, 8, 5), lsd2 = c(19, 5, 7))
 #'
-#' # The l, s, and d values do not have to be normalized
-#' deb_subtract(lsd1 = c(76, 65, 35), lsd2 = c(9, 54, 17))
+#' # This is equivalent to using deb_normalize
+#' deb_normalize(lsd = c(56, 8, 5) - c(19, 5, 7))
 #'
-#' # Like deb_normalize(), deb_subtract can handle decimals
-#' deb_subtract(lsd1 = c(56.85, 8.4, 5), lsd2 = c(19.25, 5, 7))
+#' # deb_subtract is useful when one or both of
+#' # lsd1 and lsd2 are lists of numerical vectors
 #'
-#' # lsd1 and lsd2 can be lists of numerical vectors
-#' # Each vector in lsd1 will be subtracted from the
-#' # corresponding vector in lsd2.
+#' # With two lists of the same length each vector in lsd1
+#' # will be subtracted from the corresponding vector in lsd2.
 #' deb_subtract(lsd1 = list(c(56, 8, 5), c(27, 12, 4)),
 #'              lsd2 = list(c(19, 5, 7), c(6, 3, 2)))
+#'
+#' # As opposed to using deb_normalize, which will not work
+#' \dontrun{
+#' deb_normalize(list(c(56, 8, 5), c(27, 12, 4)) - list(c(19, 5, 7), c(6, 3, 2)))
+#' }
 #'
 #' # If lsd1 and lsd2 are lists of different lengths
 #' # or one is a vector, the shorter argument is recycled.
@@ -302,10 +450,79 @@ deb_subtract <- function(lsd1, lsd2, lsd_bases = c(20, 12), round = 3) {
     if (is.list(lsd2) == FALSE) {
       lsd2 <- list(lsd2)
     }
-    return(purrr::map2(lsd1, lsd2, ~ deb_subtract(.x, .y,
-                                                  lsd_bases = lsd_bases,
-                                                  round = round)))
+    purrr::map2(lsd1, lsd2, ~ deb_normalize(lsd = .x - .y,
+                                                   lsd_bases = lsd_bases,
+                                                   round = round))
+  } else {
+    deb_normalize(lsd1 - lsd2, lsd_bases = lsd_bases, round = round)
   }
+}
 
-  deb_normalize(lsd1 - lsd2, lsd_bases = lsd_bases, round = round)
+#' Subtraction of pounds, shillings, and pence in a data frame
+#'
+#' Uses [dplyr::mutate()] to subtract pounds, shillings, and pence by a given
+#' pounds, shillings, and pence value. The values are returned in the form of
+#' three new variables representing the calculated pounds, shillings and pence.
+#'
+#' @family lsd arithmetic functions
+#'
+#' @inheritParams deb_normalize_df
+#' @inheritParams deb_add_mutate
+#' @param suffix Suffix added to the column names for the pounds, shillings, and
+#'   pence columns representing the subtracted values so that they are
+#'   distinguished from the original pounds, shillings, and pence columns.
+#'   Default is ".1". Should be a character vector of length 1.
+#'
+#' @return Returns a data frame with three new variables of pounds, shillings,
+#'   and pence representing the subtracted values.
+#'
+#' @examples
+#' # Subtract a data frame of lsd values by £5 15s. 8d
+#' example <- data.frame(l = c(35, 10, 26, 12),
+#'                       s = c(10, 18, 11, 16),
+#'                       d = c(9, 11, 10, 5))
+#' deb_subtract_mutate(example, l, s, d, lsd = c(5, 15, 8))
+#'
+#' # Replace the existing pounds, shillings, and pence
+#' # with multiplied values
+#' deb_subtract_mutate(example, l, s, d,
+#'                     lsd = c(5, 15, 8),
+#'                     replace = TRUE)
+#'
+#' @export
+
+deb_subtract_mutate <- function(df,
+                                l = l,
+                                s = s,
+                                d = d,
+                                lsd,
+                                lsd_bases = c(20, 12),
+                                round = 3,
+                                replace = FALSE,
+                                suffix = ".1") {
+  l <- rlang::enquo(l)
+  s <- rlang::enquo(s)
+  d <- rlang::enquo(d)
+
+  # Checks
+  if (!is.numeric(lsd)) {
+    stop(call. = FALSE, "lsd must be a numeric vector")
+  }
+  if (length(lsd) != 3) {
+    stop(call. = FALSE, paste("lsd must be a vector of length of 3.",
+                              "There must be a value for pounds, shillings, and pence.",
+                              sep = "\n"))
+  }
+  lsd_column_check(df, l, s, d)
+  suffix <- suffix_check(suffix, replace)
+  lsd_names <- lsd_column_names(df, l, s, d, suffix)
+
+  lsd_mutate_columns(df,
+                     !! l - lsd[1],
+                     !! s - lsd[2],
+                     !! d - lsd[3],
+                     lsd_names = lsd_names,
+                     replace = replace,
+                     lsd_bases = lsd_bases,
+                     round = round)
 }
