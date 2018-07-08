@@ -2,6 +2,8 @@ context("test-deb-sum.R")
 
 suppressPackageStartupMessages(library(dplyr))
 
+lsd_list <- list(c(12, 7, 9), c(5, 8, 11), c(3, 18, 5))
+
 example1 <- data.frame(group = c(1, 2, 1, 2),
                        l = c(3, 5, 6, 2),
                        s = c(10, 18, 11, 16),
@@ -22,18 +24,29 @@ example_error <- data.frame(l = c("j", "r", "s"),
                             s = c(10, 18, 11),
                             d = c(9, 11, 10))
 
-test_that("basic functionality works", {
-  expect_equal(nrow(deb_sum(example1, l, s, d)), 1)
-  expect_equal(deb_sum(example1, l, s, d),
+test_that("deb_sum works in lists", {
+  expect_equal(deb_sum(lsd_list = lsd_list),
+               c(l = 21, s = 15, d = 1))
+  expect_equal(deb_sum(lsd_list = c(lsd_list, list(c(-8, - 5, -5)))),
+               c(l = 13, s = 9, d = 8))
+  expect_equal(deb_sum(lsd_list = lsd_list, lsd_bases = c(8, 16)),
+               c(l = 24, s = 2, d = 9))
+  expect_error(deb_sum(lsd_list = c(5, 6, 9)),
+               "lsd_list must be a list of numeric vectors and cannot be a vector")
+})
+
+test_that("deb_sum_df works on data frames", {
+  expect_equal(nrow(deb_sum_df(example1, l, s, d)), 1)
+  expect_equal(deb_sum_df(example1, l, s, d),
                data.frame(l = 18, s = 17, d = 11))
-  expect_equal(deb_sum(example1, l, s, d, lsd_bases = c(20, 16)),
+  expect_equal(deb_sum_df(example1, l, s, d, lsd_bases = c(20, 16)),
                data.frame(l = 18, s = 17, d = 3))
 })
 
 test_that("group_by works", {
   g <- example1 %>%
     group_by(group) %>%
-    deb_sum(l, s, d)
+    deb_sum_df(l, s, d)
   answer <- data.frame(group = c(1, 2),
                        l = c(10, 8),
                        s = c(2, 15),
@@ -43,23 +56,23 @@ test_that("group_by works", {
 })
 
 test_that("column names can be different", {
-  expect_equal(deb_sum(example2, l = pounds, s = shillings, d = pence),
+  expect_equal(deb_sum_df(example2, l = pounds, s = shillings, d = pence),
                data.frame(pounds = 18, shillings = 17, pence = 11))
 })
 
 test_that("error is column names not present", {
-  expect_error(deb_sum(example2),
+  expect_error(deb_sum_df(example2),
                paste("Column names for l, s, and d must be provided if the",
                      "default names of l, s, and d are not present in the data frame",
                      sep = "\n"))
 })
 
 test_that("works with negative values", {
-  expect_equal(deb_sum(example_neg, l, s, d),
+  expect_equal(deb_sum_df(example_neg, l, s, d),
                data.frame(l = -1, s = -7, d = -3))
   g <- example_neg %>%
     group_by(group) %>%
-    deb_sum(l, s, d)
+    deb_sum_df(l, s, d)
   answer <- data.frame(group = c(1, 2),
                    l = c(-10, 8),
                    s = c(-2, 15),
@@ -68,24 +81,24 @@ test_that("works with negative values", {
 })
 
 test_that("decimalization works", {
-  expect_equal(deb_sum(example_dec, l, s, d),
+  expect_equal(deb_sum_df(example_dec, l, s, d),
                data.frame(l = 17, s = 15, d = 2.38))
   g <- example_dec %>%
     group_by(group) %>%
-    deb_sum(l, s, d)
+    deb_sum_df(l, s, d)
   answer <- data.frame(group = c(1, 2),
                        l = c(8, 8),
                        s = c(19, 15),
                        d = c(10.38, 4))
-  expect_equal(deb_sum(example_dec, l, s, d, round = 0),
+  expect_equal(deb_sum_df(example_dec, l, s, d, round = 0),
                data.frame(l = 17, s = 15, d = 2))
 })
 
 test_that("non-numeric is an error", {
-  expect_error(deb_sum(example_error, l, s, d),
+  expect_error(deb_sum_df(example_error, l, s, d),
                "l must be a numeric variable")
-  expect_error(deb_sum(example_error, d, l, s),
+  expect_error(deb_sum_df(example_error, d, l, s),
                "s must be a numeric variable")
-  expect_error(deb_sum(example_error, s, d, l),
+  expect_error(deb_sum_df(example_error, s, d, l),
                "d must be a numeric variable")
 })

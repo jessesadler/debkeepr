@@ -45,6 +45,7 @@ test_that("deb_df_to_list works",{
   expect_equal(length(deb_df_to_list(ex_tbl)), 4)
   expect_equal(names(deb_df_to_list(ex_tbl)[[1]]), c("l", "s", "d"))
   expect_equal(deb_df_to_list(ex_tbl), ex_list)
+  expect_message(deb_df_to_list(transactions, l, s, d), "non-lsd variables were dropped")
   expect_equal(deb_df_to_list(transactions, l, s, d), ex_list)
   expect_equal(deb_df_to_list(ex_tbl2, pounds, shillings, pence), ex_list)
 })

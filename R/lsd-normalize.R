@@ -96,7 +96,7 @@ lsd_normalize <- function(lsd, round, lsd_bases) {
 #' # Use to normalize the values of pounds, shillings, and pence
 #' deb_normalize(lsd = c(5, 55, 22))
 #'
-#' # Normalize values with alternative bases for solidus and denarius
+#' # Normalize values with alternative bases for solidus and denarius units
 #' # For instance, following Dutch system of gulden, stuivers, and penningen
 #' deb_normalize(lsd = c(5, 55, 22), lsd_bases = c(20, 16))
 #'

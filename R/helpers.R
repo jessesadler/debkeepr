@@ -10,7 +10,7 @@
 #'
 #' `lsd_list_to_df` is a helper function to make it easier to convert between
 #' the two primary types of input objects of multiple lsd values used by
-#' `debkeepr`. See [df_to_lsd_list()] to convert a data frame with pounds,
+#' `debkeepr`. See [deb_df_to_list()] to convert a data frame with pounds,
 #' shillings, and pence variable to a list with lsd vectors.
 #'
 #' @family helper functions
@@ -53,7 +53,7 @@ deb_list_to_df <- function(lsd_list) {
 #'
 #' `df_to_lsd_list` is a helper function to make it easier to convert between
 #' the two primary types of input objects of multiple lsd values used by
-#' `debkeepr`. See [lsd_list_to_df()] to convert a list of lsd vectors to a
+#' `debkeepr`. See [deb_list_to_df()] to convert a list of lsd vectors to a
 #' data frame with pounds, shillings, and pence variables.
 #'
 #' @family helper functions
@@ -94,9 +94,12 @@ deb_df_to_list <- function(df, l = l, s = s, d = d) {
 
   lsd_column_check(df, l, s, d)
 
-  df <- dplyr::select(df, !! l, !! s, !! d)
+  lsd_df <- dplyr::select(df, !! l, !! s, !! d)
 
-  as.list(df) %>%
+  if (ncol(df) != ncol(lsd_df))
+    message("non-lsd variables were dropped")
+
+  as.list(lsd_df) %>%
     purrr::transpose() %>%
     purrr::simplify_all() %>%
     purrr::map(~ stats::setNames(., c("l", "s", "d")))

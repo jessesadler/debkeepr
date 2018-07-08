@@ -2,21 +2,15 @@
 % Please edit documentation in R/lsd-sum.R
 \name{deb_sum}
 \alias{deb_sum}
-\title{Sum of pounds, shillings, and pence columns in a data frame}
+\title{Sum of pounds, shillings, and pence columns in a list of vectors}
 \usage{
-deb_sum(df, l = l, s = s, d = d, lsd_bases = c(20, 12), round = 3)
+deb_sum(lsd_list, lsd_bases = c(20, 12), round = 3)
 }
 \arguments{
-\item{df}{A data frame that contains pounds, shillings, and pence variables.}
-
-\item{l}{Pounds column: Unquoted name of a numeric variable corresponding
-to pounds. Default is l.}
-
-\item{s}{Shillings column: Unquoted name of numeric variable corresponding
-to shillings. Default is s.}
-
-\item{d}{Pence column: Unquoted name of numeric variable corresponding to
-pence. Default is d.}
+\item{lsd_list}{List of numeric vectors of length 3. The first position
+of each vector represents the pounds value or l. The second position
+represents the shillings value or s. And the third position represents
+the pence value or d.}
 
 \item{lsd_bases}{Numeric vector of length 2 used to specify the bases for
 the s or solidus and d or denarius values in \code{lsd} vectors. Default is
@@ -26,53 +20,29 @@ use alternative bases for the solidus and denarius values that were also
 in use.}
 
 \item{round}{Round pence to specified number of decimal places.
-Default is 3. Set to 0 if you want pence to always be a whole number.}
+Default is 3. Set to 0 to return pence as whole numbers.}
 }
 \value{
-Returns a data frame with one level of grouping dropped. Any
-variables other than \code{l}, \code{s}, and \code{d} that are not grouped will be
-dropped. If the sum of any group is a negative value, the \code{l}, \code{s},
-and \code{d} values for that group will all be returned as negative.
+Returns a named numeric vector of length 3 representing the sum of
+the pounds, shillings, and pence. If the sum is negative, the l, s, and d
+values will all be negative.
 }
 \description{
-Uses \code{\link[dplyr:summarise]{dplyr::summarise()}} to add pounds, shillings, and pence
-columns in a data frame and normalizes the values.
-}
-\details{
-When used on a data frame without any grouping, the result will be a data
-frame with a single row consisting of columns for pounds, shillings, and
-pence. When used in conjunction with \code{\link[dplyr:group_by]{dplyr::group_by()}}, \code{\link[=deb_sum]{deb_sum()}} will
-summarize the pounds, shillings, and pence columns for each group.
+Reduces a list of numeric vectors to a single numeric vector of length 3
+representing the normalized sum of the pounds, shillings, and pence in
+\code{lsd_list}.
 }
 \examples{
-# Use on an ungrouped data frame adds all values of pounds, shillings,
-# and pence, resulting in a data frame with one row.
-example1 <- data.frame(group = c(1, 2, 1, 2),
-                       l = c(3, 5, 6, 2),
-                       s = c(10, 18, 11, 16),
-                       d = c(9, 11, 10, 5))
-deb_sum(example1, l, s, d)
+# Sum of a list of lsd vectors
+lsd_list <- list(c(12, 7, 9), c(5, 8, 11), c(3, 18, 5))
+deb_sum(lsd_list = lsd_list)
 
-# Use with group_by() summarizes the values of pounds, shillings,
-# and pence for each group.
-example1 \%>\%
-  dplyr::group_by(group) \%>\%
-  deb_sum(l, s, d)
+# Can use alternative bases for solidus and denarius units
+deb_sum(lsd_list = lsd_list, lsd_bases = c(20, 16))
 
-# The default for the function is to have pounds, shillings, and pence
-# columns labeled as l, s, d. If this is true, you do not need to
-# include these arguments.
-example1 \%>\%
-  dplyr::group_by(group) \%>\%
-  deb_sum()
-
-# The function can take into account negative values
-example2 <- data.frame(group = c(1, 2, 1, 2),
-                       l = c(-3, 5, -6, 2),
-                       s = c(-10, 18, -11, 16),
-                       d = c(-9, 11, -10, 5))
-example2 \%>\%
-  dplyr::group_by(group) \%>\%
-  deb_sum(l, s, d)
+# deb_sum cannot be used with an lsd vector
+\dontrun{
+deb_sum(lsd_list = c(5, 13, 8))
+}
 
 }

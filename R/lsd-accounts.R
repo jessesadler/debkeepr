@@ -100,14 +100,14 @@ deb_account <- function(df,
 
   credit <- df %>%
     dplyr::filter((!! credit) == account_id) %>%
-    deb_sum(!! l, !! s, !! d,
+    deb_sum_df(!! l, !! s, !! d,
             lsd_bases = lsd_bases,
             round = round) %>%
     dplyr::mutate(denarii = decimalize_d(!! l, !! s, !! d, lsd_bases))
 
   debit <- df %>%
     dplyr::filter((!! debit) == account_id) %>%
-    deb_sum(!! l, !! s, !! d,
+    deb_sum_df(!! l, !! s, !! d,
             lsd_bases = lsd_bases,
             round = round) %>%
     dplyr::mutate(denarii = decimalize_d(!! l, !! s, !! d, lsd_bases))
@@ -289,7 +289,7 @@ deb_credit <- function(df,
   paramenter_check(lsd_bases, round)
 
   dplyr::group_by(df, !! credit) %>%
-    deb_sum(!! l, !! s, !! d, lsd_bases = lsd_bases, round = round) %>%
+    deb_sum_df(!! l, !! s, !! d, lsd_bases = lsd_bases, round = round) %>%
     dplyr::rename(account_id = !! credit)
 }
 
@@ -356,7 +356,7 @@ deb_debit <- function(df,
   paramenter_check(lsd_bases, round)
 
   dplyr::group_by(df, !! debit) %>%
-    deb_sum(!! l, !! s, !! d, lsd_bases = lsd_bases, round = round) %>%
+    deb_sum_df(!! l, !! s, !! d, lsd_bases = lsd_bases, round = round) %>%
     dplyr::rename(account_id = !! debit)
 }
 
@@ -576,7 +576,7 @@ deb_balance <- function(df,
                    round = round)
   credit <- open %>%
     dplyr::filter(!! l + !! s + !! d > 0) %>%
-    deb_sum(l = !! l,
+    deb_sum_df(l = !! l,
             s = !! s,
             d = !! d,
             lsd_bases = lsd_bases,
@@ -584,7 +584,7 @@ deb_balance <- function(df,
 
   debit <- open %>%
     dplyr::filter(!! l + !! s + !! d < 0) %>%
-    deb_sum(l = !! l,
+    deb_sum_df(l = !! l,
             s = !! s,
             d = !! d,
             lsd_bases = lsd_bases,
