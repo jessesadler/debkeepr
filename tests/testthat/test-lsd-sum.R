@@ -24,15 +24,21 @@ example_error <- data.frame(l = c("j", "r", "s"),
                             s = c(10, 18, 11),
                             d = c(9, 11, 10))
 
-test_that("deb_sum works in lists", {
-  expect_equal(deb_sum(lsd_list = lsd_list),
+test_that("deb_sum works", {
+  expect_equal(deb_sum(lsd_list),
                c(l = 21, s = 15, d = 1))
-  expect_equal(deb_sum(lsd_list = c(lsd_list, list(c(-8, - 5, -5)))),
+  expect_equal(deb_sum(lsd_list, c(-8, - 5, -5)),
                c(l = 13, s = 9, d = 8))
-  expect_equal(deb_sum(lsd_list = lsd_list, lsd_bases = c(8, 16)),
+  expect_equal(deb_sum(lsd_list, c(8, 4, 9), c(6, 19, 10)),
+               c(l = 36, s = 19, d = 8))
+  expect_equal(deb_sum(lsd_list, lsd_bases = c(8, 16)),
                c(l = 24, s = 2, d = 9))
-  expect_error(deb_sum(lsd_list = c(5, 6, 9)),
-               "lsd_list must be a list of numeric vectors and cannot be a vector")
+  expect_error(deb_sum(lsd_list, c("hello", "goodbye")),
+               "lsd must be a numeric vector")
+  expect_error(deb_sum(lsd_list, c(6, 3)),
+               paste("lsd must be a vector of length of 3.",
+                     "There must be a value for pounds, shillings, and pence.",
+                     sep = "\n"))
 })
 
 test_that("deb_sum_df works on data frames", {

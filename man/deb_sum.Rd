@@ -2,15 +2,15 @@
 % Please edit documentation in R/lsd-sum.R
 \name{deb_sum}
 \alias{deb_sum}
-\title{Sum of pounds, shillings, and pence columns in a list of vectors}
+\title{Sum of pounds, shillings, and pence in lsd vectors}
 \usage{
-deb_sum(lsd_list, lsd_bases = c(20, 12), round = 3)
+deb_sum(..., lsd_bases = c(20, 12), round = 3)
 }
 \arguments{
-\item{lsd_list}{List of numeric vectors of length 3. The first position
-of each vector represents the pounds value or l. The second position
-represents the shillings value or s. And the third position represents
-the pence value or d.}
+\item{...}{Numeric vectors of length 3 and/or lists of numeric vectors of
+length 3. The first position of each vector represents the pounds value
+or l. The second position represents the shillings value or s. And the
+third position represents the pence value or d.}
 
 \item{lsd_bases}{Numeric vector of length 2 used to specify the bases for
 the s or solidus and d or denarius values in \code{lsd} vectors. Default is
@@ -24,25 +24,26 @@ Default is 3. Set to 0 to return pence as whole numbers.}
 }
 \value{
 Returns a named numeric vector of length 3 representing the sum of
-the pounds, shillings, and pence. If the sum is negative, the l, s, and d
-values will all be negative.
+the pounds, shillings, and pence from the lsd vectors. If the sum is
+negative, the l, s, and d values will all be negative.
 }
 \description{
-Reduces a list of numeric vectors to a single numeric vector of length 3
-representing the normalized sum of the pounds, shillings, and pence in
-\code{lsd_list}.
+Reduces a multiple numeric vectors and/or lists of numeric vectors
+to a single numeric vector of length 3 representing the normalized
+sum of the lsd vectors.
 }
 \examples{
+# Sum of multiple lsd vectors
+deb_sum(c(12, 7, 9), c(5, 8, 11), c(3, 18, 5))
+
 # Sum of a list of lsd vectors
 lsd_list <- list(c(12, 7, 9), c(5, 8, 11), c(3, 18, 5))
-deb_sum(lsd_list = lsd_list)
+deb_sum(lsd_list)
+
+# Sum of a mixture of lsd vectors and list of lsd vectors
+deb_sum(lsd_list, c(8, 4, 9), c(6, 19, 10))
 
 # Can use alternative bases for solidus and denarius units
-deb_sum(lsd_list = lsd_list, lsd_bases = c(20, 16))
-
-# deb_sum cannot be used with an lsd vector
-\dontrun{
-deb_sum(lsd_list = c(5, 13, 8))
-}
+deb_sum(lsd_list, c(8, 4, 9), c(6, 19, 10), lsd_bases = c(20, 16))
 
 }

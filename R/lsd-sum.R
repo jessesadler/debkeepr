@@ -1,40 +1,41 @@
-## Sum of lists of lsd vectors and lsd variables in a data frame ##
+## Sum of lsd vectors and lsd variables in a data frame ##
 
-#' Sum of pounds, shillings, and pence columns in a list of vectors
+#' Sum of pounds, shillings, and pence in lsd vectors
 #'
-#' Reduces a list of numeric vectors to a single numeric vector of length 3
-#' representing the normalized sum of the pounds, shillings, and pence in
-#' `lsd_list`.
+#' Reduces a multiple numeric vectors and/or lists of numeric vectors
+#' to a single numeric vector of length 3 representing the normalized
+#' sum of the lsd vectors.
 #'
 #' @inheritParams deb_normalize
-#' @param lsd_list List of numeric vectors of length 3. The first position
-#'   of each vector represents the pounds value or l. The second position
-#'   represents the shillings value or s. And the third position represents
-#'   the pence value or d.
+#' @param ...  Numeric vectors of length 3 and/or lists of numeric vectors of
+#'   length 3. The first position of each vector represents the pounds value
+#'   or l. The second position represents the shillings value or s. And the
+#'   third position represents the pence value or d.
 #'
 #' @return Returns a named numeric vector of length 3 representing the sum of
-#'   the pounds, shillings, and pence. If the sum is negative, the l, s, and d
-#'   values will all be negative.
+#'   the pounds, shillings, and pence from the lsd vectors. If the sum is
+#'   negative, the l, s, and d values will all be negative.
 #'
 #' @examples
+#' # Sum of multiple lsd vectors
+#' deb_sum(c(12, 7, 9), c(5, 8, 11), c(3, 18, 5))
+#'
 #' # Sum of a list of lsd vectors
 #' lsd_list <- list(c(12, 7, 9), c(5, 8, 11), c(3, 18, 5))
-#' deb_sum(lsd_list = lsd_list)
+#' deb_sum(lsd_list)
+#'
+#' # Sum of a mixture of lsd vectors and list of lsd vectors
+#' deb_sum(lsd_list, c(8, 4, 9), c(6, 19, 10))
 #'
 #' # Can use alternative bases for solidus and denarius units
-#' deb_sum(lsd_list = lsd_list, lsd_bases = c(20, 16))
-#'
-#' # deb_sum cannot be used with an lsd vector
-#' \dontrun{
-#' deb_sum(lsd_list = c(5, 13, 8))
-#' }
+#' deb_sum(lsd_list, c(8, 4, 9), c(6, 19, 10), lsd_bases = c(20, 16))
 #'
 #' @export
 
-deb_sum <- function(lsd_list, lsd_bases = c(20, 12), round = 3) {
-  lsd_check(lsd_list)
-  if (!is.list(lsd_list))
-    stop(call. = FALSE, "lsd_list must be a list of numeric vectors and cannot be a vector")
+deb_sum <- function(..., lsd_bases = c(20, 12), round = 3) {
+  lsd_list <- list(...)
+  purrr::map(lsd_list, lsd_check)
+  lsd_list <- purrr::map_if(lsd_list, is.list, ~ purrr::reduce(., `+`))
 
   deb_normalize(lsd = purrr::reduce(lsd_list, `+`),
                 lsd_bases = lsd_bases,

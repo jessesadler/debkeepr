@@ -129,7 +129,7 @@ deb_rate_per_shilling <- function(lsd1, lsd2, lsd_bases = c(20, 12), round = 3) 
 #' the form of pounds, shillings, and pence variables in a data frame given
 #' an exchange rate calculated on the basis of shillings. The converted values
 #' are returned in the form of three new variables representing the calculated
-#' pounds, shillings and pence for the interest.
+#' pounds, shillings and pence for the new currency.
 #'
 #' @inheritParams deb_multiply_mutate
 #' @inheritParams deb_exchange

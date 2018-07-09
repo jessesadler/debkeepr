@@ -52,7 +52,7 @@ Uses \code{\link[dplyr:mutate]{dplyr::mutate()}} to convert between different cu
 the form of pounds, shillings, and pence variables in a data frame given
 an exchange rate calculated on the basis of shillings. The converted values
 are returned in the form of three new variables representing the calculated
-pounds, shillings and pence for the interest.
+pounds, shillings and pence for the new currency.
 }
 \examples{
 # Exchange rate of 31 shillings
