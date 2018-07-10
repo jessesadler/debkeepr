@@ -4,22 +4,31 @@
 \name{debkeepr}
 \alias{debkeepr}
 \alias{debkeepr-package}
-\title{debkeepr: Analysis of Accounting in Non-Decimal Currencies}
+\title{debkeepr: Analysis of Non-Decimal Currencies and Double-Entry Bookkeeping}
 \description{
-\code{deblkeepr} provides a consistent interface for analyzing non-decimal
-currencies based on the tripartite system of pounds, shillings, and pence.
-The package uses the nomenclature of
-\href{https://en.wikipedia.org/wiki/£sd}{l, s, and d} to represent pounds,
-shillings, and pence, which derives from the Latin terms
-\href{https://en.wikipedia.org/wiki/French_livre}{libra},
-\href{https://en.wikipedia.org/wiki/Solidus_(coin)}{solidus}, and
-\href{https://en.wikipedia.org/wiki/Denarius}{denarius}. In the 8th century a
-solidus came to represent 12 denarii, and 240 denarii were made from one
-libra or pound of silver. The custom of counting coins in dozens (solidi)
-and scores of dozens (libra) spread throughout the Carolingian Empire and
-became engrained in much of Europe. However,
-\href{https://en.wikipedia.org/wiki/Non-decimal_currency}{other ratios} between
-libra, solidus, and denarius were also in use. The \code{lsd_bases} argument
-makes it possible to specify alternative bases for the solidus and denarius
-values.
+\code{debkeepr} provides an interface for analyzing non-decimal currencies that
+use the tripartite system of pounds, shillings, and pence. It includes
+functions to apply arithmetic and financial operations to single or multiple
+values and to analyze account books that use either single-entry bookkeeping
+or double-entry bookkeeping with the latter providing the name for
+\code{debkeepr}. The use of non-decimal currencies throughout the medieval and
+early modern period presents difficulties for the analysis of historical
+accounts. The pounds, shillings, and pence system complicates even relatively
+simple arithmetic manipulations, as each unit has to be normalized or
+converted to the correct base. \code{debkeepr} does the work of applying
+arithmetic operations and normalizing the units to the correct bases.
+\code{debkeepr} uses numeric vectors of length three, lists of such numeric
+vectors, and three separate variables in a data frame to represent pounds,
+shillings, and pence values.
+}
+\details{
+The system of recording value according to pounds, shillings, and pence — or
+to use the Latin terms from which the English derived libra, solidus, and
+denarius — developed in the 7th and 8th century during the rise of the
+Carolingian Empire. The ratios between the libra, solidus, and denarius (lsd)
+were never completely uniform, but most commonly there were 12 denarii in a
+solidus and 20 solidi in a libra. The custom of counting coins in dozens
+(solidus) and scores of dozens (libra) spread throughout the Carolingian
+Empire and became engrained in much of Europe until decimalization after the
+French Revolution.
 }

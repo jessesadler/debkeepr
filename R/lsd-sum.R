@@ -2,9 +2,14 @@
 
 #' Sum of pounds, shillings, and pence in lsd vectors
 #'
-#' Reduces a multiple numeric vectors and/or lists of numeric vectors
+#' Reduces multiple numeric vectors and/or lists of numeric vectors
 #' to a single numeric vector of length 3 representing the normalized
 #' sum of the lsd vectors.
+#'
+#' See [deb_add()] to add an lsd vector or list of lsd vectors to the
+#' elements of a list of lsd vectors.
+#'
+#' @family lsd arithmetic functions
 #'
 #' @inheritParams deb_normalize
 #' @param ...  Numeric vectors of length 3 and/or lists of numeric vectors of
@@ -68,6 +73,11 @@ deb_denarii_sum <- function(l, s, d, lsd_bases = c(20, 12), round = 3) {
 #' frame with a single row consisting of columns for pounds, shillings, and
 #' pence. When used in conjunction with [dplyr::group_by()], [deb_sum_df()] will
 #' summarize the pounds, shillings, and pence columns for each group.
+#'
+#' See [deb_add_mutate()] to add a single lsd value to the lsd values
+#' contained in a data frame.
+#'
+#' @family lsd arithmetic functions
 #'
 #' @inheritParams deb_normalize_df
 #'

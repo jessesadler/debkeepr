@@ -245,13 +245,13 @@ deb_divide_mutate <- function(df,
 
 #' Add two values of pounds, shillings, and pence
 #'
-#' Add and normalize two values of pounds, shillings, and pence
-#' that are given in the form of either numeric vectors or lists
-#' of numeric vectors (`lsd1` and `lsd2`). This is a wrapper around
-#' [deb_normalize()].
+#' Add and normalize two values of pounds, shillings, and pence that are
+#' given in the form of either numeric vectors or lists of numeric vectors
+#' (`lsd1` and `lsd2`). If `lsd1` and `lsd2` are lists of different lengths
+#' or one is a vector, the shorter list will be recycled.
 #'
-#' If `lsd1` and `lsd2` are lists of different lengths or one is a vector,
-#' the shorter list will be recycled.
+#' See [deb_sum()] to get the sum of multiple numeric vectors and/or lists of
+#' numeric vectors, reducing the inputs to a single numeric vector.
 #'
 #' @family lsd arithmetic functions
 #'
@@ -270,8 +270,8 @@ deb_divide_mutate <- function(df,
 #' # Add pounds, shillings, and pence
 #' deb_add(lsd1 = c(56, 8, 5), lsd2 = c(19, 5, 7))
 #'
-#' # This is equivalent to using deb_normalize
-#' deb_normalize(lsd = c(56, 8, 5) + c(19, 5, 7))
+#' # This is equivalent to using deb_sum
+#' deb_sum(c(56, 8, 5), c(19, 5, 7))
 #'
 #' # deb_add is useful when one or both of
 #' # lsd1 and lsd2 are lists of numerical vectors
@@ -319,10 +319,13 @@ deb_add <- function(lsd1, lsd2, lsd_bases = c(20, 12), round = 3) {
 #' pounds, shillings, and pence value. The values are returned in the form of
 #' three new variables representing the calculated pounds, shillings and pence.
 #'
+#' See [deb_sum_df()] to get a sum of the lsd values in a data frame.
+#'
 #' @family lsd arithmetic functions
 #'
 #' @inheritParams deb_normalize_df
-#' @param lsd Numeric vector of length 3. The first position of the vector
+#' @param lsd Numeric vector of length 3 that represents the lsd value to be
+#'   added to the `l`, `s`, and `d` variables. The first position of the vector
 #'   represents the pounds value or l. The second position represents the
 #'   shillings value or s. And the third position represents the pence value
 #'   or d.
@@ -467,7 +470,11 @@ deb_subtract <- function(lsd1, lsd2, lsd_bases = c(20, 12), round = 3) {
 #' @family lsd arithmetic functions
 #'
 #' @inheritParams deb_normalize_df
-#' @inheritParams deb_add_mutate
+#' @param lsd Numeric vector of length 3 that represents the lsd value to be
+#'   subtracted from the `l`, `s`, and `d` variables. The first position of the
+#'   vector represents the pounds value or l. The second position represents
+#'   the shillings value or s. And the third position represents the pence
+#'   value or d.
 #' @param suffix Suffix added to the column names for the pounds, shillings, and
 #'   pence columns representing the subtracted values so that they are
 #'   distinguished from the original pounds, shillings, and pence columns.

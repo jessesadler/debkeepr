@@ -28,9 +28,13 @@ the pounds, shillings, and pence from the lsd vectors. If the sum is
 negative, the l, s, and d values will all be negative.
 }
 \description{
-Reduces a multiple numeric vectors and/or lists of numeric vectors
+Reduces multiple numeric vectors and/or lists of numeric vectors
 to a single numeric vector of length 3 representing the normalized
 sum of the lsd vectors.
+}
+\details{
+See \code{\link[=deb_add]{deb_add()}} to add an lsd vector or list of lsd vectors to the
+elements of a list of lsd vectors.
 }
 \examples{
 # Sum of multiple lsd vectors
@@ -46,4 +50,13 @@ deb_sum(lsd_list, c(8, 4, 9), c(6, 19, 10))
 # Can use alternative bases for solidus and denarius units
 deb_sum(lsd_list, c(8, 4, 9), c(6, 19, 10), lsd_bases = c(20, 16))
 
+}
+\seealso{
+Other lsd arithmetic functions: \code{\link{deb_add_mutate}},
+  \code{\link{deb_add}}, \code{\link{deb_divide_mutate}},
+  \code{\link{deb_divide}},
+  \code{\link{deb_multiply_mutate}},
+  \code{\link{deb_multiply}},
+  \code{\link{deb_subtract_mutate}},
+  \code{\link{deb_subtract}}, \code{\link{deb_sum_df}}
 }

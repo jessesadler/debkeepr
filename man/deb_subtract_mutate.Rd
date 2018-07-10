@@ -19,10 +19,11 @@ to shillings. Default is s.}
 \item{d}{Pence column: Unquoted name of numeric variable corresponding to
 pence. Default is d.}
 
-\item{lsd}{Numeric vector of length 3. The first position of the vector
-represents the pounds value or l. The second position represents the
-shillings value or s. And the third position represents the pence value
-or d.}
+\item{lsd}{Numeric vector of length 3 that represents the lsd value to be
+subtracted from the \code{l}, \code{s}, and \code{d} variables. The first position of the
+vector represents the pounds value or l. The second position represents
+the shillings value or s. And the third position represents the pence
+value or d.}
 
 \item{lsd_bases}{Numeric vector of length 2 used to specify the bases for
 the s or solidus and d or denarius values in \code{lsd} vectors. Default is
@@ -70,5 +71,6 @@ Other lsd arithmetic functions: \code{\link{deb_add_mutate}},
   \code{\link{deb_add}}, \code{\link{deb_divide_mutate}},
   \code{\link{deb_divide}},
   \code{\link{deb_multiply_mutate}},
-  \code{\link{deb_multiply}}, \code{\link{deb_subtract}}
+  \code{\link{deb_multiply}}, \code{\link{deb_subtract}},
+  \code{\link{deb_sum_df}}, \code{\link{deb_sum}}
 }

@@ -43,6 +43,9 @@ When used on a data frame without any grouping, the result will be a data
 frame with a single row consisting of columns for pounds, shillings, and
 pence. When used in conjunction with \code{\link[dplyr:group_by]{dplyr::group_by()}}, \code{\link[=deb_sum_df]{deb_sum_df()}} will
 summarize the pounds, shillings, and pence columns for each group.
+
+See \code{\link[=deb_add_mutate]{deb_add_mutate()}} to add a single lsd value to the lsd values
+contained in a data frame.
 }
 \examples{
 # Use on an ungrouped data frame adds all values of pounds, shillings,
@@ -75,4 +78,13 @@ example2 \%>\%
   dplyr::group_by(group) \%>\%
   deb_sum_df(l, s, d)
 
+}
+\seealso{
+Other lsd arithmetic functions: \code{\link{deb_add_mutate}},
+  \code{\link{deb_add}}, \code{\link{deb_divide_mutate}},
+  \code{\link{deb_divide}},
+  \code{\link{deb_multiply_mutate}},
+  \code{\link{deb_multiply}},
+  \code{\link{deb_subtract_mutate}},
+  \code{\link{deb_subtract}}, \code{\link{deb_sum}}
 }

@@ -1,19 +1,20 @@
 Package: debkeepr
 Type: Package
 Title: Analysis of Non-Decimal Currencies and Double-Entry Bookkeeping
-Version: 0.0.0.9005
+Version: 0.0.0.9006
 Authors@R: person("Jesse", "Sadler",
     email = "jsadler@ucla.edu",
     role = c("aut", "cre"),
     comment = c(ORCID = "0000-0001-6081-9681"))
-Description: This package provides functions to make it easier to work with
-    and analyze non-decimal currencies and accounts that use non-decimal
-    currencies. Specifically, it provides functions to work with the pounds,
-    shillings, and pence system in which 12 pence (or denarii) are equivalent
-    to 1 shilling (or solidus), and 20 shillings are equivalent to 1 pound (or
-    libra) that has been widely used in Europe since the time of Charlemagne.
-    debkeepr contains functions to work with single values or to help
-    analyze an entire account book that uses double-entry bookkeeping.
+Description: `debkeepr` provides an interface for analyzing non-decimal currencies that
+    use the tripartite system of pounds, shillings, and pence. It includes
+    functions to apply arithmetic and financial operations to single or multiple
+    values and to analyze account books that use either single-entry bookkeeping
+    or double-entry bookkeeping with the latter providing the name for
+    `debkeepr`. The pounds, shillings, and pence system complicates even relatively
+    simple arithmetic manipulations, as each unit has to be normalized or
+    converted to the correct base. `debkeepr` does the work of applying
+    arithmetic operations and normalizing the units to the correct bases.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

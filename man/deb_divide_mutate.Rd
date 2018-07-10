@@ -74,5 +74,6 @@ Other lsd arithmetic functions: \code{\link{deb_add_mutate}},
   \code{\link{deb_multiply_mutate}},
   \code{\link{deb_multiply}},
   \code{\link{deb_subtract_mutate}},
-  \code{\link{deb_subtract}}
+  \code{\link{deb_subtract}}, \code{\link{deb_sum_df}},
+  \code{\link{deb_sum}}
 }

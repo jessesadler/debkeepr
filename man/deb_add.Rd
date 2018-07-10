@@ -29,14 +29,14 @@ and pence. If the resulting lsd value is negative, the l, s, and d values
 will all be negative.
 }
 \description{
-Add and normalize two values of pounds, shillings, and pence
-that are given in the form of either numeric vectors or lists
-of numeric vectors (\code{lsd1} and \code{lsd2}). This is a wrapper around
-\code{\link[=deb_normalize]{deb_normalize()}}.
+Add and normalize two values of pounds, shillings, and pence that are
+given in the form of either numeric vectors or lists of numeric vectors
+(\code{lsd1} and \code{lsd2}). If \code{lsd1} and \code{lsd2} are lists of different lengths
+or one is a vector, the shorter list will be recycled.
 }
 \details{
-If \code{lsd1} and \code{lsd2} are lists of different lengths or one is a vector,
-the shorter list will be recycled.
+See \code{\link[=deb_sum]{deb_sum()}} to get the sum of multiple numeric vectors and/or lists of
+numeric vectors, reducing the inputs to a single numeric vector.
 }
 \examples{
 # Add pounds, shillings, and pence
@@ -73,5 +73,6 @@ Other lsd arithmetic functions: \code{\link{deb_add_mutate}},
   \code{\link{deb_multiply_mutate}},
   \code{\link{deb_multiply}},
   \code{\link{deb_subtract_mutate}},
-  \code{\link{deb_subtract}}
+  \code{\link{deb_subtract}}, \code{\link{deb_sum_df}},
+  \code{\link{deb_sum}}
 }

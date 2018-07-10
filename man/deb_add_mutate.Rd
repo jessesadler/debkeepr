@@ -19,7 +19,8 @@ to shillings. Default is s.}
 \item{d}{Pence column: Unquoted name of numeric variable corresponding to
 pence. Default is d.}
 
-\item{lsd}{Numeric vector of length 3. The first position of the vector
+\item{lsd}{Numeric vector of length 3 that represents the lsd value to be
+added to the \code{l}, \code{s}, and \code{d} variables. The first position of the vector
 represents the pounds value or l. The second position represents the
 shillings value or s. And the third position represents the pence value
 or d.}
@@ -51,6 +52,9 @@ Uses \code{\link[dplyr:mutate]{dplyr::mutate()}} to add pounds, shillings, and p
 pounds, shillings, and pence value. The values are returned in the form of
 three new variables representing the calculated pounds, shillings and pence.
 }
+\details{
+See \code{\link[=deb_sum_df]{deb_sum_df()}} to get a sum of the lsd values in a data frame.
+}
 \examples{
 # Add a data frame of lsd values by £5 15s. 8d
 example <- data.frame(l = c(35, 10, 26, 12),
@@ -72,5 +76,6 @@ Other lsd arithmetic functions: \code{\link{deb_add}},
   \code{\link{deb_multiply_mutate}},
   \code{\link{deb_multiply}},
   \code{\link{deb_subtract_mutate}},
-  \code{\link{deb_subtract}}
+  \code{\link{deb_subtract}}, \code{\link{deb_sum_df}},
+  \code{\link{deb_sum}}
 }
