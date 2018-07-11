@@ -30,11 +30,11 @@ Overview
     -   Numeric vectors of length 3 in which the value for the first position represents librae (`l`), the second position solidi (`s`), and the third position denarii (`d`). Such lsd vectors can either be a single numeric vector or a list of such vectors.
     -   A data frame that contains pounds, shillings, and pence variables alongside any other variables. The pounds, shillings, and pence columns can have any desired names, but the default is to have the columns named “l”, “s”, and “d” respectively.
     -   The final object is a data frame that mimics the structure of an account book and can be thought of as a transactions data frame. In addition to pounds, shillings, and pence variables that denote the value of each transaction, a transactions data frame contains variables recording the [creditor and debtor](https://en.wikipedia.org/wiki/Debits_and_credits) for each transaction.
--   There are equivalent functions to manipulate lsd vectors and lists of lsd vectors on the one hand and data frames with lsd variables on the other. Anything that can be done on an lsd vector can also be done to a data frame with lsd values. Functions that use a transactions data frame that also possess debit and credit variables do not have equivalent functions for lsd vectors.
+-   There are equivalent functions to manipulate lsd vectors and data frames with lsd variables. Anything that can be done on an lsd vector can also be done to a data frame with lsd values. Functions that use a transactions data frame that also possess credit and debit variables do not have equivalent functions for lsd vectors.
 
-### debkeepr objects
+### lsd objects
 
-`debkeepr` provides a consistent manner to manipulate single or sets of lsd values through lsd vectors and lists of lsd vectors. An lsd vector consists of a numeric vector of length three representing the pounds, shillings, and pence units. A set of lsd vectors can be created by placing multiple vectors in a list.
+An lsd vector consists of a numeric vector of length three representing the pounds, shillings, and pence units. A set of lsd vectors can be created by placing multiple vectors in a list.
 
 ``` r
 # Load debkeepr
@@ -81,6 +81,20 @@ deb_df_to_list(df = lsd_df, l = l, s = s, d = d)
 #> [[3]]
 #>  l  s  d 
 #>  3 18  5
+```
+
+Transaction data frames present a way to record data from an account book. They consist of five variables: "credit", "debit", "l", "s", and "d". The credit and debit variables contain information about the accounts involved in the transactions, and the lsd variables record the value of the transactions. Following the principles of double-entry bookkeeping, the credit account is the account that gives or sends the value, and the debit account receives the value. The `debkeepr` functions that work specifically on transaction data frames use "credit" and "debit" as the default names for these variables, though one could follow the convention of [network analysis](http://kateto.net/network-visualization) and name the variables "from" and "to".
+
+Here is an example transactions data frame with four accounts named "a", "b", "c", and "d" and 15 transactions with values randomly created:
+
+``` r
+set.seed(240)
+transactions_df <- data.frame(credit = sample(letters[1:4], 15, replace = TRUE),
+                              debit = sample(letters[1:4], 15, replace = TRUE),
+                              l = sample(1:30, 15, replace = TRUE),
+                              s = sample(1:19, 15, replace = TRUE),
+                              d = sample(1:12, 15, replace = TRUE),
+                              stringsAsFactors = FALSE)
 ```
 
 lsd vectors
@@ -408,6 +422,82 @@ lsd_df %>%
 
 Account books: transaction data frames
 --------------------------------------
+
+The account family of functions are designed to analyze a transaction data frame such as `transactions_df` created above. `deb_account()` provides information about the total credit and debit and the current balance of a single account. `deb_account_summary()` gives the same type of information but includes all accounts in the transactions data frame.
+
+``` r
+# Credit, debit, and current values for account "a"
+deb_account(df = transactions_df,
+            account_id = "a",
+            credit = credit, debit = debit,
+            l = l, s = s, d = d)
+#>   relation  l s d
+#> 1   credit 23 4 3
+#> 2    debit 22 3 9
+#> 3  current  1 0 6
+
+# Credit, debit, and current values for all accounts
+deb_account_summary(df = transactions_df)
+#> # A tibble: 12 x 5
+#>    account_id relation     l     s     d
+#>    <chr>      <chr>    <dbl> <dbl> <dbl>
+#>  1 a          credit      23     4     3
+#>  2 a          debit       22     3     9
+#>  3 a          current      1     0     6
+#>  4 b          credit     115     4     7
+#>  5 b          debit       73     7     4
+#>  6 b          current     41    17     3
+#>  7 c          credit      82    16     9
+#>  8 c          debit       71     5     7
+#>  9 c          current     11    11     2
+#> 10 d          credit      52    14     4
+#> 11 d          debit      107     3     3
+#> 12 d          current    -54    -8   -11
+```
+
+The remaining functions build on `deb_account_summary()`. Three functions simplify the information produced by `deb_account_summary`: `deb_credit()` shows the total credit for each account, `deb_debit()` does the same for the debits, and `deb_current()` shows on the current value for each account.
+
+``` r
+# Total credit for each account
+deb_credit(df = transactions_df)
+#> # A tibble: 4 x 4
+#>   account_id     l     s     d
+#>   <chr>      <dbl> <dbl> <dbl>
+#> 1 a             23     4     3
+#> 2 b            115     4     7
+#> 3 c             82    16     9
+#> 4 d             52    14     4
+
+# Total debit for all accounts by getting sum of deb_debit
+deb_debit(df = transactions_df) %>% 
+  deb_sum_df()
+#> # A tibble: 1 x 3
+#>       l     s     d
+#>   <dbl> <dbl> <dbl>
+#> 1   273    19    11
+
+# Current value of each account
+deb_current(df = transactions_df)
+#> # A tibble: 4 x 4
+#>   account_id     l     s     d
+#>   <chr>      <dbl> <dbl> <dbl>
+#> 1 a              1     0     6
+#> 2 b             41    17     3
+#> 3 c             11    11     2
+#> 4 d            -54    -8   -11
+```
+
+`deb_open()` is similar to `deb_current()`, but it removes any accounts that have been closed by being zeroed out. This is useful if there are many accounts in the transactions data frame that have been closed. In the example of `transactions_df` all accounts are open, and so `deb_open()` has the same result as `deb_current()`. Finally, balance shows the total credit and debit remaining in the transactions data frame. The values for credit and debit will always be the same in `deb_balance()`, as there should always be the same amount of credit as debit in an account book.
+
+``` r
+# Balance remaining on transactions_df
+deb_balance(transactions_df)
+#> # A tibble: 2 x 4
+#>   relation     l     s     d
+#>   <chr>    <dbl> <dbl> <dbl>
+#> 1 credit      54     8    11
+#> 2 debit       54     8    11
+```
 
 Notes
 -----
