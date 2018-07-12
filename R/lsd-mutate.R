@@ -33,10 +33,10 @@ deb_librae_s <- function(l, lsd_bases = c(20, 12)) {
   }
 }
 
-deb_librae_d <- function(l, lsd_bases = c(20, 12), round = 3) {
+deb_librae_d <- function(l, lsd_bases = c(20, 12)) {
   # vectorize
   if (length(l) > 1) {
-    return(purrr::map_dbl(l, deb_librae_d, lsd_bases, round))
+    return(purrr::map_dbl(l, deb_librae_d, lsd_bases))
   }
 
   if (l == round(l)) {
@@ -49,7 +49,7 @@ deb_librae_d <- function(l, lsd_bases = c(20, 12), round = 3) {
       solidi <- (l - ceiling(l)) * lsd_bases[1]
       denarii <- (solidi - ceiling(solidi)) * lsd_bases[2]
     }
-    round(denarii, round)
+    denarii
   }
 }
 
@@ -76,10 +76,10 @@ deb_solidi_s <- function(s, lsd_bases = c(20, 12)) {
   }
 }
 
-deb_solidi_d <- function(s, lsd_bases = c(20, 12), round = 3) {
+deb_solidi_d <- function(s, lsd_bases = c(20, 12)) {
   # vectorize
   if (length(s) > 1) {
-    return(purrr::map_dbl(s, deb_solidi_d, lsd_bases, round))
+    return(purrr::map_dbl(s, deb_solidi_d, lsd_bases))
   }
 
   if (s == round(s)) {
@@ -90,7 +90,7 @@ deb_solidi_d <- function(s, lsd_bases = c(20, 12), round = 3) {
     } else {
       denarii <- (s - ceiling(s)) * lsd_bases[2]
     }
-    round(denarii, round)
+    denarii
   }
 }
 
@@ -106,11 +106,10 @@ deb_denarii_s <- function(d, lsd_bases = c(20, 12)) {
                  -((-d %/% lsd_bases[2]) %% lsd_bases[1]),
                  (d %/% lsd_bases[2]) %% lsd_bases[1])
 }
-deb_denarii_d <- function(d, lsd_bases = c(20, 12), round = 3) {
-  denarii <- dplyr::if_else(d < 0,
-                            -(-d %% lsd_bases[2]),
-                            d %% lsd_bases[2])
-  round(denarii, round)
+deb_denarii_d <- function(d, lsd_bases = c(20, 12)) {
+  dplyr::if_else(d < 0,
+                 -(-d %% lsd_bases[2]),
+                 d %% lsd_bases[2])
 }
 
 ## Mutate l, s, and d, to separate l, s, and d ##
@@ -136,8 +135,6 @@ deb_denarii_d <- function(d, lsd_bases = c(20, 12), round = 3) {
 #' @param suffix If the data frame already contains variables with the same
 #'   names as `l_column`, `s_column`, or `d_column`, this suffix will be
 #'   added to the new variables to distinguish them. Default is ".1".
-#' @param round round pence to specified number of decimal places.
-#'   Default is 3. Set to 0 to return pence as whole numbers.
 #'
 #' @return Returns a data frame with three new variables of pounds,
 #'   shillings, and pence.
@@ -163,7 +160,6 @@ deb_l_mutate <- function(df, librae,
                          s_column = s,
                          d_column = d,
                          lsd_bases = c(20, 12),
-                         round = 3,
                          suffix = ".1") {
 
   librae <- rlang::enquo(librae)
@@ -178,7 +174,7 @@ deb_l_mutate <- function(df, librae,
     stop(call. = FALSE, "librae must be numeric")
   }
 
-  paramenter_check(lsd_bases, round)
+  bases_check(lsd_bases)
 
   # Column names: avoid overwriting l, s, and d columns
   suffix <- suffix_check(suffix)
@@ -191,7 +187,7 @@ deb_l_mutate <- function(df, librae,
   df %>%
     dplyr::mutate(!! lsd_names[1] := deb_librae_l(!! librae),
                   !! lsd_names[2] := deb_librae_s(!! librae, lsd_bases),
-                  !! lsd_names[3] := deb_librae_d(!! librae, lsd_bases, round))
+                  !! lsd_names[3] := deb_librae_d(!! librae, lsd_bases))
 }
 
 #' Mutate decimal shillings into pounds, shillings, and pence variables
@@ -231,7 +227,6 @@ deb_s_mutate <- function(df, solidi,
                          s_column = s,
                          d_column = d,
                          lsd_bases = c(20, 12),
-                         round = 3,
                          suffix = ".1") {
   solidi <- rlang::enquo(solidi)
 
@@ -245,7 +240,7 @@ deb_s_mutate <- function(df, solidi,
     stop(call. = FALSE, "solidi must be numeric")
   }
 
-  paramenter_check(lsd_bases, round)
+  bases_check(lsd_bases)
 
   # Column names: avoid overwriting l, s, and d columns
   suffix <- suffix_check(suffix)
@@ -258,7 +253,7 @@ deb_s_mutate <- function(df, solidi,
   df %>%
     dplyr::mutate(!! lsd_names[1] := deb_solidi_l(!! solidi, lsd_bases),
                   !! lsd_names[2] := deb_solidi_s(!! solidi, lsd_bases),
-                  !! lsd_names[3] := deb_solidi_d(!! solidi, lsd_bases, round))
+                  !! lsd_names[3] := deb_solidi_d(!! solidi, lsd_bases))
 }
 
 #' Mutate decimal pence into pounds, shillings, and pence variables
@@ -298,7 +293,6 @@ deb_d_mutate <- function(df, denarii,
                          s_column = s,
                          d_column = d,
                          lsd_bases = c(20, 12),
-                         round = 3,
                          suffix = ".1") {
   denarii <- rlang::enquo(denarii)
 
@@ -312,7 +306,7 @@ deb_d_mutate <- function(df, denarii,
     stop(call. = FALSE, "denarii must be numeric")
   }
 
-  paramenter_check(lsd_bases, round)
+  bases_check(lsd_bases)
 
   # Column names: avoid overwriting l, s, and d columns
   suffix <- suffix_check(suffix)
@@ -325,5 +319,5 @@ deb_d_mutate <- function(df, denarii,
   df %>%
     dplyr::mutate(!! lsd_names[1] := deb_denarii_l(!! denarii, lsd_bases),
                   !! lsd_names[2] := deb_denarii_s(!! denarii, lsd_bases),
-                  !! lsd_names[3] := deb_denarii_d(!! denarii, lsd_bases, round))
+                  !! lsd_names[3] := deb_denarii_d(!! denarii, lsd_bases))
 }

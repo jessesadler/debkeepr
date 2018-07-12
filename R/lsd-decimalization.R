@@ -36,7 +36,7 @@ deb_lsd_l <- function(lsd, lsd_bases = c(20, 12)) {
   }
   # checks
   lsd_check(lsd)
-  paramenter_check(lsd_bases = lsd_bases)
+  bases_check(lsd_bases)
 
   lsd[1] + lsd[2] / lsd_bases[1] + lsd[3] / prod(lsd_bases)
 }
@@ -71,9 +71,9 @@ deb_lsd_l <- function(lsd, lsd_bases = c(20, 12)) {
 #'
 #' @export
 
-deb_l_lsd <- function(l, lsd_bases = c(20, 12), round = 3) {
+deb_l_lsd <- function(l, lsd_bases = c(20, 12)) {
   if (length(l) > 1) {
-    return(purrr::map(l, ~ deb_l_lsd(., lsd_bases = lsd_bases, round = round)))
+    return(purrr::map(l, ~ deb_l_lsd(., lsd_bases = lsd_bases)))
   }
 
   if (!is.numeric(l)) {
@@ -82,8 +82,7 @@ deb_l_lsd <- function(l, lsd_bases = c(20, 12), round = 3) {
 
   # repeat 0 of length l for vectorization
   deb_normalize(c(l, rep(0, length(l)), rep(0, length(l))),
-                lsd_bases = lsd_bases,
-                round = round)
+                lsd_bases = lsd_bases)
 }
 
 ### solidi ###
@@ -120,7 +119,7 @@ deb_lsd_s <- function(lsd, lsd_bases = c(20, 12)) {
   }
   # checks
   lsd_check(lsd)
-  paramenter_check(lsd_bases = lsd_bases)
+  bases_check(lsd_bases)
 
 
   lsd[1] * lsd_bases[1] + lsd[2] + lsd[3] / lsd_bases[2]
@@ -158,9 +157,9 @@ deb_lsd_s <- function(lsd, lsd_bases = c(20, 12)) {
 #'
 #' @export
 
-deb_s_lsd <- function(s, lsd_bases = c(20, 12), round = 3) {
+deb_s_lsd <- function(s, lsd_bases = c(20, 12)) {
   if (length(s) > 1) {
-    return(purrr::map(s, ~ deb_s_lsd(., lsd_bases = lsd_bases, round = round)))
+    return(purrr::map(s, ~ deb_s_lsd(., lsd_bases = lsd_bases)))
   }
 
   if (!is.numeric(s)) {
@@ -169,8 +168,7 @@ deb_s_lsd <- function(s, lsd_bases = c(20, 12), round = 3) {
 
   # repeat 0 of length s for vectorization
   deb_normalize(c(rep(0, length(s)), s, rep(0, length(s))),
-                lsd_bases = lsd_bases,
-                round = round)
+                lsd_bases = lsd_bases)
 }
 
 ### denarii ###
@@ -209,7 +207,7 @@ deb_lsd_d <- function(lsd, lsd_bases = c(20, 12)) {
   }
   # checks
   lsd_check(lsd)
-  paramenter_check(lsd_bases = lsd_bases)
+  bases_check(lsd_bases)
 
   lsd[1] * prod(lsd_bases) + lsd[2] * lsd_bases[2] + lsd[3]
 }
@@ -243,9 +241,9 @@ deb_lsd_d <- function(lsd, lsd_bases = c(20, 12)) {
 #'
 #' @export
 
-deb_d_lsd <- function(d, lsd_bases = c(20, 12), round = 3) {
+deb_d_lsd <- function(d, lsd_bases = c(20, 12)) {
   if (length(d) > 1) {
-    return(purrr::map(d, ~ deb_d_lsd(., lsd_bases = lsd_bases, round = round)))
+    return(purrr::map(d, ~ deb_d_lsd(., lsd_bases = lsd_bases)))
   }
 
   if (!is.numeric(d)) {
@@ -254,6 +252,5 @@ deb_d_lsd <- function(d, lsd_bases = c(20, 12), round = 3) {
 
   # repeat 0 of length d for vectorization
   deb_normalize(c(rep(0, length(d)), rep(0, length(d)), d),
-                lsd_bases = lsd_bases,
-                round = round)
+                lsd_bases = lsd_bases)
 }

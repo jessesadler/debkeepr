@@ -4,7 +4,7 @@
 \alias{deb_add}
 \title{Add two values of pounds, shillings, and pence}
 \usage{
-deb_add(lsd1, lsd2, lsd_bases = c(20, 12), round = 3)
+deb_add(lsd1, lsd2, lsd_bases = c(20, 12))
 }
 \arguments{
 \item{lsd1, lsd2}{Numeric vectors of length 3 or lists of numeric vectors of
@@ -18,9 +18,6 @@ the s or solidus and d or denarius values in \code{lsd} vectors. Default is
 20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
 use alternative bases for the solidus and denarius values that were also
 in use.}
-
-\item{round}{Round pence to specified number of decimal places.
-Default is 3. Set to 0 to return pence as whole numbers.}
 }
 \value{
 Returns either a named numeric vector of length 3 or a list of
@@ -42,8 +39,8 @@ numeric vectors, reducing the inputs to a single numeric vector.
 # Add pounds, shillings, and pence
 deb_add(lsd1 = c(56, 8, 5), lsd2 = c(19, 5, 7))
 
-# This is equivalent to using deb_normalize
-deb_normalize(lsd = c(56, 8, 5) + c(19, 5, 7))
+# This is equivalent to using deb_sum
+deb_sum(c(56, 8, 5), c(19, 5, 7))
 
 # deb_add is useful when one or both of
 # lsd1 and lsd2 are lists of numerical vectors

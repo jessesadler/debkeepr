@@ -4,7 +4,7 @@
 \alias{deb_sum_df}
 \title{Sum of pounds, shillings, and pence columns in a data frame}
 \usage{
-deb_sum_df(df, l = l, s = s, d = d, lsd_bases = c(20, 12), round = 3)
+deb_sum_df(df, l = l, s = s, d = d, lsd_bases = c(20, 12))
 }
 \arguments{
 \item{df}{A data frame that contains pounds, shillings, and pence variables.}
@@ -24,9 +24,6 @@ the s or solidus and d or denarius values in \code{lsd} vectors. Default is
 20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
 use alternative bases for the solidus and denarius values that were also
 in use.}
-
-\item{round}{Round pence to specified number of decimal places.
-Default is 3. Set to 0 if you want pence to always be a whole number.}
 }
 \value{
 Returns a data frame with one level of grouping dropped. Any

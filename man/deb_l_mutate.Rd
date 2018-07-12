@@ -5,7 +5,7 @@
 \title{Mutate decimal pounds into pounds, shillings, and pence variables}
 \usage{
 deb_l_mutate(df, librae, l_column = l, s_column = s, d_column = d,
-  lsd_bases = c(20, 12), round = 3, suffix = ".1")
+  lsd_bases = c(20, 12), suffix = ".1")
 }
 \arguments{
 \item{df}{A data frame that contains a column of decimalized pounds.}
@@ -29,9 +29,6 @@ the s or solidus and d or denarius values in \code{lsd} vectors. Default is
 20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
 use alternative bases for the solidus and denarius values that were also
 in use.}
-
-\item{round}{round pence to specified number of decimal places.
-Default is 3. Set to 0 to return pence as whole numbers.}
 
 \item{suffix}{If the data frame already contains variables with the same
 names as \code{l_column}, \code{s_column}, or \code{d_column}, this suffix will be

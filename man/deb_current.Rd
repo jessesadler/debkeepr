@@ -5,7 +5,7 @@
 \title{Calculate the current values of accounts}
 \usage{
 deb_current(df, credit = credit, debit = debit, l = l, s = s, d = d,
-  lsd_bases = c(20, 12), round = 3)
+  lsd_bases = c(20, 12))
 }
 \arguments{
 \item{df}{A data frame containing transactions between accounts that has
@@ -38,9 +38,6 @@ the s or solidus and d or denarius values in \code{lsd} vectors. Default is
 20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
 use alternative bases for the solidus and denarius values that were also
 in use.}
-
-\item{round}{Round pence to specified number of decimal places.
-Default is 3. Set to 0 if you want pence to always be a whole number.}
 }
 \value{
 Returns a tibble with five columns and one row for each account

@@ -4,7 +4,7 @@
 \alias{deb_s_lsd}
 \title{Convert from decimalized shillings to pounds, shillings, and pence}
 \usage{
-deb_s_lsd(s, lsd_bases = c(20, 12), round = 3)
+deb_s_lsd(s, lsd_bases = c(20, 12))
 }
 \arguments{
 \item{s}{Decimalized shillings: numeric vector representing shillings to
@@ -16,9 +16,6 @@ the s or solidus and d or denarius values in \code{lsd} vectors. Default is
 20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
 use alternative bases for the solidus and denarius values that were also
 in use.}
-
-\item{round}{Round pence to specified number of decimal places.
-Default is 3. Set to 0 to return pence as whole numbers.}
 }
 \value{
 Returns either a named numeric vector of length 3 or a list of

@@ -5,7 +5,7 @@
 \title{Normalize pounds, shillings, and pence variables in a data frame}
 \usage{
 deb_normalize_df(df, l = l, s = s, d = d, lsd_bases = c(20, 12),
-  round = 3, replace = TRUE, suffix = ".1")
+  replace = TRUE, suffix = ".1")
 }
 \arguments{
 \item{df}{A data frame that contains pounds, shillings, and pence variables.}
@@ -25,9 +25,6 @@ the s or solidus and d or denarius values in \code{lsd} vectors. Default is
 20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
 use alternative bases for the solidus and denarius values that were also
 in use.}
-
-\item{round}{Round pence to specified number of decimal places.
-Default is 3. Set to 0 if you want pence to always be a whole number.}
 
 \item{replace}{Logical (default \code{TRUE}): when \code{TRUE} the new pounds,
 shillings, and pence variables will replace the original ones.}

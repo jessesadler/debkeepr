@@ -96,8 +96,6 @@ test_that("decimalization works", {
                        l = c(8, 8),
                        s = c(19, 15),
                        d = c(10.38, 4))
-  expect_equal(deb_sum_df(example_dec, l, s, d, round = 0),
-               data.frame(l = 17, s = 15, d = 2))
 })
 
 test_that("non-numeric is an error", {

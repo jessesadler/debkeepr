@@ -5,7 +5,7 @@
 \title{Calculate the interest of pounds, shillings, and pence}
 \usage{
 deb_interest(lsd, interest = 0.0625, duration = 1, with_principal = TRUE,
-  lsd_bases = c(20, 12), round = 3)
+  lsd_bases = c(20, 12))
 }
 \arguments{
 \item{lsd}{Numeric vector of length 3 or list of numeric vectors of length
@@ -31,9 +31,6 @@ the s or solidus and d or denarius values in \code{lsd} vectors. Default is
 20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
 use alternative bases for the solidus and denarius values that were also
 in use.}
-
-\item{round}{Round pence to specified number of decimal places.
-Default is 3. Set to 0 to return pence as whole numbers.}
 }
 \value{
 Returns either a named numeric vector of length 3 or a list of
@@ -53,9 +50,6 @@ deb_interest(c(10, 14, 5), duration = 5)
 
 # Or you can calculate only the interest
 deb_interest(c(10, 14, 5), duration = 5, with_principal = FALSE)
-
-# Use the round argument to return pence with the desired accuracy
-deb_interest(c(10, 14, 5), duration = 5, round = 0)
 
 # Interest of a list of lsd vectors at a single rate
 # This returns a list of named lsd values

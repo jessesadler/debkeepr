@@ -37,14 +37,13 @@
 #'
 #' @export
 
-deb_sum <- function(..., lsd_bases = c(20, 12), round = 3) {
+deb_sum <- function(..., lsd_bases = c(20, 12)) {
   lsd_list <- list(...)
   purrr::map(lsd_list, lsd_check)
   lsd_list <- purrr::map_if(lsd_list, is.list, ~ purrr::reduce(., `+`))
 
   deb_normalize(lsd = purrr::reduce(lsd_list, `+`),
-                lsd_bases = lsd_bases,
-                round = round)
+                lsd_bases = lsd_bases)
 }
 
 ## Helper functions to sum l, s, and d ##
@@ -60,8 +59,8 @@ deb_solidi_sum <- function(l, s, d, lsd_bases = c(20, 12)) {
 }
 
 ## Denarii ##
-deb_denarii_sum <- function(l, s, d, lsd_bases = c(20, 12), round = 3) {
-  deb_denarii(sum(l), sum(s), sum(d), lsd_bases = lsd_bases, round = round)
+deb_denarii_sum <- function(l, s, d, lsd_bases = c(20, 12)) {
+  deb_denarii(sum(l), sum(s), sum(d), lsd_bases = lsd_bases)
 }
 
 #' Sum of pounds, shillings, and pence columns in a data frame
@@ -119,13 +118,13 @@ deb_denarii_sum <- function(l, s, d, lsd_bases = c(20, 12), round = 3) {
 #'
 #' @export
 
-deb_sum_df <- function(df, l = l, s = s, d = d, lsd_bases = c(20, 12), round = 3) {
+deb_sum_df <- function(df, l = l, s = s, d = d, lsd_bases = c(20, 12)) {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)
 
   lsd_column_check(df, l, s, d)
-  paramenter_check(lsd_bases, round)
+  bases_check(lsd_bases)
 
   # Column names
   l_column <- rlang::quo_name(l)
@@ -136,7 +135,7 @@ deb_sum_df <- function(df, l = l, s = s, d = d, lsd_bases = c(20, 12), round = 3
   ret <- df %>%
     dplyr::summarise(temp_librae_col = deb_librae_sum(!!l, !!s, !!d, lsd_bases),
                      temp_solidi_col = deb_solidi_sum(!!l, !!s, !!d, lsd_bases),
-                     temp_denarii_col = deb_denarii_sum(!!l, !!s, !!d, lsd_bases, round)) %>%
+                     temp_denarii_col = deb_denarii_sum(!!l, !!s, !!d, lsd_bases)) %>%
     dplyr::rename(!! l_column := temp_librae_col,
                   !! s_column := temp_solidi_col,
                   !! d_column := temp_denarii_col)

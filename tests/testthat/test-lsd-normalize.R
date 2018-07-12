@@ -5,38 +5,35 @@ context("test deb_normalize lsd.R")
 
 ex_vector <- c(5, 84, 53)
 negative_vector <- c(-5, -84, -53)
-decimal_vector <- c(5.875, 84.1333, 55)
+decimal_vector <- c(5.875, 84.325, 55)
 mix_vector <- c(5, -67, -35)
 ex_list <- list(c(35, 50, 89),
                 c(-10, -48, -181),
-                c(26.875, 84.1333, 55),
+                c(26.875, 84.365, 55),
                 c(12, 76, 205))
 list_answer <- list(c(l = 37, s = 17, d = 5),
                     c(l = -13, s = -3, d = -1),
-                    c(l = 31, s = 6, d = 2.6),
+                    c(l = 31, s = 6, d = 5.38),
                     c(l = 16, s = 13, d = 1))
 list_ratio <- list(c(l = 37, s = 15, d = 9),
                    c(l = -12, s = -19, d = -5),
-                   c(l = 31, s = 5, d = 1.133),
+                   c(l = 31, s = 5, d = 4.84),
                    c(l = 16, s = 8, d = 13))
 transactions <- data.frame(credit = sample(letters[1:4]),
                            debit = sample(letters[1:4]))
 
 ex_df <- data.frame(l = c(35, -10, 26.875, 12),
-                    s = c(50, -48, 84.1333, 76),
+                    s = c(50, -48, 84.365, 76),
                     d = c(89, -181, 55, 205))
 df_answer <- data.frame(l = c(37, -13, 31, 16),
                         s = c(17, -3, 6, 13),
-                        d = c(5, -1, 2.6, 1))
+                        d = c(5, -1, 5.38, 1))
 df_ratio <- data.frame(l = c(37, -12, 31, 16),
                        s = c(15, -19, 5, 8),
-                       d = c(9, -5, 1.133, 13))
-df_round <- data.frame(l = c(37, -13, 31, 16),
-                       s = c(17, -3, 6, 13),
-                       d = c(5, -1, 3, 1))
+                       d = c(9, -5, 4.84, 13))
 df_answer2 <- data.frame(l.1 = c(37, -13, 31, 16),
                          s.1 = c(17, -3, 6, 13),
-                         d.1 = c(5, -1, 2.6, 1))
+                         d.1 = c(5, -1, 5.38, 1))
 character_df <- data.frame(ch = c("hello", "goodbye"),
                            n1 = c(6, 7),
                            n2 = c(3, 4))
@@ -61,21 +58,6 @@ test_that("length of lsd is 3", {
                paste("lsd must be a list of numeric vectors of length 3.",
                      "There must be a value for pounds, shillings, and pence.",
                      sep = "\n"))
-})
-
-## Error messages from parameter_check ##
-test_that("round argument is numeric", {
-  expect_error(deb_normalize(ex_vector, round = NULL),
-               "round must be numeric")
-  expect_error(deb_normalize(ex_vector, round = "t"),
-               "round must be numeric")
-  expect_error(deb_normalize(c(1, 34, 4), round = c(0, 2)),
-               "round must be a numeric vector of length 1")
-
-  expect_error(deb_normalize_df(ex_df, round = NULL),
-               "round must be numeric")
-  expect_error(deb_normalize_df(ex_df, round = c(0, 2)),
-               "round must be a numeric vector of length 1")
 })
 
 test_that("lsd_bases checks work", {
@@ -106,8 +88,8 @@ test_that("lsd_bases checks work", {
 
 ## lsd_decimal ##
 test_that("lsd_decimal_check", {
-  expect_equal(lsd_decimal_check(decimal_vector, lsd_bases = c(20, 12)), c(5, 101, 62.5996))
-  expect_equal(lsd_decimal_check(-decimal_vector, lsd_bases = c(20, 12)), c(5, 101, 62.5996))
+  expect_equal(lsd_decimal_check(decimal_vector, lsd_bases = c(20, 12)), c(5, 101, 64.9))
+  expect_equal(lsd_decimal_check(-decimal_vector, lsd_bases = c(20, 12)), c(5, 101, 64.9))
   expect_equal(lsd_decimal_check(c(8.5, 7, 0), lsd_bases = c(20, 12)), c(8, 17, 0))
   expect_equal(lsd_decimal_check(c(8.5, 7, 0), lsd_bases = c(16, 12)), c(8, 15, 0))
   expect_equal(lsd_decimal_check(c(8, 29.875, 30), lsd_bases = c(20, 12)), c(8, 29, 40.5))
@@ -117,11 +99,7 @@ test_that("lsd_decimal_check", {
 test_that("it goes together in deb_normalize", {
   expect_equal(deb_normalize(ex_vector), c(l = 9, s = 8, d = 5))
   expect_equal(deb_normalize(negative_vector), c(l = -9, s = -8, d = -5))
-  expect_equal(deb_normalize(decimal_vector), c(l = 10, s = 6, d = 2.6))
-  expect_equal(deb_normalize(decimal_vector, round = 5),
-               c(l = 10, s = 6, d = 2.5996))
-  expect_equal(deb_normalize(decimal_vector, round = 0),
-               c(l = 10, s = 6, d = 3))
+  expect_equal(deb_normalize(decimal_vector), c(l = 10, s = 6, d = 4.9))
   expect_equal(deb_normalize(mix_vector), c(l = 1, s = 10, d = 1))
 })
 
@@ -141,8 +119,6 @@ test_that("different lsd_basess work", {
                c(l = 9, s = 7, d = 5))
   expect_equal(deb_normalize(negative_vector, lsd_bases = c(8, 16)),
                c(l = -15, s = -7, d = -5))
-  expect_equal(deb_normalize(decimal_vector, round = 4, lsd_bases = c(20, 16)),
-               c(l = 10, s = 5, d = 1.1328))
 })
 
 # Checks for data frames #
@@ -190,7 +166,5 @@ test_that("lsd_column_names works",{
 test_that("normalization_df works", {
   expect_equal(deb_normalize_df(ex_df, replace = TRUE), df_answer)
   expect_equal(deb_normalize_df(ex_df, replace = TRUE, lsd_bases = c(20, 16)), df_ratio)
-  expect_equal(deb_normalize_df(ex_df, replace = TRUE, round = 0), df_round)
-  expect_equal(deb_normalize_df(ex_df, round = 5)[3, 3], 2.5996)
   expect_equal(deb_normalize_df(ex_df, replace = FALSE), cbind(ex_df, df_answer2))
 })

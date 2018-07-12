@@ -1,5 +1,7 @@
 context("test-lsd-exchange.R")
 
+suppressPackageStartupMessages(library(purrr))
+
 ex_vector <- c(10, 3, 2)
 ex_vector2 <- c(20, 5, 8)
 neg_vector <- c(-8, -16, -6)
@@ -35,8 +37,6 @@ test_that("deb_exchange works", {
                c(l = 15, s = 4, d = 9))
   expect_equal(deb_exchange(ex_vector, rate_per_shillings = 30 + 3/12),
                c(l = 15, s = 7, d = 3.475))
-  expect_equal(deb_exchange(ex_vector, rate_per_shillings = 30 + 3/12, round = 0),
-               c(l = 15, s = 7, d = 3))
   expect_equal(deb_exchange(ex_vector, rate_per_shillings = 30, lsd_bases = c(8, 16)),
                c(l = 38, s = 7, d = 11.5))
 })
@@ -65,12 +65,12 @@ test_that("deb_rate_per_shilling works", {
   expect_equal(deb_rate_per_shilling(c(100, 0, 0), c(166, 13, 4)),
                c(l = 0, s = 12, d = 0))
   expect_equal(deb_rate_per_shilling(c(166, 13, 4), c(100, 0, 0), lsd_bases = c(8, 16)),
-               c(l = 0, s = 13, d = 5.333))
+               c(l = 0, s = 13, d = 5 + 1/3))
 })
 
 test_that("deb_rate_per_shilling is vectorized", {
   expect_equal(length(deb_rate_per_shilling(ex_list, ex_list2)), 3)
-  expect_equal(deb_rate_per_shilling(ex_list, ex_list2, round = 0),
+  expect_equal(purrr::map(deb_rate_per_shilling(ex_list, ex_list2), round),
                list(c(l = 0, s = 60, d = 1),
                     c(l = 0, s = 34, d = 8),
                     c(l = 0, s = -26, d = -3)))

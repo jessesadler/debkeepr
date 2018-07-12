@@ -6,7 +6,6 @@ test_that("decimalized to lsd works", {
   expect_equal(deb_l_lsd(8), c(l = 8, s = 0, d = 0))
   expect_equal(deb_l_lsd(-8), c(l = -8, s = 0, d = 0))
   expect_equal(deb_l_lsd(8.325), c(l = 8, s = 6, d = 6))
-  expect_equal(deb_l_lsd(8.562, round = 0), c(l = 8, s = 11, d = 3))
   expect_equal(deb_l_lsd(8.325, lsd_bases = c(8, 16)), c(l = 8, s = 2, d = 9.6))
 
   # deb_s_lsd
@@ -60,7 +59,7 @@ test_that("lsd to decimalized l, s, and d works", {
 ex_list <- list(c(30, 10, 9), c(10.725, 18.65, 11), c(-26, -11, -10))
 
 test_that("vectorization works for lsd to decimalized l, s, d", {
-  # Round numbers to make get numbers to be equivalent
+  # Round numbers to make numbers to be equivalent
   expect_equal(round(deb_lsd_l(ex_list), 3),
                c(30.538, 11.703, -26.592))
   expect_equal(round(deb_lsd_s(ex_list), 3),

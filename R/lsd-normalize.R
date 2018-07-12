@@ -46,11 +46,11 @@ lsd_decimal_check <- function(lsd, lsd_bases) {
 }
 
 # Actual normalization
-lsd_normalize <- function(lsd, round, lsd_bases) {
+lsd_normalize <- function(lsd, lsd_bases) {
   # vector
   lsd[1] <- lsd[1] + ((lsd[2] + lsd[3] %/% lsd_bases[2]) %/% lsd_bases[1])
   lsd[2] <- (lsd[2] + lsd[3] %/% lsd_bases[2]) %% lsd_bases[1]
-  lsd[3] <- round(lsd[3] %% lsd_bases[2], round)
+  lsd[3] <- lsd[3] %% lsd_bases[2]
 
   stats::setNames(lsd, c("l", "s", "d"))
 }
@@ -84,8 +84,6 @@ lsd_normalize <- function(lsd, round, lsd_bases) {
 #'   20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
 #'   use alternative bases for the solidus and denarius values that were also
 #'   in use.
-#' @param round Round pence to specified number of decimal places.
-#'   Default is 3. Set to 0 to return pence as whole numbers.
 #'
 #' @return Returns either a named numeric vector of length 3 or a list of
 #'   named numeric vectors representing the values of pounds, shillings,
@@ -113,9 +111,6 @@ lsd_normalize <- function(lsd, round, lsd_bases) {
 #' # Can also properly normalize decimalized pounds and shillings
 #' deb_normalize(lsd = c(8.7, 33.65, 15))
 #'
-#' # Use the round argument to return whole pence
-#' deb_normalize(lsd = c(8.7, 33.65, 15), round = 0)
-#'
 #' # To normalize multiple lsd values use a list of lsd vectors
 #' lsd_list <- list(c(4, 34, 89), c(-9, -75, -19), c(15.85, 36.15, 56))
 #' deb_normalize(lsd = lsd_list)
@@ -138,15 +133,15 @@ lsd_normalize <- function(lsd, round, lsd_bases) {
 #'
 #' @export
 
-deb_normalize <- function(lsd, lsd_bases = c(20, 12), round = 3) {
+deb_normalize <- function(lsd, lsd_bases = c(20, 12)) {
 
   lsd_check(lsd)
-  paramenter_check(lsd_bases, round)
+  bases_check(lsd_bases)
   checked <- lsd_decimal_check(lsd, lsd_bases)
 
   if (is.list(lsd) == FALSE) {
     # vector
-    normalized <- lsd_normalize(checked, round, lsd_bases)
+    normalized <- lsd_normalize(checked, lsd_bases = lsd_bases)
 
     # Positive and negative
     if (sum(lsd / c(1, lsd_bases[1], prod(lsd_bases))) > 0) {
@@ -156,7 +151,7 @@ deb_normalize <- function(lsd, lsd_bases = c(20, 12), round = 3) {
     }
   } else {
     # list
-    normalized <- purrr::map(checked, ~ lsd_normalize(., lsd_bases = lsd_bases, round = round))
+    normalized <- purrr::map(checked, ~ lsd_normalize(., lsd_bases = lsd_bases))
 
     # Positive and negative
     dplyr::if_else(purrr::map(lsd, ~ sum(. / c(1, lsd_bases[1], prod(lsd_bases)))) > 0,
@@ -200,8 +195,6 @@ deb_normalize <- function(lsd, lsd_bases = c(20, 12), round = 3) {
 #'   20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
 #'   use alternative bases for the solidus and denarius values that were also
 #'   in use.
-#' @param round Round pence to specified number of decimal places.
-#'   Default is 3. Set to 0 if you want pence to always be a whole number.
 #' @param replace Logical (default `TRUE`): when `TRUE` the new pounds,
 #'   shillings, and pence variables will replace the original ones.
 #' @param suffix Suffix added to the column names for the pounds, shillings,
@@ -229,7 +222,6 @@ deb_normalize <- function(lsd, lsd_bases = c(20, 12), round = 3) {
 deb_normalize_df <- function(df,
                              l = l, s = s, d = d,
                              lsd_bases = c(20, 12),
-                             round = 3,
                              replace = TRUE,
                              suffix = ".1") {
   l <- rlang::enquo(l)
@@ -245,6 +237,5 @@ deb_normalize_df <- function(df,
                      !! l, !! s, !! d,
                      lsd_names = lsd_names,
                      replace = replace,
-                     lsd_bases = lsd_bases,
-                     round = round)
+                     lsd_bases = lsd_bases)
 }

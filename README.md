@@ -138,20 +138,6 @@ deb_normalize(lsd = list(c(4, 34, 89), c(-9, -75, -19), c(15.85, 36.15, 56)))
 #> 17.0 17.0  9.8
 ```
 
-`debkeepr` functions also possess an argument to round the denarius value to a given decimal place. The default is 3, which should generally conform to the level of accuracy used in the past.
-
-``` r
-# With default round to third decimal place
-deb_normalize(c(8.525, 9.655, 9))
-#>     l     s     d 
-#>  9.00  0.00 10.86
-
-# Round denarius unit to whole number
-deb_normalize(c(8.525, 9.655, 9), round = 0)
-#>  l  s  d 
-#>  9  0 11
-```
-
 ### Arithmetic functions
 
 `debkeepr` contains functions to perform arithmetic operations such as addition, subtraction, multiplication, division on lsd vectors.

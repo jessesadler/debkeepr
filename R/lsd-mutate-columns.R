@@ -32,14 +32,14 @@ deb_solidi <- function(l, s, d, lsd_bases = c(20, 12)) {
 }
 
 ## Denarii ##
-deb_denarii <- function(l, s, d, round, lsd_bases = c(20, 12)) {
+deb_denarii <- function(l, s, d, lsd_bases = c(20, 12)) {
   if (length(l) > 1) {
-    return(purrr::pmap_dbl(list(l, s, d), ~ deb_denarii(..1, ..2, ..3, round, lsd_bases)))
+    return(purrr::pmap_dbl(list(l, s, d), ~ deb_denarii(..1, ..2, ..3, lsd_bases)))
   }
 
   lsd <- lsd_decimal_check(c(l, s, d), lsd_bases)
 
-  denarii <- round(lsd[3] %% lsd_bases[2], round)
+  denarii <- lsd[3] %% lsd_bases[2]
   dplyr::if_else(l + s / lsd_bases[1] + d / prod(lsd_bases) > 0, denarii, -denarii)
 }
 
@@ -51,9 +51,8 @@ lsd_mutate_columns <- function(df,
                                l, s, d,
                                lsd_names,
                                replace,
-                               lsd_bases,
-                               round) {
-  paramenter_check(lsd_bases, round)
+                               lsd_bases) {
+  bases_check(lsd_bases)
 
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
@@ -63,12 +62,12 @@ lsd_mutate_columns <- function(df,
     dplyr::mutate(df,
                   !! lsd_names[1] := deb_librae(!! l, !! s, !! d, lsd_bases),
                   !! lsd_names[2] := deb_solidi(!! l, !! s, !! d, lsd_bases),
-                  !! lsd_names[3] := deb_denarii(!! l, !! s, !! d, round, lsd_bases))
+                  !! lsd_names[3] := deb_denarii(!! l, !! s, !! d, lsd_bases))
   } else {
     ret <- dplyr::mutate(df,
                          temp_librae_col = deb_librae(!! l, !! s, !! d, lsd_bases),
                          temp_solidi_col = deb_solidi(!! l, !! s, !! d, lsd_bases),
-                         temp_denarii_col = deb_denarii(!! l, !! s, !! d, round, lsd_bases)) %>%
+                         temp_denarii_col = deb_denarii(!! l, !! s, !! d, lsd_bases)) %>%
       # Get rid of original columns,
       # because they do not get overwritten with tidyeval
       dplyr::select(-!! lsd_names[1], -!! lsd_names[2], -!! lsd_names[3]) %>%

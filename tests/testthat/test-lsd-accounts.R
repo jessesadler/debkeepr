@@ -6,20 +6,20 @@ example1 <- tibble::tibble(credit = c("a", "b", "a", "c"),
                            debit = c("b", "a", "c", "a"),
                            l = c(10, 10, 7, 9),
                            s = c(15, 15, 11, 2),
-                           d = c(6, 6, 8, 11))
+                           d = c(6, 6, 8.25, 11.5))
 example2 <- tibble::tibble(from = c("a", "b", "a", "c"),
                            to = c("b", "a", "c", "a"),
                            pounds = c(10, 10, 7, 9),
                            shillings = c(15, 15, 11, 2),
-                           pence = c(6, 6, 8, 11))
+                           pence = c(6, 6, 8.25, 11.5))
 
 relation_v <- c("credit", "debit", "current")
 
 summary_answer <- tibble::tibble(account_id = rep(c("a", "b", "c"), each = 3),
-                                 relation = rep(c("credit", "debit", "current"), 3),
+                                 relation = rep(relation_v, 3),
                                  l = c(18, 19, -1, 10, 10, 0, 9, 7, 1),
                                  s = c(7, 18, -11, 15, 15, 0, 2, 11, 11),
-                                 d = c(2, 5, -3, 6, 6, 0, 11, 8, 3))
+                                 d = c(2.25, 5.5, -3.25, 6, 6, 0, 11.5, 8.25, 3.25))
 
 set.seed(240)
 example3 <- tibble::tibble(credit = sample(letters[1:4], 15, replace = TRUE),
@@ -35,7 +35,7 @@ example4 <- tibble::tibble(from = sample(letters[1:4], 15, replace = TRUE),
                            pence = sample(1:11, 15, replace = TRUE))
 
 # credit_check makes checks for all lsd-account functions
-test_that("credit_check work", {
+test_that("credit_check works", {
   expect_error(deb_account(example1),
                "argument \"account_id\" is missing, with no default")
   expect_error(deb_account(example1, account_id = "d"),
@@ -58,7 +58,7 @@ test_that("deb_account works", {
                tibble::tibble(relation = relation_v,
                               l = c(18, 19, -1),
                               s = c(7, 18, -11),
-                              d = c(2, 5, -3)))
+                              d = c(2.25, 5.5, -3.25)))
   expect_equal(deb_account(example3, "a"),
                tibble::tibble(relation = relation_v,
                               l = c(23, 22, 1),
@@ -75,7 +75,7 @@ test_that("deb_account accepts different column names", {
                tibble::tibble(relation = relation_v,
                               pounds = c(18, 19, -1),
                               shillings = c(7, 18, -11),
-                              pence = c(2, 5, -3)))
+                              pence = c(2.25, 5.5, -3.25)))
   expect_equal(deb_account(example4, "a", from, to, pounds, shillings, pence),
                tibble::tibble(relation = relation_v,
                               pounds = c(23, 22, 1),
@@ -150,7 +150,7 @@ test_that("deb_balance works", {
                tibble::tibble(relation = c("credit", "debit"),
                               l = c(1, 1),
                               s = c(11, 11),
-                              d = c(3, 3)))
+                              d = c(3.25, 3.25)))
   expect_equal(deb_balance(example3),
                tibble::tibble(relation = c("credit", "debit"),
                               l = c(54, 54),

@@ -15,23 +15,19 @@ test_that("separate librae functions work", {
   expect_equal(deb_librae_d(8), 0)
   expect_equal(deb_librae_d(8.325), 6)
   expect_equal(deb_librae_d(-8.325), -6)
-  expect_equal(deb_librae_d(8.35678, round = 4), 1.6272)
-  expect_equal(deb_librae_d(8.35678, round = 0), 2)
 })
 
 # Test vectorization
-l_vector <- c(8, 8.325, -8.325, 5.425, 4.5678)
+l_vector <- c(8, 8.325, -8.325)
 # Answers
-ll_solution <- c(8, 8, -8, 5, 4)
-ls_solution <- c(0, 6, -6, 8, 11)
-ld_solution <- c(0, 6, -6, 6, 4.272)
-ld_solution_round <- c(0, 6, -6, 6, 4)
+ll_solution <- c(8, 8, -8)
+ls_solution <- c(0, 6, -6)
+ld_solution <- c(0, 6, -6)
 
 test_that("librae functions are vectorized", {
   expect_equal(deb_librae_l(l_vector), ll_solution)
   expect_equal(deb_librae_s(l_vector), ls_solution)
   expect_equal(deb_librae_d(l_vector), ld_solution)
-  expect_equal(deb_librae_d(l_vector, round = 0), ld_solution_round)
 })
 
 test_that("separate solidi functions work", {
@@ -46,23 +42,19 @@ test_that("separate solidi functions work", {
   expect_equal(deb_solidi_d(166), 0)
   expect_equal(deb_solidi_d(166.5), 6)
   expect_equal(deb_solidi_d(-166.5), -6)
-  expect_equal(deb_solidi_d(166.35678, round = 5), 4.28136)
-  expect_equal(deb_solidi_d(166.35678, round = 0), 4)
 })
 
 # Test vectorization
-s_vector <- c(166, -166, 166.5, 236.35678, -354.845)
+s_vector <- c(166, 166.325, -166.325)
 # Answers
-sl_solution <- c(8, -8, 8, 11, -17)
-ss_solution <- c(6, -6, 6, 16, -14)
-sd_solution <- c(0, 0, 6, 4.281, -10.140)
-sd_solution_round <- c(0, 0, 6, 4, -10)
+sl_solution <- c(8, 8, -8)
+ss_solution <- c(6, 6, -6)
+sd_solution <- c(0, 3.9, -3.9)
 
 test_that("solidi functions are vectorized", {
   expect_equal(deb_solidi_l(s_vector), sl_solution)
   expect_equal(deb_solidi_s(s_vector), ss_solution)
   expect_equal(deb_solidi_d(s_vector), sd_solution)
-  expect_equal(deb_solidi_d(s_vector, round = 0), sd_solution_round)
 })
 
 test_that("separate denarii functions work", {
@@ -78,11 +70,11 @@ test_that("separate denarii functions work", {
 })
 
 # Test vectorization
-d_vector <- c(1998, -1998, 387, -5378)
+d_vector <- c(1998, 387, -5378)
 # Answers
-dl_solution <- c(8, -8, 1, -22)
-ds_solution <- c(6, -6, 12, -8)
-dd_solution <- c(6, -6, 3, -2)
+dl_solution <- c(8, 1, -22)
+ds_solution <- c(6, 12, -8)
+dd_solution <- c(6, 3, -2)
 
 test_that("denarii functions are vectorized", {
   expect_equal(deb_denarii_l(d_vector), dl_solution)
@@ -111,12 +103,10 @@ d_solution_df <- data.frame(pence = d_vector,
 
 test_that("mutate functions work", {
   expect_equal(deb_l_mutate(l_df, pounds, l, s, d), l_solution_df)
-  expect_equal(deb_l_mutate(l_df, pounds, l, s, d, round = 0)[5, 4], 4)
   expect_false(identical(deb_l_mutate(l_df, pounds, l, s, d),
                          deb_l_mutate(l_df, pounds, l, s, d, lsd_bases = c(8, 16))))
 
   expect_equal(deb_s_mutate(s_df, shillings), s_solution_df)
-  expect_equal(deb_s_mutate(s_df, shillings, round = 0)[ , 4], c(0, 0, 6, 4 , -10))
   expect_false(identical(deb_s_mutate(s_df, shillings),
                          deb_s_mutate(s_df, shillings, lsd_bases = c(8, 16))))
 
@@ -154,7 +144,7 @@ test_that("decimal column exists", {
                "denarii column must exist the in df")
 })
 
-id_df <- add_column(l_df, id = letters[1:5])
+id_df <- add_column(l_df, id = letters[1:3])
 
 test_that("decimal column is numeric", {
   expect_error(deb_l_mutate(id_df, librae = id),

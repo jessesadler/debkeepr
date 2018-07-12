@@ -30,9 +30,6 @@
 #' # Or you can calculate only the interest
 #' deb_interest(c(10, 14, 5), duration = 5, with_principal = FALSE)
 #'
-#' # Use the round argument to return pence with the desired accuracy
-#' deb_interest(c(10, 14, 5), duration = 5, round = 0)
-#'
 #' # Interest of a list of lsd vectors at a single rate
 #' # This returns a list of named lsd values
 #' lsd_list <- list(c(40, 5, 9), c(29, 7, 1), c(35, 6, 5))
@@ -45,24 +42,22 @@ deb_interest <- function(lsd,
                          interest = 0.0625,
                          duration = 1,
                          with_principal = TRUE,
-                         lsd_bases = c(20, 12),
-                         round = 3) {
+                         lsd_bases = c(20, 12)) {
   # vectorize
   if (is.list(lsd) == TRUE) {
     return(purrr::map(lsd, ~ deb_interest(.,
                                           interest = interest,
                                           duration = duration,
                                           with_principal = with_principal,
-                                          lsd_bases = lsd_bases,
-                                          round = round)))
+                                          lsd_bases = lsd_bases)))
   }
 
   interest_check(interest, duration, with_principal)
 
   if (with_principal == TRUE) {
-    deb_normalize(lsd + lsd * interest * duration, lsd_bases = lsd_bases, round = round)
+    deb_normalize(lsd + lsd * interest * duration, lsd_bases = lsd_bases)
   } else {
-    deb_normalize(lsd * interest * duration, lsd_bases = lsd_bases, round = round)
+    deb_normalize(lsd * interest * duration, lsd_bases = lsd_bases)
   }
 }
 
@@ -102,12 +97,10 @@ deb_interest <- function(lsd,
 #'                       with_principal = FALSE)
 #'
 #' # Change the suffix for the new columns from the default
-#' # and round the pence to be whole numbers.
 #' deb_interest_mutate(example,
 #'                     l, s, d,
 #'                     duration = 5,
-#'                     suffix = "_5years",
-#'                     round = 0)
+#'                     suffix = "_5years")
 #'
 #' # Replace the existing pounds, shillings, and pence
 #' # with the interest values through replace argument
@@ -125,7 +118,6 @@ deb_interest_mutate <- function(df,
                                 duration = 1,
                                 with_principal = TRUE,
                                 lsd_bases = c(20, 12),
-                                round = 3,
                                 replace = FALSE,
                                 suffix = ".interest") {
   l <- rlang::enquo(l)
@@ -149,8 +141,7 @@ deb_interest_mutate <- function(df,
                        d = (!! d * x) + !! d,
                        lsd_names = lsd_names,
                        replace = replace,
-                       lsd_bases = lsd_bases,
-                       round = round)
+                       lsd_bases = lsd_bases)
   } else {
     lsd_mutate_columns(df,
                        l = !! l * x,
@@ -158,7 +149,6 @@ deb_interest_mutate <- function(df,
                        d = !! d * x,
                        lsd_names = lsd_names,
                        replace = replace,
-                       lsd_bases = lsd_bases,
-                       round = round)
+                       lsd_bases = lsd_bases)
   }
 }

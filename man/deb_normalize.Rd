@@ -4,7 +4,7 @@
 \alias{deb_normalize}
 \title{Normalize pounds, shillings, and pence}
 \usage{
-deb_normalize(lsd, lsd_bases = c(20, 12), round = 3)
+deb_normalize(lsd, lsd_bases = c(20, 12))
 }
 \arguments{
 \item{lsd}{Numeric vector of length 3 or list of numeric vectors of length
@@ -18,9 +18,6 @@ the s or solidus and d or denarius values in \code{lsd} vectors. Default is
 20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
 use alternative bases for the solidus and denarius values that were also
 in use.}
-
-\item{round}{Round pence to specified number of decimal places.
-Default is 3. Set to 0 to return pence as whole numbers.}
 }
 \value{
 Returns either a named numeric vector of length 3 or a list of
@@ -67,9 +64,6 @@ deb_normalize(lsd = c(5, -25, 22))
 
 # Can also properly normalize decimalized pounds and shillings
 deb_normalize(lsd = c(8.7, 33.65, 15))
-
-# Use the round argument to return whole pence
-deb_normalize(lsd = c(8.7, 33.65, 15), round = 0)
 
 # To normalize multiple lsd values use a list of lsd vectors
 lsd_list <- list(c(4, 34, 89), c(-9, -75, -19), c(15.85, 36.15, 56))

@@ -29,19 +29,17 @@ test_that("interest calculation works", {
                deb_multiply(ex_vector, 5/16))
   expect_equal(deb_interest(ex_vector, interest = 0.10),
                c(l = 11, s = 3, d = 5.8))
-  expect_equal(deb_interest(ex_vector, round = 0),
-               c(l = 10, s = 15, d = 10))
   expect_equal(deb_interest(ex_vector, lsd_bases = c(8, 16)),
                c(l = 11, s = 0, d = 5.125))
 })
 
 test_that("vectorization works", {
   expect_equal(deb_interest(ex_list),
-               list(c(l = 32, s = 8, d = 11.062),
+               list(c(l = 32, s = 8, d = 11.0625),
                     c(l = 12, s = 8, d = 8.35),
                     c(l = -28, s = -5, d = -0.875)))
   expect_equal(deb_interest(ex_list, with_principal = FALSE),
-               list(c(l = 1, s = 18, d = 2.062),
+               list(c(l = 1, s = 18, d = 2.0625),
                     c(l = 0, s = 14, d = 7.55),
                     c(l = -1, s = -13, d = -2.875)))
 })
@@ -50,15 +48,14 @@ test_that("interest mutate works",{
   expect_equal(deb_interest_mutate(ex_df, replace = TRUE),
                data.frame(l = c(32, 12, -28),
                           s = c(8, 8, -5),
-                          d = c(11.062, 8.35, -0.875)))
+                          d = c(11.0625, 8.35, -0.875)))
   expect_equal(deb_interest_mutate(ex_df, with_principal = FALSE, replace = TRUE),
                data.frame(l = c(1, 0, -1),
                           s = c(18, 14, -13),
-                          d = c(2.062, 7.55, -2.875)))
+                          d = c(2.0625, 7.55, -2.875)))
   expect_equal(deb_interest_mutate(ex_df, with_principal = FALSE,
                                    replace = TRUE, duration = 5, interest = 0.10),
                deb_multiply_mutate(ex_df, replace = TRUE, x = 0.50))
-  expect_equal(deb_interest_mutate(ex_df, replace = TRUE, round = 0)[ , 3], c(11, 8, -1))
   expect_false(identical(deb_interest_mutate(ex_df),
                          deb_interest_mutate(ex_df, lsd_bases = c(8, 16))))
 })

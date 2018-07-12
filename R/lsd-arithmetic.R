@@ -42,16 +42,15 @@
 #'
 #' @export
 
-deb_multiply <- function(lsd, x, lsd_bases = c(20, 12), round = 3) {
+deb_multiply <- function(lsd, x, lsd_bases = c(20, 12)) {
   if (is.list(lsd) == TRUE) {
     return(purrr::map(lsd, ~ deb_multiply(., x,
-                                          lsd_bases = lsd_bases,
-                                          round = round)))
+                                          lsd_bases = lsd_bases)))
   }
 
   arithmetic_check(x)
 
-  deb_normalize(lsd = lsd * x, lsd_bases = lsd_bases, round = round)
+  deb_normalize(lsd = lsd * x, lsd_bases = lsd_bases)
 }
 
 
@@ -101,7 +100,6 @@ deb_multiply_mutate <- function(df,
                                 d = d,
                                 x,
                                 lsd_bases = c(20, 12),
-                                round = 3,
                                 replace = FALSE,
                                 suffix = ".1") {
   l <- rlang::enquo(l)
@@ -120,8 +118,7 @@ deb_multiply_mutate <- function(df,
                      !! d * x,
                      lsd_names = lsd_names,
                      replace = replace,
-                     lsd_bases = lsd_bases,
-                     round = round)
+                     lsd_bases = lsd_bases)
 }
 
 #' Division of pounds, shillings, and pence
@@ -163,14 +160,14 @@ deb_multiply_mutate <- function(df,
 #'
 #' @export
 
-deb_divide <- function(lsd, x, lsd_bases = c(20, 12), round = 3) {
+deb_divide <- function(lsd, x, lsd_bases = c(20, 12)) {
   if (is.list(lsd) == TRUE) {
-    return(purrr::map(lsd, ~ deb_divide(., x, lsd_bases, round)))
+    return(purrr::map(lsd, ~ deb_divide(., x, lsd_bases = lsd_bases)))
   }
 
   arithmetic_check(x)
 
-  deb_normalize(lsd / x, lsd_bases = lsd_bases, round = round)
+  deb_normalize(lsd / x, lsd_bases = lsd_bases)
 }
 
 
@@ -220,7 +217,6 @@ deb_divide_mutate <- function(df,
                               d = d,
                               x,
                               lsd_bases = c(20, 12),
-                              round = 3,
                               replace = FALSE,
                               suffix = ".1") {
   l <- rlang::enquo(l)
@@ -239,8 +235,7 @@ deb_divide_mutate <- function(df,
                      !! d / x,
                      lsd_names = lsd_names,
                      replace = replace,
-                     lsd_bases = lsd_bases,
-                     round = round)
+                     lsd_bases = lsd_bases)
 }
 
 #' Add two values of pounds, shillings, and pence
@@ -295,7 +290,7 @@ deb_divide_mutate <- function(df,
 #'
 #' @export
 
-deb_add <- function(lsd1, lsd2, lsd_bases = c(20, 12), round = 3) {
+deb_add <- function(lsd1, lsd2, lsd_bases = c(20, 12)) {
 
   if (is.list(lsd1) | is.list(lsd2) == TRUE) {
     # ensure that both are lists to recycle correctly
@@ -306,10 +301,9 @@ deb_add <- function(lsd1, lsd2, lsd_bases = c(20, 12), round = 3) {
       lsd2 <- list(lsd2)
     }
     purrr::map2(lsd1, lsd2, ~ deb_normalize(lsd = .x + .y,
-                                            lsd_bases = lsd_bases,
-                                            round = round))
+                                            lsd_bases = lsd_bases))
   } else {
-    deb_normalize(lsd1 + lsd2, lsd_bases = lsd_bases, round = round)
+    deb_normalize(lsd1 + lsd2, lsd_bases = lsd_bases)
   }
 }
 
@@ -360,7 +354,6 @@ deb_add_mutate <- function(df,
                                 d = d,
                                 lsd,
                                 lsd_bases = c(20, 12),
-                                round = 3,
                                 replace = FALSE,
                                 suffix = ".1") {
   l <- rlang::enquo(l)
@@ -386,8 +379,7 @@ deb_add_mutate <- function(df,
                      !! d + lsd[3],
                      lsd_names = lsd_names,
                      replace = replace,
-                     lsd_bases = lsd_bases,
-                     round = round)
+                     lsd_bases = lsd_bases)
 }
 
 #' Subtract two values of pounds, shillings, and pence
@@ -443,7 +435,7 @@ deb_add_mutate <- function(df,
 #'
 #' @export
 
-deb_subtract <- function(lsd1, lsd2, lsd_bases = c(20, 12), round = 3) {
+deb_subtract <- function(lsd1, lsd2, lsd_bases = c(20, 12)) {
 
   if (is.list(lsd1) | is.list(lsd2) == TRUE) {
     # ensure that both are lists to recycle correctly
@@ -454,10 +446,9 @@ deb_subtract <- function(lsd1, lsd2, lsd_bases = c(20, 12), round = 3) {
       lsd2 <- list(lsd2)
     }
     purrr::map2(lsd1, lsd2, ~ deb_normalize(lsd = .x - .y,
-                                                   lsd_bases = lsd_bases,
-                                                   round = round))
+                                                   lsd_bases = lsd_bases))
   } else {
-    deb_normalize(lsd1 - lsd2, lsd_bases = lsd_bases, round = round)
+    deb_normalize(lsd1 - lsd2, lsd_bases = lsd_bases)
   }
 }
 
@@ -504,7 +495,6 @@ deb_subtract_mutate <- function(df,
                                 d = d,
                                 lsd,
                                 lsd_bases = c(20, 12),
-                                round = 3,
                                 replace = FALSE,
                                 suffix = ".1") {
   l <- rlang::enquo(l)
@@ -530,6 +520,5 @@ deb_subtract_mutate <- function(df,
                      !! d - lsd[3],
                      lsd_names = lsd_names,
                      replace = replace,
-                     lsd_bases = lsd_bases,
-                     round = round)
+                     lsd_bases = lsd_bases)
 }

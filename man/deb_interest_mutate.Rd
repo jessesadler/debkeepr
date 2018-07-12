@@ -5,7 +5,7 @@
 \title{Calculate the interest of pounds, shillings, and pence in a data frame}
 \usage{
 deb_interest_mutate(df, l = l, s = s, d = d, interest = 0.0625,
-  duration = 1, with_principal = TRUE, lsd_bases = c(20, 12), round = 3,
+  duration = 1, with_principal = TRUE, lsd_bases = c(20, 12),
   replace = FALSE, suffix = ".interest")
 }
 \arguments{
@@ -38,9 +38,6 @@ the s or solidus and d or denarius values in \code{lsd} vectors. Default is
 20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
 use alternative bases for the solidus and denarius values that were also
 in use.}
-
-\item{round}{Round pence to specified number of decimal places.
-Default is 3. Set to 0 if you want pence to always be a whole number.}
 
 \item{replace}{Logical (default \code{FALSE}): when \code{TRUE} the new pounds,
 shillings, and pence variables will replace the original ones.}
@@ -77,12 +74,10 @@ example \%>\%
                       with_principal = FALSE)
 
 # Change the suffix for the new columns from the default
-# and round the pence to be whole numbers.
 deb_interest_mutate(example,
                     l, s, d,
                     duration = 5,
-                    suffix = "_5years",
-                    round = 0)
+                    suffix = "_5years")
 
 # Replace the existing pounds, shillings, and pence
 # with the interest values through replace argument

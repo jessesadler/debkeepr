@@ -28,8 +28,8 @@ lsd_check <- function(lsd) {
   }
 }
 
-# Check round and lsd_bases parameters
-paramenter_check <- function(lsd_bases = c(20, 12), round = 3) {
+# Check lsd_bases
+bases_check <- function(lsd_bases) {
   # check lsd_bases
   if (!is.numeric(lsd_bases)) {
     stop(call. = FALSE, "lsd_bases must be a numeric vector")
@@ -42,14 +42,6 @@ paramenter_check <- function(lsd_bases = c(20, 12), round = 3) {
   }
   if (any(lsd_bases < 0)) {
     stop(call. = FALSE, "The values in lsd_bases must both be positive")
-  }
-
-  # check round
-  if (!is.numeric(round)) {
-    stop(call. = FALSE, "round must be numeric")
-  }
-  if (length(round) > 1) {
-    stop(call. = FALSE, "round must be a numeric vector of length 1")
   }
 }
 
