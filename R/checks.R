@@ -3,6 +3,10 @@
 # Check that lsd is numeric vector of length 3 or
 # list of numeric vectors of length 3
 lsd_check <- function(lsd) {
+  if (is.vector(lsd) == FALSE) {
+    stop(call. = FALSE, "lsd must be either a numeric vector or list of numeric vectors")
+  }
+
   # check lsd vector
   if (is.list(lsd) == FALSE & is.vector(lsd) == TRUE) {
     if (!is.numeric(lsd)) {

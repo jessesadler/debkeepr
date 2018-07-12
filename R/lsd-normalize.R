@@ -18,6 +18,10 @@ lsd_decimal_check <- function(lsd, lsd_bases) {
   if (length(l) > 1) {
     return(purrr::map(lsd, ~ lsd_decimal_check(., lsd_bases)))
   }
+  # Return all NA if any is NA
+  if (any(is.na(c(l, s, d)))) {
+    return(c(NA, NA, NA))
+  }
 
   # Check if the value is positive
   # Return positive values so only need to use floor
@@ -47,12 +51,35 @@ lsd_decimal_check <- function(lsd, lsd_bases) {
 
 # Actual normalization
 lsd_normalize <- function(lsd, lsd_bases) {
-  # vector
+  if (is.list(lsd)) {
+    return(purrr::map(lsd, ~ lsd_normalize(., lsd_bases)))
+  }
+
   lsd[1] <- lsd[1] + ((lsd[2] + lsd[3] %/% lsd_bases[2]) %/% lsd_bases[1])
   lsd[2] <- (lsd[2] + lsd[3] %/% lsd_bases[2]) %% lsd_bases[1]
   lsd[3] <- lsd[3] %% lsd_bases[2]
 
   stats::setNames(lsd, c("l", "s", "d"))
+}
+
+# If lsd is negative return normalized as negative
+lsd_negative <- function(normalized, lsd, lsd_bases) {
+  # Vectorize
+  if (is.list(lsd)) {
+    return(purrr::map2(normalized, lsd, ~ lsd_negative(normalized = .x,
+                                                       lsd = .y,
+                                                       lsd_bases = lsd_bases)))
+  }
+  # NA
+  if (any(is.na(normalized))) {
+    return(normalized)
+  }
+
+  if (sum(lsd / c(1, lsd_bases[1], prod(lsd_bases))) > 0) {
+    normalized
+  } else {
+    -normalized
+  }
 }
 
 #' Normalize pounds, shillings, and pence
@@ -138,26 +165,8 @@ deb_normalize <- function(lsd, lsd_bases = c(20, 12)) {
   lsd_check(lsd)
   bases_check(lsd_bases)
   checked <- lsd_decimal_check(lsd, lsd_bases)
-
-  if (is.list(lsd) == FALSE) {
-    # vector
-    normalized <- lsd_normalize(checked, lsd_bases = lsd_bases)
-
-    # Positive and negative
-    if (sum(lsd / c(1, lsd_bases[1], prod(lsd_bases))) > 0) {
-      normalized
-    } else {
-      -normalized
-    }
-  } else {
-    # list
-    normalized <- purrr::map(checked, ~ lsd_normalize(., lsd_bases = lsd_bases))
-
-    # Positive and negative
-    dplyr::if_else(purrr::map(lsd, ~ sum(. / c(1, lsd_bases[1], prod(lsd_bases)))) > 0,
-                   purrr::map(normalized, `+`),
-                   purrr::map(normalized, `-`))
-  }
+  normalized <- lsd_normalize(checked, lsd_bases = lsd_bases)
+  lsd_negative(normalized, lsd, lsd_bases)
 }
 
 ## Normalize data frame ##

@@ -32,6 +32,13 @@ answer_d2_replace <- data.frame(l = c(15, 5, -13),
                                 s = c(5, 17, -5),
                                 d = c(4.5, 0.4, -11))
 
+na_df <- data.frame(l = c(30, 10.725, -26),
+                    s = c(10, 18.65, -11),
+                    d = c(NA, 11, -10))
+na_replace <- data.frame(l = c(NA, 35, -79),
+                         s = c(NA, 2, -15),
+                         d = c(NA, 2.4, -6))
+
 # Checks
 test_that("arithmetic checks work", {
   expect_error(deb_multiply(c(9, 3, 6), x = "d"),
@@ -75,6 +82,7 @@ test_that("deb_multiply_mutate works", {
   # lsd_bases changes answer
   expect_false(identical(deb_multiply_mutate(ex_df, l, s, d, x = 3),
                          deb_multiply_mutate(ex_df, l, s, d, x = 3, lsd_bases = c(8, 16))))
+  expect_equal(deb_multiply_mutate(na_df, replace = TRUE, x = 3), na_replace)
 })
 
 # Division

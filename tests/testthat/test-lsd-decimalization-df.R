@@ -4,6 +4,9 @@ ex_list <- list(c(30, 10, 9), c(10.725, 18.65, 11), c(-26, -11, -10))
 ex_df <- data.frame(l = c(30, 10.725, -26),
                     s = c(10, 18.65, -11),
                     d = c(9, 11, -10))
+na_df <- data.frame(l = c(30, 10.725, -26),
+                    s = c(10, 18.65, -11),
+                    d = c(NA, 11, -10))
 ex_df_names <- data.frame(pounds = c(30, 10.725, -26),
                           shillings = c(10, 18.65, -11),
                           pence = c(9, 11, -10))
@@ -19,6 +22,11 @@ test_that("individual l, s, and d helper functions work", {
   expect_equal(round(decimalize_l(8, 10, 6, lsd_bases = c(8, 16)), 3), 9.297)
   expect_equal(decimalize_s(8, 10, 6, lsd_bases = c(8, 16)), 74.375)
   expect_equal(decimalize_d(8, 10, 6, lsd_bases = c(8, 16)), 1190)
+})
+
+test_that("NA works", {
+  expect_equal(deb_lsd_l_mutate(na_df)[1 ,],
+               data.frame(l = 30, s = 10, d = as.numeric(NA), librae = as.numeric(NA)))
 })
 
 test_that("df pounds decimalization", {
