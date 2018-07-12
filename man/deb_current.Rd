@@ -5,7 +5,7 @@
 \title{Calculate the current values of accounts}
 \usage{
 deb_current(df, credit = credit, debit = debit, l = l, s = s, d = d,
-  lsd_bases = c(20, 12))
+  lsd_bases = c(20, 12), na.rm = FALSE)
 }
 \arguments{
 \item{df}{A data frame containing transactions between accounts that has
@@ -38,9 +38,12 @@ the s or solidus and d or denarius values in \code{lsd} vectors. Default is
 20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
 use alternative bases for the solidus and denarius values that were also
 in use.}
+
+\item{na.rm}{logical. Passed on to \code{na.rm} argument in \code{\link[=sum]{sum()}}. Whether
+missing values (NA) should be removed. Default is \code{FALSE}.}
 }
 \value{
-Returns a tibble with five columns and one row for each account
+Returns a tibble with four columns and one row for each account
 present in the credit and/or debit variables of \code{df}. This
 represents the current value of the accounts in the form of pounds,
 shillings, and pence. The names for the pounds, shillings, and pence

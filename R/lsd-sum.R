@@ -16,6 +16,8 @@
 #'   length 3. The first position of each vector represents the pounds value
 #'   or l. The second position represents the shillings value or s. And the
 #'   third position represents the pence value or d.
+#' @param na.rm logical. Passed on to `na.rm` argument in [sum()]. Whether
+#'   missing values (NA) should be removed. Default is `FALSE`.
 #'
 #' @return Returns a named numeric vector of length 3 representing the sum of
 #'   the pounds, shillings, and pence from the lsd vectors. If the sum is
@@ -37,9 +39,16 @@
 #'
 #' @export
 
-deb_sum <- function(..., lsd_bases = c(20, 12)) {
+deb_sum <- function(..., lsd_bases = c(20, 12), na.rm = FALSE) {
   lsd_list <- list(...)
   purrr::map(lsd_list, lsd_check)
+
+  # Remove lsd vectors that have NA if na.rm = TRUE
+  if (na.rm == TRUE) {
+    lsd_list <- purrr::map(lsd_list, ~ purrr::modify_if(., ~ any(is.na(.)), as.null)) %>%
+      purrr::map(purrr::compact)
+  }
+
   lsd_list <- purrr::map_if(lsd_list, is.list, ~ purrr::reduce(., `+`))
 
   deb_normalize(lsd = purrr::reduce(lsd_list, `+`),
@@ -49,18 +58,27 @@ deb_sum <- function(..., lsd_bases = c(20, 12)) {
 ## Helper functions to sum l, s, and d ##
 
 ## Librae ##
-deb_librae_sum <- function(l, s, d, lsd_bases = c(20, 12)) {
-  deb_librae(sum(l), sum(s), sum(d), lsd_bases = lsd_bases)
+deb_librae_sum <- function(l, s, d, lsd_bases = c(20, 12), na.rm) {
+  deb_librae(sum(l, na.rm = na.rm),
+             sum(s, na.rm = na.rm),
+             sum(d, na.rm = na.rm),
+             lsd_bases = lsd_bases)
 }
 
 ## Solidi ##
-deb_solidi_sum <- function(l, s, d, lsd_bases = c(20, 12)) {
-  deb_solidi(sum(l), sum(s), sum(d), lsd_bases = lsd_bases)
+deb_solidi_sum <- function(l, s, d, lsd_bases = c(20, 12), na.rm) {
+  deb_solidi(sum(l, na.rm = na.rm),
+             sum(s, na.rm = na.rm),
+             sum(d, na.rm = na.rm),
+             lsd_bases = lsd_bases)
 }
 
 ## Denarii ##
-deb_denarii_sum <- function(l, s, d, lsd_bases = c(20, 12)) {
-  deb_denarii(sum(l), sum(s), sum(d), lsd_bases = lsd_bases)
+deb_denarii_sum <- function(l, s, d, lsd_bases = c(20, 12), na.rm) {
+  deb_denarii(sum(l, na.rm = na.rm),
+              sum(s, na.rm = na.rm),
+              sum(d, na.rm = na.rm),
+              lsd_bases = lsd_bases)
 }
 
 #' Sum of pounds, shillings, and pence columns in a data frame
@@ -79,6 +97,7 @@ deb_denarii_sum <- function(l, s, d, lsd_bases = c(20, 12)) {
 #' @family lsd arithmetic functions
 #'
 #' @inheritParams deb_normalize_df
+#' @inheritParams deb_sum
 #'
 #' @return Returns a data frame with one level of grouping dropped. Any
 #'   variables other than `l`, `s`, and `d` that are not grouped will be
@@ -118,7 +137,10 @@ deb_denarii_sum <- function(l, s, d, lsd_bases = c(20, 12)) {
 #'
 #' @export
 
-deb_sum_df <- function(df, l = l, s = s, d = d, lsd_bases = c(20, 12)) {
+deb_sum_df <- function(df,
+                       l = l, s = s, d = d,
+                       lsd_bases = c(20, 12),
+                       na.rm = FALSE) {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)
@@ -131,11 +153,15 @@ deb_sum_df <- function(df, l = l, s = s, d = d, lsd_bases = c(20, 12)) {
   s_column <- rlang::quo_name(s)
   d_column <- rlang::quo_name(d)
 
+  # Make l, s, and d NA in any row that has an NA
+  if (na.rm == TRUE) {
+    df <- deb_normalize_df(df, !!l, !!s, !!d, lsd_bases, replace = TRUE)
+  }
   # Use temp columns and rename so that l, s, and d do not get overwritten
   ret <- df %>%
-    dplyr::summarise(temp_librae_col = deb_librae_sum(!!l, !!s, !!d, lsd_bases),
-                     temp_solidi_col = deb_solidi_sum(!!l, !!s, !!d, lsd_bases),
-                     temp_denarii_col = deb_denarii_sum(!!l, !!s, !!d, lsd_bases)) %>%
+    dplyr::summarise(temp_librae_col = deb_librae_sum(!!l, !!s, !!d, lsd_bases, na.rm),
+                     temp_solidi_col = deb_solidi_sum(!!l, !!s, !!d, lsd_bases, na.rm),
+                     temp_denarii_col = deb_denarii_sum(!!l, !!s, !!d, lsd_bases, na.rm)) %>%
     dplyr::rename(!! l_column := temp_librae_col,
                   !! s_column := temp_solidi_col,
                   !! d_column := temp_denarii_col)

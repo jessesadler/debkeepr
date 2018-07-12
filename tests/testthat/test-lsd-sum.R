@@ -1,8 +1,9 @@
-context("test-deb-sum.R")
+context("test-lsd-sum.R")
 
 suppressPackageStartupMessages(library(dplyr))
 
 lsd_list <- list(c(12, 7, 9), c(5, 8, 11), c(3, 18, 5))
+na_list <- list(c(12, 7, 9), c(5, 8, 11), c(3, 18, NA))
 
 example1 <- data.frame(group = c(1, 2, 1, 2),
                        l = c(3, 5, 6, 2),
@@ -23,6 +24,10 @@ example_dec <- data.frame(group = c(1, 2, 1, 2),
 example_error <- data.frame(l = c("j", "r", "s"),
                             s = c(10, 18, 11),
                             d = c(9, 11, 10))
+example_na <- data.frame(group = c(1, 2, 1, 2),
+                         l = c(3, 5, 6, 2),
+                         s = c(10, 18, 11, 16),
+                         d = c(9, 11, 10, NA))
 
 test_that("deb_sum works", {
   expect_equal(deb_sum(lsd_list),
@@ -47,6 +52,17 @@ test_that("deb_sum_df works on data frames", {
                data.frame(l = 18, s = 17, d = 11))
   expect_equal(deb_sum_df(example1, l, s, d, lsd_bases = c(20, 16)),
                data.frame(l = 18, s = 17, d = 3))
+})
+
+test_that("na.rm works", {
+  expect_equal(deb_sum(na_list),
+               stats::setNames(as.numeric(c(NA, NA, NA)), c("l", "s", "d")))
+  expect_equal(deb_sum(na_list, na.rm = TRUE),
+               deb_sum(lsd_list[1:2]))
+  expect_equal(deb_sum_df(example_na),
+               data.frame(l = as.numeric(NA), s = as.numeric(NA), d = as.numeric(NA)))
+  expect_equal(deb_sum_df(example_na, na.rm = TRUE),
+               deb_sum_df(example1[1:3, ]))
 })
 
 test_that("group_by works", {

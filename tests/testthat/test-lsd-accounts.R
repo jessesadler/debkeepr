@@ -12,6 +12,11 @@ example2 <- tibble::tibble(from = c("a", "b", "a", "c"),
                            pounds = c(10, 10, 7, 9),
                            shillings = c(15, 15, 11, 2),
                            pence = c(6, 6, 8.25, 11.5))
+example_na <- tibble::tibble(credit = c("a", "b", "a", "c", "a"),
+                             debit = c("b", "a", "c", "a", "b"),
+                             l = c(10, 10, 7, 9, NA),
+                             s = c(15, 15, 11, 2, 4),
+                             d = c(6, 6, 8.25, 11.5, 6))
 
 relation_v <- c("credit", "debit", "current")
 
@@ -66,6 +71,8 @@ test_that("deb_account works", {
                               d = c(2, 8, 6)))
   expect_false(identical(deb_account(example1, "a"),
                          deb_account(example1, "a", lsd_bases = c(8, 16))))
+  expect_equal(deb_account(example1, "a", na.rm = TRUE),
+               deb_account(example1, "a"))
 })
 
 test_that("deb_account accepts different column names", {
@@ -96,6 +103,11 @@ test_that("deb_account_summary works", {
                deb_account(example1, "c"))
   expect_equal(deb_account_summary(example4, from, to, pounds, shillings, pence)[7:9, 2:5],
                deb_account(example4, "c", from, to, pounds, shillings, pence))
+  # Deal with NA values
+  expect_false(identical(deb_account_summary(example_na), deb_account_summary(example1)))
+  expect_equal(deb_account_summary(example_na)[1, 3:5],
+               tibble::tibble(l = as.numeric(NA), s = as.numeric(NA), d = as.numeric(NA)))
+  expect_equal(deb_account_summary(example_na, na.rm = TRUE), deb_account_summary(example1))
 })
 
 test_that("deb_credit works", {
@@ -107,6 +119,11 @@ test_that("deb_credit works", {
   # Accepts different names
   expect_equal(names(deb_credit(example2, from, pounds, shillings, pence)),
                c("account_id", "pounds", "shillings", "pence"))
+  # Deal with NA values
+  expect_false(identical(deb_credit(example_na), deb_credit(example1)))
+  expect_equal(deb_credit(example_na)[1, 2:4],
+               tibble::tibble(l = as.numeric(NA), s = as.numeric(NA), d = as.numeric(NA)))
+  expect_equal(deb_credit(example_na, na.rm = TRUE), deb_credit(example1))
 })
 
 test_that("deb_debit works", {
@@ -118,6 +135,11 @@ test_that("deb_debit works", {
   # Accepts different names
   expect_equal(names(deb_debit(example2, to, pounds, shillings, pence)),
                c("account_id", "pounds", "shillings", "pence"))
+  # Deal with NA values
+  expect_false(identical(deb_debit(example_na), deb_debit(example1)))
+  expect_equal(deb_debit(example_na)[2, 2:4],
+               tibble::tibble(l = as.numeric(NA), s = as.numeric(NA), d = as.numeric(NA)))
+  expect_equal(deb_debit(example_na, na.rm = TRUE), deb_debit(example1))
 })
 
 test_that("deb_current works", {
@@ -129,6 +151,11 @@ test_that("deb_current works", {
                          deb_current(example3, lsd_bases = c(8, 16))))
   expect_equal(names(deb_current(example1)),
                c("account_id", "l", "s", "d"))
+  # Deal with NA values
+  expect_false(identical(deb_current(example_na), deb_current(example1)))
+  expect_equal(deb_current(example_na)[1, 2:4],
+               tibble::tibble(l = as.numeric(NA), s = as.numeric(NA), d = as.numeric(NA)))
+  expect_equal(deb_current(example_na, na.rm = TRUE), deb_current(example1))
 })
 
 test_that("deb_open works", {
@@ -138,6 +165,11 @@ test_that("deb_open works", {
   expect_equal(nrow(deb_open(example3)), 4)
   expect_false(identical(deb_open(example3),
                          deb_open(example3, lsd_bases = c(8, 16))))
+  # Deal with NA values
+  expect_false(identical(deb_open(example_na), deb_open(example1)))
+  # Rows with NA are excluded
+  expect_equal(nrow(deb_open(example_na)), 1)
+  expect_equal(deb_open(example_na, na.rm = TRUE), deb_open(example1))
 })
 
 test_that("deb_balance works", {
@@ -156,4 +188,9 @@ test_that("deb_balance works", {
                               l = c(54, 54),
                               s = c(8, 8),
                               d = c(9, 9)))
+  # Deal with NA values
+  expect_false(identical(deb_balance(example_na), deb_balance(example1)))
+  expect_equal(deb_balance(example_na)[2, 2:4],
+               tibble::tibble(l = 0, s = 0, d = 0))
+  expect_equal(deb_balance(example_na, na.rm = TRUE), deb_balance(example1))
 })

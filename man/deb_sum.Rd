@@ -4,7 +4,7 @@
 \alias{deb_sum}
 \title{Sum of pounds, shillings, and pence in lsd vectors}
 \usage{
-deb_sum(..., lsd_bases = c(20, 12))
+deb_sum(..., lsd_bases = c(20, 12), na.rm = FALSE)
 }
 \arguments{
 \item{...}{Numeric vectors of length 3 and/or lists of numeric vectors of
@@ -18,6 +18,9 @@ the s or solidus and d or denarius values in \code{lsd} vectors. Default is
 20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
 use alternative bases for the solidus and denarius values that were also
 in use.}
+
+\item{na.rm}{logical. Passed on to \code{na.rm} argument in \code{\link[=sum]{sum()}}. Whether
+missing values (NA) should be removed. Default is \code{FALSE}.}
 }
 \value{
 Returns a named numeric vector of length 3 representing the sum of

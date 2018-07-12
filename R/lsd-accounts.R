@@ -41,6 +41,7 @@
 #'   The data frame should have two variables for accounts (credit and debit)
 #'   and variables for pounds, shillings, and pence.
 #' @inheritParams deb_normalize_df
+#' @inheritParams deb_sum_df
 #' @param account_id The id of the account to be used to calculate the credit,
 #'   debit, and current values. The value for the account should be present in
 #'   the credit and/or debit variables.
@@ -53,7 +54,7 @@
 #'   is debit. The debit column must be of the same class as the credit
 #'   column.
 #'
-#' @return Returns a data frame with three rows and four columns. The rows
+#' @return Returns a tibble with three rows and four columns. The rows
 #'   correspond to credit, debit, and current values in the form of
 #'   pounds, shillings, and pence. The names for the pounds, shillings,
 #'   and pence columns correspond to the input for `l`, `s`,
@@ -79,7 +80,8 @@ deb_account <- function(df,
                         l = l,
                         s = s,
                         d = d,
-                        lsd_bases = c(20, 12)) {
+                        lsd_bases = c(20, 12),
+                        na.rm = FALSE) {
   credit <- rlang::enquo(credit)
   debit <- rlang::enquo(debit)
   l <- rlang::enquo(l)
@@ -100,13 +102,15 @@ deb_account <- function(df,
   credit <- df %>%
     dplyr::filter((!! credit) == account_id) %>%
     deb_sum_df(!! l, !! s, !! d,
-            lsd_bases = lsd_bases) %>%
+            lsd_bases = lsd_bases,
+            na.rm = na.rm) %>%
     dplyr::mutate(denarii = decimalize_d(!! l, !! s, !! d, lsd_bases))
 
   debit <- df %>%
     dplyr::filter((!! debit) == account_id) %>%
     deb_sum_df(!! l, !! s, !! d,
-            lsd_bases = lsd_bases) %>%
+            lsd_bases = lsd_bases,
+            na.rm = na.rm) %>%
     dplyr::mutate(denarii = decimalize_d(!! l, !! s, !! d, lsd_bases))
 
   lsd <- deb_d_lsd(credit$denarii - debit$denarii,
@@ -177,7 +181,8 @@ deb_account_summary <- function(df,
                                 l = l,
                                 s = s,
                                 d = d,
-                                lsd_bases = c(20, 12)) {
+                                lsd_bases = c(20, 12),
+                                na.rm = FALSE) {
 
   credit <- rlang::enquo(credit)
   debit <- rlang::enquo(debit)
@@ -191,18 +196,29 @@ deb_account_summary <- function(df,
   credit_check(df, credit, debit, edge_columns)
   bases_check(lsd_bases)
 
+  # Make l, s, and d NA in any row that has an NA
+  if (na.rm == TRUE) {
+    df <- deb_normalize_df(df, !!l, !!s, !!d, lsd_bases, replace = TRUE)
+  }
+
   credits <- df %>%
     dplyr::group_by(!! credit) %>%
     dplyr::summarise(
       relation = "credit",
-      denarii = decimalize_d(sum(!!l), sum(!!s), sum(!!d), lsd_bases)) %>%
+      denarii = decimalize_d(sum(!!l, na.rm = na.rm),
+                             sum(!!s, na.rm = na.rm),
+                             sum(!!d, na.rm = na.rm),
+                             lsd_bases)) %>%
     dplyr::rename(account_id = !! credit)
 
   debits <- df %>%
     dplyr::group_by(!! debit) %>%
     dplyr::summarise(
       relation = "debit",
-      denarii = decimalize_d(sum(!!l), sum(!!s), sum(!!d), lsd_bases)) %>%
+      denarii = decimalize_d(sum(!!l, na.rm = na.rm),
+                             sum(!!s, na.rm = na.rm),
+                             sum(!!d, na.rm = na.rm),
+                             lsd_bases)) %>%
     dplyr::rename(account_id = !! debit)
 
   accounts_sum <- dplyr::mutate(debits, denarii = -denarii) %>%
@@ -270,7 +286,8 @@ deb_credit <- function(df,
                        l = l,
                        s = s,
                        d = d,
-                       lsd_bases = c(20, 12)) {
+                       lsd_bases = c(20, 12),
+                       na.rm = FALSE) {
   credit <- rlang::enquo(credit)
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
@@ -283,7 +300,7 @@ deb_credit <- function(df,
   bases_check(lsd_bases)
 
   dplyr::group_by(df, !! credit) %>%
-    deb_sum_df(!! l, !! s, !! d, lsd_bases = lsd_bases) %>%
+    deb_sum_df(!! l, !! s, !! d, lsd_bases = lsd_bases, na.rm = na.rm) %>%
     dplyr::rename(account_id = !! credit)
 }
 
@@ -336,7 +353,8 @@ deb_debit <- function(df,
                       l = l,
                       s = s,
                       d = d,
-                      lsd_bases = c(20, 12)) {
+                      lsd_bases = c(20, 12),
+                      na.rm = FALSE) {
   debit <- rlang::enquo(debit)
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
@@ -349,7 +367,7 @@ deb_debit <- function(df,
   bases_check(lsd_bases)
 
   dplyr::group_by(df, !! debit) %>%
-    deb_sum_df(!! l, !! s, !! d, lsd_bases = lsd_bases) %>%
+    deb_sum_df(!! l, !! s, !! d, lsd_bases = lsd_bases, na.rm = na.rm) %>%
     dplyr::rename(account_id = !! debit)
 }
 
@@ -380,7 +398,7 @@ deb_debit <- function(df,
 #'
 #' @inheritParams deb_account_summary
 #'
-#' @return Returns a tibble with five columns and one row for each account
+#' @return Returns a tibble with four columns and one row for each account
 #'   present in the credit and/or debit variables of `df`. This
 #'   represents the current value of the accounts in the form of pounds,
 #'   shillings, and pence. The names for the pounds, shillings, and pence
@@ -405,7 +423,8 @@ deb_current <- function(df,
                         l = l,
                         s = s,
                         d = d,
-                        lsd_bases = c(20, 12)) {
+                        lsd_bases = c(20, 12),
+                        na.rm = FALSE) {
   credit <- rlang::enquo(credit)
   debit <- rlang::enquo(debit)
   l <- rlang::enquo(l)
@@ -418,7 +437,8 @@ deb_current <- function(df,
                       l = !! l,
                       s = !! s,
                       d = !! d,
-                      lsd_bases = lsd_bases) %>%
+                      lsd_bases = lsd_bases,
+                      na.rm = na.rm) %>%
     dplyr::filter(relation == "current") %>%
     dplyr::select(-relation)
 }
@@ -449,11 +469,12 @@ deb_current <- function(df,
 #'
 #' @inheritParams deb_account_summary
 #'
-#' @return Returns a tibble with five columns and one row for each account
+#' @return Returns a tibble with four columns and one row for each account
 #'   present in the credit and/or debit variables in `df` in which the
-#'   current value of pounds, shillings, and pence does not equal zero. The
-#'   names for the pounds, shillings, and pence columns correspond to the
-#'   input for `l`, `s`, and `d`.
+#'   current value of pounds, shillings, and pence does not equal zero or
+#'   does not have a missing value in the current value. The names for the
+#'   pounds, shillings, and pence columns correspond to the input for `l`,
+#'   `s`, and `d`.
 #'
 #' @examples
 #' # Create a transactions data frame
@@ -474,7 +495,8 @@ deb_open <- function(df,
                      l = l,
                      s = s,
                      d = d,
-                     lsd_bases = c(20, 12)) {
+                     lsd_bases = c(20, 12),
+                     na.rm = FALSE) {
   credit <- rlang::enquo(credit)
   debit <- rlang::enquo(debit)
   l <- rlang::enquo(l)
@@ -487,7 +509,8 @@ deb_open <- function(df,
               l = !! l,
               s = !! s,
               d = !! d,
-              lsd_bases = lsd_bases) %>%
+              lsd_bases = lsd_bases,
+              na.rm = na.rm) %>%
     dplyr::filter(dplyr::near(!! l + !! s / lsd_bases[1] + !! d / prod(lsd_bases), 0) == FALSE)
 }
 
@@ -500,7 +523,8 @@ deb_open <- function(df,
 #' `deb_balance()` is based on [deb_open()]. The function adds the credits
 #' and debits of the accounts that remain open to calculate the capital
 #' remaining in the transactions data frame. The values for credit and debit
-#' should be the same, as each credit also has a corresponding debit.
+#' should be the same, as each credit also has a corresponding debit. The
+#' exception is if there are missing values in `df` and `na.rm = FALSE`.
 #'
 #' `deb_balance()` is part of a family of functions meant to be used on
 #' data frames that contain transactions between accounts likely contained in
@@ -541,7 +565,8 @@ deb_balance <- function(df,
                         l = l,
                         s = s,
                         d = d,
-                        lsd_bases = c(20, 12)) {
+                        lsd_bases = c(20, 12),
+                        na.rm = FALSE) {
   credit <- rlang::enquo(credit)
   debit <- rlang::enquo(debit)
   l <- rlang::enquo(l)
@@ -558,20 +583,23 @@ deb_balance <- function(df,
                    l = !! l,
                    s = !! s,
                    d = !! d,
-                   lsd_bases = lsd_bases)
+                   lsd_bases = lsd_bases,
+                   na.rm = na.rm)
   credit <- open %>%
     dplyr::filter(!! l + !! s + !! d > 0) %>%
     deb_sum_df(l = !! l,
             s = !! s,
             d = !! d,
-            lsd_bases = lsd_bases)
+            lsd_bases = lsd_bases,
+            na.rm = na.rm)
 
   debit <- open %>%
     dplyr::filter(!! l + !! s + !! d < 0) %>%
     deb_sum_df(l = !! l,
             s = !! s,
             d = !! d,
-            lsd_bases = lsd_bases) %>%
+            lsd_bases = lsd_bases,
+            na.rm = na.rm) %>%
     # Make lsd positive
     dplyr::mutate(!! l_column := -(!! l),
                   !! s_column := -(!! s),

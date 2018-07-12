@@ -5,7 +5,7 @@
 \title{Calculate the total credit of accounts}
 \usage{
 deb_credit(df, credit = credit, l = l, s = s, d = d, lsd_bases = c(20,
-  12))
+  12), na.rm = FALSE)
 }
 \arguments{
 \item{df}{A data frame containing transactions between accounts that has
@@ -33,6 +33,9 @@ the s or solidus and d or denarius values in \code{lsd} vectors. Default is
 20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
 use alternative bases for the solidus and denarius values that were also
 in use.}
+
+\item{na.rm}{logical. Passed on to \code{na.rm} argument in \code{\link[=sum]{sum()}}. Whether
+missing values (NA) should be removed. Default is \code{FALSE}.}
 }
 \value{
 Returns a tibble with four columns and one row for each account

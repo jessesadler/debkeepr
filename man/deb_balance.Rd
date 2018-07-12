@@ -5,7 +5,7 @@
 \title{Calculate the balance of a transactions data frame}
 \usage{
 deb_balance(df, credit = credit, debit = debit, l = l, s = s, d = d,
-  lsd_bases = c(20, 12))
+  lsd_bases = c(20, 12), na.rm = FALSE)
 }
 \arguments{
 \item{df}{A data frame containing transactions between accounts that has
@@ -38,6 +38,9 @@ the s or solidus and d or denarius values in \code{lsd} vectors. Default is
 20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
 use alternative bases for the solidus and denarius values that were also
 in use.}
+
+\item{na.rm}{logical. Passed on to \code{na.rm} argument in \code{\link[=sum]{sum()}}. Whether
+missing values (NA) should be removed. Default is \code{FALSE}.}
 }
 \value{
 Returns a tibble with two rows showing the credit and debit
@@ -54,7 +57,8 @@ on the transactions data frame or account book.
 \code{deb_balance()} is based on \code{\link[=deb_open]{deb_open()}}. The function adds the credits
 and debits of the accounts that remain open to calculate the capital
 remaining in the transactions data frame. The values for credit and debit
-should be the same, as each credit also has a corresponding debit.
+should be the same, as each credit also has a corresponding debit. The
+exception is if there are missing values in \code{df} and \code{na.rm = FALSE}.
 
 \code{deb_balance()} is part of a family of functions meant to be used on
 data frames that contain transactions between accounts likely contained in
