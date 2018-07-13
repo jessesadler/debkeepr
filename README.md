@@ -3,6 +3,8 @@
 debkeepr: Analysis of Non-Decimal Currencies and Double-Entry Bookkeeping
 =========================================================================
 
+[![Travis build status](https://travis-ci.org/jessesadler/debkeepr.svg?branch=master)](https://travis-ci.org/jessesadler/debkeepr) [![Coverage status](https://codecov.io/gh/jessesadler/debkeepr/branch/master/graph/badge.svg)](https://codecov.io/github/jessesadler/debkeepr?branch=master)
+
 `debkeepr` provides an interface for analyzing non-decimal currencies that use the tripartite system of pounds, shillings, and pence. It includes functions to apply arithmetic and financial operations to single or multiple values and to analyze account books that use either [single-entry bookkeeping](https://en.wikipedia.org/wiki/Single-entry_bookkeeping_system) or [double-entry bookkeeping](https://en.wikipedia.org/wiki/Double-entry_bookkeeping_system) with the latter providing the name for `debkeepr`. The use of non-decimal currencies throughout the medieval and early modern period presents difficulties for the analysis of historical accounts. The pounds, shillings, and pence system complicates even relatively simple arithmetic manipulations, as each unit has to be [normalized](https://en.wikipedia.org/wiki/Arithmetic#Compound_unit_arithmetic) or converted to the correct base. `debkeepr` does the work of applying arithmetic operations and normalizing the units to the correct bases. `debkeepr` uses numeric vectors of length three, lists of such numeric vectors, and three separate variables in a data frame to represent pounds, shillings, and pence values.
 
 The system of recording value according to pounds, shillings, and pence — or to use the Latin terms from which the English derived [libra](https://en.wikipedia.org/wiki/French_livre), [solidus](https://en.wikipedia.org/wiki/Solidus_(coin)), and [denarius](https://en.wikipedia.org/wiki/Denarius) — developed in the 7th and 8th century in the Carolingian Empire. The [ratios](https://en.wikipedia.org/wiki/Non-decimal_currency) between a libra, solidus, and denarius, or [lsd](https://en.wikipedia.org/wiki/%C2%A3sd) for short, were never completely uniform, but most commonly there were 12 denarii in a solidus and 20 solidi in a libra. The custom of counting coins in dozens (solidus) and scores of dozens (libra) spread throughout the Carolingian Empire and became engrained in much of Europe until decimalization after the French Revolution.
@@ -27,10 +29,10 @@ Overview
     -   Italian: lire, soldi, denari
     -   Flemish: ponden, schellingen, groten or penningen
 -   The functions are designed to be used with three types of input objects:
-    -   Numeric vectors of length 3 in which the value for the first position represents librae (`l`), the second position solidi (`s`), and the third position denarii (`d`). Such lsd vectors can either be a single numeric vector or a list of such vectors.
+    -   Numeric vectors of length 3 in which the first position represents librae (`l`), the second position solidi (`s`), and the third position denarii (`d`). Such lsd vectors can either be a single numeric vector or a list of such vectors.
     -   A data frame that contains pounds, shillings, and pence variables alongside any other variables. The pounds, shillings, and pence columns can have any desired names, but the default is to have the columns named “l”, “s”, and “d” respectively.
     -   The final object is a data frame that mimics the structure of an account book and can be thought of as a transactions data frame. In addition to pounds, shillings, and pence variables that denote the value of each transaction, a transactions data frame contains variables recording the [creditor and debtor](https://en.wikipedia.org/wiki/Debits_and_credits) for each transaction.
--   There are equivalent functions to manipulate lsd vectors and data frames with lsd variables. Anything that can be done on an lsd vector can also be done to a data frame with lsd values. Functions that use a transactions data frame that also possess credit and debit variables do not have equivalent functions for lsd vectors.
+-   There are equivalent functions to manipulate lsd vectors and data frames with lsd variables. Anything that can be done on an lsd vector can also be done to a data frame with lsd values. Functions that use a transactions data frame that also possess credit and debit variables do not have equivalent functions of lsd vectors.
 
 ### lsd objects
 
@@ -93,14 +95,14 @@ transactions_df <- data.frame(credit = sample(letters[1:4], 15, replace = TRUE),
                               debit = sample(letters[1:4], 15, replace = TRUE),
                               l = sample(1:30, 15, replace = TRUE),
                               s = sample(1:19, 15, replace = TRUE),
-                              d = sample(1:12, 15, replace = TRUE),
+                              d = sample(1:11, 15, replace = TRUE),
                               stringsAsFactors = FALSE)
 ```
 
 lsd vectors
 -----------
 
-lsd vectors and lists of such vectors simplify the process or doing quick calculations on values in historical sources. A particularly useful function for one-off uses is `deb_normalize()`, which normalizes an lsd vector or list of vectors to the desired bases for the `s` and `d` units. Thus, adding together a set of lsd values by hand might result in the non-standard form of £10 64s. 21d. `deb_normalize()` normalizes the value to the proper bases for the solidus and denarius units.
+lsd vectors and lists of such vectors simplify the process of doing quick calculations on values in historical sources. A particularly useful function for one-off uses is `deb_normalize()`, which normalizes an lsd vector or list of vectors to the desired bases for the `s` and `d` units. Thus, adding together a set of lsd values by hand might result in the non-standard form of £10 64s. 21d. `deb_normalize()` normalizes the value to the proper bases for the solidus and denarius units.
 
 ``` r
 # Normalize a non-standard lsd vector
@@ -140,9 +142,9 @@ deb_normalize(lsd = list(c(4, 34, 89), c(-9, -75, -19), c(15.85, 36.15, 56)))
 
 ### Arithmetic functions
 
-`debkeepr` contains functions to perform arithmetic operations such as addition, subtraction, multiplication, division on lsd vectors.
+`debkeepr` contains functions to perform arithmetic operations such as addition, subtraction, multiplication, and division on lsd vectors.
 
-There are two different ways to add lsd vectors and/or lists of lsd vectors. Their use depends on the desired outcome. `deb_sum()` takes any number of lsd vectors and/or lists of lsd vectors and returns a single numeric vector of length 3 that is the sum of the input values. `deb_add()` has a different use case. It only accepts two lsd vectors and/or lists of lsd vectors: `lsd1` and `lsd2`. If `lsd1` and `lsd2` in `deb_add()` are both lsd vectors, the output will be equivalent to `deb_sum()`. However, if one or both of the inputs are lists of lsd vectors, the output will be the length of the longer list and each element of the list is added to the equivalent element of the other input. If one input is shorter than the other, the shorter input will be recycled. `deb_subtract()` is equivalent to `deb_add()` with `lsd2` subtracted from `lsd1`.
+There are two different ways to add lsd vectors and/or lists of lsd vectors. `deb_sum()` takes any number of lsd vectors and/or lists of lsd vectors and returns a single numeric vector of length 3 that is the sum of the input values. `deb_add()` has a different use case. It only accepts two lsd vectors and/or lists of lsd vectors: `lsd1` and `lsd2`. If `lsd1` and `lsd2` in `deb_add()` are both vectors, the output will be equivalent to `deb_sum()`. However, if one or both of the inputs are lists of lsd vectors, the output will be the length of the longer list and each element of the list is added to the equivalent element of the other input. If one input is shorter than the other, the shorter input will be recycled. `deb_subtract()` is equivalent to `deb_add()` with `lsd2` subtracted from `lsd1`.
 
 ``` r
 # Use deb_sum to reduce multiple lsd values to a single value
@@ -228,12 +230,12 @@ deb_divide(lsd = lsd_list, x = 3)
 #> 4 2 7 
 #> 
 #> [[2]]
-#>      l      s      d 
-#>  1.000 16.000  3.667 
+#>         l         s         d 
+#>  1.000000 16.000000  3.666667 
 #> 
 #> [[3]]
-#>     l     s     d 
-#> 1.000 6.000 1.667
+#>        l        s        d 
+#> 1.000000 6.000000 1.666667
 ```
 
 ### Financial functions
@@ -299,7 +301,7 @@ deb_sum_df(df = lsd_df, l = l, s = s, d = d, lsd_bases = c(20, 16))
 #> 1 21 14 9
 ```
 
-Addition, subtraction, multiplication, and division all result in three new variables and so use the `_mutate` suffix. `deb_add_mutate()` and `deb_subtract_mutate()` add and subtract an lsd vector to the lsd values in a data frame. `deb_multiply_mutate()` and `deb_divide_mutate()` multiply and divide the lsd values in a data frame by a single value.
+Addition, subtraction, multiplication, and division all result in three new variables and so use the `_mutate` suffix. `deb_add_mutate()` and `deb_subtract_mutate()` add and subtract an lsd vector from the lsd values in a data frame. `deb_multiply_mutate()` and `deb_divide_mutate()` multiply and divide the lsd values in a data frame by a single value.
 
 ``` r
 # Add £5 13s. 8d. to lsd variables in a data frame
@@ -334,10 +336,10 @@ deb_multiply_mutate(df = lsd_df, x = 5)
 
 # Divide lsd variables in a data frame by 3
 deb_divide_mutate(df = lsd_df, x = 3)
-#>    l  s  d l.1 s.1   d.1
-#> 1 12  7  9   4   2 7.000
-#> 2  5  8 11   1  16 3.667
-#> 3  3 18  5   1   6 1.667
+#>    l  s  d l.1 s.1      d.1
+#> 1 12  7  9   4   2 7.000000
+#> 2  5  8 11   1  16 3.666667
+#> 3  3 18  5   1   6 1.666667
 ```
 
 ### Financial functions
@@ -348,9 +350,9 @@ deb_divide_mutate(df = lsd_df, x = 3)
 # Interest rate at 6.25% over a 5 year period with principal
 deb_interest_mutate(df = lsd_df, interest = 0.0625, duration = 5)
 #>    l  s  d l.interest s.interest d.interest
-#> 1 12  7  9         16          5      2.062
-#> 2  5  8 11          7          2     11.438
-#> 3  3 18  5          5          2     11.062
+#> 1 12  7  9         16          5     2.0625
+#> 2  5  8 11          7          2    11.4375
+#> 3  3 18  5          5          2    11.0625
 
 # Exchange between currencies at rate of 30 shillings or 1 to 1.5
 deb_exchange_mutate(df = lsd_df, rate_per_shillings = 30)
@@ -365,7 +367,7 @@ Decimalization
 
 Sometimes it is useful to decimalize lsd values, reducing the values to a single unit with a base of 10. Alternatively, you may come across decimalized values that you want to expand to lsd values. `debkeepr` provides functions to convert between decimalized and non-decimalized values for both vectors and variables in data frames.
 
-All of the decimalization functions follow the naming convention of `input_output`. For instance, to convert from an lsd vector to decimalized librae or pounds you use `deb_lsd_l()`, while conversion between decimalized pounds to lsd values is done with `deb_l_lsd()`. There are functions to do the same process with both shillings and pence.
+All of the decimalization functions follow the naming convention of `input-unit_output-unit`. For instance, to convert from an lsd vector to decimalized librae or pounds you use `deb_lsd_l()`, while conversion between decimalized pounds to lsd values is done with `deb_l_lsd()`. There are functions to do the same process with both shillings and pence.
 
 ``` r
 # lsd to decimalized denarii
@@ -378,7 +380,7 @@ deb_d_lsd(d = 2551)
 #> 10 12  7
 ```
 
-The equivalent decimalization functions that work on a data frame with lsd variables have the same basic functionality and naming convention. These functions are based on `dplyr::mutate()`, and they contain `_mutate` in the function names to distinguish them from those used for lsd vectors. Thus, `deb_lsd_s_mutate()` adds a decimalized solidi variable to a data frame with lsd variables. The default is to name these decimalized columns after the Latin convention of librae, solidi, and denarii. Conversely, `deb_s_mutate()` uses a decimalized solidi variable in a data frame to create three new variables corresponding to the pounds, shillings, and pence values.
+The equivalent decimalization functions that work on a data frame with lsd variables have the same basic functionality and naming convention. These functions are based on `dplyr::mutate()`, and they contain `_mutate` in the function names to distinguish them from those used for lsd vectors. Thus, `deb_lsd_s_mutate()` adds a decimalized solidi variable to a data frame with lsd variables. The default is to name these decimalized columns after the Latin convention of librae, solidi, and denarii. Conversely, `deb_s_lsd_mutate()` uses a decimalized solidi variable in a data frame to create three new variables corresponding to the pounds, shillings, and pence values.
 
 ``` r
 # Create decimalized solidi variable
@@ -390,16 +392,16 @@ deb_lsd_s_mutate(df = lsd_df)
 
 # From decimalized solidi variable to lsd variables
 solidi_df <- data.frame(s = c(247.75, 108.91667, 78.41667))
-deb_s_mutate(df = solidi_df, solidi = s)
-#>           s l.1 s.1 d.1
-#> 1 247.75000  12   7   9
-#> 2 108.91667   5   8  11
-#> 3  78.41667   3  18   5
+deb_s_lsd_mutate(df = solidi_df, solidi = s)
+#>           s l.1 s.1      d.1
+#> 1 247.75000  12   7  9.00000
+#> 2 108.91667   5   8 11.00004
+#> 3  78.41667   3  18  5.00004
 
-# Use the pipe to go to decimalized solidi and then back to lsd
+# Use the pipe to go to decimalized librae and then back to lsd
 lsd_df %>% 
   deb_lsd_l_mutate(column_name = librae) %>%
-  deb_l_mutate(librae = librae)
+  deb_l_lsd_mutate(librae = librae)
 #>    l  s  d    librae l.1 s.1 d.1
 #> 1 12  7  9 12.387500  12   7   9
 #> 2  5  8 11  5.445833   5   8  11
@@ -418,8 +420,8 @@ deb_account(df = transactions_df,
             credit = credit, debit = debit,
             l = l, s = s, d = d)
 #>   relation  l s d
-#> 1   credit 23 4 3
-#> 2    debit 22 3 9
+#> 1   credit 23 4 2
+#> 2    debit 22 3 8
 #> 3  current  1 0 6
 
 # Credit, debit, and current values for all accounts
@@ -427,18 +429,18 @@ deb_account_summary(df = transactions_df)
 #> # A tibble: 12 x 5
 #>    account_id relation     l     s     d
 #>    <chr>      <chr>    <dbl> <dbl> <dbl>
-#>  1 a          credit      23     4     3
-#>  2 a          debit       22     3     9
+#>  1 a          credit      23     4     2
+#>  2 a          debit       22     3     8
 #>  3 a          current      1     0     6
-#>  4 b          credit     115     4     7
-#>  5 b          debit       73     7     4
-#>  6 b          current     41    17     3
-#>  7 c          credit      82    16     9
-#>  8 c          debit       71     5     7
-#>  9 c          current     11    11     2
-#> 10 d          credit      52    14     4
-#> 11 d          debit      107     3     3
-#> 12 d          current    -54    -8   -11
+#>  4 b          credit     115     4     3
+#>  5 b          debit       73     7     3
+#>  6 b          current     41    17     0
+#>  7 c          credit      82    16     8
+#>  8 c          debit       71     5     5
+#>  9 c          current     11    11     3
+#> 10 d          credit      52    14     3
+#> 11 d          debit      107     3     0
+#> 12 d          current    -54    -8    -9
 ```
 
 The remaining functions build on `deb_account_summary()`. Three functions simplify the information produced by `deb_account_summary`: `deb_credit()` shows the total credit for each account, `deb_debit()` does the same for the debits, and `deb_current()` shows on the current value for each account.
@@ -449,10 +451,10 @@ deb_credit(df = transactions_df)
 #> # A tibble: 4 x 4
 #>   account_id     l     s     d
 #>   <chr>      <dbl> <dbl> <dbl>
-#> 1 a             23     4     3
-#> 2 b            115     4     7
-#> 3 c             82    16     9
-#> 4 d             52    14     4
+#> 1 a             23     4     2
+#> 2 b            115     4     3
+#> 3 c             82    16     8
+#> 4 d             52    14     3
 
 # Total debit for all accounts by getting sum of deb_debit
 deb_debit(df = transactions_df) %>% 
@@ -460,7 +462,7 @@ deb_debit(df = transactions_df) %>%
 #> # A tibble: 1 x 3
 #>       l     s     d
 #>   <dbl> <dbl> <dbl>
-#> 1   273    19    11
+#> 1   273    19     4
 
 # Current value of each account
 deb_current(df = transactions_df)
@@ -468,12 +470,12 @@ deb_current(df = transactions_df)
 #>   account_id     l     s     d
 #>   <chr>      <dbl> <dbl> <dbl>
 #> 1 a              1     0     6
-#> 2 b             41    17     3
-#> 3 c             11    11     2
-#> 4 d            -54    -8   -11
+#> 2 b             41    17     0
+#> 3 c             11    11     3
+#> 4 d            -54    -8    -9
 ```
 
-`deb_open()` is similar to `deb_current()`, but it removes any accounts that have been closed by being zeroed out. This is useful if there are many accounts in the transactions data frame that have been closed. In the example of `transactions_df` all accounts are open, and so `deb_open()` has the same result as `deb_current()`. Finally, balance shows the total credit and debit remaining in the transactions data frame. The values for credit and debit will always be the same in `deb_balance()`, as there should always be the same amount of credit as debit in an account book.
+`deb_open()` is similar to `deb_current()`, but it removes any accounts that have been closed by being zeroed out. This is useful if there are many accounts in the transactions data frame that have been closed. In the example of `transactions_df` all accounts are open, and so `deb_open()` has the same result as `deb_current()`. `deb_balance()` shows the total credit and debit remaining in the transactions data frame. The values for credit and debit will always be the same in `deb_balance()`, as there should always be the same amount of credit as debit in an account book.
 
 ``` r
 # Balance remaining on transactions_df
@@ -481,8 +483,8 @@ deb_balance(transactions_df)
 #> # A tibble: 2 x 4
 #>   relation     l     s     d
 #>   <chr>    <dbl> <dbl> <dbl>
-#> 1 credit      54     8    11
-#> 2 debit       54     8    11
+#> 1 credit      54     8     9
+#> 2 debit       54     8     9
 ```
 
 Notes
