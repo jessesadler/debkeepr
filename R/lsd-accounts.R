@@ -231,8 +231,8 @@ deb_account_summary <- function(df,
       denarii = sum(denarii))
 
   dplyr::bind_rows(credits, debits, current) %>%
-    deb_d_mutate(denarii, l_column = !! l, s_column = !! s, d_column = !! d,
-                 lsd_bases = lsd_bases) %>%
+    deb_d_lsd_mutate(denarii, l_column = !! l, s_column = !! s, d_column = !! d,
+                     lsd_bases = lsd_bases) %>%
     dplyr::arrange(.data$account_id) %>%
     dplyr::select(-denarii)
 }

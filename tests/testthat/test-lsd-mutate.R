@@ -102,55 +102,55 @@ d_solution_df <- data.frame(pence = d_vector,
                             d = dd_solution)
 
 test_that("mutate functions work", {
-  expect_equal(deb_l_mutate(l_df, pounds, l, s, d), l_solution_df)
-  expect_false(identical(deb_l_mutate(l_df, pounds, l, s, d),
-                         deb_l_mutate(l_df, pounds, l, s, d, lsd_bases = c(8, 16))))
+  expect_equal(deb_l_lsd_mutate(l_df, pounds, l, s, d), l_solution_df)
+  expect_false(identical(deb_l_lsd_mutate(l_df, pounds, l, s, d),
+                         deb_l_lsd_mutate(l_df, pounds, l, s, d, lsd_bases = c(8, 16))))
 
-  expect_equal(deb_s_mutate(s_df, shillings), s_solution_df)
-  expect_false(identical(deb_s_mutate(s_df, shillings),
-                         deb_s_mutate(s_df, shillings, lsd_bases = c(8, 16))))
+  expect_equal(deb_s_lsd_mutate(s_df, shillings), s_solution_df)
+  expect_false(identical(deb_s_lsd_mutate(s_df, shillings),
+                         deb_s_lsd_mutate(s_df, shillings, lsd_bases = c(8, 16))))
 
-  expect_equal(deb_d_mutate(d_df, pence), d_solution_df)
-  expect_false(identical(deb_d_mutate(d_df, pence),
-                         deb_d_mutate(d_df, pence, lsd_bases = c(8, 16))))
+  expect_equal(deb_d_lsd_mutate(d_df, pence), d_solution_df)
+  expect_false(identical(deb_d_lsd_mutate(d_df, pence),
+                         deb_d_lsd_mutate(d_df, pence, lsd_bases = c(8, 16))))
 })
 
 test_that("column names change with lsd_column_names function", {
   # Can change names
-  expect_equal(names(deb_l_mutate(l_df, pounds,
+  expect_equal(names(deb_l_lsd_mutate(l_df, pounds,
                             l_column = "librae", s_column = "solidi", d_column = "denarii")),
                c("pounds", "librae", "solidi", "denarii"))
   # Suffix added if names already present
-  expect_equal(names(deb_s_mutate(s_solution_df, shillings)),
+  expect_equal(names(deb_s_lsd_mutate(s_solution_df, shillings)),
                c("shillings", "l", "s", "d", "l.1", "s.1", "d.1"))
   # Can change suffix
-  expect_equal(names(deb_d_mutate(d_solution_df, pence, suffix = ".x")),
+  expect_equal(names(deb_d_lsd_mutate(d_solution_df, pence, suffix = ".x")),
                c("pence", "l", "s", "d", "l.x", "s.x", "d.x"))
 })
 
 test_that("lsd_column_names check works", {
-  expect_error(deb_l_mutate(l_df, pounds, suffix = 7),
+  expect_error(deb_l_lsd_mutate(l_df, pounds, suffix = 7),
                "suffix must be a character vector")
-  expect_error(deb_l_mutate(l_df, pounds, suffix = c("hello", "you")),
+  expect_error(deb_l_lsd_mutate(l_df, pounds, suffix = c("hello", "you")),
                "suffix must be a character vector of length 1")
 })
 
 test_that("decimal column exists", {
-  expect_error(deb_l_mutate(l_df, librae = hello),
+  expect_error(deb_l_lsd_mutate(l_df, librae = hello),
                "librae column must exist the in df")
-  expect_error(deb_s_mutate(s_df, solidi = hello),
+  expect_error(deb_s_lsd_mutate(s_df, solidi = hello),
                "solidi column must exist the in df")
-  expect_error(deb_d_mutate(d_df, denarii = hello),
+  expect_error(deb_d_lsd_mutate(d_df, denarii = hello),
                "denarii column must exist the in df")
 })
 
 id_df <- add_column(l_df, id = letters[1:3])
 
 test_that("decimal column is numeric", {
-  expect_error(deb_l_mutate(id_df, librae = id),
+  expect_error(deb_l_lsd_mutate(id_df, librae = id),
                "librae must be numeric")
-  expect_error(deb_s_mutate(id_df, solidi = id),
+  expect_error(deb_s_lsd_mutate(id_df, solidi = id),
                "solidi must be numeric")
-  expect_error(deb_d_mutate(id_df, denarii = id),
+  expect_error(deb_d_lsd_mutate(id_df, denarii = id),
                "denarii must be numeric")
 })

@@ -144,23 +144,23 @@ deb_denarii_d <- function(d, lsd_bases = c(20, 12)) {
 #' # variables from a decimalized pounds variable
 #' example <- data.frame(pounds = c(8, 8.325, -8.325, 5.425, 4.5678))
 #'
-#' deb_l_mutate(example, pounds)
+#' deb_l_lsd_mutate(example, pounds)
 #'
 #' # You can choose the names for the created columns
 #' example %>%
-#'   deb_l_mutate(pounds,
+#'   deb_l_lsd_mutate(pounds,
 #'                l_column = librae,
 #'                s_column = solidi,
 #'                d_column = denarii)
 #'
 #' @export
 
-deb_l_mutate <- function(df, librae,
-                         l_column = l,
-                         s_column = s,
-                         d_column = d,
-                         lsd_bases = c(20, 12),
-                         suffix = ".1") {
+deb_l_lsd_mutate <- function(df, librae,
+                             l_column = l,
+                             s_column = s,
+                             d_column = d,
+                             lsd_bases = c(20, 12),
+                             suffix = ".1") {
 
   librae <- rlang::enquo(librae)
 
@@ -201,7 +201,7 @@ deb_l_mutate <- function(df, librae,
 #' @param solidi Decimalized shillings column: Unquoted name of a numeric
 #'   variable corresponding to shillings. This is the variable that will be
 #'   mutated into pounds, shillings, and pence variables.
-#' @inheritParams deb_l_mutate
+#' @inheritParams deb_l_lsd_mutate
 #'
 #' @return Returns a data frame with three new variables of pounds, shillings,
 #'   and pence.
@@ -211,23 +211,23 @@ deb_l_mutate <- function(df, librae,
 #' # variables from a decimalized shillings variable
 #' example <- data.frame(shillings = c(166, -166, 166.5, 236.35, -354.845))
 #'
-#' deb_s_mutate(example, shillings)
+#' deb_s_lsd_mutate(example, shillings)
 #'
 #' # You can choose the names for the created columns
 #' example %>%
-#'   deb_s_mutate(shillings,
+#'   deb_s_lsd_mutate(shillings,
 #'                l_column = librae,
 #'                s_column = solidi,
 #'                d_column = denarii)
 #'
 #' @export
 
-deb_s_mutate <- function(df, solidi,
-                         l_column = l,
-                         s_column = s,
-                         d_column = d,
-                         lsd_bases = c(20, 12),
-                         suffix = ".1") {
+deb_s_lsd_mutate <- function(df, solidi,
+                             l_column = l,
+                             s_column = s,
+                             d_column = d,
+                             lsd_bases = c(20, 12),
+                             suffix = ".1") {
   solidi <- rlang::enquo(solidi)
 
   # Check that solidi exists in df
@@ -267,7 +267,7 @@ deb_s_mutate <- function(df, solidi,
 #' @param denarii Pence column: Unquoted name of a numeric variable
 #'   corresponding to pence. This is the variable that will be
 #'   mutated into pounds, shillings, and pence variables.
-#' @inheritParams deb_l_mutate
+#' @inheritParams deb_l_lsd_mutate
 #'
 #' @return Returns a data frame with three new variables of pounds, shillings,
 #'   and pence.
@@ -277,23 +277,23 @@ deb_s_mutate <- function(df, solidi,
 #' # variables from a pence variable
 #' example <- data.frame(pence = c(1998, -1998, 387, -5378))
 #'
-#' deb_d_mutate(example, pence)
+#' deb_d_lsd_mutate(example, pence)
 #'
 #' # You can choose the names for the created columns
 #' example %>%
-#'   deb_d_mutate(pence,
+#'   deb_d_lsd_mutate(pence,
 #'                l_column = librae,
 #'                s_column = solidi,
 #'                d_column = denarii)
 #'
 #' @export
 
-deb_d_mutate <- function(df, denarii,
-                         l_column = l,
-                         s_column = s,
-                         d_column = d,
-                         lsd_bases = c(20, 12),
-                         suffix = ".1") {
+deb_d_lsd_mutate <- function(df, denarii,
+                             l_column = l,
+                             s_column = s,
+                             d_column = d,
+                             lsd_bases = c(20, 12),
+                             suffix = ".1") {
   denarii <- rlang::enquo(denarii)
 
   # Check that denarii exists in df
