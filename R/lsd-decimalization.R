@@ -209,7 +209,7 @@ deb_lsd_d <- function(lsd, lsd_bases = c(20, 12)) {
   lsd_check(lsd)
   bases_check(lsd_bases)
 
-  lsd[1] * prod(lsd_bases) + lsd[2] * lsd_bases[2] + lsd[3]
+  round(lsd[1] * prod(lsd_bases) + lsd[2] * lsd_bases[2] + lsd[3], 5)
 }
 
 #' Convert from pence to pounds, shillings, and pence

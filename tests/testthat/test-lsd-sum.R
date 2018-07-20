@@ -13,6 +13,9 @@ example2 <- data.frame(group = c(1, 2, 1, 2),
                        pounds = c(3, 5, 6, 2),
                        shillings = c(10, 18, 11, 16),
                        pence = c(9, 11, 10, 5))
+example3 <- data.frame(l = c(1, 1, 1),
+                       s = c(6, 6, 7),
+                       d = c(3.33333333, 3.33333333, 5.33333333))
 example_neg <- data.frame(group = c(1, 2, 1, 2),
                           l = c(-3, 5, -6, 2),
                           s = c(-10, 18, -11, 16),
@@ -38,6 +41,8 @@ test_that("deb_sum works", {
                c(l = 36, s = 19, d = 8))
   expect_equal(deb_sum(lsd_list, lsd_bases = c(8, 16)),
                c(l = 24, s = 2, d = 9))
+  expect_equal(deb_sum(c(1, 6, 3.33333333), c(1, 6, 3.33333333), c(1, 7, 5.33333333)),
+               c(l = 4, s = 0, d = 0))
   expect_error(deb_sum(lsd_list, c("hello", "goodbye")),
                "lsd must be a numeric vector")
   expect_error(deb_sum(lsd_list, c(6, 3)),
@@ -52,6 +57,8 @@ test_that("deb_sum_df works on data frames", {
                data.frame(l = 18, s = 17, d = 11))
   expect_equal(deb_sum_df(example1, l, s, d, lsd_bases = c(20, 16)),
                data.frame(l = 18, s = 17, d = 3))
+  expect_equal(deb_sum_df(example3),
+               data.frame(l = 4, s = 0, d = 0))
 })
 
 test_that("na.rm works", {

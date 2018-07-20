@@ -16,6 +16,14 @@ deb_librae <- function(l, s, d, lsd_bases = c(20, 12)) {
   lsd <- lsd_decimal_check(c(l, s, d), lsd_bases)
 
   librae <- lsd[1] + ((lsd[2] + lsd[3] %/% lsd_bases[2]) %/% lsd_bases[1])
+
+  # Case when denarii rounds up to its base and makes solidi round up to its base
+  if (!is.na(librae) &&
+      dplyr::near(round(lsd[3] %% lsd_bases[2], 5), lsd_bases[2]) &&
+      dplyr::near((lsd[2] + 1 + lsd[3] %/% lsd_bases[2]) %% lsd_bases[1], 0)) {
+    librae <- librae + 1
+  }
+
   dplyr::if_else(l + s / lsd_bases[1] + d / prod(lsd_bases) > 0, librae, -librae)
 }
 
@@ -28,6 +36,15 @@ deb_solidi <- function(l, s, d, lsd_bases = c(20, 12)) {
   lsd <- lsd_decimal_check(c(l, s, d), lsd_bases)
 
   solidi <- (lsd[2] + lsd[3] %/% lsd_bases[2]) %% lsd_bases[1]
+
+  # Case when denarii rounds up to its base and if solidi goes up to is base
+  if (!is.na(solidi) && dplyr::near(round(lsd[3] %% lsd_bases[2], 5), lsd_bases[2])) {
+    solidi <- solidi + 1
+    if (dplyr::near(solidi, lsd_bases[1])) {
+      solidi <- 0
+    }
+  }
+
   dplyr::if_else(l + s / lsd_bases[1] + d / prod(lsd_bases) > 0, solidi, -solidi)
 }
 
@@ -39,7 +56,12 @@ deb_denarii <- function(l, s, d, lsd_bases = c(20, 12)) {
 
   lsd <- lsd_decimal_check(c(l, s, d), lsd_bases)
 
-  denarii <- lsd[3] %% lsd_bases[2]
+  denarii <- round(lsd[3] %% lsd_bases[2], 5)
+
+  if (!is.na(denarii) && dplyr::near(denarii, lsd_bases[2])) {
+    denarii <- 0
+  }
+
   dplyr::if_else(l + s / lsd_bases[1] + d / prod(lsd_bases) > 0, denarii, -denarii)
 }
 

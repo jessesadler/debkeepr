@@ -53,6 +53,8 @@ test_that("lsd to decimalized l, s, and d works", {
   expect_equal(deb_lsd_d(c(8, 6, 6)), 1998)
   expect_equal(deb_lsd_d(c(-8, -6, -6)), -1998)
   expect_equal(deb_lsd_d(c(8.325, 6, 6)), 2076)
+  expect_equal(deb_lsd_d(c(8.325, 6, 5.999999)), 2076)
+  expect_equal(deb_lsd_d(c(8.325, 6, 5.99999)), 2075.99999)
   expect_equal(deb_lsd_d(c(8, 6, 6), lsd_bases = c(8, 16)), 1126)
 })
 

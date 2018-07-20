@@ -57,7 +57,21 @@ lsd_normalize <- function(lsd, lsd_bases) {
 
   lsd[1] <- lsd[1] + ((lsd[2] + lsd[3] %/% lsd_bases[2]) %/% lsd_bases[1])
   lsd[2] <- (lsd[2] + lsd[3] %/% lsd_bases[2]) %% lsd_bases[1]
-  lsd[3] <- lsd[3] %% lsd_bases[2]
+  lsd[3] <- round(lsd[3] %% lsd_bases[2], 5)
+
+  if (any(is.na(lsd))) {
+    return(stats::setNames(lsd, c("l", "s", "d")))
+  }
+
+  # Case when denarii rounds up to its base
+  if (dplyr::near(lsd[3], lsd_bases[2])) {
+    lsd[2] <- lsd[2] + 1
+    lsd[3] <- 0
+    if (dplyr::near(lsd[2], lsd_bases[1])) {
+      lsd[1] <- lsd[1] + 1
+      lsd[2] <- 0
+    }
+  }
 
   stats::setNames(lsd, c("l", "s", "d"))
 }

@@ -65,7 +65,7 @@ test_that("deb_rate_per_shilling works", {
   expect_equal(deb_rate_per_shilling(c(100, 0, 0), c(166, 13, 4)),
                c(l = 0, s = 12, d = 0))
   expect_equal(deb_rate_per_shilling(c(166, 13, 4), c(100, 0, 0), lsd_bases = c(8, 16)),
-               c(l = 0, s = 13, d = 5 + 1/3))
+               c(l = 0, s = 13, d = 5.33333))
 })
 
 test_that("deb_rate_per_shilling is vectorized", {

@@ -19,21 +19,21 @@ list_ratio <- list(c(l = 37, s = 15, d = 9),
                    c(l = -12, s = -19, d = -5),
                    c(l = 31, s = 5, d = 4.84),
                    c(l = 16, s = 8, d = 13))
-transactions <- data.frame(credit = sample(letters[1:4]),
-                           debit = sample(letters[1:4]))
+transactions <- data.frame(credit = sample(letters[1:5]),
+                           debit = sample(letters[1:5]))
 
-ex_df <- data.frame(l = c(35, -10, 26.875, 12),
-                    s = c(50, -48, 84.365, 76),
-                    d = c(89, -181, 55, 205))
-df_answer <- data.frame(l = c(37, -13, 31, 16),
-                        s = c(17, -3, 6, 13),
-                        d = c(5, -1, 5.38, 1))
-df_ratio <- data.frame(l = c(37, -12, 31, 16),
-                       s = c(15, -19, 5, 8),
-                       d = c(9, -5, 4.84, 13))
-df_answer2 <- data.frame(l.1 = c(37, -13, 31, 16),
-                         s.1 = c(17, -3, 6, 13),
-                         d.1 = c(5, -1, 5.38, 1))
+ex_df <- data.frame(l = c(35, -10, 26.875, 12, 1),
+                    s = c(50, -48, 84.365, 76, 19),
+                    d = c(89, -181, 55, 205, 11.999999))
+df_answer <- data.frame(l = c(37, -13, 31, 16, 2),
+                        s = c(17, -3, 6, 13, 0),
+                        d = c(5, -1, 5.38, 1, 0))
+df_ratio <- data.frame(l = c(37, -12, 31, 16, 1),
+                       s = c(15, -19, 5, 8, 19),
+                       d = c(9, -5, 4.84, 13, 12))
+df_answer2 <- data.frame(l.1 = c(37, -13, 31, 16, 2),
+                         s.1 = c(17, -3, 6, 13, 0),
+                         d.1 = c(5, -1, 5.38, 1, 0))
 character_df <- data.frame(ch = c("hello", "goodbye"),
                            n1 = c(6, 7),
                            n2 = c(3, 4))
@@ -115,6 +115,13 @@ test_that("it goes together in deb_normalize", {
   expect_equal(deb_normalize(mix_vector), c(l = 1, s = 10, d = 1))
   expect_equal(deb_normalize(c(NA, 4, 5)),
                stats::setNames(as.numeric(c(NA, NA, NA)), c("l", "s", "d")))
+  # rounding and avoid d being equal to base of d
+  expect_equal(deb_normalize(c(1, 19, 11.999999)), c(l = 2, s = 0, d = 0))
+  expect_equal(deb_normalize(c(1, 18, 23.999999)), c(l = 2, s = 0, d = 0))
+  expect_equal(deb_normalize(c(-1, -19, -11.999999)), c(l = -2, s = 0, d = 0))
+  expect_equal(deb_normalize(c(1, 19, 11.99999)), c(l = 1, s = 19, d = 11.99999))
+  expect_equal(deb_normalize(c(1, 7, 15.999999), lsd_bases = c(8, 16)),
+               c(l = 2, s = 0, d = 0))
 })
 
 ## Vectorization ##
@@ -137,7 +144,7 @@ test_that("different lsd_basess work", {
 
 # Checks for data frames #
 test_that("lsd_column_check work", {
-  expect_error(deb_normalize_df(df, l, s, d),
+  expect_error(deb_normalize_df(ex_vector, l, s, d),
                "df must be a data frame or data-frame like object")
   expect_error(deb_normalize_df(ex_df, pounds, shillings, pence),
                paste("Column names for l, s, and d must be provided if the",

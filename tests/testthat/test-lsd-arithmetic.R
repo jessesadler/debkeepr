@@ -8,29 +8,35 @@ dec_vector <- c(5.85, 17.35, 10)
 ex_list <- list(c(30, 10, 9), c(10.725, 18.65, 11), c(-26, -11, -10))
 ex_list2 <- list(ex_vector, dec_vector, ex_vector2)
 
-ex_df <- data.frame(l = c(30, 10.725, -26),
-                    s = c(10, 18.65, -11),
-                    d = c(9, 11, -10))
+ex_df <- data.frame(l = c(30, 10.725, -26, 405, 350),
+                    s = c(10, 18.65, -11, 0, 8),
+                    d = c(9, 11, -10, 0, 0))
 
-answer_x3 <- data.frame(l = c(30, 10.725, -26),
-                        s = c(10, 18.65, -11),
-                        d = c(9, 11, -10),
-                        l.1 = c(91, 35, -79),
-                        s.1 = c(12, 2, -15),
-                        d.1 = c(3, 2.4, -6))
-answer_x3_replace <- data.frame(l = c(91, 35, -79),
-                                s = c(12, 2, -15),
-                                d = c(3, 2.4, -6))
+answer_x3 <- data.frame(l = c(30, 10.725, -26, 405, 350),
+                        s = c(10, 18.65, -11, 0, 8),
+                        d = c(9, 11, -10, 0, 0),
+                        l.1 = c(91, 35, -79, 1215, 1051),
+                        s.1 = c(12, 2, -15, 0, 4),
+                        d.1 = c(3, 2.4, -6, 0, 0))
+answer_x3_replace <- data.frame(l = c(91, 35, -79, 1215, 1051),
+                                s = c(12, 2, -15, 0, 4),
+                                d = c(3, 2.4, -6, 0, 0))
+answer_x03 <- data.frame(l = c(10, 3, -8, 135, 116),
+                         s = c(3, 18, -17, 0, 16),
+                         d = c(7, 0.26667, -3.33333, 0, 0))
 
-answer_d2 <- data.frame(l = c(30, 10.725, -26),
-                        s = c(10, 18.65, -11),
-                        d = c(9, 11, -10),
-                        l.1 = c(15, 5, -13),
-                        s.1 = c(5, 17, -5),
-                        d.1 = c(4.5, 0.4, -11))
-answer_d2_replace <- data.frame(l = c(15, 5, -13),
-                                s = c(5, 17, -5),
-                                d = c(4.5, 0.4, -11))
+answer_d2 <- data.frame(l = c(30, 10.725, -26, 405, 350),
+                        s = c(10, 18.65, -11, 0, 8),
+                        d = c(9, 11, -10, 0, 0),
+                        l.1 = c(15, 5, -13, 202, 175),
+                        s.1 = c(5, 17, -5, 10, 4),
+                        d.1 = c(4.5, 0.4, -11, 0, 0))
+answer_d2_replace <- data.frame(l = c(15, 5, -13, 202, 175),
+                                s = c(5, 17, -5, 10, 4),
+                                d = c(4.5, 0.4, -11, 0, 0))
+answer_d6 <- data.frame(l = c(5, 1, -4, 67, 58),
+                        s = c(1, 19, -8, 10, 8),
+                        d = c(9.5, 0.13333, -7.66667, 0, 0))
 
 na_df <- data.frame(l = c(30, 10.725, -26),
                     s = c(10, 18.65, -11),
@@ -65,6 +71,11 @@ test_that("lsd multiplication works", {
                c(l = 55, s = 17, d = 5))
   expect_equal(deb_multiply(ex_vector2, x = 3, lsd_bases = c(8, 16)),
                c(l = 62, s = 0, d = 8))
+  # Rounding and denarii base
+  expect_equal(deb_multiply(c(405, 0, 0), x = 1/300),
+               c(l = 1, s = 7, d = 0))
+  expect_equal(deb_multiply(c(405, 0, 0), x = 0.0033333333),
+               c(l = 1, s = 7, d = 0))
 })
 
 test_that("lsd multiplication is vectorized", {
@@ -79,6 +90,7 @@ test_that("deb_multiply_mutate works", {
   expect_equal(ncol(deb_multiply_mutate(ex_df, l, s, d, x = 2, replace = TRUE)), 3)
   expect_equal(deb_multiply_mutate(ex_df, l, s, d, x = 3), answer_x3)
   expect_equal(deb_multiply_mutate(ex_df, l, s, d, x = 3, replace = TRUE), answer_x3_replace)
+  expect_equal(deb_multiply_mutate(ex_df, x = 0.3333333333, replace = TRUE), answer_x03)
   # lsd_bases changes answer
   expect_false(identical(deb_multiply_mutate(ex_df, l, s, d, x = 3),
                          deb_multiply_mutate(ex_df, l, s, d, x = 3, lsd_bases = c(8, 16))))
@@ -88,11 +100,16 @@ test_that("deb_multiply_mutate works", {
 # Division
 test_that("lsd division works", {
   expect_equal(deb_divide(ex_vector, x = 3),
-               c(l = 3, s = 7, d = 8 + 2/3))
+               c(l = 3, s = 7, d = 8.66667))
   expect_equal(deb_divide(neg_vector, x = 3),
                c(l = -2, s = -18, d = -10))
   expect_equal(deb_divide(ex_vector, x = 3, lsd_bases = c(8, 16)),
-               c(l = 3, s = 3, d = 11 + 1/3))
+               c(l = 3, s = 3, d = 11.33333))
+  # Rounding and denarii base
+  expect_equal(deb_divide(c(405, 0, 0), x = 300),
+               c(l = 1, s = 7, d = 0))
+  expect_equal(deb_divide(c(350, 8, 0), x = 6),
+               c(l = 58, s = 8, d = 0))
 })
 
 test_that("lsd division is vectorized", {
@@ -107,6 +124,7 @@ test_that("deb_divide_mutate works", {
   expect_equal(ncol(deb_divide_mutate(ex_df, l, s, d, x = 2, replace = TRUE)), 3)
   expect_equal(deb_divide_mutate(ex_df, l, s, d, x = 2), answer_d2)
   expect_equal(deb_divide_mutate(ex_df, l, s, d, x = 2, replace = TRUE), answer_d2_replace)
+  expect_equal(deb_divide_mutate(ex_df, x = 6, replace = TRUE), answer_d6)
   # lsd_bases changes answer
   expect_false(identical(deb_divide_mutate(ex_df, l, s, d, x = 3),
                          deb_divide_mutate(ex_df, l, s, d, x = 3, lsd_bases = c(8, 16))))
@@ -145,9 +163,9 @@ test_that("deb_add_mutate works", {
   expect_equal(ncol(deb_add_mutate(ex_df, l, s, d, lsd = c(5, 15, 8))), 6)
   expect_equal(ncol(deb_add_mutate(ex_df, l, s, d, lsd = c(5, 15, 8), replace = TRUE)), 3)
   expect_equal(deb_add_mutate(ex_df, l, s, d, lsd = c(5, 15, 8), replace = TRUE),
-               data.frame(l = c(36, 17, -20),
-                          s = c(6, 9, -16),
-                          d = c(5, 8.8, -2)))
+               data.frame(l = c(36, 17, -20, 410, 356),
+                          s = c(6, 9, -16, 15, 3),
+                          d = c(5, 8.8, -2, 8, 8)))
   # lsd_bases changes answer
   expect_false(identical(deb_add_mutate(ex_df, l, s, d, lsd = c(5, 15, 8)),
                          deb_add_mutate(ex_df, l, s, d, lsd = c(5, 15, 8), lsd_bases = c(8, 16))))
@@ -184,9 +202,9 @@ test_that("deb_subtraction_mutate works", {
   expect_equal(ncol(deb_subtract_mutate(ex_df, l, s, d, lsd = c(5, 15, 8))), 6)
   expect_equal(ncol(deb_subtract_mutate(ex_df, l, s, d, lsd = c(5, 15, 8), replace = TRUE)), 3)
   expect_equal(deb_subtract_mutate(ex_df, l, s, d, lsd = c(5, 15, 8), replace = TRUE),
-               data.frame(l = c(24, 5, -32),
-                          s = c(15, 18, -7),
-                          d = c(1, 4.8, -6)))
+               data.frame(l = c(24, 5, -32, 399, 344),
+                          s = c(15, 18, -7, 4, 12),
+                          d = c(1, 4.8, -6, 4, 4)))
   # lsd_bases changes answer
   expect_false(identical(deb_subtract_mutate(ex_df, l, s, d, lsd = c(5, 15, 8)),
                          deb_subtract_mutate(ex_df, l, s, d, lsd = c(5, 15, 8), lsd_bases = c(8, 16))))

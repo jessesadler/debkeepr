@@ -12,7 +12,7 @@ decimalize_s <- function(l, s, d, lsd_bases = c(20, 12)) {
 }
 
 decimalize_d <- function(l, s, d, lsd_bases = c(20, 12)) {
-  l * prod(lsd_bases) + s * lsd_bases[2] + d
+  round(l * prod(lsd_bases) + s * lsd_bases[2] + d, 5)
 }
 
 #' Convert from pounds, shillings and pence to pounds
