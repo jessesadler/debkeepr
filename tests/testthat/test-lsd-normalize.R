@@ -159,6 +159,10 @@ test_that("lsd_column_check work", {
 })
 
 test_that("suffix check", {
+  expect_error(deb_normalize_df(ex_df, replace = "a"),
+               "replace must be either TRUE or FALSE")
+  expect_error(deb_normalize_df(ex_df, replace = c(TRUE, FALSE)),
+               "replace must be a logical vector of length 1")
   expect_error(deb_normalize_df(ex_df, replace = FALSE, suffix = 1),
                "suffix must be a character vector")
   expect_error(deb_normalize_df(ex_df, replace = FALSE, suffix = c(".1", ".2")),

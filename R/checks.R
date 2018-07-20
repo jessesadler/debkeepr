@@ -100,10 +100,16 @@ lsd_column_names <- function(df, l, s, d, suffix) {
 }
 
 suffix_check <- function(suffix, replace = FALSE) {
+  if (!is.logical(replace)) {
+    stop(call. = FALSE, "replace must be either TRUE or FALSE")
+  }
+  if (length(replace) != 1) {
+    stop(call. = FALSE, "replace must be a logical vector of length 1")
+  }
+
   if (!is.character(suffix)) {
     stop(call. = FALSE, "suffix must be a character vector")
   }
-
   if (length(suffix) != 1) {
     stop(call. = FALSE, "suffix must be a character vector of length 1")
   }
