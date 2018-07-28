@@ -33,7 +33,7 @@ to shillings. Default is s.}
 pence. Default is d.}
 
 \item{lsd_bases}{Numeric vector of length 2 used to specify the bases for
-the s or solidus and d or denarius values in \code{lsd} vectors. Default is
+the s or solidus and d or denarius values in the lsd variables. Default is
 \code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
 20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
 use alternative bases for the solidus and denarius values that were also

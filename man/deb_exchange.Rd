@@ -2,7 +2,7 @@
 % Please edit documentation in R/lsd-exchange.R
 \name{deb_exchange}
 \alias{deb_exchange}
-\title{Convert between pounds, shillings and pence currencies}
+\title{Exchange between pounds, shillings and pence currencies}
 \usage{
 deb_exchange(lsd, rate_per_shillings, lsd_bases = c(20, 12))
 }
@@ -31,12 +31,16 @@ and pence. If the input lsd value is negative, the l, s, and d values
 will all be negative.
 }
 \description{
-Convert between different currencies that are in the form of pounds,
-shillings, and pence given an exchange rate calculated on the basis of
-shillings.
+Exchange between pounds, shillings, and pence currencies that share the
+same bases for shillings and pence given an exchange rate calculated on
+the basis of shillings.
 }
 \details{
-\code{deb_exchange()} is a wrapper around \code{\link[=deb_multiply]{deb_multiply()}}.
+\code{deb_exchange()} is a wrapper around \code{\link[=deb_multiply]{deb_multiply()}}. It uses shillings
+as the basis for the conversion between the currencies. If the conversion
+between currencies is presented in pounds or pence, it may be easier to
+use \code{\link[=deb_multiply]{deb_multiply()}}. If the bases for the shillings and pence units differ
+between the two currencies use \code{\link[=deb_convert_bases]{deb_convert_bases()}}.
 }
 \examples{
 # Exchange at the rate of 31 shillings

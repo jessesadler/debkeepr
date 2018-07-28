@@ -192,3 +192,13 @@ exchange_rate_check <- function(x) {
     stop(call. = FALSE, "rate_per_shillings must be a numeric vector of length 1")
   }
 }
+
+ratio_check <- function(ratio) {
+  # check ratio
+  if (!is.numeric(ratio)) {
+    stop(call. = FALSE, "ratio must be a numeric vector")
+  }
+  if (length(ratio) != 1) {
+    stop(call. = FALSE, "ratio must be a numeric vector of length 1")
+  }
+}

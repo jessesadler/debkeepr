@@ -2,7 +2,7 @@
 % Please edit documentation in R/lsd-exchange.R
 \name{deb_rate_per_shilling}
 \alias{deb_rate_per_shilling}
-\title{Conversion rate per shillings}
+\title{Exchange rate per shillings}
 \usage{
 deb_rate_per_shilling(lsd1, lsd2, lsd_bases = c(20, 12))
 }

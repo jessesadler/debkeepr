@@ -1,12 +1,16 @@
-## lsd conversions ##
+## lsd exchanges by solidi ##
 
-#' Convert between pounds, shillings and pence currencies
+#' Exchange between pounds, shillings and pence currencies
 #'
-#' Convert between different currencies that are in the form of pounds,
-#' shillings, and pence given an exchange rate calculated on the basis of
-#' shillings.
+#' Exchange between pounds, shillings, and pence currencies that share the
+#' same bases for shillings and pence given an exchange rate calculated on
+#' the basis of shillings.
 #'
-#' `deb_exchange()` is a wrapper around [deb_multiply()].
+#' `deb_exchange()` is a wrapper around [deb_multiply()]. It uses shillings
+#' as the basis for the conversion between the currencies. If the conversion
+#' between currencies is presented in pounds or pence, it may be easier to
+#' use [deb_multiply()]. If the bases for the shillings and pence units differ
+#' between the two currencies use [deb_convert_bases()].
 #'
 #' @inheritParams deb_normalize
 #' @param rate_per_shillings The exchange rate. This follows the common practice
@@ -64,7 +68,7 @@ normalized_to_sd <- function(lsd, lsd_bases = c(20, 12)) {
   lsd
 }
 
-#' Conversion rate per shillings
+#' Exchange rate per shillings
 #'
 #' Calculate the exchange rate between two sets of values in the form of
 #' pounds, shillings, and pence. The rate is returned in the form of shillings
@@ -121,13 +125,20 @@ deb_rate_per_shilling <- function(lsd1, lsd2, lsd_bases = c(20, 12)) {
   normalized_to_sd(normalized, lsd_bases)
 }
 
-#' Convert between pounds, shillings and pence currencies in a data frame
+#' Exchange between pounds, shillings and pence currencies in a data frame
 #'
 #' Uses [dplyr::mutate()] to convert between different currencies that are in
-#' the form of pounds, shillings, and pence variables in a data frame given
-#' an exchange rate calculated on the basis of shillings. The converted values
-#' are returned in the form of three new variables representing the calculated
-#' pounds, shillings and pence for the new currency.
+#' the form of pounds, shillings, and pence variables in a data frame and share
+#' the same bases for shillings and pence given an exchange rate calculated on
+#' the basis of shillings. The converted values are returned in the form of
+#' three new variables representing the calculated pounds, shillings and pence
+#' for the new currency.
+#'
+#' `deb_exchange_mutate()` uses shillings as the basis for the conversion
+#' between the currencies. If the conversion between currencies is presented
+#' in pounds or pence, it may be easier to use [deb_multiply_mutate()]. If the
+#' bases for the shillings and pence units differ between the two currencies
+#' use [deb_convert_bases_mutate()].
 #'
 #' @inheritParams deb_multiply_mutate
 #' @inheritParams deb_exchange
@@ -173,7 +184,7 @@ deb_exchange_mutate <- function(df,
                                 rate_per_shillings,
                                 lsd_bases = c(20, 12),
                                 replace = FALSE,
-                                suffix = ".exchange" ) {
+                                suffix = ".exchange") {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)

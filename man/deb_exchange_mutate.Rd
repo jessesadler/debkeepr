@@ -2,7 +2,7 @@
 % Please edit documentation in R/lsd-exchange.R
 \name{deb_exchange_mutate}
 \alias{deb_exchange_mutate}
-\title{Convert between pounds, shillings and pence currencies in a data frame}
+\title{Exchange between pounds, shillings and pence currencies in a data frame}
 \usage{
 deb_exchange_mutate(df, l = l, s = s, d = d, rate_per_shillings,
   lsd_bases = c(20, 12), replace = FALSE, suffix = ".exchange")
@@ -25,7 +25,7 @@ of shillings. Thus, in terms of a given number over the base of shillings
 provided in the \code{lsd_bases} argument. A numeric vector of length 1.}
 
 \item{lsd_bases}{Numeric vector of length 2 used to specify the bases for
-the s or solidus and d or denarius values in \code{lsd} vectors. Default is
+the s or solidus and d or denarius values in the lsd variables. Default is
 \code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
 20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
 use alternative bases for the solidus and denarius values that were also
@@ -45,10 +45,18 @@ and pence representing the converted currency.
 }
 \description{
 Uses \code{\link[dplyr:mutate]{dplyr::mutate()}} to convert between different currencies that are in
-the form of pounds, shillings, and pence variables in a data frame given
-an exchange rate calculated on the basis of shillings. The converted values
-are returned in the form of three new variables representing the calculated
-pounds, shillings and pence for the new currency.
+the form of pounds, shillings, and pence variables in a data frame and share
+the same bases for shillings and pence given an exchange rate calculated on
+the basis of shillings. The converted values are returned in the form of
+three new variables representing the calculated pounds, shillings and pence
+for the new currency.
+}
+\details{
+\code{deb_exchange_mutate()} uses shillings as the basis for the conversion
+between the currencies. If the conversion between currencies is presented
+in pounds or pence, it may be easier to use \code{\link[=deb_multiply_mutate]{deb_multiply_mutate()}}. If the
+bases for the shillings and pence units differ between the two currencies
+use \code{\link[=deb_convert_bases_mutate]{deb_convert_bases_mutate()}}.
 }
 \examples{
 # Exchange rate of 31 shillings
