@@ -59,19 +59,31 @@ test_that("normalized_to_sd helper works",{
   expect_equal(normalized_to_sd(c(1, 11, 0)), c(0, 31, 0))
 })
 
-test_that("deb_rate_per_shilling works", {
-  expect_equal(deb_rate_per_shilling(c(166, 13, 4), c(100, 0, 0)),
-               c(l = 0, s = 33, d = 4))
-  expect_equal(deb_rate_per_shilling(c(100, 0, 0), c(166, 13, 4)),
-               c(l = 0, s = 12, d = 0))
-  expect_equal(deb_rate_per_shilling(c(166, 13, 4), c(100, 0, 0), lsd_bases = c(8, 16)),
-               c(l = 0, s = 13, d = 5.33333))
+test_that("normalized_to_d helper works",{
+  expect_equal(normalized_to_d(c(1, 11, 6)), c(0, 0, 378))
 })
 
-test_that("deb_rate_per_shilling is vectorized", {
-  expect_equal(length(deb_rate_per_shilling(ex_list, ex_list2)), 3)
-  expect_equal(purrr::map(deb_rate_per_shilling(ex_list, ex_list2), round),
-               list(c(l = 0, s = 60, d = 1),
-                    c(l = 0, s = 34, d = 8),
-                    c(l = 0, s = -26, d = -3)))
+test_that("deb_exchange_rate works", {
+  expect_equal(deb_exchange_rate(c(166, 13, 4), c(100, 0, 0)),
+               c(l = 0, s = 12, d = 0))
+  expect_equal(deb_exchange_rate(c(100, 0, 0), c(166, 13, 4)),
+               c(l = 0, s = 33, d = 4))
+  expect_equal(deb_exchange_rate(c(100, 0, 0), c(166, 13, 4), lsd_bases = c(8, 16)),
+               c(l = 0, s = 13, d = 5.33333))
+  expect_equal(deb_exchange_rate(c(166, 13, 4), c(100, 0, 0), output = "pence"),
+               c(l = 0, s = 0, d = 144))
+  expect_equal(deb_exchange_rate(c(100, 0, 0), c(166, 13, 4), output = "pence"),
+               c(l = 0, s = 0, d = 400))
+  expect_equal(deb_exchange_rate(c(166, 13, 4), c(100, 0, 0), output = "pounds"),
+               c(l = 0, s = 12, d = 0))
+  expect_equal(deb_exchange_rate(c(100, 0, 0), c(166, 13, 4), output = "pounds"),
+               c(l = 1, s = 13, d = 4))
+})
+
+test_that("deb_exchange_rate is vectorized", {
+  expect_equal(length(deb_exchange_rate(ex_list, ex_list2)), 3)
+  expect_equal(purrr::map(deb_exchange_rate(ex_list, ex_list2), ~ round(., 0)),
+               list(c(l = 0, s = 6, d = 8),
+                    c(l = 0, s = 11, d = 7),
+                    c(l = 0, s = -15, d = -3)))
 })

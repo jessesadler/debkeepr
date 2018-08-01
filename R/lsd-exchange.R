@@ -68,62 +68,106 @@ normalized_to_sd <- function(lsd, lsd_bases = c(20, 12)) {
   lsd
 }
 
-#' Exchange rate per shillings
+normalized_to_d <- function(lsd, lsd_bases = c(20, 12)) {
+  if (is.list(lsd) == TRUE) {
+    return(purrr::map(lsd, ~ normalized_to_sd(., lsd_bases)))
+  }
+
+  lsd[3] <- round(lsd[1] * prod(lsd_bases) + lsd[2] * lsd_bases[2] + lsd[3], 5)
+  lsd[1] <- 0
+  lsd[2] <- 0
+  lsd
+}
+
+#' Exchange rate between pounds, shillings, and pence values
 #'
 #' Calculate the exchange rate between two sets of values in the form of
-#' pounds, shillings, and pence. The rate is returned in the form of shillings
-#' and pence, which follows the contemporary practice and the form used in the
-#' `rate_per_shillings` argument in [deb_exchange()] and [deb_exchange_mutate()].
+#' pounds, shillings, and pence. The rate is returned in the form of either
+#' pounds, shillings, and pence; shillings and pence; or just pence. `lsd1`
+#' and `lsd2` must have the same bases for the shillings and pence units.
 #'
 #' If `lsd1` and `lsd2` are lists of different lengths or one is a vector,
 #' the shorter list will be recycled.
 #'
 #' @inheritParams deb_normalize
-#' @param lsd1,lsd2 Numeric vectors of length 3 or lists of numeric vectors of
-#'   length 3. The first position of the vectors represents the pounds value or
-#'   l. The second position represents the shillings value or s. And the third
-#'   position represents the pence value or d. `lsd2` is the value (or values)
-#'   that is reduced to £1 and against which `lsd1` is compared. Thus, `lsd2`
-#'   = £1 and `lsd1` = the returned value.
+#' @param lsd1 Pounds, shillings, and pence, value that is reduced to £1 and
+#'   against which `lsd2` is compared. `lsd1` is a numeric vector of length 3
+#'   or list of numeric vectors of length 3. The first position of the vectors
+#'   represents the pounds value or l. The second position represents the
+#'   shillings value or s. And the third position represents the pence value
+#'   or d.
+#' @param lsd2 Pounds, shillings, and pence, value that is compared to `lsd1`.
+#'   Thus, when `lsd1` equals £1, `lsd2` equals the returned value. `lsd2` is
+#'   a numeric vector of length 3 or list of numeric vectors of length 3. The
+#'   first position of the vectors represents the pounds value or l. The second
+#'   position represents the shillings value or s. And the third position
+#'   represents the pence value or d.
+#' @param output Choice of either `"shillings"`, `"pence"`, or `"pounds"` for
+#'   the format in which the exchange rate will be returned.  `"shillings"`,
+#'   the default, returns the exchange rate in terms of shillings and pence.
+#'   `"pence"` returns the exchange rate in terms of pence. `"pounds"` returns
+#'   the exchange rate in terms of pounds, shillings, and pence.
 #'
 #' @return Returns either a named numeric vector of length 3 or a list of
 #'   named numeric vectors representing the values of pounds, shillings,
-#'   and pence. The rate is returned in the form of shillings and pence, which
-#'   follows the contemporary practice and the form used in the
-#'   `rate_per_shillings` argument in [deb_exchange()] and
-#'   [deb_exchange_mutate()]. If `lsd1` > `lsd2` the returned vector will have
-#'   a shillings value greater than the base for shillings.
+#'   and pence. The format of the returned value is determined by the `output`
+#'   argument. If `lsd1` > `lsd2`, the returned value will be less that £1.
 #'
 #' @examples
 #' # Find the exchange rate if £166 13s 4d in one currency is
-#' # equivalent to £100 0s 0d in another currency
-#' deb_rate_per_shilling(lsd1 = c(166, 13, 4), lsd2 = c(100, 0, 0))
+#' # equivalent to £100 0s 0d in another currency in terms of shillings
+#' deb_exchange_rate(lsd1 = c(166, 13, 4), lsd2 = c(100, 0, 0))
 #'
-#' # The rate returned is in the non-normalized form of shillings and pence
-#' # Can normalize the returned value by piping to `deb_normalize()`.
-#' deb_rate_per_shilling(lsd1 = c(166, 13, 4), lsd2 = c(100, 0, 0)) %>%
-#'   deb_normalize()
+#' # Exchange rate for the opposite direction
+#' deb_exchange_rate(lsd1 = c(100, 0, 0), lsd2 = c(166, 13, 4))
+#'
+#' # Exchange rate in terms of pence
+#' deb_exchange_rate(lsd1 = c(125, 0, 0),
+#'                   lsd2 = c(46, 17, 6),
+#'                   output = "pence")
+#'
+#' # Exchange rate in terms of pounds, shillings, and pence
+#' deb_exchange_rate(lsd1 = c(100, 0, 0),
+#'                   lsd2 = c(166, 13, 4),
+#'                   output = "pounds")
+#'
+#' # To find decimalized ratio between currencies use
+#' # deb_exchange_rate() with deb_lsd_l()
+#' deb_exchange_rate(lsd1 = c(100, 0, 0), lsd2 = c(166, 13, 4)) %>%
+#'   deb_lsd_l()
 #'
 #' # To find the exchange rate for multiple currencies
 #' # use a list of lsd vectors for `lsd1` or `lsd2`
 #' list_a <- list(c(150, 0, 0), c(125, 0, 0), c(175, 13, 4))
-#' list_b <- list(c(125, 0, 0), c(100, 8, 4), c(100, 0, 0))
+#' list_b <- list(c(125, 0, 0), c(75, 8, 4), c(100, 10, 0))
 #'
-#' deb_rate_per_shilling(lsd1 = list_a, lsd2 = list_b)
+#' deb_exchange_rate(lsd1 = list_a, lsd2 = list_b)
 #'
 #' # Or find the exchange rate of multiple currencies to a
 #' # single currency by using a vector for `lsd2`
-#'
-#' deb_rate_per_shilling(lsd1 = list_a, lsd2 = c(100, 0, 0))
+#' deb_exchange_rate(lsd1 = list_a, lsd2 = c(100, 0, 0))
 #'
 #' @export
 
-deb_rate_per_shilling <- function(lsd1, lsd2, lsd_bases = c(20, 12)) {
-  rate <- deb_lsd_l(lsd1) / deb_lsd_l(lsd2)
+deb_exchange_rate <- function(lsd1, lsd2,
+                              output = c("shillings", "pence", "pounds"),
+                              lsd_bases = c(20, 12)) {
+  output <- rlang::arg_match(output)
+
+  rate <- deb_lsd_l(lsd2) / deb_lsd_l(lsd1)
   normalized <- deb_l_lsd(rate, lsd_bases = lsd_bases)
 
-  normalized_to_sd(normalized, lsd_bases)
+  res <- dplyr::case_when(output == "shillings" ~ normalized_to_sd(normalized, lsd_bases),
+                          output == "pence" ~ normalized_to_d(normalized, lsd_bases),
+                          output == "pounds" ~ normalized)
+
+  if (is.list(res) == TRUE) {
+    purrr::map(res, ~ stats::setNames(., c("l", "s", "d")))
+  } else {
+    stats::setNames(res, c("l", "s", "d"))
+  }
 }
+
 
 #' Exchange between pounds, shillings and pence currencies in a data frame
 #'
