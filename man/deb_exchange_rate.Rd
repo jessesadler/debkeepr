@@ -8,19 +8,21 @@ deb_exchange_rate(lsd1, lsd2, output = c("shillings", "pence", "pounds"),
   lsd_bases = c(20, 12))
 }
 \arguments{
-\item{lsd1}{Pounds, shillings, and pence, value that is reduced to £1 and
-against which \code{lsd2} is compared. \code{lsd1} is a numeric vector of length 3
-or list of numeric vectors of length 3. The first position of the vectors
-represents the pounds value or l. The second position represents the
-shillings value or s. And the third position represents the pence value
-or d.}
-
-\item{lsd2}{Pounds, shillings, and pence, value that is compared to \code{lsd1}.
-Thus, when \code{lsd1} equals £1, \code{lsd2} equals the returned value. \code{lsd2} is
-a numeric vector of length 3 or list of numeric vectors of length 3. The
-first position of the vectors represents the pounds value or l. The second
+\item{lsd1}{Pounds, shillings, and pence value that is reduced to £1 and
+against which \code{lsd2} is compared. In other words, \code{lsd1} is the "fixed
+currency" and \code{lsd2} is the "variable currency". \code{lsd1} is a numeric
+vector of length 3 or list of numeric vectors of length 3. The first
+position of the vectors represents the pounds value or l. The second
 position represents the shillings value or s. And the third position
 represents the pence value or d.}
+
+\item{lsd2}{Pounds, shillings, and pence, value that is compared to \code{lsd1}.
+When \code{lsd1} equals £1, \code{lsd2} equals the returned value. In other words,
+\code{lsd1} is the "fixed currency" and \code{lsd2} is the "variable currency".
+\code{lsd2} is a numeric vector of length 3 or list of numeric vectors of
+length 3. The first position of the vectors represents the pounds value
+or l. The second position represents the shillings value or s. And the
+third position represents the pence value or d.}
 
 \item{output}{Choice of either \code{"shillings"}, \code{"pence"}, or \code{"pounds"} for
 the format in which the exchange rate will be returned.  \code{"shillings"},

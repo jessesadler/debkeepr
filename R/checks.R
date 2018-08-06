@@ -183,13 +183,43 @@ arithmetic_check <- function(x) {
   }
 }
 
-exchange_rate_check <- function(x) {
+shillings_check <- function(x) {
   if (!is.numeric(x)) {
     stop(call. = FALSE, "rate_per_shillings must be numeric")
   }
 
   if (length(x) != 1) {
     stop(call. = FALSE, "rate_per_shillings must be a numeric vector of length 1")
+  }
+}
+
+exchange_rate_check <- function(x) {
+  if (is.vector(x) == FALSE) {
+    stop(call. = FALSE, "exchange_rate must be either a numeric vector or list of numeric vectors")
+  }
+
+  # check rate vector
+  if (is.list(x) == FALSE & is.vector(x) == TRUE) {
+    if (!is.numeric(x)) {
+      stop(call. = FALSE, "exchange_rate must be a numeric vector")
+    }
+    if (length(x) != 3) {
+      stop(call. = FALSE, paste("exchange_rate must be a vector of length of 3.",
+                                "There must be a value for pounds, shillings, and pence.",
+                                sep = "\n"))
+    }
+  }
+
+  # check rate list
+  if (is.list(x) == TRUE) {
+    if (!all(purrr::map_lgl(x, is.numeric))) {
+      stop(call. = FALSE, "exchange_rate must be a list of numeric vectors")
+    }
+    if (identical(purrr::map_dbl(x, length), rep(3, length(x))) == FALSE) {
+      stop(call. = FALSE, paste("exchange_rate must be a list of numeric vectors of length 3.",
+                                "There must be a value for pounds, shillings, and pence.",
+                                sep = "\n"))
+    }
   }
 }
 

@@ -71,6 +71,7 @@ test_that("length of lsd is 3", {
                      sep = "\n"))
 })
 
+## Error messages from bases_check ##
 test_that("lsd_bases checks work", {
   expect_error(deb_normalize(ex_vector, lsd_bases = NULL),
                "lsd_bases must be a numeric vector")
