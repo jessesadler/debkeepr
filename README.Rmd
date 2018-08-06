@@ -100,11 +100,11 @@ deb_normalize(lsd = c(10, 64, 21))
 
 Notice that the result is a named vector with the elements of the vector named “l”, “s”, and “d” respectively.
 
-While much of Europe used the ratio of 1:20:240 from the 8th century on, there also existed [systems that used different bases](https://en.wikipedia.org/wiki/Non-decimal_currency) for the solidus and denarius units. For example, the [money of account](https://en.wikipedia.org/wiki/Unit_of_account) in the [Dutch Republic](https://en.wikipedia.org/wiki/Stuiver) consisted of gulden, stuivers, and penningen. Like the more prevalent system of libra, solidus, and denarius, there were 20 stuivers in a gulden, but there were 16 penningen in a stuiver.  It is possible to normalize the above value with this alternative set of lsd bases, or any other bases, with the `lsd_bases` argument. This argument takes a numeric vector of length two, corresponding to the bases for the solidus and denarius units. The default is the most commonly used bases of 20 and 12: `c(20, 12)`. The desired bases can be set in all of the relevant functions in `debkeepr`.
+While much of Europe used the ratio of 1:20:240 from the 8th century on, there also existed [systems that used different bases](https://en.wikipedia.org/wiki/Non-decimal_currency) for the solidus and denarius units. For example, the [money of account](https://en.wikipedia.org/wiki/Unit_of_account) in the [Dutch Republic](https://en.wikipedia.org/wiki/Stuiver) consisted of gulden, stuivers, and penningen. Like the more prevalent system of libra, solidus, and denarius, there were 20 stuivers in a gulden, but there were 16 penningen in a stuiver.  It is possible to normalize the above value with this alternative set of lsd bases, or any other bases, with the `bases` argument. This argument takes a numeric vector of length two, corresponding to the bases for the solidus and denarius units. The default is the most commonly used bases of 20 and 12: `c(20, 12)`. The desired bases can be set in all of the relevant functions in `debkeepr`.
 
 ```{r normalize alternate bases}
 # Normalize a non-standard lsd vector with alternative bases
-deb_normalize(lsd = c(10, 64, 21), lsd_bases = c(20, 16))
+deb_normalize(lsd = c(10, 64, 21), bases = c(20, 16))
 ```
 
 You can normalize multiple lsd values by placing lsd vectors into a list. The below example demonstrates some of the types of values that can be properly normalized by `deb_normalize()`. The function accepts negative values or even a mix of positive and negative values within an lsd vector. Any of the values can also possess decimalized values.
@@ -195,7 +195,7 @@ deb_normalize_df(df = normalize_df, l = l, s = s, d = d)
 deb_sum_df(df = lsd_df, l = l, s = s, d = d)
 
 # Change the base to 20s. and 16d.
-deb_sum_df(df = lsd_df, l = l, s = s, d = d, lsd_bases = c(20, 16))
+deb_sum_df(df = lsd_df, l = l, s = s, d = d, bases = c(20, 16))
 ```
 
 Addition, subtraction, multiplication, and division all result in three new variables and so use the `_mutate` suffix. `deb_add_mutate()` and `deb_subtract_mutate()` add and subtract an lsd vector from the lsd values in a data frame. `deb_multiply_mutate()` and `deb_divide_mutate()` multiply and divide the lsd values in a data frame by a single value.

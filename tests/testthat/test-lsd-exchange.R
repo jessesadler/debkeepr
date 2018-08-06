@@ -37,7 +37,7 @@ test_that("deb_exchange works", {
                c(l = 15, s = 4, d = 9))
   expect_equal(deb_exchange(ex_vector, rate_per_shillings = 30 + 3/12),
                c(l = 15, s = 7, d = 3.475))
-  expect_equal(deb_exchange(ex_vector, rate_per_shillings = 30, lsd_bases = c(8, 16)),
+  expect_equal(deb_exchange(ex_vector, rate_per_shillings = 30, bases = c(8, 16)),
                c(l = 38, s = 7, d = 11.5))
 })
 
@@ -52,7 +52,7 @@ test_that("deb_exchange_mutate works", {
   expect_equal(ncol(deb_exchange_mutate(ex_df, l, s, d, rate_per_shillings = 30)), 6)
   expect_equal(deb_exchange_mutate(ex_df, rate_per_shillings = 30, replace = TRUE), exchange_30)
   expect_false(identical(deb_exchange_mutate(ex_df, rate_per_shillings = 30),
-                         deb_exchange_mutate(ex_df, rate_per_shillings = 30, lsd_bases = c(8, 16))))
+                         deb_exchange_mutate(ex_df, rate_per_shillings = 30, bases = c(8, 16))))
 })
 
 test_that("normalized_to_sd helper works",{
@@ -68,9 +68,9 @@ test_that("deb_exchange_rate works", {
                c(l = 0, s = 12, d = 0))
   expect_equal(deb_exchange_rate(c(100, 0, 0), c(166, 13, 4)),
                c(l = 0, s = 33, d = 4))
-  expect_equal(deb_exchange_rate(c(100, 0, 0), c(166, 2, 10), lsd_bases = c(8, 16)),
+  expect_equal(deb_exchange_rate(c(100, 0, 0), c(166, 2, 10), bases = c(8, 16)),
                c(l = 0, s = 13, d = 4.9))
-  expect_equal(deb_exchange_rate(c(20, 10, 8), c(10, 5, 4), lsd_bases = c(40, 24)),
+  expect_equal(deb_exchange_rate(c(20, 10, 8), c(10, 5, 4), bases = c(40, 24)),
                c(l = 0, s = 20, d = 0))
   expect_equal(deb_exchange_rate(c(166, 13, 4), c(100, 0, 0), output = "pence"),
                c(l = 0, s = 0, d = 144))
@@ -105,7 +105,7 @@ test_that("deb_invert_rate is vectorized", {
                list(c(l = 0, s = 12, d = 0),
                     c(l = 0, s = 13, d = 4),
                     c(l = 0, s = 10, d = 0)))
-  expect_equal(deb_invert_rate(rate_list, lsd_bases = c(40, 12)),
+  expect_equal(deb_invert_rate(rate_list, bases = c(40, 12)),
                list(c(l = 0, s = 48, d = 0),
                     c(l = 0, s = 53, d = 4),
                     c(l = 0, s = 40, d = 0)))

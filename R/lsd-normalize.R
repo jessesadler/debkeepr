@@ -3,7 +3,7 @@
 # Check and deal with decimals in l or s
 # If value is negative, turn l, s, and d positive
 # Returns vector in form c(l, s, d)
-lsd_decimal_check <- function(lsd, lsd_bases) {
+lsd_decimal_check <- function(lsd, bases) {
   if (is.list(lsd) == TRUE) {
     l <- purrr::map_dbl(lsd, 1)
     s <- purrr::map_dbl(lsd, 2)
@@ -16,7 +16,7 @@ lsd_decimal_check <- function(lsd, lsd_bases) {
 
   # vectorize
   if (length(l) > 1) {
-    return(purrr::map(lsd, ~ lsd_decimal_check(., lsd_bases)))
+    return(purrr::map(lsd, ~ lsd_decimal_check(., bases)))
   }
   # Return all NA if any is NA
   if (any(is.na(c(l, s, d)))) {
@@ -25,49 +25,49 @@ lsd_decimal_check <- function(lsd, lsd_bases) {
 
   # Check if the value is positive
   # Return positive values so only need to use floor
-  if (l + s / lsd_bases[1] + d / prod(lsd_bases) < 0) {
+  if (l + s / bases[1] + d / prod(bases) < 0) {
     l <- -l
     s <- -s
     d <- -d
   }
   # Check for decimals in l
   if (l != round(l)) {
-    temp_s <- s + (l - floor(l)) * lsd_bases[1]
+    temp_s <- s + (l - floor(l)) * bases[1]
     l <- floor(l)
     if (temp_s != round(temp_s)) {
       s <- floor(temp_s)
-      d <- d + (temp_s - floor(temp_s)) * lsd_bases[2]
+      d <- d + (temp_s - floor(temp_s)) * bases[2]
     } else {
       s <- temp_s
     }
   }
   # Check for decimals in s
   if (s != round(s)) {
-    d <- d + (s - floor(s)) * lsd_bases[2]
+    d <- d + (s - floor(s)) * bases[2]
     s <- floor(s)
   }
   c(l, s, d)
 }
 
 # Actual normalization
-lsd_normalize <- function(lsd, lsd_bases) {
+lsd_normalize <- function(lsd, bases) {
   if (is.list(lsd)) {
-    return(purrr::map(lsd, ~ lsd_normalize(., lsd_bases)))
+    return(purrr::map(lsd, ~ lsd_normalize(., bases)))
   }
 
-  lsd[1] <- lsd[1] + ((lsd[2] + lsd[3] %/% lsd_bases[2]) %/% lsd_bases[1])
-  lsd[2] <- (lsd[2] + lsd[3] %/% lsd_bases[2]) %% lsd_bases[1]
-  lsd[3] <- round(lsd[3] %% lsd_bases[2], 5)
+  lsd[1] <- lsd[1] + ((lsd[2] + lsd[3] %/% bases[2]) %/% bases[1])
+  lsd[2] <- (lsd[2] + lsd[3] %/% bases[2]) %% bases[1]
+  lsd[3] <- round(lsd[3] %% bases[2], 5)
 
   if (any(is.na(lsd))) {
     return(stats::setNames(lsd, c("l", "s", "d")))
   }
 
   # Case when denarii rounds up to its base
-  if (dplyr::near(lsd[3], lsd_bases[2])) {
+  if (dplyr::near(lsd[3], bases[2])) {
     lsd[2] <- lsd[2] + 1
     lsd[3] <- 0
-    if (dplyr::near(lsd[2], lsd_bases[1])) {
+    if (dplyr::near(lsd[2], bases[1])) {
       lsd[1] <- lsd[1] + 1
       lsd[2] <- 0
     }
@@ -77,19 +77,19 @@ lsd_normalize <- function(lsd, lsd_bases) {
 }
 
 # If lsd is negative return normalized as negative
-lsd_negative <- function(normalized, lsd, lsd_bases) {
+lsd_negative <- function(normalized, lsd, bases) {
   # Vectorize
   if (is.list(lsd)) {
     return(purrr::map2(normalized, lsd, ~ lsd_negative(normalized = .x,
                                                        lsd = .y,
-                                                       lsd_bases = lsd_bases)))
+                                                       bases = bases)))
   }
   # NA
   if (any(is.na(normalized))) {
     return(normalized)
   }
 
-  if (sum(lsd / c(1, lsd_bases[1], prod(lsd_bases))) > 0) {
+  if (sum(lsd / c(1, bases[1], prod(bases))) > 0) {
     normalized
   } else {
     -normalized
@@ -111,7 +111,7 @@ lsd_negative <- function(normalized, lsd, lsd_bases) {
 #' and scores of dozens (libra) spread throughout the Carolingian Empire and
 #' became engrained in much of Europe. However,
 #' [other ratios](https://en.wikipedia.org/wiki/Non-decimal_currency) between
-#' libra, solidus, and denarius were also in use. The `lsd_bases` argument
+#' libra, solidus, and denarius were also in use. The `bases` argument
 #' makes it possible to specify alternative bases for the solidus and denarius
 #' values.
 #'
@@ -119,7 +119,7 @@ lsd_negative <- function(normalized, lsd, lsd_bases) {
 #'   3. The first position of the vector represents the pounds value or l. The
 #'   second position represents the shillings value or s. And the third
 #'   position represents the pence value or d.
-#' @param lsd_bases Numeric vector of length 2 used to specify the bases for
+#' @param bases Numeric vector of length 2 used to specify the bases for
 #'   the s or solidus and d or denarius values in `lsd` vectors. Default is
 #'   `c(20, 12)`, which conforms to the most widely used system of 1 libra =
 #'   20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
@@ -137,7 +137,7 @@ lsd_negative <- function(normalized, lsd, lsd_bases) {
 #'
 #' # Normalize values with alternative bases for solidus and denarius units
 #' # For instance, following Dutch system of gulden, stuivers, and penningen
-#' deb_normalize(lsd = c(5, 55, 22), lsd_bases = c(20, 16))
+#' deb_normalize(lsd = c(5, 55, 22), bases = c(20, 16))
 #'
 #' # It is possible to perform math within the function
 #' deb_normalize(lsd = c(5 + 6, 20 + 18, 8 + 11))
@@ -174,13 +174,13 @@ lsd_negative <- function(normalized, lsd, lsd_bases) {
 #'
 #' @export
 
-deb_normalize <- function(lsd, lsd_bases = c(20, 12)) {
+deb_normalize <- function(lsd, bases = c(20, 12)) {
 
   lsd_check(lsd)
-  bases_check(lsd_bases)
-  checked <- lsd_decimal_check(lsd, lsd_bases)
-  normalized <- lsd_normalize(checked, lsd_bases = lsd_bases)
-  lsd_negative(normalized, lsd, lsd_bases)
+  bases_check(bases)
+  checked <- lsd_decimal_check(lsd, bases)
+  normalized <- lsd_normalize(checked, bases = bases)
+  lsd_negative(normalized, lsd, bases)
 }
 
 ## Normalize data frame ##
@@ -201,7 +201,7 @@ deb_normalize <- function(lsd, lsd_bases = c(20, 12)) {
 #' and scores of dozens (libra) spread throughout the Carolingian Empire and
 #' became engrained in much of Europe. However,
 #' [other ratios](https://en.wikipedia.org/wiki/Non-decimal_currency) between
-#' libra, solidus, and denarius were also in use. The `lsd_bases` argument
+#' libra, solidus, and denarius were also in use. The `bases` argument
 #' makes it possible to specify alternative bases for the solidus and denarius
 #' values.
 #'
@@ -212,7 +212,7 @@ deb_normalize <- function(lsd, lsd_bases = c(20, 12)) {
 #'   to shillings. Default is s.
 #' @param d Pence column: Unquoted name of numeric variable corresponding to
 #'   pence. Default is d.
-#' @param lsd_bases Numeric vector of length 2 used to specify the bases for
+#' @param bases Numeric vector of length 2 used to specify the bases for
 #'   the s or solidus and d or denarius values in the lsd variables. Default is
 #'   `c(20, 12)`, which conforms to the most widely used system of 1 libra =
 #'   20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
@@ -238,13 +238,13 @@ deb_normalize <- function(lsd, lsd_bases = c(20, 12)) {
 #'
 #' # Normalize values with alternative bases for solidus and denarius
 #' # For instance, following Dutch system of gulden, stuivers, and penningen
-#' deb_normalize_df(example, l = l, s = s, d = d, lsd_bases = c(20, 16))
+#' deb_normalize_df(example, l = l, s = s, d = d, bases = c(20, 16))
 #'
 #' @export
 
 deb_normalize_df <- function(df,
                              l = l, s = s, d = d,
-                             lsd_bases = c(20, 12),
+                             bases = c(20, 12),
                              replace = TRUE,
                              suffix = ".1") {
   l <- rlang::enquo(l)
@@ -260,5 +260,5 @@ deb_normalize_df <- function(df,
                      !! l, !! s, !! d,
                      lsd_names = lsd_names,
                      replace = replace,
-                     lsd_bases = lsd_bases)
+                     bases = bases)
 }

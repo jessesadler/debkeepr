@@ -5,7 +5,7 @@
 \title{Convert from pounds, shillings and pence to pounds}
 \usage{
 deb_lsd_l_mutate(df, l = l, s = s, d = d, column_name = librae,
-  lsd_bases = c(20, 12))
+  bases = c(20, 12))
 }
 \arguments{
 \item{df}{A data frame that contains pounds, shillings, and pence variables.}
@@ -22,7 +22,7 @@ pence. Default is d.}
 \item{column_name}{Unquoted name of the column for the decimalized pounds.
 Default is \code{pounds}.}
 
-\item{lsd_bases}{Numeric vector of length 2 used to specify the bases for
+\item{bases}{Numeric vector of length 2 used to specify the bases for
 the s or solidus and d or denarius values in the lsd variables. Default is
 \code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
 20 solidi and 1 solidus = 12 denarii. This argument makes it possible to

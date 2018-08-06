@@ -72,39 +72,39 @@ test_that("length of lsd is 3", {
 })
 
 ## Error messages from bases_check ##
-test_that("lsd_bases checks work", {
-  expect_error(deb_normalize(ex_vector, lsd_bases = NULL),
-               "lsd_bases must be a numeric vector")
-  expect_error(deb_normalize(ex_vector, lsd_bases = c("t", "r")),
-               "lsd_bases must be a numeric vector")
-  expect_error(deb_normalize(ex_vector, lsd_bases = c(8, 2, 4)),
-               "lsd_bases must be a numeric vector of length of 2")
-  expect_error(deb_normalize(ex_vector, lsd_bases = 8),
-               "lsd_bases must be a numeric vector of length of 2")
-  expect_error(deb_normalize(ex_vector, lsd_bases = c(20, 0)),
-               "Neither of the values in lsd_bases can be 0")
-  expect_error(deb_normalize(ex_vector, lsd_bases = c(0, 0)),
-               "Neither of the values in lsd_bases can be 0")
-  expect_error(deb_normalize(ex_vector, lsd_bases = c(20, -12)),
-               "The values in lsd_bases must both be positive")
-  expect_error(deb_normalize(ex_vector, lsd_bases = c(-20, -12)),
-               "The values in lsd_bases must both be positive")
+test_that("bases checks work", {
+  expect_error(deb_normalize(ex_vector, bases = NULL),
+               "bases must be a numeric vector")
+  expect_error(deb_normalize(ex_vector, bases = c("t", "r")),
+               "bases must be a numeric vector")
+  expect_error(deb_normalize(ex_vector, bases = c(8, 2, 4)),
+               "bases must be a numeric vector of length of 2")
+  expect_error(deb_normalize(ex_vector, bases = 8),
+               "bases must be a numeric vector of length of 2")
+  expect_error(deb_normalize(ex_vector, bases = c(20, 0)),
+               "Neither of the values in bases can be 0")
+  expect_error(deb_normalize(ex_vector, bases = c(0, 0)),
+               "Neither of the values in bases can be 0")
+  expect_error(deb_normalize(ex_vector, bases = c(20, -12)),
+               "The values in bases must both be positive")
+  expect_error(deb_normalize(ex_vector, bases = c(-20, -12)),
+               "The values in bases must both be positive")
 
-  expect_error(deb_normalize_df(ex_df, lsd_bases = NULL),
-               "lsd_bases must be a numeric vector")
-  expect_error(deb_normalize_df(ex_df, lsd_bases = c(20, 0)),
-               "Neither of the values in lsd_bases can be 0")
-  expect_error(deb_normalize_df(ex_df, lsd_bases = c(20, -12)),
-               "The values in lsd_bases must both be positive")
+  expect_error(deb_normalize_df(ex_df, bases = NULL),
+               "bases must be a numeric vector")
+  expect_error(deb_normalize_df(ex_df, bases = c(20, 0)),
+               "Neither of the values in bases can be 0")
+  expect_error(deb_normalize_df(ex_df, bases = c(20, -12)),
+               "The values in bases must both be positive")
 })
 
 ## lsd_decimal ##
 test_that("lsd_decimal_check", {
-  expect_equal(lsd_decimal_check(decimal_vector, lsd_bases = c(20, 12)), c(5, 101, 64.9))
-  expect_equal(lsd_decimal_check(-decimal_vector, lsd_bases = c(20, 12)), c(5, 101, 64.9))
-  expect_equal(lsd_decimal_check(c(8.5, 7, 0), lsd_bases = c(20, 12)), c(8, 17, 0))
-  expect_equal(lsd_decimal_check(c(8.5, 7, 0), lsd_bases = c(16, 12)), c(8, 15, 0))
-  expect_equal(lsd_decimal_check(c(8, 29.875, 30), lsd_bases = c(20, 12)), c(8, 29, 40.5))
+  expect_equal(lsd_decimal_check(decimal_vector, bases = c(20, 12)), c(5, 101, 64.9))
+  expect_equal(lsd_decimal_check(-decimal_vector, bases = c(20, 12)), c(5, 101, 64.9))
+  expect_equal(lsd_decimal_check(c(8.5, 7, 0), bases = c(20, 12)), c(8, 17, 0))
+  expect_equal(lsd_decimal_check(c(8.5, 7, 0), bases = c(16, 12)), c(8, 15, 0))
+  expect_equal(lsd_decimal_check(c(8, 29.875, 30), bases = c(20, 12)), c(8, 29, 40.5))
   expect_equal(lsd_decimal_check(c(NA, 3, 4)), c(NA, NA, NA))
 })
 
@@ -121,7 +121,7 @@ test_that("it goes together in deb_normalize", {
   expect_equal(deb_normalize(c(1, 18, 23.999999)), c(l = 2, s = 0, d = 0))
   expect_equal(deb_normalize(c(-1, -19, -11.999999)), c(l = -2, s = 0, d = 0))
   expect_equal(deb_normalize(c(1, 19, 11.99999)), c(l = 1, s = 19, d = 11.99999))
-  expect_equal(deb_normalize(c(1, 7, 15.999999), lsd_bases = c(8, 16)),
+  expect_equal(deb_normalize(c(1, 7, 15.999999), bases = c(8, 16)),
                c(l = 2, s = 0, d = 0))
 })
 
@@ -130,16 +130,16 @@ test_that("vectorization works", {
   expect_equal(is.list(deb_normalize(ex_list)), TRUE)
   expect_equal(length(deb_normalize(ex_list)), 4)
   expect_equal(deb_normalize(ex_list), list_answer)
-  expect_equal(deb_normalize(ex_list, lsd_bases = c(20, 16)), list_ratio)
+  expect_equal(deb_normalize(ex_list, bases = c(20, 16)), list_ratio)
 })
 
-## lsd_basess ##
-test_that("different lsd_basess work", {
-  expect_equal(deb_normalize(ex_vector, lsd_bases = c(20, 12)),
+## basess ##
+test_that("different basess work", {
+  expect_equal(deb_normalize(ex_vector, bases = c(20, 12)),
                c(l = 9, s = 8, d = 5))
-  expect_equal(deb_normalize(ex_vector, lsd_bases = c(20, 16)),
+  expect_equal(deb_normalize(ex_vector, bases = c(20, 16)),
                c(l = 9, s = 7, d = 5))
-  expect_equal(deb_normalize(negative_vector, lsd_bases = c(8, 16)),
+  expect_equal(deb_normalize(negative_vector, bases = c(8, 16)),
                c(l = -15, s = -7, d = -5))
 })
 
@@ -191,7 +191,7 @@ test_that("lsd_column_names works",{
 
 test_that("normalization_df works", {
   expect_equal(deb_normalize_df(ex_df, replace = TRUE), df_answer)
-  expect_equal(deb_normalize_df(ex_df, replace = TRUE, lsd_bases = c(20, 16)), df_ratio)
+  expect_equal(deb_normalize_df(ex_df, replace = TRUE, bases = c(20, 16)), df_ratio)
   expect_equal(deb_normalize_df(ex_df, replace = FALSE), cbind(ex_df, df_answer2))
   expect_equal(deb_normalize_df(na_df, replace = TRUE), na_answer)
 })

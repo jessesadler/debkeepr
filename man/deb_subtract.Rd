@@ -4,7 +4,7 @@
 \alias{deb_subtract}
 \title{Subtract two values of pounds, shillings, and pence}
 \usage{
-deb_subtract(lsd1, lsd2, lsd_bases = c(20, 12))
+deb_subtract(lsd1, lsd2, bases = c(20, 12))
 }
 \arguments{
 \item{lsd1, lsd2}{Numeric vectors of length 3 or lists of numeric vectors of
@@ -13,7 +13,7 @@ l. The second position represents the shillings value or s. And the third
 position represents the pence value or d. lsd2 is the value or values to be
 subtracted from lsd1: \code{lsd1 - lsd2}.}
 
-\item{lsd_bases}{Numeric vector of length 2 used to specify the bases for
+\item{bases}{Numeric vector of length 2 used to specify the bases for
 the s or solidus and d or denarius values in \code{lsd} vectors. Default is
 \code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
 20 solidi and 1 solidus = 12 denarii. This argument makes it possible to

@@ -5,7 +5,7 @@
 \title{Calculate credit, debit, and current value of an account}
 \usage{
 deb_account(df, account_id, credit = credit, debit = debit, l = l,
-  s = s, d = d, lsd_bases = c(20, 12), na.rm = FALSE)
+  s = s, d = d, bases = c(20, 12), na.rm = FALSE)
 }
 \arguments{
 \item{df}{A data frame containing transactions between accounts that has
@@ -36,7 +36,7 @@ to shillings. Default is s.}
 \item{d}{Pence column: Unquoted name of numeric variable corresponding to
 pence. Default is d.}
 
-\item{lsd_bases}{Numeric vector of length 2 used to specify the bases for
+\item{bases}{Numeric vector of length 2 used to specify the bases for
 the s or solidus and d or denarius values in the lsd variables. Default is
 \code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
 20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
@@ -84,7 +84,7 @@ libra or pound of silver. The custom of counting coins in dozens (solidi)
 and scores of dozens (libra) spread throughout the Carolingian Empire and
 became engrained in much of Europe. However,
 \href{https://en.wikipedia.org/wiki/Non-decimal_currency}{other ratios} between
-libra, solidus, and denarius were also in use. The \code{lsd_bases} argument
+libra, solidus, and denarius were also in use. The \code{bases} argument
 makes it possible to specify alternative bases for the solidus and denarius
 values.
 }

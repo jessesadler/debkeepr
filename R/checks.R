@@ -32,20 +32,20 @@ lsd_check <- function(lsd) {
   }
 }
 
-# Check lsd_bases
-bases_check <- function(lsd_bases) {
-  # check lsd_bases
-  if (!is.numeric(lsd_bases)) {
-    stop(call. = FALSE, "lsd_bases must be a numeric vector")
+# Check bases
+bases_check <- function(bases) {
+  # check bases
+  if (!is.numeric(bases)) {
+    stop(call. = FALSE, "bases must be a numeric vector")
   }
-  if (length(lsd_bases) != 2) {
-    stop(call. = FALSE, "lsd_bases must be a numeric vector of length of 2")
+  if (length(bases) != 2) {
+    stop(call. = FALSE, "bases must be a numeric vector of length of 2")
   }
-  if (any(lsd_bases == 0)) {
-    stop(call. = FALSE, "Neither of the values in lsd_bases can be 0")
+  if (any(bases == 0)) {
+    stop(call. = FALSE, "Neither of the values in bases can be 0")
   }
-  if (any(lsd_bases < 0)) {
-    stop(call. = FALSE, "The values in lsd_bases must both be positive")
+  if (any(bases < 0)) {
+    stop(call. = FALSE, "The values in bases must both be positive")
   }
 }
 

@@ -29,7 +29,7 @@ test_that("interest calculation works", {
                deb_multiply(ex_vector, 5/16))
   expect_equal(deb_interest(ex_vector, interest = 0.10),
                c(l = 11, s = 3, d = 5.8))
-  expect_equal(deb_interest(ex_vector, lsd_bases = c(8, 16)),
+  expect_equal(deb_interest(ex_vector, bases = c(8, 16)),
                c(l = 11, s = 0, d = 5.125))
 })
 
@@ -57,5 +57,5 @@ test_that("interest mutate works",{
                                    replace = TRUE, duration = 5, interest = 0.10),
                deb_multiply_mutate(ex_df, replace = TRUE, x = 0.50))
   expect_false(identical(deb_interest_mutate(ex_df),
-                         deb_interest_mutate(ex_df, lsd_bases = c(8, 16))))
+                         deb_interest_mutate(ex_df, bases = c(8, 16))))
 })

@@ -4,7 +4,7 @@
 \alias{deb_add}
 \title{Add two values of pounds, shillings, and pence}
 \usage{
-deb_add(lsd1, lsd2, lsd_bases = c(20, 12))
+deb_add(lsd1, lsd2, bases = c(20, 12))
 }
 \arguments{
 \item{lsd1, lsd2}{Numeric vectors of length 3 or lists of numeric vectors of
@@ -12,7 +12,7 @@ length 3. The first position of the vector represents the pounds value or
 l. The second position represents the shillings value or s. And the third
 position represents the pence value or d.}
 
-\item{lsd_bases}{Numeric vector of length 2 used to specify the bases for
+\item{bases}{Numeric vector of length 2 used to specify the bases for
 the s or solidus and d or denarius values in \code{lsd} vectors. Default is
 \code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
 20 solidi and 1 solidus = 12 denarii. This argument makes it possible to

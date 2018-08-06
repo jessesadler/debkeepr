@@ -35,11 +35,11 @@
 #' deb_sum(lsd_list, c(8, 4, 9), c(6, 19, 10))
 #'
 #' # Can use alternative bases for solidus and denarius units
-#' deb_sum(lsd_list, c(8, 4, 9), c(6, 19, 10), lsd_bases = c(20, 16))
+#' deb_sum(lsd_list, c(8, 4, 9), c(6, 19, 10), bases = c(20, 16))
 #'
 #' @export
 
-deb_sum <- function(..., lsd_bases = c(20, 12), na.rm = FALSE) {
+deb_sum <- function(..., bases = c(20, 12), na.rm = FALSE) {
   lsd_list <- list(...)
   purrr::map(lsd_list, lsd_check)
 
@@ -52,33 +52,33 @@ deb_sum <- function(..., lsd_bases = c(20, 12), na.rm = FALSE) {
   lsd_list <- purrr::map_if(lsd_list, is.list, ~ purrr::reduce(., `+`))
 
   deb_normalize(lsd = purrr::reduce(lsd_list, `+`),
-                lsd_bases = lsd_bases)
+                bases = bases)
 }
 
 ## Helper functions to sum l, s, and d ##
 
 ## Librae ##
-deb_librae_sum <- function(l, s, d, lsd_bases = c(20, 12), na.rm) {
+deb_librae_sum <- function(l, s, d, bases = c(20, 12), na.rm) {
   deb_librae(sum(l, na.rm = na.rm),
              sum(s, na.rm = na.rm),
              sum(d, na.rm = na.rm),
-             lsd_bases = lsd_bases)
+             bases = bases)
 }
 
 ## Solidi ##
-deb_solidi_sum <- function(l, s, d, lsd_bases = c(20, 12), na.rm) {
+deb_solidi_sum <- function(l, s, d, bases = c(20, 12), na.rm) {
   deb_solidi(sum(l, na.rm = na.rm),
              sum(s, na.rm = na.rm),
              sum(d, na.rm = na.rm),
-             lsd_bases = lsd_bases)
+             bases = bases)
 }
 
 ## Denarii ##
-deb_denarii_sum <- function(l, s, d, lsd_bases = c(20, 12), na.rm) {
+deb_denarii_sum <- function(l, s, d, bases = c(20, 12), na.rm) {
   deb_denarii(sum(l, na.rm = na.rm),
               sum(s, na.rm = na.rm),
               sum(d, na.rm = na.rm),
-              lsd_bases = lsd_bases)
+              bases = bases)
 }
 
 #' Sum of pounds, shillings, and pence columns in a data frame
@@ -139,14 +139,14 @@ deb_denarii_sum <- function(l, s, d, lsd_bases = c(20, 12), na.rm) {
 
 deb_sum_df <- function(df,
                        l = l, s = s, d = d,
-                       lsd_bases = c(20, 12),
+                       bases = c(20, 12),
                        na.rm = FALSE) {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)
 
   lsd_column_check(df, l, s, d)
-  bases_check(lsd_bases)
+  bases_check(bases)
 
   # Column names
   l_column <- rlang::quo_name(l)
@@ -155,13 +155,13 @@ deb_sum_df <- function(df,
 
   # Make l, s, and d NA in any row that has an NA
   if (na.rm == TRUE) {
-    df <- deb_normalize_df(df, !!l, !!s, !!d, lsd_bases, replace = TRUE)
+    df <- deb_normalize_df(df, !!l, !!s, !!d, bases, replace = TRUE)
   }
   # Use temp columns and rename so that l, s, and d do not get overwritten
   ret <- df %>%
-    dplyr::summarise(temp_librae_col = deb_librae_sum(!!l, !!s, !!d, lsd_bases, na.rm),
-                     temp_solidi_col = deb_solidi_sum(!!l, !!s, !!d, lsd_bases, na.rm),
-                     temp_denarii_col = deb_denarii_sum(!!l, !!s, !!d, lsd_bases, na.rm)) %>%
+    dplyr::summarise(temp_librae_col = deb_librae_sum(!!l, !!s, !!d, bases, na.rm),
+                     temp_solidi_col = deb_solidi_sum(!!l, !!s, !!d, bases, na.rm),
+                     temp_denarii_col = deb_denarii_sum(!!l, !!s, !!d, bases, na.rm)) %>%
     dplyr::rename(!! l_column := temp_librae_col,
                   !! s_column := temp_solidi_col,
                   !! d_column := temp_denarii_col)

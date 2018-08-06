@@ -4,7 +4,7 @@
 \alias{deb_convert_bases}
 \title{Convert between different bases for shillings and pence units}
 \usage{
-deb_convert_bases(lsd, lsd_bases1, lsd_bases2, ratio = 1)
+deb_convert_bases(lsd, bases1, bases2, ratio = 1)
 }
 \arguments{
 \item{lsd}{Numeric vector of length 3 or list of numeric vectors of length
@@ -12,11 +12,11 @@ deb_convert_bases(lsd, lsd_bases1, lsd_bases2, ratio = 1)
 second position represents the shillings value or s. And the third
 position represents the pence value or d.}
 
-\item{lsd_bases1}{Numeric vector of length 2 used to specify the bases for
-the s or solidus and d or denarius values in \code{lsd} vector(s). \code{lsd_bases1}
+\item{bases1}{Numeric vector of length 2 used to specify the bases for
+the s or solidus and d or denarius values in \code{lsd} vector(s). \code{bases1}
 represents the bases for the current \code{lsd} vector(s).}
 
-\item{lsd_bases2}{Numeric vector of length 2 used to specify the bases for
+\item{bases2}{Numeric vector of length 2 used to specify the bases for
 the s or solidus and d or denarius values to which \code{lsd} will be
 converted.}
 
@@ -27,7 +27,7 @@ by which \code{lsd} is multiplied to create the new value.}
 \value{
 Returns either a named numeric vector of length 3 or a list of
 named numeric vectors representing the values of pounds, shillings, and
-pence with the bases for shillings and pence conforming to \code{lsd_bases2}.
+pence with the bases for shillings and pence conforming to \code{bases2}.
 }
 \description{
 Convert between pounds, shillings, and pence currencies that use different
@@ -42,38 +42,38 @@ exchanges on currencies that share the same shillings and pence bases.
 # to guilders of 20 stuivers and 16 penningen at the rate of
 # 6 guilders equals £1 Flemish
 deb_convert_bases(lsd = c(204, 3, 3),
-                  lsd_bases1 = c(20, 12),
-                  lsd_bases2 = c(20, 16),
+                  bases1 = c(20, 12),
+                  bases2 = c(20, 16),
                   ratio = 6)
 
 # Convert from guilders to pounds Flemish
-# Flip the lsd_bases argument and change the ratio
+# Flip the bases argument and change the ratio
 deb_convert_bases(lsd = c(1224, 19, 8),
-                  lsd_bases1 = c(20, 16),
-                  lsd_bases2 = c(20, 12),
+                  bases1 = c(20, 16),
+                  bases2 = c(20, 12),
                   ratio = 1/6)
 
 # Conversion from French crowns of 60 sous and 12 deniers to
 # pound sterling of 20 shillings and 12 pence at the rate of
 # 72d. French crowns equals £1 sterling or 240d. sterling
 deb_convert_bases(lsd = c(214, 50, 10),
-                  lsd_bases1 = c(60, 12),
-                  lsd_bases2 = c(20, 12),
+                  bases1 = c(60, 12),
+                  bases2 = c(20, 12),
                   ratio = 72/240)
 
 # Base conversion can also be done in concert with deb_exchange()
 # Convert from guilders to pounds sterling at the rate of 12s. Flemish
 deb_convert_bases(lsd = c(1224, 19, 8),
-                  lsd_bases1 = c(20, 16),
-                  lsd_bases2 = c(20, 12),
+                  bases1 = c(20, 16),
+                  bases2 = c(20, 12),
                   ratio = 1/6) \%>\%
   deb_exchange(rate_per_shillings = 12)
 
 # Convert a list of lsd vectors of guilders to pounds Flemish
 guilders_list <- list(c(1224, 19, 8), c(101, 5, 13), c(225, 13, 15))
 deb_convert_bases(lsd = guilders_list,
-                  lsd_bases1 = c(20, 16),
-                  lsd_bases2 = c(20, 12),
+                  bases1 = c(20, 16),
+                  bases2 = c(20, 12),
                   ratio = 1/6)
 
 }

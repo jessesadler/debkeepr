@@ -4,7 +4,7 @@
 \alias{deb_sum}
 \title{Sum of pounds, shillings, and pence in lsd vectors}
 \usage{
-deb_sum(..., lsd_bases = c(20, 12), na.rm = FALSE)
+deb_sum(..., bases = c(20, 12), na.rm = FALSE)
 }
 \arguments{
 \item{...}{Numeric vectors of length 3 and/or lists of numeric vectors of
@@ -12,7 +12,7 @@ length 3. The first position of each vector represents the pounds value
 or l. The second position represents the shillings value or s. And the
 third position represents the pence value or d.}
 
-\item{lsd_bases}{Numeric vector of length 2 used to specify the bases for
+\item{bases}{Numeric vector of length 2 used to specify the bases for
 the s or solidus and d or denarius values in \code{lsd} vectors. Default is
 \code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
 20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
@@ -48,7 +48,7 @@ deb_sum(lsd_list)
 deb_sum(lsd_list, c(8, 4, 9), c(6, 19, 10))
 
 # Can use alternative bases for solidus and denarius units
-deb_sum(lsd_list, c(8, 4, 9), c(6, 19, 10), lsd_bases = c(20, 16))
+deb_sum(lsd_list, c(8, 4, 9), c(6, 19, 10), bases = c(20, 16))
 
 }
 \seealso{

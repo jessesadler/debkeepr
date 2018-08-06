@@ -30,15 +30,15 @@
 #'
 #' @export
 
-deb_lsd_l <- function(lsd, lsd_bases = c(20, 12)) {
+deb_lsd_l <- function(lsd, bases = c(20, 12)) {
   if (is.list(lsd) == TRUE) {
-    return(purrr::map_dbl(lsd, ~ deb_lsd_l(., lsd_bases)))
+    return(purrr::map_dbl(lsd, ~ deb_lsd_l(., bases)))
   }
   # checks
   lsd_check(lsd)
-  bases_check(lsd_bases)
+  bases_check(bases)
 
-  lsd[1] + lsd[2] / lsd_bases[1] + lsd[3] / prod(lsd_bases)
+  lsd[1] + lsd[2] / bases[1] + lsd[3] / prod(bases)
 }
 
 #' Convert from decimalized pounds to pounds, shillings, and pence
@@ -71,9 +71,9 @@ deb_lsd_l <- function(lsd, lsd_bases = c(20, 12)) {
 #'
 #' @export
 
-deb_l_lsd <- function(l, lsd_bases = c(20, 12)) {
+deb_l_lsd <- function(l, bases = c(20, 12)) {
   if (length(l) > 1) {
-    return(purrr::map(l, ~ deb_l_lsd(., lsd_bases = lsd_bases)))
+    return(purrr::map(l, ~ deb_l_lsd(., bases = bases)))
   }
 
   if (!is.numeric(l)) {
@@ -82,7 +82,7 @@ deb_l_lsd <- function(l, lsd_bases = c(20, 12)) {
 
   # repeat 0 of length l for vectorization
   deb_normalize(c(l, rep(0, length(l)), rep(0, length(l))),
-                lsd_bases = lsd_bases)
+                bases = bases)
 }
 
 ### solidi ###
@@ -113,16 +113,16 @@ deb_l_lsd <- function(l, lsd_bases = c(20, 12)) {
 #'
 #' @export
 
-deb_lsd_s <- function(lsd, lsd_bases = c(20, 12)) {
+deb_lsd_s <- function(lsd, bases = c(20, 12)) {
   if (is.list(lsd) == TRUE) {
-    return(purrr::map_dbl(lsd, ~ deb_lsd_s(., lsd_bases)))
+    return(purrr::map_dbl(lsd, ~ deb_lsd_s(., bases)))
   }
   # checks
   lsd_check(lsd)
-  bases_check(lsd_bases)
+  bases_check(bases)
 
 
-  lsd[1] * lsd_bases[1] + lsd[2] + lsd[3] / lsd_bases[2]
+  lsd[1] * bases[1] + lsd[2] + lsd[3] / bases[2]
 }
 
 #' Convert from decimalized shillings to pounds, shillings, and pence
@@ -157,9 +157,9 @@ deb_lsd_s <- function(lsd, lsd_bases = c(20, 12)) {
 #'
 #' @export
 
-deb_s_lsd <- function(s, lsd_bases = c(20, 12)) {
+deb_s_lsd <- function(s, bases = c(20, 12)) {
   if (length(s) > 1) {
-    return(purrr::map(s, ~ deb_s_lsd(., lsd_bases = lsd_bases)))
+    return(purrr::map(s, ~ deb_s_lsd(., bases = bases)))
   }
 
   if (!is.numeric(s)) {
@@ -168,7 +168,7 @@ deb_s_lsd <- function(s, lsd_bases = c(20, 12)) {
 
   # repeat 0 of length s for vectorization
   deb_normalize(c(rep(0, length(s)), s, rep(0, length(s))),
-                lsd_bases = lsd_bases)
+                bases = bases)
 }
 
 ### denarii ###
@@ -201,15 +201,15 @@ deb_s_lsd <- function(s, lsd_bases = c(20, 12)) {
 #'
 #' @export
 
-deb_lsd_d <- function(lsd, lsd_bases = c(20, 12)) {
+deb_lsd_d <- function(lsd, bases = c(20, 12)) {
   if (is.list(lsd) == TRUE) {
-    return(purrr::map_dbl(lsd, ~ deb_lsd_d(., lsd_bases)))
+    return(purrr::map_dbl(lsd, ~ deb_lsd_d(., bases)))
   }
   # checks
   lsd_check(lsd)
-  bases_check(lsd_bases)
+  bases_check(bases)
 
-  round(lsd[1] * prod(lsd_bases) + lsd[2] * lsd_bases[2] + lsd[3], 5)
+  round(lsd[1] * prod(bases) + lsd[2] * bases[2] + lsd[3], 5)
 }
 
 #' Convert from pence to pounds, shillings, and pence
@@ -241,9 +241,9 @@ deb_lsd_d <- function(lsd, lsd_bases = c(20, 12)) {
 #'
 #' @export
 
-deb_d_lsd <- function(d, lsd_bases = c(20, 12)) {
+deb_d_lsd <- function(d, bases = c(20, 12)) {
   if (length(d) > 1) {
-    return(purrr::map(d, ~ deb_d_lsd(., lsd_bases = lsd_bases)))
+    return(purrr::map(d, ~ deb_d_lsd(., bases = bases)))
   }
 
   if (!is.numeric(d)) {
@@ -252,5 +252,5 @@ deb_d_lsd <- function(d, lsd_bases = c(20, 12)) {
 
   # repeat 0 of length d for vectorization
   deb_normalize(c(rep(0, length(d)), rep(0, length(d)), d),
-                lsd_bases = lsd_bases)
+                bases = bases)
 }

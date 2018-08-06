@@ -5,7 +5,7 @@
 \title{Convert between different bases for shillings and pence units in a data
 frame}
 \usage{
-deb_convert_bases_mutate(df, l = l, s = s, d = d, lsd_bases1, lsd_bases2,
+deb_convert_bases_mutate(df, l = l, s = s, d = d, bases1, bases2,
   ratio = 1, suffix = ".1")
 }
 \arguments{
@@ -20,13 +20,13 @@ to shillings. Default is s.}
 \item{d}{Pence column: Unquoted name of numeric variable corresponding to
 pence. Default is d.}
 
-\item{lsd_bases1}{Numeric vector of length 2 used to specify the bases for
+\item{bases1}{Numeric vector of length 2 used to specify the bases for
 the s or solidus and d or denarius values in the lsd variables.
-\code{lsd_bases1} represents the bases for the current lsd variables.}
+\code{bases1} represents the bases for the current lsd variables.}
 
-\item{lsd_bases2}{Numeric vector of length 2 used to specify the bases for
+\item{bases2}{Numeric vector of length 2 used to specify the bases for
 the s or solidus and d or denarius values to which the lsd variables will
-be converted. \code{lsd_bases2} represents the bases for the newly created
+be converted. \code{bases2} represents the bases for the newly created
 lsd variables.}
 
 \item{ratio}{The ratio between the two currencies that possess different
@@ -38,7 +38,7 @@ to create the names for the new lsd variables.}
 }
 \value{
 Returns a data frame with three new variables of pounds, shillings,
-and pence corresponding to the shillings and pence bases in \code{lsd_bases2}.
+and pence corresponding to the shillings and pence bases in \code{bases2}.
 }
 \description{
 Uses \code{\link[dplyr:mutate]{dplyr::mutate()}} to convert pounds, shillings, and pence currencies
@@ -60,19 +60,19 @@ flemish <- data.frame(l = c(204, 82, 36),
                       d = c(3, 9, 6))
 deb_convert_bases_mutate(df = flemish,
                          l = l, s = s, d = d,
-                         lsd_bases1 = c(20, 12),
-                         lsd_bases2 = c(20, 16),
+                         bases1 = c(20, 12),
+                         bases2 = c(20, 16),
                          ratio = 6)
 
 # Convert from guilders to pounds Flemish
-# Flip the lsd_bases argument and change the ratio
+# Flip the bases argument and change the ratio
 guilders <- data.frame(l = c(1224, 101, 225),
                        s = c(19, 5, 13),
                        d = c(8, 13, 15))
 deb_convert_bases_mutate(df = guilders,
                          l = l, s = s, d = d,
-                         lsd_bases1 = c(20, 16),
-                         lsd_bases2 = c(20, 12),
+                         bases1 = c(20, 16),
+                         bases2 = c(20, 12),
                          ratio = 1/6)
 
 }

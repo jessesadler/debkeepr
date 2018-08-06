@@ -4,7 +4,7 @@
 \alias{deb_add_mutate}
 \title{Addition of pounds, shillings, and pence in a data frame}
 \usage{
-deb_add_mutate(df, l = l, s = s, d = d, lsd, lsd_bases = c(20, 12),
+deb_add_mutate(df, l = l, s = s, d = d, lsd, bases = c(20, 12),
   replace = FALSE, suffix = ".1")
 }
 \arguments{
@@ -25,7 +25,7 @@ represents the pounds value or l. The second position represents the
 shillings value or s. And the third position represents the pence value
 or d.}
 
-\item{lsd_bases}{Numeric vector of length 2 used to specify the bases for
+\item{bases}{Numeric vector of length 2 used to specify the bases for
 the s or solidus and d or denarius values in the lsd variables. Default is
 \code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
 20 solidi and 1 solidus = 12 denarii. This argument makes it possible to

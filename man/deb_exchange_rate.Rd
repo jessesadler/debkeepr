@@ -5,7 +5,7 @@
 \title{Exchange rate between pounds, shillings, and pence values}
 \usage{
 deb_exchange_rate(lsd1, lsd2, output = c("shillings", "pence", "pounds"),
-  lsd_bases = c(20, 12))
+  bases = c(20, 12))
 }
 \arguments{
 \item{lsd1}{Pounds, shillings, and pence value that is reduced to £1 and
@@ -30,7 +30,7 @@ the default, returns the exchange rate in terms of shillings and pence.
 \code{"pence"} returns the exchange rate in terms of pence. \code{"pounds"} returns
 the exchange rate in terms of pounds, shillings, and pence.}
 
-\item{lsd_bases}{Numeric vector of length 2 used to specify the bases for
+\item{bases}{Numeric vector of length 2 used to specify the bases for
 the s or solidus and d or denarius values in \code{lsd} vectors. Default is
 \code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
 20 solidi and 1 solidus = 12 denarii. This argument makes it possible to

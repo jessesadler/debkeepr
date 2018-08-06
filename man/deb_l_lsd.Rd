@@ -4,13 +4,13 @@
 \alias{deb_l_lsd}
 \title{Convert from decimalized pounds to pounds, shillings, and pence}
 \usage{
-deb_l_lsd(l, lsd_bases = c(20, 12))
+deb_l_lsd(l, bases = c(20, 12))
 }
 \arguments{
 \item{l}{Decimalized pounds: numeric vector representing pounds to be
 converted into an lsd value.}
 
-\item{lsd_bases}{Numeric vector of length 2 used to specify the bases for
+\item{bases}{Numeric vector of length 2 used to specify the bases for
 the s or solidus and d or denarius values in \code{lsd} vectors. Default is
 \code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
 20 solidi and 1 solidus = 12 denarii. This argument makes it possible to

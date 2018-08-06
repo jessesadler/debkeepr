@@ -5,7 +5,7 @@
 \title{Exchange between pounds, shillings and pence currencies in a data frame}
 \usage{
 deb_exchange_mutate(df, l = l, s = s, d = d, rate_per_shillings,
-  lsd_bases = c(20, 12), replace = FALSE, suffix = ".exchange")
+  bases = c(20, 12), replace = FALSE, suffix = ".exchange")
 }
 \arguments{
 \item{df}{A data frame that contains pounds, shillings, and pence variables.}
@@ -22,9 +22,9 @@ pence. Default is d.}
 \item{rate_per_shillings}{The exchange rate. This follows the common practice
 of calculating the exchange rate between different currencies in terms
 of shillings. Thus, in terms of a given number over the base of shillings
-provided in the \code{lsd_bases} argument. A numeric vector of length 1.}
+provided in the \code{bases} argument. A numeric vector of length 1.}
 
-\item{lsd_bases}{Numeric vector of length 2 used to specify the bases for
+\item{bases}{Numeric vector of length 2 used to specify the bases for
 the s or solidus and d or denarius values in the lsd variables. Default is
 \code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
 20 solidi and 1 solidus = 12 denarii. This argument makes it possible to

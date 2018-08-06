@@ -4,7 +4,7 @@
 \alias{deb_exchange}
 \title{Exchange between pounds, shillings and pence currencies}
 \usage{
-deb_exchange(lsd, rate_per_shillings, lsd_bases = c(20, 12))
+deb_exchange(lsd, rate_per_shillings, bases = c(20, 12))
 }
 \arguments{
 \item{lsd}{Numeric vector of length 3 or list of numeric vectors of length
@@ -15,9 +15,9 @@ position represents the pence value or d.}
 \item{rate_per_shillings}{The exchange rate. This follows the common practice
 of calculating the exchange rate between different currencies in terms
 of shillings. Thus, in terms of a given number over the base of shillings
-provided in the \code{lsd_bases} argument. A numeric vector of length 1.}
+provided in the \code{bases} argument. A numeric vector of length 1.}
 
-\item{lsd_bases}{Numeric vector of length 2 used to specify the bases for
+\item{bases}{Numeric vector of length 2 used to specify the bases for
 the s or solidus and d or denarius values in \code{lsd} vectors. Default is
 \code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
 20 solidi and 1 solidus = 12 denarii. This argument makes it possible to

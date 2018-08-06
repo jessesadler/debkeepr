@@ -4,7 +4,7 @@
 \alias{deb_divide}
 \title{Division of pounds, shillings, and pence}
 \usage{
-deb_divide(lsd, x, lsd_bases = c(20, 12))
+deb_divide(lsd, x, bases = c(20, 12))
 }
 \arguments{
 \item{lsd}{Numeric vector of length 3 or list of numeric vectors of length
@@ -15,7 +15,7 @@ position represents the pence value or d.}
 \item{x}{Divisor. The value by which the given pounds, shillings, and
 pence will be divided. Should be a numeric vector of length 1.}
 
-\item{lsd_bases}{Numeric vector of length 2 used to specify the bases for
+\item{bases}{Numeric vector of length 2 used to specify the bases for
 the s or solidus and d or denarius values in \code{lsd} vectors. Default is
 \code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
 20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
@@ -30,7 +30,7 @@ and pence.
 \description{
 Divide pounds, shillings, and pence by a given divisor (\code{x}).
 The result is normalized to standard bases for shillings and pence
-according to the \code{lsd_bases} argument. This is a wrapper around
+according to the \code{bases} argument. This is a wrapper around
 \code{\link[=deb_normalize]{deb_normalize()}}.
 }
 \examples{

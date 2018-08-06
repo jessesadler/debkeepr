@@ -4,7 +4,7 @@
 \alias{deb_lsd_d}
 \title{Convert from pounds, shillings, and pence to pence}
 \usage{
-deb_lsd_d(lsd, lsd_bases = c(20, 12))
+deb_lsd_d(lsd, bases = c(20, 12))
 }
 \arguments{
 \item{lsd}{Numeric vector of length 3 or list of numeric vectors of length
@@ -12,7 +12,7 @@ deb_lsd_d(lsd, lsd_bases = c(20, 12))
 second position represents the shillings value or s. And the third
 position represents the pence value or d.}
 
-\item{lsd_bases}{Numeric vector of length 2 used to specify the bases for
+\item{bases}{Numeric vector of length 2 used to specify the bases for
 the s or solidus and d or denarius values in \code{lsd} vectors. Default is
 \code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
 20 solidi and 1 solidus = 12 denarii. This argument makes it possible to

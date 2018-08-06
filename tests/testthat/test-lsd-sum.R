@@ -39,7 +39,7 @@ test_that("deb_sum works", {
                c(l = 13, s = 9, d = 8))
   expect_equal(deb_sum(lsd_list, c(8, 4, 9), c(6, 19, 10)),
                c(l = 36, s = 19, d = 8))
-  expect_equal(deb_sum(lsd_list, lsd_bases = c(8, 16)),
+  expect_equal(deb_sum(lsd_list, bases = c(8, 16)),
                c(l = 24, s = 2, d = 9))
   expect_equal(deb_sum(c(1, 6, 3.33333333), c(1, 6, 3.33333333), c(1, 7, 5.33333333)),
                c(l = 4, s = 0, d = 0))
@@ -55,7 +55,7 @@ test_that("deb_sum_df works on data frames", {
   expect_equal(nrow(deb_sum_df(example1, l, s, d)), 1)
   expect_equal(deb_sum_df(example1, l, s, d),
                data.frame(l = 18, s = 17, d = 11))
-  expect_equal(deb_sum_df(example1, l, s, d, lsd_bases = c(20, 16)),
+  expect_equal(deb_sum_df(example1, l, s, d, bases = c(20, 16)),
                data.frame(l = 18, s = 17, d = 3))
   expect_equal(deb_sum_df(example3),
                data.frame(l = 4, s = 0, d = 0))

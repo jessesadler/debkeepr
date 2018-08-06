@@ -21,9 +21,9 @@ test_that("individual l, s, and d helper functions work", {
   expect_equal(decimalize_s(8, 10, 6), 170.5)
   expect_equal(decimalize_d(8, 10, 6), 2046)
 
-  expect_equal(round(decimalize_l(8, 10, 6, lsd_bases = c(8, 16)), 3), 9.297)
-  expect_equal(decimalize_s(8, 10, 6, lsd_bases = c(8, 16)), 74.375)
-  expect_equal(decimalize_d(8, 10, 6, lsd_bases = c(8, 16)), 1190)
+  expect_equal(round(decimalize_l(8, 10, 6, bases = c(8, 16)), 3), 9.297)
+  expect_equal(decimalize_s(8, 10, 6, bases = c(8, 16)), 74.375)
+  expect_equal(decimalize_d(8, 10, 6, bases = c(8, 16)), 1190)
 })
 
 test_that("NA works", {
@@ -101,15 +101,15 @@ test_that("decimal column is numeric", {
 test_that("Decimalized values df to lsd", {
   expect_equal(deb_l_lsd_mutate(df_decimal, decimal), l_decimal)
   expect_false(identical(deb_l_lsd_mutate(df_decimal, decimal),
-                         deb_l_lsd_mutate(df_decimal, decimal, lsd_bases = c(8, 16))))
+                         deb_l_lsd_mutate(df_decimal, decimal, bases = c(8, 16))))
 
   expect_equal(deb_s_lsd_mutate(df_decimal, decimal), s_decimal)
   expect_false(identical(deb_s_lsd_mutate(df_decimal, decimal),
-                         deb_s_lsd_mutate(df_decimal, decimal, lsd_bases = c(8, 16))))
+                         deb_s_lsd_mutate(df_decimal, decimal, bases = c(8, 16))))
 
   expect_equal(deb_d_lsd_mutate(df_decimal, decimal), d_decimal)
   expect_false(identical(deb_d_lsd_mutate(df_decimal, decimal),
-                         deb_d_lsd_mutate(df_decimal, decimal, lsd_bases = c(8, 16))))
+                         deb_d_lsd_mutate(df_decimal, decimal, bases = c(8, 16))))
 })
 
 test_that("column names change with lsd_column_names function", {
