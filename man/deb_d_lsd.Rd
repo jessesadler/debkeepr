@@ -2,42 +2,40 @@
 % Please edit documentation in R/lsd-decimalization.R
 \name{deb_d_lsd}
 \alias{deb_d_lsd}
-\title{Convert from pence to pounds, shillings, and pence}
+\title{Conversion of pence to pounds, shillings, and pence}
 \usage{
 deb_d_lsd(d, bases = c(20, 12))
 }
 \arguments{
-\item{d}{Decimalized pence: numeric vector representing pence to be
-converted into an lsd value.}
+\item{d}{Decimalized pence: Numeric vector representing pence to be
+converted into a pounds, shillings, and pence currency.}
 
 \item{bases}{Numeric vector of length 2 used to specify the bases for
-the s or solidus and d or denarius values in \code{lsd} vectors. Default is
-\code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
-20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
-use alternative bases for the solidus and denarius values that were also
-in use.}
+the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12)},
+which conforms to the most widely used system of 1 pound = 20 shillings
+and 1 shilling = 12 pence. This argument makes it possible to use
+alternate bases for the shillings (s) and pence (d) units.}
 }
 \value{
 Returns either a named numeric vector of length 3 or a list of
 named numeric vectors representing the values of pounds, shillings,
-and pence. If the input lsd value is negative, the l, s, and d values
-will all be negative.
+and pence.
 }
 \description{
-Convert pence to the lsd system of pounds, shillings, and pence.
-The function returns the value from a decimal currency to the
-non-decimal currency of pounds, shillings, and pence.
-This is a wrapper around \code{\link[=deb_normalize]{deb_normalize()}}.
+Convert decimalized pence to the lsd system of pounds, shillings, and pence.
 }
 \examples{
 # Convert pence to pounds, shillings, and pence
 deb_d_lsd(d = 2500)
 
+# With alternate bases for shillings and pence
+deb_d_lsd(d = 2500, bases = c(20, 16))
+
 # The value for pence can be negative
-deb_d_lsd(-2500)
+deb_d_lsd(d = -2500)
 
 # d can be a vector of length > 1
 # Return a list of lsd vectors
-deb_d_lsd(c(2500, -2500, 4575))
+deb_d_lsd(d = c(2500, -2500, 4575))
 
 }

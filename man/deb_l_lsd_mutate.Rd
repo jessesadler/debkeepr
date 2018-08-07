@@ -2,17 +2,17 @@
 % Please edit documentation in R/lsd-decimalization-df.R
 \name{deb_l_lsd_mutate}
 \alias{deb_l_lsd_mutate}
-\title{Mutate decimal pounds into pounds, shillings, and pence variables}
+\title{Conversion of decimalized pounds into pounds, shillings, and pence variables}
 \usage{
-deb_l_lsd_mutate(df, librae, l_column = l, s_column = s, d_column = d,
-  bases = c(20, 12), suffix = ".1")
+deb_l_lsd_mutate(df, pounds, l_column = l, s_column = s,
+  d_column = d, bases = c(20, 12), suffix = ".1")
 }
 \arguments{
-\item{df}{A data frame that contains a column of decimalized pounds.}
+\item{df}{A data frame that contains a column with decimalized pounds.}
 
-\item{librae}{Decimalized pounds column: Unquoted name of a numeric
-variable corresponding to pounds. This is the variable that will be
-mutated into pounds, shillings, and pence variables.}
+\item{pounds}{Decimalized pounds column: Unquoted name of a numeric variable
+corresponding to pounds. The variable that will be mutated into pounds,
+shillings, and pence variables.}
 
 \item{l_column}{An unquoted name for the pounds column created by the
 function. Default is l.}
@@ -24,36 +24,34 @@ the function. Default is s.}
 function. Default is d.}
 
 \item{bases}{Numeric vector of length 2 used to specify the bases for
-the s or solidus and d or denarius values in the lsd variables. Default is
-\code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
-20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
-use alternative bases for the solidus and denarius values that were also
-in use.}
+the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12)},
+which conforms to the most widely used system of 1 pound = 20 shillings
+and 1 shilling = 12 pence. This argument makes it possible to use
+alternate bases for the shillings (s) and pence (d) units.}
 
-\item{suffix}{If the data frame already contains variables with the same
-names as \code{l_column}, \code{s_column}, or \code{d_column}, this suffix will be
-added to the new variables to distinguish them. Default is ".1".}
+\item{suffix}{Suffix added to \code{l_column}, \code{s_column}, or \code{d_column} if \code{df}
+already contains variables with the same names. Default is ".1". Must be a
+character vector of length 1.}
 }
 \value{
 Returns a data frame with three new variables of pounds,
 shillings, and pence.
 }
 \description{
-Uses \code{\link[dplyr:mutate]{dplyr::mutate()}} to add equivalent pounds, shillings, and pence
-variables to a data frame that contains a decimalized pounds variable.
-Thus, the function converts decimalized pounds into the lsd system of
-pounds, shillings, and pence.
+Uses \code{\link[dplyr:mutate]{dplyr::mutate()}} to convert a decimalized pounds variable into the lsd
+system of pounds, shillings, and pence. The values are returned in the form
+of three new variables representing the equivalent pounds, shillings and
+pence.
 }
 \examples{
 # Create equivalent pounds, shillings, and pence
 # variables from a decimalized pounds variable
 example <- data.frame(pounds = c(8, 8.325, -8.325, 5.425, 4.5678))
-
-deb_l_lsd_mutate(df = example, librae = pounds)
+deb_l_lsd_mutate(df = example, pounds = pounds)
 
 # You can choose the names for the created columns
 example \%>\%
-  deb_l_lsd_mutate(librae = pounds,
+  deb_l_lsd_mutate(pounds = pounds,
                    l_column = librae,
                    s_column = solidi,
                    d_column = denarii)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/lsd-interest.R
 \name{deb_interest_mutate}
 \alias{deb_interest_mutate}
-\title{Calculate the interest of pounds, shillings, and pence in a data frame}
+\title{Calculation of the interest of pounds, shillings, and pence in a data frame}
 \usage{
 deb_interest_mutate(df, l = l, s = s, d = d, interest = 0.0625,
   duration = 1, with_principal = TRUE, bases = c(20, 12),
@@ -12,41 +12,39 @@ deb_interest_mutate(df, l = l, s = s, d = d, interest = 0.0625,
 \item{df}{A data frame that contains pounds, shillings, and pence variables.}
 
 \item{l}{Pounds column: Unquoted name of a numeric variable corresponding
-to pounds. Default is l.}
+to the pounds or librae unit. Default is l.}
 
 \item{s}{Shillings column: Unquoted name of numeric variable corresponding
-to shillings. Default is s.}
+to the shillings or solidi unit. Default is s.}
 
 \item{d}{Pence column: Unquoted name of numeric variable corresponding to
-pence. Default is d.}
+the pence or denarii unit. Default is d.}
 
-\item{interest}{Interest rate in decimal form. A numeric vector
-of length 1. Default is 0.0625, or 6.25 percent, which was default
-interest rate in the Low Countries at the end of the sixteenth century.}
+\item{interest}{Interest rate in decimal form. A numeric vector of length 1.
+Default is 0.0625, or 6.25 percent, which was default interest rate in the
+Low Countries at the end of the sixteenth century.}
 
-\item{duration}{Duration over which the interest is calculated, or
-number of times that the interest should be added. A numeric vector
-of length 1. Default is 1.}
+\item{duration}{Duration over which the interest is calculated, or the
+number of times that the interest should be added. A numeric vector of
+length 1. Default is 1.}
 
-\item{with_principal}{Logical (default \code{TRUE}: when \code{TRUE} the resulting
-pounds, shillings and pence will include the principal as well as the
-interest. When \code{FALSE} only the interest will be shown.}
+\item{with_principal}{Logical (default \code{TRUE}): when \code{TRUE} the resulting
+pounds, shillings and pence value(s) will include the principal as well as
+the interest. When \code{FALSE} only the interest will be returned.}
 
 \item{bases}{Numeric vector of length 2 used to specify the bases for
-the s or solidus and d or denarius values in the lsd variables. Default is
-\code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
-20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
-use alternative bases for the solidus and denarius values that were also
-in use.}
+the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12)},
+which conforms to the most widely used system of 1 pound = 20 shillings
+and 1 shilling = 12 pence. This argument makes it possible to use
+alternate bases for the shillings (s) and pence (d) units.}
 
 \item{replace}{Logical (default \code{FALSE}): when \code{TRUE} the new pounds,
 shillings, and pence variables will replace the original ones.}
 
-\item{suffix}{Suffix added to the column names for the pounds,
-shillings, and pence columns representing the interest so that
-they are distinguished from the pounds, shillings, and pence
-columns of the principal used to make the calculation. Default is
-".interest". Should be a character vector of length 1.}
+\item{suffix}{Suffix added to the column names for the pounds, shillings,
+and pence columns representing the interest to distinguish them from the
+original pounds, shillings, and pence columns. Default is ".interest".
+Must be a character vector of length 1.}
 }
 \value{
 Returns a data frame with three new variables of pounds, shillings,
@@ -55,33 +53,35 @@ and pence representing the calculated interest.
 \description{
 Uses \code{\link[dplyr:mutate]{dplyr::mutate()}} to calculate the interest of pounds, shillings, and
 pence variables in a data frame given an interest rate and a duration. The
-interest—with or without the principal included—is returned in the form of
-three new variables representing the calculated pounds, shillings and pence
-for the interest. The function does not calculate compound interest.
+interest — with or without the principal included — is returned in the form
+of three new variables representing the calculated pounds, shillings and
+pence for the interest. The function does not calculate compound interest.
 }
 \examples{
 # Calculate the interest of a set of values in a data frame
 example <- data.frame(l = c(3, 10, 26, 12),
                       s = c(10, 18, 11, 16),
                       d = c(9, 11, 10, 5))
-deb_interest_mutate(example, l, s, d,
+deb_interest_mutate(df = example,
+                    l = l, s = s, d = d,
                     duration = 5)
 
 # Calculate the interest without the principal
 example \%>\%
-  deb_interest_mutate(l, s, d,
+  deb_interest_mutate(l = l, s = s, d = d,
                       duration = 5,
                       with_principal = FALSE)
 
 # Change the suffix for the new columns from the default
-deb_interest_mutate(example,
-                    l, s, d,
+deb_interest_mutate(df = example,
+                    l = l, s = s, d = d,
                     duration = 5,
                     suffix = "_5years")
 
 # Replace the existing pounds, shillings, and pence
 # with the interest values through replace argument
-deb_interest_mutate(example, l, s, d,
+deb_interest_mutate(df = example,
+                    l = l, s = s, d = d,
                     duration = 5,
                     replace = TRUE)
 

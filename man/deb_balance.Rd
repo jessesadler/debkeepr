@@ -4,83 +4,79 @@
 \alias{deb_balance}
 \title{Calculate the balance of a transactions data frame}
 \usage{
-deb_balance(df, credit = credit, debit = debit, l = l, s = s, d = d,
-  bases = c(20, 12), na.rm = FALSE)
+deb_balance(df, credit = credit, debit = debit, l = l, s = s,
+  d = d, bases = c(20, 12), na.rm = FALSE)
 }
 \arguments{
-\item{df}{A data frame containing transactions between accounts that has
-values represented in the form of pounds, shillings, and pence variables.
-The data frame should have two variables for accounts (credit and debit)
-and variables for pounds, shillings, and pence.}
+\item{df}{A data frame containing transactions between accounts with
+variables for the credit and debit accounts and values in the form of
+pounds, shillings, and pence variables.}
 
-\item{credit}{credit column: Unquoted name of the credit variable. This is
-the column from which the value of the transaction is from. Default
-is credit. The credit column must be of the same class as the debit
-column.}
+\item{credit}{Credit column: Unquoted name of the credit variable. This is
+the variable that the transactional value is from. Default is credit. The
+\code{credit} column must be of the same class as the \code{debit} column.}
 
-\item{debit}{debit column: Unquoted name of the debit variable. This is
-the column to which the value of the transaction goes. Default
-is debit. The debit column must be of the same class as the credit
-column.}
+\item{debit}{Debit column: Unquoted name of the debit variable. This is
+the variable that receives the transactional value. Default is debit. The
+\code{debit} column must be of the same class as the \code{credit} column.}
 
 \item{l}{Pounds column: Unquoted name of a numeric variable corresponding
-to pounds. Default is l.}
+to the pounds or librae unit. Default is l.}
 
 \item{s}{Shillings column: Unquoted name of numeric variable corresponding
-to shillings. Default is s.}
+to the shillings or solidi unit. Default is s.}
 
 \item{d}{Pence column: Unquoted name of numeric variable corresponding to
-pence. Default is d.}
+the pence or denarii unit. Default is d.}
 
 \item{bases}{Numeric vector of length 2 used to specify the bases for
-the s or solidus and d or denarius values in the lsd variables. Default is
-\code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
-20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
-use alternative bases for the solidus and denarius values that were also
-in use.}
+the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12)},
+which conforms to the most widely used system of 1 pound = 20 shillings
+and 1 shilling = 12 pence. This argument makes it possible to use
+alternate bases for the shillings (s) and pence (d) units.}
 
-\item{na.rm}{logical. Passed on to \code{na.rm} argument in \code{\link[=sum]{sum()}}. Whether
+\item{na.rm}{Logical. Passed on to \code{na.rm} argument in \code{\link[=sum]{sum()}}. Whether
 missing values (NA) should be removed. Default is \code{FALSE}.}
 }
 \value{
 Returns a tibble with two rows showing the credit and debit
-remaining in \code{df} in the form of pounds, shillings, and pence.
-The names for the pounds, shillings, and pence columns correspond to
-the input for \code{l}, \code{s}, and \code{d}.
+remaining in \code{df}. The names for the pounds, shillings, and pence
+variables correspond to the input for \code{l}, \code{s}, and \code{d}.
 }
 \description{
-Calculate the balance remaining on \code{df} in the form of pounds,
-shillings, and pence. This shows the total credit and debit remaining
-on the transactions data frame or account book.
+Calculate the balance remaining in \code{df}. This shows the total credit and
+debit remaining in the transactions data frame or account book.
 }
 \details{
-\code{deb_balance()} is based on \code{\link[=deb_open]{deb_open()}}. The function adds the credits
+\code{deb_balance()} is based on \code{\link[=deb_open]{deb_open()}}. The function sums the credits
 and debits of the accounts that remain open to calculate the capital
 remaining in the transactions data frame. The values for credit and debit
 should be the same, as each credit also has a corresponding debit. The
 exception is if there are missing values in \code{df} and \code{na.rm = FALSE}.
 
 \code{deb_balance()} is part of a family of functions meant to be used on
-data frames that contain transactions between accounts likely contained in
-an account book. The data frame should possess a similar structure to a
+data frames that contain transactions between accounts in an account
+book. The data frame should possess a similar structure to a
 \href{https://www.jessesadler.com/post/network-analysis-with-r/#nodes-edges}{directed edge list}.
-In this context, credit and debit variables filled with the ids of the
-accounts act as the edges of the network. Following the
+In this context, credit and debit variables contain the ids of the accounts
+and act as the edges of the network. Following the
 \href{https://en.wikipedia.org/wiki/Debits_and_credits}{nomenclature of accounting},
-the credit variable represents the account from which a value goes out,
-while the debit variable represents the account that receives the value.
-Thus, from the credit account to the debit account.
+the credit variable represents the account that the transactional value is
+from, while the debit variable represents the account that receives the
+value. Thus, from the credit account to the debit account.
 }
 \examples{
 # Create a transactions data frame
-trans <- data.frame(credit = c("a", "b", "a", "c"),
-                    debit = c("b", "a", "c", "a"),
-                    l = c(10, 10, 7, 9),
-                    s = c(15, 15, 11, 2),
-                    d = c(6, 6, 8, 11))
+trans <- data.frame(credit = c("a", "b", "b", "a", "c"),
+                    debit = c("b", "a", "a", "c", "a"),
+                    l = c(10, 6, 4, 7, 9),
+                    s = c(15, 3, 11, 11, 2),
+                    d = c(6, 11, 7, 8, 11))
 
 # Credit and debit remaining on trans
-deb_balance(trans, credit, debit, l, s, d)
+deb_balance(df = trans,
+            credit = credit, debit = debit,
+            l = l, s = s, d = d)
 
 }
 \seealso{
@@ -89,3 +85,4 @@ Other lsd account functions: \code{\link{deb_account_summary}},
   \code{\link{deb_current}}, \code{\link{deb_debit}},
   \code{\link{deb_open}}
 }
+\concept{lsd account functions}

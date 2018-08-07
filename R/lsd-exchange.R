@@ -13,47 +13,46 @@
 #' between the two currencies use [deb_convert_bases()].
 #'
 #' @inheritParams deb_normalize
-#' @param rate_per_shillings The exchange rate. This follows the common practice
+#' @param shillings_rate The exchange rate. This follows the common practice
 #'   of calculating the exchange rate between different currencies in terms
 #'   of shillings. Thus, in terms of a given number over the base of shillings
 #'   provided in the `bases` argument. A numeric vector of length 1.
 #'
 #' @return Returns either a named numeric vector of length 3 or a list of
 #'   named numeric vectors representing the values of pounds, shillings,
-#'   and pence. If the input lsd value is negative, the l, s, and d values
-#'   will all be negative.
+#'   and pence.
 #'
 #' @examples
 #' # Exchange at the rate of 31 shillings
-#' deb_exchange(lsd = c(850, 16, 5), rate_per_shillings = 31)
+#' deb_exchange(lsd = c(850, 16, 5), shillings_rate = 31)
 #'
 #' # If the exchange rate is in shillings and pence, you can either
 #' # decimalize the shillings or add the pence and divide by 12 in
-#' # the rate_per_shillings argument. If the decimalized shillings has
+#' # the shillings_rate argument. If the decimalized shillings has
 #' # a repeating decimal, the latter approach is preferable.
 #'
 #' # Exchange at the rate of 31 shillings 4 pence
-#' deb_exchange(lsd = c(850, 16, 5), rate_per_shillings = 31.3333)
-#' deb_exchange(lsd = c(850, 16, 5), rate_per_shillings = 31 + 4/12)
+#' deb_exchange(lsd = c(850, 16, 5), shillings_rate = 31.33333)
+#' deb_exchange(lsd = c(850, 16, 5), shillings_rate = 31 + 4/12)
 #'
 #' # Exchange of a list of lsd vectors at a single rate
 #' # This returns a list of named lsd values
 #' lsd_list <- list(c(40, 5, 9), c(29, 7, 1), c(35, 6, 5))
 #'
-#' deb_exchange(lsd = lsd_list, rate_per_shillings = 31)
+#' deb_exchange(lsd = lsd_list, shillings_rate = 31)
 #'
 #' @export
 
 deb_exchange <- function(lsd,
-                         rate_per_shillings,
+                         shillings_rate,
                          bases = c(20, 12)) {
   # Check exchange rate
-  shillings_check(rate_per_shillings)
+  shillings_check(shillings_rate)
 
-  rate_per_shillings <- rate_per_shillings / bases[1]
+  shillings_rate <- shillings_rate / bases[1]
 
   deb_multiply(lsd,
-               x = rate_per_shillings,
+               x = shillings_rate,
                bases = bases)
 }
 
@@ -79,7 +78,7 @@ normalized_to_d <- function(lsd, bases = c(20, 12)) {
   lsd
 }
 
-#' Exchange rate between pounds, shillings, and pence values
+#' Exchange rate between pounds, shillings, and pence currencies
 #'
 #' Calculate the exchange rate between two sets of values in the form of
 #' pounds, shillings, and pence. The rate is returned in the form of either
@@ -91,21 +90,21 @@ normalized_to_d <- function(lsd, bases = c(20, 12)) {
 #'
 #' @inheritParams deb_normalize
 #' @param lsd1 Pounds, shillings, and pence value that is reduced to £1 and
-#'   against which `lsd2` is compared. In other words, `lsd1` is the "fixed
-#'   currency" and `lsd2` is the "variable currency". `lsd1` is a numeric
-#'   vector of length 3 or list of numeric vectors of length 3. The first
-#'   position of the vectors represents the pounds value or l. The second
+#'   against which `lsd2` is compared. Thus, `lsd1` is the "fixed currency" and
+#'   `lsd2` is the "variable currency". `lsd1` is a numeric vector of length 3
+#'   or list of numeric vectors of length 3. The first position of the vectors
+#'   represents the pounds value or l. The second position represents the
+#'   shillings value or s. And the third position represents the pence value
+#'   or d.
+#' @param lsd2 Pounds, shillings, and pence value that is compared to `lsd1`.
+#'   When `lsd1` equals £1, `lsd2` equals the returned value. Thus, `lsd1` is
+#'   the "fixed currency" and `lsd2` is the "variable currency". `lsd2` is a
+#'   numeric vector of length 3 or list of numeric vectors of length 3. The
+#'   first position of the vectors represents the pounds value or l. The second
 #'   position represents the shillings value or s. And the third position
 #'   represents the pence value or d.
-#' @param lsd2 Pounds, shillings, and pence, value that is compared to `lsd1`.
-#'   When `lsd1` equals £1, `lsd2` equals the returned value. In other words,
-#'   `lsd1` is the "fixed currency" and `lsd2` is the "variable currency".
-#'   `lsd2` is a numeric vector of length 3 or list of numeric vectors of
-#'   length 3. The first position of the vectors represents the pounds value
-#'   or l. The second position represents the shillings value or s. And the
-#'   third position represents the pence value or d.
 #' @param output Choice of either `"shillings"`, `"pence"`, or `"pounds"` for
-#'   the format in which the exchange rate will be returned.  `"shillings"`,
+#'   the format in which the exchange rate will be returned. `"shillings"`,
 #'   the default, returns the exchange rate in terms of shillings and pence.
 #'   `"pence"` returns the exchange rate in terms of pence. `"pounds"` returns
 #'   the exchange rate in terms of pounds, shillings, and pence.
@@ -113,7 +112,7 @@ normalized_to_d <- function(lsd, bases = c(20, 12)) {
 #' @return Returns either a named numeric vector of length 3 or a list of
 #'   named numeric vectors representing the values of pounds, shillings,
 #'   and pence. The format of the returned value is determined by the `output`
-#'   argument. If `lsd1` > `lsd2`, the returned value will be less that £1.
+#'   argument. If `lsd1` > `lsd2`, the returned value will be greater that £1.
 #'
 #' @examples
 #' # Find the exchange rate if £166 13s 4d in one currency is
@@ -170,7 +169,7 @@ deb_exchange_rate <- function(lsd1, lsd2,
   }
 }
 
-#' Calculate the inverse of an exchange rate
+#' Calculation of the inverse of an exchange rate
 #'
 #' Given an exchange rate between two currencies, calculate the inverse rate,
 #' or the rate in the opposite direction.
@@ -196,6 +195,10 @@ deb_exchange_rate <- function(lsd1, lsd2,
 #' # Inverse of an exchange rate of £2 13s. 4d. in pence
 #' deb_invert_rate(exchange_rate = c(2, 13, 4),
 #'                 output = "pence")
+#'
+#' # Find the inverse of multiple exchange rates
+#' rates <- list(c(0, 33, 4), c(0, 31, 0), c(0, 30, 0))
+#' deb_invert_rate(exchange_rate = rates)
 #'
 #' @export
 
@@ -236,37 +239,41 @@ deb_invert_rate <- function(exchange_rate,
 #'
 #' @inheritParams deb_multiply_mutate
 #' @inheritParams deb_exchange
-#' @param suffix Suffix added to the column names for the pounds, shillings, and pence
-#'   columns representing the converted currency so that they are distinguished
-#'   from the pounds, shillings, and pence columns of the original currency.
-#'   Default is ".exchange". Should be a character vector of length 1.
+#' @param suffix Suffix added to the column names for the pounds, shillings,
+#'   and pence columns representing the converted currency to distinguish them
+#'   from the original currency. Default is ".exchange". Must be a character
+#'   vector of length 1.
 #'
 #' @return Returns a data frame with three new variables of pounds, shillings,
 #'   and pence representing the converted currency.
 #'
 #' @examples
-#' # Exchange rate of 31 shillings
+#' # Exchange rate of 31 shillings to the pound
 #' example <- data.frame(l = c(35, 10, 26, 12),
 #'                       s = c(10, 18, 11, 16),
 #'                       d = c(9, 11, 10, 5))
-#' deb_exchange_mutate(example, l, s, d,
-#'                     rate_per_shillings = 31)
+#' deb_exchange_mutate(df = example,
+#'                     l = l, s = s, d = d,
+#'                     shillings_rate = 31)
 #'
 #' # If the exchange rate is in shillings and pence, you can either
 #' # decimalize the shillings or add the pence and divide by 12 in
-#' # the rate_per_shillings argument. If the decimalized shillings has
+#' # the shillings_rate argument. If the decimalized shillings has
 #' # a repeating decimal, the latter approach is preferable.
 #'
 #' # Exchange at the rate of 31 shillings 4 pence
-#' deb_exchange_mutate(example, l, s, d,
-#'                     rate_per_shillings = 31.3333)
-#' deb_exchange_mutate(example, l, s, d,
-#'                     rate_per_shillings = 31 + 4/12)
+#' deb_exchange_mutate(df = example,
+#'                     l = l, s = s, d = d,
+#'                     shillings_rate = 31.3333)
+#' deb_exchange_mutate(df = example,
+#'                     l = l, s = s, d = d,
+#'                     shillings_rate = 31 + 4/12)
 #'
 #' # Replace the existing pounds, shillings, and pence
 #' # with the converted values through replace argument
-#' deb_exchange_mutate(example, l, s, d,
-#'                     rate_per_shillings = 31,
+#' deb_exchange_mutate(df = example,
+#'                     l = l, s = s, d = d,
+#'                     shillings_rate = 31,
 #'                     replace = TRUE)
 #'
 #' @export
@@ -275,7 +282,7 @@ deb_exchange_mutate <- function(df,
                                 l = l,
                                 s = s,
                                 d = d,
-                                rate_per_shillings,
+                                shillings_rate,
                                 bases = c(20, 12),
                                 replace = FALSE,
                                 suffix = ".exchange") {
@@ -284,12 +291,12 @@ deb_exchange_mutate <- function(df,
   d <- rlang::enquo(d)
 
   # Checks
-  shillings_check(rate_per_shillings)
+  shillings_check(shillings_rate)
   lsd_column_check(df, l, s, d)
   suffix <- suffix_check(suffix, replace)
   lsd_names <- lsd_column_names(df, l, s, d, suffix)
 
-  x <- rate_per_shillings / bases[1]
+  x <- shillings_rate / bases[1]
 
   lsd_mutate_columns(df,
                      !! l * x,

@@ -2,32 +2,35 @@
 % Please edit documentation in R/lsd-decimalization-df.R
 \name{deb_lsd_l_mutate}
 \alias{deb_lsd_l_mutate}
-\title{Convert from pounds, shillings and pence to pounds}
+\title{Conversion of pounds, shillings and pence to pounds}
 \usage{
-deb_lsd_l_mutate(df, l = l, s = s, d = d, column_name = librae,
-  bases = c(20, 12))
+deb_lsd_l_mutate(df, l = l, s = s, d = d, column_name = pounds,
+  bases = c(20, 12), suffix = ".decimal")
 }
 \arguments{
 \item{df}{A data frame that contains pounds, shillings, and pence variables.}
 
 \item{l}{Pounds column: Unquoted name of a numeric variable corresponding
-to pounds. Default is l.}
+to the pounds or librae unit. Default is l.}
 
 \item{s}{Shillings column: Unquoted name of numeric variable corresponding
-to shillings. Default is s.}
+to the shillings or solidi unit. Default is s.}
 
 \item{d}{Pence column: Unquoted name of numeric variable corresponding to
-pence. Default is d.}
+the pence or denarii unit. Default is d.}
 
 \item{column_name}{Unquoted name of the column for the decimalized pounds.
-Default is \code{pounds}.}
+Default is pounds.}
 
 \item{bases}{Numeric vector of length 2 used to specify the bases for
-the s or solidus and d or denarius values in the lsd variables. Default is
-\code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
-20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
-use alternative bases for the solidus and denarius values that were also
-in use.}
+the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12)},
+which conforms to the most widely used system of 1 pound = 20 shillings
+and 1 shilling = 12 pence. This argument makes it possible to use
+alternate bases for the shillings (s) and pence (d) units.}
+
+\item{suffix}{Suffix added to \code{column_name} if \code{df} already contains a
+variable with the same name. Default is ".decimal". Must be a character
+vector of length 1.}
 }
 \value{
 Returns a data frame with a new decimalized pounds variable.
@@ -41,9 +44,11 @@ decimalized pounds variable.
 example <- data.frame(l = c(35, 10, 26, 12),
                       s = c(10, 18, 11, 16),
                       d = c(9, 11, 10, 5))
-deb_lsd_l_mutate(example, l, s, d)
+deb_lsd_l_mutate(df = example, l = l, s = s, d = d)
 
-# Change the name of the decimlaized pounds variable
-deb_lsd_l_mutate(example, l, s, d, column_name = pounds)
+# Change the name of the decimalized pounds variable
+deb_lsd_l_mutate(df = example,
+                 l = l, s = s, d = d,
+                 column_name = librae)
 
 }

@@ -2,50 +2,50 @@
 % Please edit documentation in R/lsd-sum.R
 \name{deb_sum_df}
 \alias{deb_sum_df}
-\title{Sum of pounds, shillings, and pence columns in a data frame}
+\title{Sum of pounds, shillings, and pence in a data frame}
 \usage{
-deb_sum_df(df, l = l, s = s, d = d, bases = c(20, 12), na.rm = FALSE)
+deb_sum_df(df, l = l, s = s, d = d, bases = c(20, 12),
+  na.rm = FALSE)
 }
 \arguments{
 \item{df}{A data frame that contains pounds, shillings, and pence variables.}
 
 \item{l}{Pounds column: Unquoted name of a numeric variable corresponding
-to pounds. Default is l.}
+to the pounds or librae unit. Default is l.}
 
 \item{s}{Shillings column: Unquoted name of numeric variable corresponding
-to shillings. Default is s.}
+to the shillings or solidi unit. Default is s.}
 
 \item{d}{Pence column: Unquoted name of numeric variable corresponding to
-pence. Default is d.}
+the pence or denarii unit. Default is d.}
 
 \item{bases}{Numeric vector of length 2 used to specify the bases for
-the s or solidus and d or denarius values in the lsd variables. Default is
-\code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
-20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
-use alternative bases for the solidus and denarius values that were also
-in use.}
+the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12)},
+which conforms to the most widely used system of 1 pound = 20 shillings
+and 1 shilling = 12 pence. This argument makes it possible to use
+alternate bases for the shillings (s) and pence (d) units.}
 
-\item{na.rm}{logical. Passed on to \code{na.rm} argument in \code{\link[=sum]{sum()}}. Whether
+\item{na.rm}{Logical. Passed on to \code{na.rm} argument in \code{\link[=sum]{sum()}}. Whether
 missing values (NA) should be removed. Default is \code{FALSE}.}
 }
 \value{
 Returns a data frame with one level of grouping dropped. Any
 variables other than \code{l}, \code{s}, and \code{d} that are not grouped will be
-dropped. If the sum of any group is a negative value, the \code{l}, \code{s},
-and \code{d} values for that group will all be returned as negative.
+dropped. If the sum of any group is a negative value, the l, s, and d
+values for that group will all be negative.
 }
 \description{
-Uses \code{\link[dplyr:summarise]{dplyr::summarise()}} to add pounds, shillings, and pence
-columns in a data frame and normalizes the values.
+Uses \code{\link[dplyr:summarise]{dplyr::summarise()}} to add pounds, shillings, and pence columns in a
+data frame.
 }
 \details{
 When used on a data frame without any grouping, the result will be a data
-frame with a single row consisting of columns for pounds, shillings, and
-pence. When used in conjunction with \code{\link[dplyr:group_by]{dplyr::group_by()}}, \code{\link[=deb_sum_df]{deb_sum_df()}} will
-summarize the pounds, shillings, and pence columns for each group.
+frame with a single row consisting of variables for pounds, shillings, and
+pence. When used in conjunction with \code{\link[dplyr:group_by]{dplyr::group_by()}}, \code{\link[=deb_sum_df]{deb_sum_df()}}
+will summarize the pounds, shillings, and pence columns for each group.
 
-See \code{\link[=deb_add_mutate]{deb_add_mutate()}} to add a single lsd value to the lsd values
-contained in a data frame.
+See \code{\link[=deb_add_mutate]{deb_add_mutate()}} to add a single lsd value to pounds, shillings, and
+pence variables in a data frame.
 }
 \examples{
 # Use on an ungrouped data frame adds all values of pounds, shillings,
@@ -54,13 +54,13 @@ example1 <- data.frame(group = c(1, 2, 1, 2),
                        l = c(3, 5, 6, 2),
                        s = c(10, 18, 11, 16),
                        d = c(9, 11, 10, 5))
-deb_sum_df(example1, l, s, d)
+deb_sum_df(df = example1, l = l, s = s, d = d)
 
 # Use with group_by() summarizes the values of pounds, shillings,
 # and pence for each group.
 example1 \%>\%
   dplyr::group_by(group) \%>\%
-  deb_sum_df(l, s, d)
+  deb_sum_df(l = l, s = s, d = d)
 
 # The default for the function is to have pounds, shillings, and pence
 # columns labeled as l, s, d. If this is true, you do not need to
@@ -76,7 +76,7 @@ example2 <- data.frame(group = c(1, 2, 1, 2),
                        d = c(-9, 11, -10, 5))
 example2 \%>\%
   dplyr::group_by(group) \%>\%
-  deb_sum_df(l, s, d)
+  deb_sum_df(l = l, s = s, d = d)
 
 }
 \seealso{
@@ -88,3 +88,4 @@ Other lsd arithmetic functions: \code{\link{deb_add_mutate}},
   \code{\link{deb_subtract_mutate}},
   \code{\link{deb_subtract}}, \code{\link{deb_sum}}
 }
+\concept{lsd arithmetic functions}

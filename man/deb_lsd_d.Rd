@@ -2,7 +2,7 @@
 % Please edit documentation in R/lsd-decimalization.R
 \name{deb_lsd_d}
 \alias{deb_lsd_d}
-\title{Convert from pounds, shillings, and pence to pence}
+\title{Conversion from pounds, shillings, and pence to pence}
 \usage{
 deb_lsd_d(lsd, bases = c(20, 12))
 }
@@ -13,11 +13,10 @@ second position represents the shillings value or s. And the third
 position represents the pence value or d.}
 
 \item{bases}{Numeric vector of length 2 used to specify the bases for
-the s or solidus and d or denarius values in \code{lsd} vectors. Default is
-\code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
-20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
-use alternative bases for the solidus and denarius values that were also
-in use.}
+the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12)},
+which conforms to the most widely used system of 1 pound = 20 shillings
+and 1 shilling = 12 pence. This argument makes it possible to use
+alternate bases for the shillings (s) and pence (d) units.}
 }
 \value{
 Returns a numeric vector of decimalized shillings If \code{lsd} is a
@@ -25,13 +24,14 @@ vector, the returned vector will be length 1. If \code{lsd} is a list of
 vectors, the returned vector will be the same length as \code{lsd}.
 }
 \description{
-Convert pounds, shillings, and pence to pence or denarii.
-Converting to the lowest denomination turns the non-decimal
-pounds, shillings, and pence currency into a decimal currency.
+Convert pounds, shillings, and pence to decimalized pence.
 }
 \examples{
 # Create decimalized pence
 deb_lsd_d(lsd = c(10, 5, 8))
+
+# With alternate bases for shillings and pence
+deb_lsd_d(lsd = c(10, 5, 8), bases = c(20, 16))
 
 # The lsd vector can be negative
 deb_lsd_d(lsd = c(-10, -5, -8))
@@ -39,7 +39,7 @@ deb_lsd_d(lsd = c(-10, -5, -8))
 # The pounds, shillings, and pence do not need to be normalized
 deb_lsd_d(lsd = c(6, 25, 17))
 
-# To decimalize multiple lsd values use a list of lsd vectors
+# Decimalize multiple lsd values with a list of lsd vectors
 lsd_list <- list(c(40, 5, 9), c(29, 7, 1), c(35, 6, 5))
 deb_lsd_d(lsd = lsd_list)
 

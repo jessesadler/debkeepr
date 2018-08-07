@@ -38,7 +38,7 @@ devtools::install_github("jessesadler/debkeepr")
 	- Italian: lire, soldi, denari
 	- Flemish: ponden, schellingen, groten or penningen
 - The functions are designed to be used with three types of input objects:
-	- Numeric vectors of length 3 in which the first position represents librae (`l`), the second position solidi (`s`), and the third position denarii (`d`). Such lsd vectors can either be a single numeric vector or a list of such vectors.
+	- Numeric vectors of length 3 in which the first position represents the libra (`l`) unit, the second position the solidus (`s`) unit, and the third position the denarius (`d`) unit. Such lsd vectors can either be a single numeric vector or a list of such vectors.
 	- A data frame that contains pounds, shillings, and pence variables alongside any other variables. The pounds, shillings, and pence columns can have any desired names, but the default is to have the columns named “l”, “s”, and “d” respectively.
 	- The final object is a data frame that mimics the structure of an account book and can be thought of as a transactions data frame. In addition to pounds, shillings, and pence variables that denote the value of each transaction, a transactions data frame contains variables recording the [creditor and debtor](https://en.wikipedia.org/wiki/Debits_and_credits) for each transaction.
 - There are equivalent functions to manipulate lsd vectors and data frames with lsd variables. Anything that can be done on an lsd vector can also be done to a data frame with lsd values. Functions that use a transactions data frame that also possess credit and debit variables do not have equivalent functions of lsd vectors.
@@ -100,7 +100,7 @@ deb_normalize(lsd = c(10, 64, 21))
 
 Notice that the result is a named vector with the elements of the vector named “l”, “s”, and “d” respectively.
 
-While much of Europe used the ratio of 1:20:240 from the 8th century on, there also existed [systems that used different bases](https://en.wikipedia.org/wiki/Non-decimal_currency) for the solidus and denarius units. For example, the [money of account](https://en.wikipedia.org/wiki/Unit_of_account) in the [Dutch Republic](https://en.wikipedia.org/wiki/Stuiver) consisted of gulden, stuivers, and penningen. Like the more prevalent system of libra, solidus, and denarius, there were 20 stuivers in a gulden, but there were 16 penningen in a stuiver.  It is possible to normalize the above value with this alternative set of lsd bases, or any other bases, with the `bases` argument. This argument takes a numeric vector of length two, corresponding to the bases for the solidus and denarius units. The default is the most commonly used bases of 20 and 12: `c(20, 12)`. The desired bases can be set in all of the relevant functions in `debkeepr`.
+While much of Europe used the ratio of 1:20:240 from the 8th century on, there also existed [systems that used different bases](https://en.wikipedia.org/wiki/Non-decimal_currency) for the solidus and denarius units. For example, the [money of account](https://en.wikipedia.org/wiki/Unit_of_account) in the [Dutch Republic](https://en.wikipedia.org/wiki/Stuiver) consisted of guilders, stuivers, and penningen. Like the more prevalent system of libra, solidus, and denarius, there were 20 stuivers in a guilder, but there were 16 penningen in a stuiver.  It is possible to normalize the above value with this alternative set of lsd bases, or any other bases, with the `bases` argument. This argument takes a numeric vector of length two, corresponding to the bases for the solidus and denarius units. The default is the most commonly used bases of 20 and 12: `c(20, 12)`. The desired bases can be set in all of the relevant functions in `debkeepr`.
 
 ```{r normalize alternate bases}
 # Normalize a non-standard lsd vector with alternative bases
@@ -156,24 +156,82 @@ deb_divide(lsd = lsd_list, x = 3)
 ```
 
 ### Financial functions
-Alongside arithmetic operations, `debkeepr` possesses functions to do common financial operations such as calculate interest and the exchange between different currencies. `deb_interest()` possesses arguments for the interest rate, the duration over which the interest should be calculated, and whether to include the principal or not in the answer. The default interest rate is 6.25%, which was the standard interest rate in the Low Countries at the end of the 16th century. `deb_exchange()` uses shillings to compare the two currencies, which was the most common unit used in providing an exchange rate. If the exchange rate includes a denarius value, you can either convert to a decimalized solidus by hand or add the denarius over the base of the denarius as shown below.
+Alongside arithmetic operations, `debkeepr` possesses functions to do common financial operations such as calculate interest and the exchange between different currencies. `deb_interest()` possesses arguments for the interest rate, the duration over which the interest should be calculated, and whether to include the principal or not in the answer. The default interest rate is 6.25%, which was the standard interest rate in the Low Countries at the end of the 16th century.
 
-```{r interest and exchange}
+```{r interest}
 # Interest rate at 6.25% over a 5 year period with principal
-deb_interest(c(100, 0, 0), interest = 0.0625, duration = 5)
+deb_interest(lsd = c(100, 0, 0), interest = 0.0625, duration = 5)
 
 # Calculate only the accrued interest
-deb_interest(c(100, 0, 0), interest = 0.0625, duration = 5, with_principal = FALSE)
+deb_interest(lsd = c(100, 0, 0), interest = 0.0625, duration = 5, with_principal = FALSE)
+```
 
+Exchange between different currencies creates a number of potential problems, but `debkeepr` provides multiple ways to handle the exchange between currencies. The most straightforward method for calculating the exchange between two currencies is to use `deb_exchange()`, which uses shillings to compare the currencies. This was a common unit used in providing an exchange rate between similar currencies. If the exchange rate includes a pence value, you can either convert to a decimalized solidus by hand or add the pence over the base of the pence as shown below. However, the exchange rate may not always be given in terms of shillings. For instance, a rate might be provided as 90d. This could be normalized to shillings, but in this case it may be easier to use `deb_multiply()` and compare 90d. to 240d. in a pound.
+
+```{r exchange}
 # Exchange between currencies at rate of 31 shillings or 1 to 1.55
-deb_exchange(c(100, 0, 0), rate_per_shillings = 31)
+deb_exchange(lsd = c(100, 0, 0), shillings_rate = 31)
 
 # Exchange rate of 31s. 4d.
-deb_exchange(c(100, 0, 0), rate_per_shillings = 31 + 4/12)
+deb_exchange(lsd = c(100, 0, 0), shillings_rate = 31 + 4/12)
+
+# Exchange rate of 90d. using deb_multiply
+deb_multiply(lsd = c(100, 0, 0), x = 90 / 240)
+```
+
+`debkeepr` provides two functions that can help in dealing with exchange rates between currencies. `deb_exchange_rate()` accepts two lsd vectors of lists of vectors to find the exchange rate between the values. The first argument, `lsd1`, is the fixed currency that is reduced to £1 and `lsd2` is the variable currency. Because it may not always make sense to return the exchange rate in a single format, this function has an option to return the exchange rate as a normalized lsd vector, in terms of shillings and pence as used by `deb_exchange()`, or just in terms of pence. The second helper function is `deb_invert_rate()`. Given an exchange rate, `deb_invert_rate()` provides a means to find the exchange rate in the opposite direction. Like `deb_exchange_rate()`, it has options to return the exchange rate as a normalized lsd vector, in terms of shillings and pence, or just in terms of pence. The default output for both `deb_exchange_rate()` and `deb_invert_rate()` is shillings and pence.
+
+```{r exchange rate}
+# Find the exchange rate between two values
+deb_exchange_rate(lsd1 = c(100, 0, 0), lsd2 = c(166, 13, 4))
+
+# Find the same rate in terms of pence
+deb_exchange_rate(lsd1 = c(100, 0, 0), lsd2 = c(166, 13, 4), output = "pence")
+
+# The above exchange rate is 33s. 4d. Can find the exchange in the
+# opposite direction by changing lsd1 and lsd2
+deb_exchange_rate(lsd1 = c(166, 13, 4), lsd2 = c(100, 0, 0))
+
+# Or you can use deb_invert_rate
+deb_invert_rate(exchange_rate = c(0, 33, 4))
+
+# This can also be expressed in terms of pence
+deb_invert_rate(exchange_rate = c(0, 33, 4), output = "pence")
+```
+
+The most challenging exchange between currencies takes place when the bases for the solidus and denarius units differ between the two currencies. Though the system of 20-base solidus and 12-base denarius was widespread, various currencies used other bases. `deb_convert_bases()` provides a way to convert from one base system to another. It also has a `ratio` argument that can be used similarly to `deb_multiply()` to include an exchange rate between currencies in addition to the base conversion. A good example of this is the conversion between guilders and Flemish pounds. Both systems of money of account were used in the Low Countries. Flemish pounds used the 20 and 12 base system, but guilders consisted of 20 stuivers and 1 stuiver was equivalent to 16 penningen. In addition, the guilders and Flemish pounds currencies were tied together at a rate of 6 guilders to £1 Flemish. `deb_convert_bases()` can perform this and various other conversions between forms of measurement that use the tripartite based system of lsd.
+
+```{r base conversion}
+# Convert Flemish pounds to guilders
+deb_convert_bases(lsd = c(104, 8, 3),
+                  bases1 = c(20, 12),
+                  bases2 = c(20, 16),
+                  ratio = 6)
+
+# Convert guilders to FLemish pounds
+deb_convert_bases(lsd = c(1224, 19, 8),
+                  bases1 = c(20, 16),
+                  bases2 = c(20, 12),
+                  ratio = 1 / 6)
+
+# Convert French crowns of 60 sous and 12 deniers to pound sterling
+# at the rate of 72d. French crowns equals £1 sterling or 240d. sterling
+deb_convert_bases(lsd = c(214, 50, 10),
+                  bases1 = c(60, 12),
+                  bases2 = c(20, 12),
+                  ratio = 72 / 240)
+
+# Base conversion can also be done in concert with deb_exchange()
+# Convert from guilders to pounds sterling at the rate of 12s. Flemish
+deb_convert_bases(lsd = c(1224, 19, 8),
+                  bases1 = c(20, 16),
+                  bases2 = c(20, 12),
+                  ratio = 1 / 6) %>% 
+  deb_exchange(shillings_rate = 12)
 ```
 
 ## Data frames with lsd variables
-The same arithmetic and financial operations used for lsd vectors and lists of lsd vectors are also available for pounds, shillings, and pence values in separate variables of a data frame. The functions default to column names of “l”, “s”, and “d” to refer to pounds, shillings, and pence respectively, but any other set of names can be substituted. The data frame functions share the names with their equivalent functions for lsd vectors, but they possess a sufix of either `_df` or `_mutate` to denote the object on which they work. The `_mutate` suffix is used when the operation creates three new lsd variables, which can be modified by the `replace` argument. If `replace = FALSE`, a suffix is added to the names of each of the new variables by the `suffix` argument to distinguish the new values from the original ones. As the `_mutate` suffix implies, these functions are based on the [tidyverse](https://www.tidyverse.org).
+The same arithmetic and financial operations used for lsd vectors and lists of lsd vectors are also available for pounds, shillings, and pence values in separate variables of a data frame. The only exceptions are `deb_exchange_rate()` and `deb_invert_rate()`. The functions default to column names of “l”, “s”, and “d” to refer to pounds, shillings, and pence respectively, but any other set of names can be substituted. The data frame functions share the names with their equivalent functions for lsd vectors, but they possess a suffix of either `_df` or `_mutate` to denote the object on which they work. The `_mutate` suffix is used when the operation creates three new lsd variables, which can be modified by the `replace` argument. If `replace = FALSE`, a suffix is added to the names of each of the new variables by the `suffix` argument to distinguish the new values from the original ones. As the `_mutate` suffix implies, these functions are based on the [tidyverse](https://www.tidyverse.org).
 
 `deb_normalize_df()` performs the same basic task as `deb_normalize()` in normalizing a set of lsd values to the correct bases. It differs slightly from the other data frame functions in that the default is `replace = TRUE` so that the new normalized values replace the original non-standard values.
 
@@ -224,14 +282,21 @@ deb_divide_mutate(df = lsd_df, x = 3)
 ```
 
 ### Financial functions
-`deb_interest_mutate()` and `deb_exchange_mutate()` use the same arguments as their equivalent functions for lsd vectors. The new variables get a suffix of ".interest" and ".exchange" by default.
+`deb_interest_mutate()` and `deb_exchange_mutate()` use the same arguments as their equivalent functions for lsd vectors. The new variables get a suffix of ".interest" and ".exchange" by default. `deb_convert_bases_mutate()` also works similarly to its equivalent function and the new variables get a suffix of ".1", which can be changed with the `suffix` argument.
 
 ```{r interest and exchange df}
 # Interest rate at 6.25% over a 5 year period with principal
 deb_interest_mutate(df = lsd_df, interest = 0.0625, duration = 5)
 
 # Exchange between currencies at rate of 30 shillings or 1 to 1.5
-deb_exchange_mutate(df = lsd_df, rate_per_shillings = 30)
+deb_exchange_mutate(df = lsd_df, shillings_rate = 30)
+
+# Convert pounds Flemish values in lsd_df to guilders
+deb_convert_bases_mutate(df = lsd_df,
+                         bases1 = c(20, 12),
+                         bases2 = c(20, 16),
+                         ratio = 6,
+                         suffix = ".gl")
 ```
 
 ## Decimalization
@@ -255,12 +320,12 @@ deb_lsd_s_mutate(df = lsd_df)
 
 # From decimalized solidi variable to lsd variables
 solidi_df <- data.frame(s = c(247.75, 108.91667, 78.41667))
-deb_s_lsd_mutate(df = solidi_df, solidi = s)
+deb_s_lsd_mutate(df = solidi_df, shillings = s)
 
 # Use the pipe to go to decimalized librae and then back to lsd
 lsd_df %>% 
   deb_lsd_l_mutate(column_name = librae) %>%
-  deb_l_lsd_mutate(librae = librae)
+  deb_l_lsd_mutate(pounds = librae)
 ```
 
 ## Account books: transaction data frames
@@ -298,5 +363,7 @@ deb_current(df = transactions_df)
 deb_balance(transactions_df)
 ```
 
-## Notes
-- See Peter Spufford, *Money and its Use in Medieval Europe* (Cambridge: Cambridge University Press, 1988), especially pages 411–414, for a discussion of money of account in medieval Europe.
+## Useful works on monetary systems and the history of accounting
+- Peter Spufford, *Money and its Use in Medieval Europe* (Cambridge: Cambridge University Press, 1988), especially pages 411–414, for a discussion of money of account in medieval Europe.
+- John Richard Edwards and Stephen P. Walker, eds. *The Routledge Companion to Accounting History* (New York: Routledge Taylor & Francis Group, 2009).
+- John Geijsbeek, *Ancient Double-Entry Bookkeeping: Lucas Pacioli’s Treatise (A.D. 1494, the Earliest Known Writer on Bookkeeping) Reproduced and Translated with Reproductions, Notes, and Abstracts from Manzoni, Pietra, Mainardi, Ympyn, Stevin, and Dafforne* (Denver: John Geijsbeek, 1914).

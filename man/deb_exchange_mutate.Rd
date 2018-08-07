@@ -4,40 +4,39 @@
 \alias{deb_exchange_mutate}
 \title{Exchange between pounds, shillings and pence currencies in a data frame}
 \usage{
-deb_exchange_mutate(df, l = l, s = s, d = d, rate_per_shillings,
+deb_exchange_mutate(df, l = l, s = s, d = d, shillings_rate,
   bases = c(20, 12), replace = FALSE, suffix = ".exchange")
 }
 \arguments{
 \item{df}{A data frame that contains pounds, shillings, and pence variables.}
 
 \item{l}{Pounds column: Unquoted name of a numeric variable corresponding
-to pounds. Default is l.}
+to the pounds or librae unit. Default is l.}
 
 \item{s}{Shillings column: Unquoted name of numeric variable corresponding
-to shillings. Default is s.}
+to the shillings or solidi unit. Default is s.}
 
 \item{d}{Pence column: Unquoted name of numeric variable corresponding to
-pence. Default is d.}
+the pence or denarii unit. Default is d.}
 
-\item{rate_per_shillings}{The exchange rate. This follows the common practice
+\item{shillings_rate}{The exchange rate. This follows the common practice
 of calculating the exchange rate between different currencies in terms
 of shillings. Thus, in terms of a given number over the base of shillings
 provided in the \code{bases} argument. A numeric vector of length 1.}
 
 \item{bases}{Numeric vector of length 2 used to specify the bases for
-the s or solidus and d or denarius values in the lsd variables. Default is
-\code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
-20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
-use alternative bases for the solidus and denarius values that were also
-in use.}
+the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12)},
+which conforms to the most widely used system of 1 pound = 20 shillings
+and 1 shilling = 12 pence. This argument makes it possible to use
+alternate bases for the shillings (s) and pence (d) units.}
 
 \item{replace}{Logical (default \code{FALSE}): when \code{TRUE} the new pounds,
 shillings, and pence variables will replace the original ones.}
 
-\item{suffix}{Suffix added to the column names for the pounds, shillings, and pence
-columns representing the converted currency so that they are distinguished
-from the pounds, shillings, and pence columns of the original currency.
-Default is ".exchange". Should be a character vector of length 1.}
+\item{suffix}{Suffix added to the column names for the pounds, shillings,
+and pence columns representing the converted currency to distinguish them
+from the original currency. Default is ".exchange". Must be a character
+vector of length 1.}
 }
 \value{
 Returns a data frame with three new variables of pounds, shillings,
@@ -59,28 +58,32 @@ bases for the shillings and pence units differ between the two currencies
 use \code{\link[=deb_convert_bases_mutate]{deb_convert_bases_mutate()}}.
 }
 \examples{
-# Exchange rate of 31 shillings
+# Exchange rate of 31 shillings to the pound
 example <- data.frame(l = c(35, 10, 26, 12),
                       s = c(10, 18, 11, 16),
                       d = c(9, 11, 10, 5))
-deb_exchange_mutate(example, l, s, d,
-                    rate_per_shillings = 31)
+deb_exchange_mutate(df = example,
+                    l = l, s = s, d = d,
+                    shillings_rate = 31)
 
 # If the exchange rate is in shillings and pence, you can either
 # decimalize the shillings or add the pence and divide by 12 in
-# the rate_per_shillings argument. If the decimalized shillings has
+# the shillings_rate argument. If the decimalized shillings has
 # a repeating decimal, the latter approach is preferable.
 
 # Exchange at the rate of 31 shillings 4 pence
-deb_exchange_mutate(example, l, s, d,
-                    rate_per_shillings = 31.3333)
-deb_exchange_mutate(example, l, s, d,
-                    rate_per_shillings = 31 + 4/12)
+deb_exchange_mutate(df = example,
+                    l = l, s = s, d = d,
+                    shillings_rate = 31.3333)
+deb_exchange_mutate(df = example,
+                    l = l, s = s, d = d,
+                    shillings_rate = 31 + 4/12)
 
 # Replace the existing pounds, shillings, and pence
 # with the converted values through replace argument
-deb_exchange_mutate(example, l, s, d,
-                    rate_per_shillings = 31,
+deb_exchange_mutate(df = example,
+                    l = l, s = s, d = d,
+                    shillings_rate = 31,
                     replace = TRUE)
 
 }

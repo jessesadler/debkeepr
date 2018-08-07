@@ -10,13 +10,13 @@ deb_df_to_list(df, l = l, s = s, d = d)
 \item{df}{A data frame that contains pounds, shillings, and pence variables.}
 
 \item{l}{Pounds column: Unquoted name of a numeric variable corresponding
-to pounds. Default is l.}
+to the pounds or librae unit. Default is l.}
 
 \item{s}{Shillings column: Unquoted name of numeric variable corresponding
-to shillings. Default is s.}
+to the shillings or solidi unit. Default is s.}
 
 \item{d}{Pence column: Unquoted name of numeric variable corresponding to
-pence. Default is d.}
+the pence or denarii unit. Default is d.}
 }
 \value{
 Returns a list of named numeric vectors representing the values of
@@ -36,11 +36,11 @@ data frame with pounds, shillings, and pence variables.
 }
 \examples{
 # Convert a data frame with pounds, shillings, and pence variables
-# to a list of lsd vectors
-example <- data.frame(l = c(35, -10, 26.725, 12),
-                      s = c(50, -48, 311.85, 76),
-                      d = c(89, -181, 70, 205))
-deb_df_to_list(example, l, s, d)
+# into a list of lsd vectors
+example <- data.frame(l = c(4, -9, 25),
+                      s = c(14, -5, 15),
+                      d = c(9, -1, 6))
+deb_df_to_list(example, l = l, s = s, d = d)
 
 # All variables aside from l, s, and d will be dropped
 example2 <- data.frame(credit = c("a", "b", "a", "c"),
@@ -48,9 +48,10 @@ example2 <- data.frame(credit = c("a", "b", "a", "c"),
                        l = c(10, 10, 7, 9),
                        s = c(15, 15, 11, 2),
                        d = c(6, 6, 8, 11))
-deb_df_to_list(example, l, s, d)
+deb_df_to_list(example2, l = l, s = s, d = d)
 
 }
 \seealso{
 Other helper functions: \code{\link{deb_list_to_df}}
 }
+\concept{helper functions}

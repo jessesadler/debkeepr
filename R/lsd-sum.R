@@ -1,10 +1,10 @@
 ## Sum of lsd vectors and lsd variables in a data frame ##
 
-#' Sum of pounds, shillings, and pence in lsd vectors
+#' Sum of pounds, shillings, and pence values
 #'
-#' Reduces multiple numeric vectors and/or lists of numeric vectors
-#' to a single numeric vector of length 3 representing the normalized
-#' sum of the lsd vectors.
+#' Sum multiple pounds, shillings, and pence values that are in the form of
+#' numeric vectors or lists of numeric vectors, reducing the vectors to a
+#' single pounds, shillings, and pence value.
 #'
 #' See [deb_add()] to add an lsd vector or list of lsd vectors to the
 #' elements of a list of lsd vectors.
@@ -16,7 +16,7 @@
 #'   length 3. The first position of each vector represents the pounds value
 #'   or l. The second position represents the shillings value or s. And the
 #'   third position represents the pence value or d.
-#' @param na.rm logical. Passed on to `na.rm` argument in [sum()]. Whether
+#' @param na.rm Logical. Passed on to `na.rm` argument in [sum()]. Whether
 #'   missing values (NA) should be removed. Default is `FALSE`.
 #'
 #' @return Returns a named numeric vector of length 3 representing the sum of
@@ -81,18 +81,18 @@ deb_denarii_sum <- function(l, s, d, bases = c(20, 12), na.rm) {
               bases = bases)
 }
 
-#' Sum of pounds, shillings, and pence columns in a data frame
+#' Sum of pounds, shillings, and pence in a data frame
 #'
-#' Uses [dplyr::summarise()] to add pounds, shillings, and pence
-#' columns in a data frame and normalizes the values.
+#' Uses [dplyr::summarise()] to add pounds, shillings, and pence columns in a
+#' data frame.
 #'
 #' When used on a data frame without any grouping, the result will be a data
-#' frame with a single row consisting of columns for pounds, shillings, and
-#' pence. When used in conjunction with [dplyr::group_by()], [deb_sum_df()] will
-#' summarize the pounds, shillings, and pence columns for each group.
+#' frame with a single row consisting of variables for pounds, shillings, and
+#' pence. When used in conjunction with [dplyr::group_by()], [deb_sum_df()]
+#' will summarize the pounds, shillings, and pence columns for each group.
 #'
-#' See [deb_add_mutate()] to add a single lsd value to the lsd values
-#' contained in a data frame.
+#' See [deb_add_mutate()] to add a single lsd value to pounds, shillings, and
+#' pence variables in a data frame.
 #'
 #' @family lsd arithmetic functions
 #'
@@ -101,8 +101,8 @@ deb_denarii_sum <- function(l, s, d, bases = c(20, 12), na.rm) {
 #'
 #' @return Returns a data frame with one level of grouping dropped. Any
 #'   variables other than `l`, `s`, and `d` that are not grouped will be
-#'   dropped. If the sum of any group is a negative value, the `l`, `s`,
-#'   and `d` values for that group will all be returned as negative.
+#'   dropped. If the sum of any group is a negative value, the l, s, and d
+#'   values for that group will all be negative.
 #'
 #' @examples
 #' # Use on an ungrouped data frame adds all values of pounds, shillings,
@@ -111,13 +111,13 @@ deb_denarii_sum <- function(l, s, d, bases = c(20, 12), na.rm) {
 #'                        l = c(3, 5, 6, 2),
 #'                        s = c(10, 18, 11, 16),
 #'                        d = c(9, 11, 10, 5))
-#' deb_sum_df(example1, l, s, d)
+#' deb_sum_df(df = example1, l = l, s = s, d = d)
 #'
 #' # Use with group_by() summarizes the values of pounds, shillings,
 #' # and pence for each group.
 #' example1 %>%
 #'   dplyr::group_by(group) %>%
-#'   deb_sum_df(l, s, d)
+#'   deb_sum_df(l = l, s = s, d = d)
 #'
 #' # The default for the function is to have pounds, shillings, and pence
 #' # columns labeled as l, s, d. If this is true, you do not need to
@@ -133,7 +133,7 @@ deb_denarii_sum <- function(l, s, d, bases = c(20, 12), na.rm) {
 #'                        d = c(-9, 11, -10, 5))
 #' example2 %>%
 #'   dplyr::group_by(group) %>%
-#'   deb_sum_df(l, s, d)
+#'   deb_sum_df(l = l, s = s, d = d)
 #'
 #' @export
 

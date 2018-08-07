@@ -28,12 +28,13 @@ the two primary types of input objects of multiple lsd values used by
 shillings, and pence variable to a list with lsd vectors.
 }
 \examples{
-# Convert a list of lsd vectors to a tibble with
+# Convert a list of lsd vectors into a tibble with
 # pounds, shillings, and pence variables
-example <- list(c(4, 34, 89), c(-9, -75, -19), c(15.85, 36.15, 56))
+example <- list(c(4, 14, 9), c(-9, -5, -1), c(15, 15, 6))
 deb_list_to_df(example)
 
 }
 \seealso{
 Other helper functions: \code{\link{deb_df_to_list}}
 }
+\concept{helper functions}

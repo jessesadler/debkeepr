@@ -13,17 +13,16 @@ second position represents the shillings value or s. And the third
 position represents the pence value or d.}
 
 \item{bases}{Numeric vector of length 2 used to specify the bases for
-the s or solidus and d or denarius values in \code{lsd} vectors. Default is
-\code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
-20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
-use alternative bases for the solidus and denarius values that were also
-in use.}
+the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12)},
+which conforms to the most widely used system of 1 pound = 20 shillings
+and 1 shilling = 12 pence. This argument makes it possible to use
+alternate bases for the shillings (s) and pence (d) units.}
 }
 \value{
-Returns either a named numeric vector of length 3 or a list of
-named numeric vectors representing the values of pounds, shillings,
-and pence. If the input lsd value is negative, the l, s, and d values
-will all be negative.
+Returns either a named numeric vector of length 3 or a list of named
+numeric vectors representing the normalized values of pounds, shillings,
+and pence. If the input lsd value is negative, the l, s, and d values will
+all be negative.
 }
 \description{
 Normalize pounds, shillings, and pence to standard unit bases.
@@ -31,28 +30,27 @@ Normalize pounds, shillings, and pence to standard unit bases.
 \details{
 \code{deb_normalize()} uses the nomenclature of
 \href{https://en.wikipedia.org/wiki/£sd}{l, s, and d} to represent pounds,
-shillings, and pence, which derives from the Latin terms
+shillings, and pence units. The abbreviations derive from the Latin terms
 \href{https://en.wikipedia.org/wiki/French_livre}{libra},
 \href{https://en.wikipedia.org/wiki/Solidus_(coin)}{solidus}, and
 \href{https://en.wikipedia.org/wiki/Denarius}{denarius}. In the 8th century a
 solidus came to represent 12 denarii, and 240 denarii were made from one
 libra or pound of silver. The custom of counting coins in dozens (solidi)
-and scores of dozens (libra) spread throughout the Carolingian Empire and
+and scores of dozens (librae) spread throughout the Carolingian Empire and
 became engrained in much of Europe. However,
-\href{https://en.wikipedia.org/wiki/Non-decimal_currency}{other ratios} between
-libra, solidus, and denarius were also in use. The \code{bases} argument
-makes it possible to specify alternative bases for the solidus and denarius
-values.
+\href{https://en.wikipedia.org/wiki/Non-decimal_currency}{other bases} for the
+solidus and denarius units were also in use. The \code{bases} argument makes
+it possible to specify alternate bases for the solidus and denarius units.
 }
 \examples{
 # Use to normalize the values of pounds, shillings, and pence
 deb_normalize(lsd = c(5, 55, 22))
 
 # Normalize values with alternative bases for solidus and denarius units
-# For instance, following Dutch system of gulden, stuivers, and penningen
+# For instance, the Dutch system of guilders, stuivers, and penningen
 deb_normalize(lsd = c(5, 55, 22), bases = c(20, 16))
 
-# It is possible to perform math within the function
+# It is possible to perform arithmetic within the function
 deb_normalize(lsd = c(5 + 6, 20 + 18, 8 + 11))
 
 # deb_normalize can deal with negative values

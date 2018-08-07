@@ -3,21 +3,20 @@
 #' Convert between different bases for shillings and pence units
 #'
 #' Convert between pounds, shillings, and pence currencies that use different
-#' bases for the shillings and pence variables.
+#' bases for the shillings and pence units.
 #'
 #' `deb_convert_bases()` is similar to [deb_exchange()], but the latter performs
-#' exchanges on currencies that share the same shillings and pence bases.
+#' exchange on currencies that share the same shillings and pence bases.
 #'
 #' @inheritParams deb_normalize
-#' @param bases1 Numeric vector of length 2 used to specify the bases for
-#'   the s or solidus and d or denarius values in `lsd` vector(s). `bases1`
-#'   represents the bases for the current `lsd` vector(s).
+#' @param bases1 Numeric vector of length 2 used to specify the bases for the
+#'   shillings or s and pence or d values of `lsd`. `bases1` represents the
+#'   bases for the current `lsd` vector(s).
 #' @param bases2 Numeric vector of length 2 used to specify the bases for
-#'   the s or solidus and d or denarius values to which `lsd` will be
-#'   converted.
+#'   the shillings or s and pence or d values to which `lsd` will be converted.
 #' @param ratio The ratio between the two currencies that possess different
-#'   bases. Numeric vector of length 1 with the default of `1`. This value
-#'   by which `lsd` is multiplied to create the new value.
+#'   bases. This is the value by which `lsd` is multiplied. Numeric vector of
+#'   length 1 with the default of `1`.
 #'
 #' @return Returns either a named numeric vector of length 3 or a list of
 #'   named numeric vectors representing the values of pounds, shillings, and
@@ -53,7 +52,7 @@
 #'                   bases1 = c(20, 16),
 #'                   bases2 = c(20, 12),
 #'                   ratio = 1/6) %>%
-#'   deb_exchange(rate_per_shillings = 12)
+#'   deb_exchange(shillings_rate = 12)
 #'
 #' # Convert a list of lsd vectors of guilders to pounds Flemish
 #' guilders_list <- list(c(1224, 19, 8), c(101, 5, 13), c(225, 13, 15))
@@ -85,18 +84,18 @@ deb_convert_bases <- function(lsd, bases1, bases2, ratio = 1) {
 #' pence bases.
 #'
 #' @inheritParams deb_normalize_df
-#' @param bases1 Numeric vector of length 2 used to specify the bases for
-#'   the s or solidus and d or denarius values in the lsd variables.
-#'   `bases1` represents the bases for the current lsd variables.
-#' @param bases2 Numeric vector of length 2 used to specify the bases for
-#'   the s or solidus and d or denarius values to which the lsd variables will
-#'   be converted. `bases2` represents the bases for the newly created
-#'   lsd variables.
+#' @param bases1 Numeric vector of length 2 used to specify the bases for the
+#'   shillings or s and pence or d values of `l`, `s`, and `d` variables.
+#' @param bases2 Numeric vector of length 2 used to specify the bases for the
+#'   shillings or s and pence or d values to which `l`, `s`, and `d` will be
+#'   converted.
 #' @param ratio The ratio between the two currencies that possess different
-#'   bases. Numeric vector of length 1 with the default of `1`. This value
-#'   by which the lsd variables are multiplied to create the new values.
-#' @param suffix Suffix added to the names of the `l`, `s`, and `d` columns
-#'   to create the names for the new lsd variables.
+#'   bases. This is the value by which `l`, `s`, and `d` variables are
+#'   multiplied. Numeric vector of length 1 with the default of `1`.
+#' @param suffix Suffix added to the column names for the pounds, shillings,
+#'   and pence columns representing the converted values to distinguish them
+#'   from the original pounds, shillings, and pence columns. Default is ".1".
+#'   Must be a character vector of length 1.
 #'
 #' @return Returns a data frame with three new variables of pounds, shillings,
 #'   and pence corresponding to the shillings and pence bases in `bases2`.
@@ -127,7 +126,8 @@ deb_convert_bases <- function(lsd, bases1, bases2, ratio = 1) {
 #'
 #' @export
 
-deb_convert_bases_mutate <- function(df, l = l, s = s, d = d,
+deb_convert_bases_mutate <- function(df,
+                                     l = l, s = s, d = d,
                                      bases1,
                                      bases2,
                                      ratio = 1,
@@ -145,7 +145,7 @@ deb_convert_bases_mutate <- function(df, l = l, s = s, d = d,
                           column_name = temp_librae_col,
                           bases = bases1) %>%
     dplyr::mutate(temp_librae_col = temp_librae_col * ratio) %>%
-    deb_l_lsd_mutate(librae = temp_librae_col,
+    deb_l_lsd_mutate(pounds = temp_librae_col,
                      l_column = !! l,
                      s_column = !! s,
                      d_column = !! d,

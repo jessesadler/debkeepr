@@ -1,10 +1,8 @@
 ## lsd decimalization ##
 
-### To decimal and from decimal for l, s, and d ###
-
 ### librae ###
 
-#' Convert from pounds, shillings and pence to pounds
+#' Conversion of pounds, shillings and pence to pounds
 #'
 #' Convert pounds, shillings, and pence to decimalized pounds.
 #'
@@ -18,13 +16,16 @@
 #' # Create decimalized pounds
 #' deb_lsd_l(lsd = c(10, 5, 8))
 #'
+#' # With alternate bases for shillings and pence
+#' deb_lsd_l(lsd = c(10, 5, 8), bases = c(20, 16))
+#'
 #' # The lsd vector can be negative
 #' deb_lsd_l(lsd = c(-10, -5, -8))
 #'
 #' # The pounds, shillings, and pence do not need to be normalized
 #' deb_lsd_l(lsd = c(6, 25, 17))
 #'
-#' # To decimalize multiple lsd values use a list of lsd vectors
+#' # Decimalize multiple lsd values with a list of lsd vectors
 #' lsd_list <- list(c(40, 5, 9), c(29, 7, 1), c(35, 6, 5))
 #' deb_lsd_l(lsd = lsd_list)
 #'
@@ -41,26 +42,26 @@ deb_lsd_l <- function(lsd, bases = c(20, 12)) {
   lsd[1] + lsd[2] / bases[1] + lsd[3] / prod(bases)
 }
 
-#' Convert from decimalized pounds to pounds, shillings, and pence
+#' Conversion of decimalized pounds to pounds, shillings, and pence
 #'
-#' Convert decimalized pounds to the lsd system of pounds, shillings,
-#' and pence. The function returns the value from a decimal currency to the
-#' non-decimal currency of pounds, shillings, and pence.
-#' This is a wrapper around [deb_normalize()].
+#' Convert decimalized pounds to the lsd system of pounds, shillings, and
+#' pence.
 #'
-#' @param l Decimalized pounds: numeric vector representing pounds to be
-#'   converted into an lsd value.
+#' @param l Decimalized pounds: Numeric vector representing pounds to be
+#'   converted into a pounds, shillings, and pence currency.
 #' @inheritParams deb_normalize
 #'
 #' @return Returns either a named numeric vector of length 3 or a list of
 #'   named numeric vectors representing the values of pounds, shillings,
-#'   and pence. If the input lsd value is negative, the l, s, and d values
-#'   will all be negative.
+#'   and pence.
 #'
 #' @examples
 #' # Conversion from pounds to pounds, shillings, and pence
-#' # only make sense with decimalized pounds.
+#' # only make sense with pounds that has a decimal.
 #' deb_l_lsd(l = 8.625)
+#'
+#' # With alternate bases for shillings and pence
+#' deb_l_lsd(l = 8.625, bases = c(20, 16))
 #'
 #' # The value can be negative
 #' deb_l_lsd(l = -8.625)
@@ -87,7 +88,7 @@ deb_l_lsd <- function(l, bases = c(20, 12)) {
 
 ### solidi ###
 
-#' Convert from pounds, shillings and pence to shillings
+#' Conversion of pounds, shillings and pence to shillings
 #'
 #' Convert pounds, shillings, and pence to decimalized shillings.
 #'
@@ -101,13 +102,16 @@ deb_l_lsd <- function(l, bases = c(20, 12)) {
 #' # Create decimalized shillings
 #' deb_lsd_s(lsd = c(10, 5, 8))
 #'
+#' # With alternate bases for shillings and pence
+#' deb_lsd_s(lsd = c(10, 5, 8), bases = c(20, 16))
+#'
 #' # The lsd vector can be negative
 #' deb_lsd_s(lsd = c(-10, -5, -8))
 #'
 #' # The pounds, shillings, and pence do not need to be normalized
 #' deb_lsd_s(lsd = c(6, 25, 17))
 #'
-#' # To decimalize multiple lsd values use a list of lsd vectors
+#' # Decimalize multiple lsd values with a list of lsd vectors
 #' lsd_list <- list(c(40, 5, 9), c(29, 7, 1), c(35, 6, 5))
 #' deb_lsd_s(lsd = lsd_list)
 #'
@@ -125,35 +129,35 @@ deb_lsd_s <- function(lsd, bases = c(20, 12)) {
   lsd[1] * bases[1] + lsd[2] + lsd[3] / bases[2]
 }
 
-#' Convert from decimalized shillings to pounds, shillings, and pence
+#' Conversion of decimalized shillings to pounds, shillings, and pence
 #'
 #' Convert decimalized shillings to the lsd system of pounds, shillings,
-#' and pence. The function returns the value from a decimal currency to the
-#' non-decimal currency of pounds, shillings, and pence.
-#' This is a wrapper around [deb_normalize()].
+#' and pence.
 #'
-#' @param s Decimalized shillings: numeric vector representing shillings to
-#'   be converted into an lsd value.
+#' @param s Decimalized shillings: Numeric vector representing shillings to be
+#'   converted into a pounds, shillings, and pence currency.
 #' @inheritParams deb_normalize
 #'
 #' @return Returns either a named numeric vector of length 3 or a list of
 #'   named numeric vectors representing the values of pounds, shillings,
-#'   and pence. If the input lsd value is negative, the l, s, and d values
-#'   will all be negative.
+#'   and pence.
 #'
 #' @examples
 #' # Convert shillings to pounds, shillings, and pence
-#' deb_s_lsd(s = 2635)
+#' deb_s_lsd(s = 263)
 #'
 #' # The value for shillings can be negative
-#' deb_d_lsd(-2635)
+#' deb_s_lsd(s = -263)
 #'
 #' # Or it can have a decimal
-#' deb_d_lsd(2635.835)
+#' deb_s_lsd(s = 263.835)
+#'
+#' # With alternate bases for shillings and pence
+#' deb_s_lsd(s = 263.835, bases = c(20, 16))
 #'
 #' # s can be a vector of length > 1
 #' # Return a list of lsd vectors
-#' deb_s_lsd(c(2635, -2635, 2635.835))
+#' deb_s_lsd(s = c(263, -263, 263.835))
 #'
 #' @export
 
@@ -173,11 +177,9 @@ deb_s_lsd <- function(s, bases = c(20, 12)) {
 
 ### denarii ###
 
-#' Convert from pounds, shillings, and pence to pence
+#' Conversion from pounds, shillings, and pence to pence
 #'
-#' Convert pounds, shillings, and pence to pence or denarii.
-#' Converting to the lowest denomination turns the non-decimal
-#' pounds, shillings, and pence currency into a decimal currency.
+#' Convert pounds, shillings, and pence to decimalized pence.
 #'
 #' @inheritParams deb_normalize
 #'
@@ -189,13 +191,16 @@ deb_s_lsd <- function(s, bases = c(20, 12)) {
 #' # Create decimalized pence
 #' deb_lsd_d(lsd = c(10, 5, 8))
 #'
+#' # With alternate bases for shillings and pence
+#' deb_lsd_d(lsd = c(10, 5, 8), bases = c(20, 16))
+#'
 #' # The lsd vector can be negative
 #' deb_lsd_d(lsd = c(-10, -5, -8))
 #'
 #' # The pounds, shillings, and pence do not need to be normalized
 #' deb_lsd_d(lsd = c(6, 25, 17))
 #'
-#' # To decimalize multiple lsd values use a list of lsd vectors
+#' # Decimalize multiple lsd values with a list of lsd vectors
 #' lsd_list <- list(c(40, 5, 9), c(29, 7, 1), c(35, 6, 5))
 #' deb_lsd_d(lsd = lsd_list)
 #'
@@ -212,32 +217,31 @@ deb_lsd_d <- function(lsd, bases = c(20, 12)) {
   round(lsd[1] * prod(bases) + lsd[2] * bases[2] + lsd[3], 5)
 }
 
-#' Convert from pence to pounds, shillings, and pence
+#' Conversion of pence to pounds, shillings, and pence
 #'
-#' Convert pence to the lsd system of pounds, shillings, and pence.
-#' The function returns the value from a decimal currency to the
-#' non-decimal currency of pounds, shillings, and pence.
-#' This is a wrapper around [deb_normalize()].
+#' Convert decimalized pence to the lsd system of pounds, shillings, and pence.
 #'
-#' @param d Decimalized pence: numeric vector representing pence to be
-#'   converted into an lsd value.
+#' @param d Decimalized pence: Numeric vector representing pence to be
+#'   converted into a pounds, shillings, and pence currency.
 #' @inheritParams deb_normalize
 #'
 #' @return Returns either a named numeric vector of length 3 or a list of
 #'   named numeric vectors representing the values of pounds, shillings,
-#'   and pence. If the input lsd value is negative, the l, s, and d values
-#'   will all be negative.
+#'   and pence.
 #'
 #' @examples
 #' # Convert pence to pounds, shillings, and pence
 #' deb_d_lsd(d = 2500)
 #'
+#' # With alternate bases for shillings and pence
+#' deb_d_lsd(d = 2500, bases = c(20, 16))
+#'
 #' # The value for pence can be negative
-#' deb_d_lsd(-2500)
+#' deb_d_lsd(d = -2500)
 #'
 #' # d can be a vector of length > 1
 #' # Return a list of lsd vectors
-#' deb_d_lsd(c(2500, -2500, 4575))
+#' deb_d_lsd(d = c(2500, -2500, 4575))
 #'
 #' @export
 

@@ -12,29 +12,29 @@ deb_convert_bases_mutate(df, l = l, s = s, d = d, bases1, bases2,
 \item{df}{A data frame that contains pounds, shillings, and pence variables.}
 
 \item{l}{Pounds column: Unquoted name of a numeric variable corresponding
-to pounds. Default is l.}
+to the pounds or librae unit. Default is l.}
 
 \item{s}{Shillings column: Unquoted name of numeric variable corresponding
-to shillings. Default is s.}
+to the shillings or solidi unit. Default is s.}
 
 \item{d}{Pence column: Unquoted name of numeric variable corresponding to
-pence. Default is d.}
+the pence or denarii unit. Default is d.}
 
-\item{bases1}{Numeric vector of length 2 used to specify the bases for
-the s or solidus and d or denarius values in the lsd variables.
-\code{bases1} represents the bases for the current lsd variables.}
+\item{bases1}{Numeric vector of length 2 used to specify the bases for the
+shillings or s and pence or d values of \code{l}, \code{s}, and \code{d} variables.}
 
-\item{bases2}{Numeric vector of length 2 used to specify the bases for
-the s or solidus and d or denarius values to which the lsd variables will
-be converted. \code{bases2} represents the bases for the newly created
-lsd variables.}
+\item{bases2}{Numeric vector of length 2 used to specify the bases for the
+shillings or s and pence or d values to which \code{l}, \code{s}, and \code{d} will be
+converted.}
 
 \item{ratio}{The ratio between the two currencies that possess different
-bases. Numeric vector of length 1 with the default of \code{1}. This value
-by which the lsd variables are multiplied to create the new values.}
+bases. This is the value by which \code{l}, \code{s}, and \code{d} variables are
+multiplied. Numeric vector of length 1 with the default of \code{1}.}
 
-\item{suffix}{Suffix added to the names of the \code{l}, \code{s}, and \code{d} columns
-to create the names for the new lsd variables.}
+\item{suffix}{Suffix added to the column names for the pounds, shillings,
+and pence columns representing the converted values to distinguish them
+from the original pounds, shillings, and pence columns. Default is ".1".
+Must be a character vector of length 1.}
 }
 \value{
 Returns a data frame with three new variables of pounds, shillings,

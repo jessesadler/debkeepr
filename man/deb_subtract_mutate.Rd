@@ -4,20 +4,20 @@
 \alias{deb_subtract_mutate}
 \title{Subtraction of pounds, shillings, and pence in a data frame}
 \usage{
-deb_subtract_mutate(df, l = l, s = s, d = d, lsd, bases = c(20, 12),
-  replace = FALSE, suffix = ".1")
+deb_subtract_mutate(df, l = l, s = s, d = d, lsd, bases = c(20,
+  12), replace = FALSE, suffix = ".1")
 }
 \arguments{
 \item{df}{A data frame that contains pounds, shillings, and pence variables.}
 
 \item{l}{Pounds column: Unquoted name of a numeric variable corresponding
-to pounds. Default is l.}
+to the pounds or librae unit. Default is l.}
 
 \item{s}{Shillings column: Unquoted name of numeric variable corresponding
-to shillings. Default is s.}
+to the shillings or solidi unit. Default is s.}
 
 \item{d}{Pence column: Unquoted name of numeric variable corresponding to
-pence. Default is d.}
+the pence or denarii unit. Default is d.}
 
 \item{lsd}{Numeric vector of length 3 that represents the lsd value to be
 subtracted from the \code{l}, \code{s}, and \code{d} variables. The first position of the
@@ -26,27 +26,26 @@ the shillings value or s. And the third position represents the pence
 value or d.}
 
 \item{bases}{Numeric vector of length 2 used to specify the bases for
-the s or solidus and d or denarius values in the lsd variables. Default is
-\code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
-20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
-use alternative bases for the solidus and denarius values that were also
-in use.}
+the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12)},
+which conforms to the most widely used system of 1 pound = 20 shillings
+and 1 shilling = 12 pence. This argument makes it possible to use
+alternate bases for the shillings (s) and pence (d) units.}
 
 \item{replace}{Logical (default \code{TRUE}): when \code{TRUE} the new pounds,
-shillings, and pence variables will replace the original ones.}
+shillings, and pence variables will replace the original variables.}
 
-\item{suffix}{Suffix added to the column names for the pounds, shillings, and
-pence columns representing the subtracted values so that they are
-distinguished from the original pounds, shillings, and pence columns.
-Default is ".1". Should be a character vector of length 1.}
+\item{suffix}{Suffix added to the column names for the pounds, shillings,
+and pence columns representing the subtracted values to distinguish them
+from the original pounds, shillings, and pence columns. Default is ".1".
+Must be a character vector of length 1.}
 }
 \value{
 Returns a data frame with three new variables of pounds, shillings,
 and pence representing the subtracted values.
 }
 \description{
-Uses \code{\link[dplyr:mutate]{dplyr::mutate()}} to subtract pounds, shillings, and pence by a given
-pounds, shillings, and pence value. The values are returned in the form of
+Uses \code{\link[dplyr:mutate]{dplyr::mutate()}} to subtract pounds, shillings, and pence variables by
+a pounds, shillings, and pence value. The values are returned in the form of
 three new variables representing the calculated pounds, shillings and pence.
 }
 \examples{
@@ -54,11 +53,14 @@ three new variables representing the calculated pounds, shillings and pence.
 example <- data.frame(l = c(35, 10, 26, 12),
                       s = c(10, 18, 11, 16),
                       d = c(9, 11, 10, 5))
-deb_subtract_mutate(example, l, s, d, lsd = c(5, 15, 8))
+deb_subtract_mutate(df = example,
+                    l = l, s = s, d = d,
+                    lsd = c(5, 15, 8))
 
 # Replace the existing pounds, shillings, and pence
 # with multiplied values
-deb_subtract_mutate(example, l, s, d,
+deb_subtract_mutate(df = example,
+                    l = l, s = s, d = d,
                     lsd = c(5, 15, 8),
                     replace = TRUE)
 
@@ -71,3 +73,4 @@ Other lsd arithmetic functions: \code{\link{deb_add_mutate}},
   \code{\link{deb_multiply}}, \code{\link{deb_subtract}},
   \code{\link{deb_sum_df}}, \code{\link{deb_sum}}
 }
+\concept{lsd arithmetic functions}

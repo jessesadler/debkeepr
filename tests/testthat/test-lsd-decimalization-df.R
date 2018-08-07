@@ -10,9 +10,9 @@ na_df <- data.frame(l = c(30, 10.725, -26),
 ex_df_names <- data.frame(pounds = c(30, 10.725, -26),
                           shillings = c(10, 18.65, -11),
                           pence = c(9, 11, -10))
-l_df <- data.frame(librae = deb_lsd_l(ex_list))
-s_df <- data.frame(solidi = deb_lsd_s(ex_list))
-d_df <- data.frame(denarii = deb_lsd_d(ex_list))
+l_df <- data.frame(pounds = deb_lsd_l(ex_list))
+s_df <- data.frame(shillings = deb_lsd_s(ex_list))
+d_df <- data.frame(pence = deb_lsd_d(ex_list))
 
 ## lsd to decimalized values ##
 
@@ -28,36 +28,36 @@ test_that("individual l, s, and d helper functions work", {
 
 test_that("NA works", {
   expect_equal(deb_lsd_l_mutate(na_df)[1 ,],
-               data.frame(l = 30, s = 10, d = as.numeric(NA), librae = as.numeric(NA)))
+               data.frame(l = 30, s = 10, d = as.numeric(NA), pounds = as.numeric(NA)))
 })
 
 test_that("lsd df to decimalized pounds", {
   expect_equal(names(deb_lsd_l_mutate(ex_df)),
-               c("l", "s", "d", "librae"))
-  expect_equal(names(deb_lsd_l_mutate(ex_df_names, l = pounds, s = shillings, d = pence)),
-               c("pounds", "shillings", "pence", "librae"))
-  expect_equal(names(deb_lsd_l_mutate(ex_df, column_name = pounds)),
                c("l", "s", "d", "pounds"))
+  expect_equal(names(deb_lsd_l_mutate(ex_df_names, l = pounds, s = shillings, d = pence)),
+               c("pounds", "shillings", "pence", "pounds.decimal"))
+  expect_equal(names(deb_lsd_l_mutate(ex_df, column_name = librae)),
+               c("l", "s", "d", "librae"))
   expect_equal(deb_lsd_l_mutate(ex_df), cbind(ex_df, l_df))
 })
 
 test_that("lsd df to decimalized shillings", {
   expect_equal(names(deb_lsd_s_mutate(ex_df)),
-               c("l", "s", "d", "solidi"))
-  expect_equal(names(deb_lsd_s_mutate(ex_df_names, l = pounds, s = shillings, d = pence)),
-               c("pounds", "shillings", "pence", "solidi"))
-  expect_equal(names(deb_lsd_s_mutate(ex_df, column_name = shillings)),
                c("l", "s", "d", "shillings"))
+  expect_equal(names(deb_lsd_s_mutate(ex_df_names, l = pounds, s = shillings, d = pence)),
+               c("pounds", "shillings", "pence", "shillings.decimal"))
+  expect_equal(names(deb_lsd_s_mutate(ex_df, column_name = solidi)),
+               c("l", "s", "d", "solidi"))
   expect_equal(deb_lsd_s_mutate(ex_df), cbind(ex_df, s_df))
 })
 
 test_that("lsd df to decimalized pence", {
   expect_equal(names(deb_lsd_d_mutate(ex_df)),
-               c("l", "s", "d", "denarii"))
-  expect_equal(names(deb_lsd_d_mutate(ex_df_names, l = pounds, s = shillings, d = pence)),
-               c("pounds", "shillings", "pence", "denarii"))
-  expect_equal(names(deb_lsd_d_mutate(ex_df, column_name = pence)),
                c("l", "s", "d", "pence"))
+  expect_equal(names(deb_lsd_d_mutate(ex_df_names, l = pounds, s = shillings, d = pence)),
+               c("pounds", "shillings", "pence", "pence.decimal"))
+  expect_equal(names(deb_lsd_d_mutate(ex_df, column_name = denarii)),
+               c("l", "s", "d", "denarii"))
   expect_equal(deb_lsd_d_mutate(ex_df), cbind(ex_df, d_df))
 })
 
@@ -79,23 +79,23 @@ d_decimal <- data.frame(decimal = v_decimal,
                         d = c(3.873, 11.33333, 11.33333, -9.865, 0, as.numeric(NA)))
 
 test_that("decimal column exists", {
-  expect_error(deb_l_lsd_mutate(df_decimal, librae = hello),
-               "librae column must exist in df")
-  expect_error(deb_s_lsd_mutate(df_decimal, solidi = hello),
-               "solidi column must exist in df")
-  expect_error(deb_d_lsd_mutate(df_decimal, denarii = hello),
-               "denarii column must exist in df")
+  expect_error(deb_l_lsd_mutate(df_decimal, pounds = hello),
+               "pounds column must exist in df")
+  expect_error(deb_s_lsd_mutate(df_decimal, shillings = hello),
+               "shillings column must exist in df")
+  expect_error(deb_d_lsd_mutate(df_decimal, pence = hello),
+               "pence column must exist in df")
 })
 
 id_df <- data.frame(id = letters[1:3])
 
 test_that("decimal column is numeric", {
-  expect_error(deb_l_lsd_mutate(id_df, librae = id),
-               "librae must be numeric")
-  expect_error(deb_s_lsd_mutate(id_df, solidi = id),
-               "solidi must be numeric")
-  expect_error(deb_d_lsd_mutate(id_df, denarii = id),
-               "denarii must be numeric")
+  expect_error(deb_l_lsd_mutate(id_df, pounds = id),
+               "pounds must be numeric")
+  expect_error(deb_s_lsd_mutate(id_df, shillings = id),
+               "shillings must be numeric")
+  expect_error(deb_d_lsd_mutate(id_df, pence = id),
+               "pence must be numeric")
 })
 
 test_that("Decimalized values df to lsd", {
@@ -115,10 +115,10 @@ test_that("Decimalized values df to lsd", {
 test_that("column names change with lsd_column_names function", {
   # Can change names
   expect_equal(names(deb_l_lsd_mutate(df_decimal, decimal,
-                                      l_column = "librae",
-                                      s_column = "solidi",
-                                      d_column = "denarii")),
-               c("decimal", "librae", "solidi", "denarii"))
+                                      l_column = "pounds",
+                                      s_column = "shillings",
+                                      d_column = "pence")),
+               c("decimal", "pounds", "shillings", "pence"))
   # Suffix added if names already present
   expect_equal(names(deb_s_lsd_mutate(s_decimal, decimal)),
                c("decimal", "l", "s", "d", "l.1", "s.1", "d.1"))

@@ -2,7 +2,7 @@
 % Please edit documentation in R/lsd-sum.R
 \name{deb_sum}
 \alias{deb_sum}
-\title{Sum of pounds, shillings, and pence in lsd vectors}
+\title{Sum of pounds, shillings, and pence values}
 \usage{
 deb_sum(..., bases = c(20, 12), na.rm = FALSE)
 }
@@ -13,13 +13,12 @@ or l. The second position represents the shillings value or s. And the
 third position represents the pence value or d.}
 
 \item{bases}{Numeric vector of length 2 used to specify the bases for
-the s or solidus and d or denarius values in \code{lsd} vectors. Default is
-\code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
-20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
-use alternative bases for the solidus and denarius values that were also
-in use.}
+the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12)},
+which conforms to the most widely used system of 1 pound = 20 shillings
+and 1 shilling = 12 pence. This argument makes it possible to use
+alternate bases for the shillings (s) and pence (d) units.}
 
-\item{na.rm}{logical. Passed on to \code{na.rm} argument in \code{\link[=sum]{sum()}}. Whether
+\item{na.rm}{Logical. Passed on to \code{na.rm} argument in \code{\link[=sum]{sum()}}. Whether
 missing values (NA) should be removed. Default is \code{FALSE}.}
 }
 \value{
@@ -28,9 +27,9 @@ the pounds, shillings, and pence from the lsd vectors. If the sum is
 negative, the l, s, and d values will all be negative.
 }
 \description{
-Reduces multiple numeric vectors and/or lists of numeric vectors
-to a single numeric vector of length 3 representing the normalized
-sum of the lsd vectors.
+Sum multiple pounds, shillings, and pence values that are in the form of
+numeric vectors or lists of numeric vectors, reducing the vectors to a
+single pounds, shillings, and pence value.
 }
 \details{
 See \code{\link[=deb_add]{deb_add()}} to add an lsd vector or list of lsd vectors to the
@@ -60,3 +59,4 @@ Other lsd arithmetic functions: \code{\link{deb_add_mutate}},
   \code{\link{deb_subtract_mutate}},
   \code{\link{deb_subtract}}, \code{\link{deb_sum_df}}
 }
+\concept{lsd arithmetic functions}

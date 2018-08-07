@@ -2,10 +2,10 @@
 % Please edit documentation in R/lsd-exchange.R
 \name{deb_invert_rate}
 \alias{deb_invert_rate}
-\title{Calculate the inverse of an exchange rate}
+\title{Calculation of the inverse of an exchange rate}
 \usage{
-deb_invert_rate(exchange_rate, output = c("shillings", "pence", "pounds"),
-  bases = c(20, 12))
+deb_invert_rate(exchange_rate, output = c("shillings", "pence",
+  "pounds"), bases = c(20, 12))
 }
 \arguments{
 \item{exchange_rate}{Numeric vector of length 3 or list of numeric vectors
@@ -15,17 +15,16 @@ position represents the shillings value or s. And the third position
 represents the pence value or d. The values do not need to be normalized.}
 
 \item{output}{Choice of either \code{"shillings"}, \code{"pence"}, or \code{"pounds"} for
-the format in which the exchange rate will be returned.  \code{"shillings"},
+the format in which the exchange rate will be returned. \code{"shillings"},
 the default, returns the exchange rate in terms of shillings and pence.
 \code{"pence"} returns the exchange rate in terms of pence. \code{"pounds"} returns
 the exchange rate in terms of pounds, shillings, and pence.}
 
 \item{bases}{Numeric vector of length 2 used to specify the bases for
-the s or solidus and d or denarius values in \code{lsd} vectors. Default is
-\code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
-20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
-use alternative bases for the solidus and denarius values that were also
-in use.}
+the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12)},
+which conforms to the most widely used system of 1 pound = 20 shillings
+and 1 shilling = 12 pence. This argument makes it possible to use
+alternate bases for the shillings (s) and pence (d) units.}
 }
 \value{
 Returns either a named numeric vector of length 3 or a list of
@@ -46,5 +45,9 @@ deb_invert_rate(exchange_rate = c(0, 33, 4))
 # Inverse of an exchange rate of £2 13s. 4d. in pence
 deb_invert_rate(exchange_rate = c(2, 13, 4),
                 output = "pence")
+
+# Find the inverse of multiple exchange rates
+rates <- list(c(0, 33, 4), c(0, 31, 0), c(0, 30, 0))
+deb_invert_rate(exchange_rate = rates)
 
 }

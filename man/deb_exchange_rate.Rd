@@ -2,46 +2,45 @@
 % Please edit documentation in R/lsd-exchange.R
 \name{deb_exchange_rate}
 \alias{deb_exchange_rate}
-\title{Exchange rate between pounds, shillings, and pence values}
+\title{Exchange rate between pounds, shillings, and pence currencies}
 \usage{
 deb_exchange_rate(lsd1, lsd2, output = c("shillings", "pence", "pounds"),
   bases = c(20, 12))
 }
 \arguments{
 \item{lsd1}{Pounds, shillings, and pence value that is reduced to £1 and
-against which \code{lsd2} is compared. In other words, \code{lsd1} is the "fixed
-currency" and \code{lsd2} is the "variable currency". \code{lsd1} is a numeric
-vector of length 3 or list of numeric vectors of length 3. The first
-position of the vectors represents the pounds value or l. The second
+against which \code{lsd2} is compared. Thus, \code{lsd1} is the "fixed currency" and
+\code{lsd2} is the "variable currency". \code{lsd1} is a numeric vector of length 3
+or list of numeric vectors of length 3. The first position of the vectors
+represents the pounds value or l. The second position represents the
+shillings value or s. And the third position represents the pence value
+or d.}
+
+\item{lsd2}{Pounds, shillings, and pence value that is compared to \code{lsd1}.
+When \code{lsd1} equals £1, \code{lsd2} equals the returned value. Thus, \code{lsd1} is
+the "fixed currency" and \code{lsd2} is the "variable currency". \code{lsd2} is a
+numeric vector of length 3 or list of numeric vectors of length 3. The
+first position of the vectors represents the pounds value or l. The second
 position represents the shillings value or s. And the third position
 represents the pence value or d.}
 
-\item{lsd2}{Pounds, shillings, and pence, value that is compared to \code{lsd1}.
-When \code{lsd1} equals £1, \code{lsd2} equals the returned value. In other words,
-\code{lsd1} is the "fixed currency" and \code{lsd2} is the "variable currency".
-\code{lsd2} is a numeric vector of length 3 or list of numeric vectors of
-length 3. The first position of the vectors represents the pounds value
-or l. The second position represents the shillings value or s. And the
-third position represents the pence value or d.}
-
 \item{output}{Choice of either \code{"shillings"}, \code{"pence"}, or \code{"pounds"} for
-the format in which the exchange rate will be returned.  \code{"shillings"},
+the format in which the exchange rate will be returned. \code{"shillings"},
 the default, returns the exchange rate in terms of shillings and pence.
 \code{"pence"} returns the exchange rate in terms of pence. \code{"pounds"} returns
 the exchange rate in terms of pounds, shillings, and pence.}
 
 \item{bases}{Numeric vector of length 2 used to specify the bases for
-the s or solidus and d or denarius values in \code{lsd} vectors. Default is
-\code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
-20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
-use alternative bases for the solidus and denarius values that were also
-in use.}
+the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12)},
+which conforms to the most widely used system of 1 pound = 20 shillings
+and 1 shilling = 12 pence. This argument makes it possible to use
+alternate bases for the shillings (s) and pence (d) units.}
 }
 \value{
 Returns either a named numeric vector of length 3 or a list of
 named numeric vectors representing the values of pounds, shillings,
 and pence. The format of the returned value is determined by the \code{output}
-argument. If \code{lsd1} > \code{lsd2}, the returned value will be less that £1.
+argument. If \code{lsd1} > \code{lsd2}, the returned value will be greater that £1.
 }
 \description{
 Calculate the exchange rate between two sets of values in the form of

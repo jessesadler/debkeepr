@@ -99,6 +99,16 @@ lsd_column_names <- function(df, l, s, d, suffix) {
   lsd_names
 }
 
+decimal_columns <- function(df, column_name, suffix) {
+  column_name <- rlang::quo_name(column_name)
+
+  if (column_name %in% names(df)) {
+    paste0(column_name, suffix)
+  } else {
+    column_name
+  }
+}
+
 suffix_check <- function(suffix, replace = FALSE) {
   if (!is.logical(replace)) {
     stop(call. = FALSE, "replace must be either TRUE or FALSE")
@@ -118,7 +128,7 @@ suffix_check <- function(suffix, replace = FALSE) {
   # the function, resulting in wrong results if l or s have decimals.
   if (suffix == "") {
     stop(call. = FALSE, paste("suffix cannot be an empty character vector.",
-         "To keep the same variable names and replace the original variables use replace = TRUE",
+         "Use replace = TRUE to replace the original variables where this is an option in the function",
          sep = "\n"))
   }
   # Use same variable names if replace is TRUE
@@ -185,11 +195,11 @@ arithmetic_check <- function(x) {
 
 shillings_check <- function(x) {
   if (!is.numeric(x)) {
-    stop(call. = FALSE, "rate_per_shillings must be numeric")
+    stop(call. = FALSE, "shillings_rate must be numeric")
   }
 
   if (length(x) != 1) {
-    stop(call. = FALSE, "rate_per_shillings must be a numeric vector of length 1")
+    stop(call. = FALSE, "shillings_rate must be a numeric vector of length 1")
   }
 }
 

@@ -2,10 +2,10 @@
 % Please edit documentation in R/lsd-interest.R
 \name{deb_interest}
 \alias{deb_interest}
-\title{Calculate the interest of pounds, shillings, and pence}
+\title{Calculation of the interest of pounds, shillings, and pence}
 \usage{
-deb_interest(lsd, interest = 0.0625, duration = 1, with_principal = TRUE,
-  bases = c(20, 12))
+deb_interest(lsd, interest = 0.0625, duration = 1,
+  with_principal = TRUE, bases = c(20, 12))
 }
 \arguments{
 \item{lsd}{Numeric vector of length 3 or list of numeric vectors of length
@@ -13,30 +13,28 @@ deb_interest(lsd, interest = 0.0625, duration = 1, with_principal = TRUE,
 second position represents the shillings value or s. And the third
 position represents the pence value or d.}
 
-\item{interest}{Interest rate in decimal form. A numeric vector
-of length 1. Default is 0.0625, or 6.25 percent, which was default
-interest rate in the Low Countries at the end of the sixteenth century.}
+\item{interest}{Interest rate in decimal form. A numeric vector of length 1.
+Default is 0.0625, or 6.25 percent, which was default interest rate in the
+Low Countries at the end of the sixteenth century.}
 
-\item{duration}{Duration over which the interest is calculated, or
-number of times that the interest should be added. A numeric vector
-of length 1. Default is 1.}
+\item{duration}{Duration over which the interest is calculated, or the
+number of times that the interest should be added. A numeric vector of
+length 1. Default is 1.}
 
-\item{with_principal}{Logical (default \code{TRUE}: when \code{TRUE} the resulting
-pounds, shillings and pence will include the principal as well as the
-interest. When \code{FALSE} only the interest will be shown.}
+\item{with_principal}{Logical (default \code{TRUE}): when \code{TRUE} the resulting
+pounds, shillings and pence value(s) will include the principal as well as
+the interest. When \code{FALSE} only the interest will be returned.}
 
 \item{bases}{Numeric vector of length 2 used to specify the bases for
-the s or solidus and d or denarius values in \code{lsd} vectors. Default is
-\code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
-20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
-use alternative bases for the solidus and denarius values that were also
-in use.}
+the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12)},
+which conforms to the most widely used system of 1 pound = 20 shillings
+and 1 shilling = 12 pence. This argument makes it possible to use
+alternate bases for the shillings (s) and pence (d) units.}
 }
 \value{
 Returns either a named numeric vector of length 3 or a list of
 named numeric vectors representing the values of pounds, shillings,
-and pence. If the input lsd value is negative, the l, s, and d values
-will all be negative.
+and pence.
 }
 \description{
 Calculate the interest of pounds, shillings, and pence
@@ -46,15 +44,18 @@ calculate compound interest.
 \examples{
 # Calculate the interest with the principal over a certain duration
 # If £10.14.5 were lent over a period of 5 years at 6.25\%
-deb_interest(c(10, 14, 5), duration = 5)
+deb_interest(lsd = c(10, 14, 5), duration = 5)
+
+# If £10.14.5 were lent over a period of 5 years at 8\%
+deb_interest(lsd = c(10, 14, 5), interest = 0.08, duration = 5)
 
 # Or you can calculate only the interest
-deb_interest(c(10, 14, 5), duration = 5, with_principal = FALSE)
+deb_interest(lsd = c(10, 14, 5), duration = 5, with_principal = FALSE)
 
 # Interest of a list of lsd vectors at a single rate
 # This returns a list of named lsd values
 lsd_list <- list(c(40, 5, 9), c(29, 7, 1), c(35, 6, 5))
 
-deb_interest(lsd = lsd_list, duration = 5, interest = 0.08)
+deb_interest(lsd = lsd_list, interest = 0.08, duration = 5)
 
 }

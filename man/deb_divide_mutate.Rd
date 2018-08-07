@@ -11,39 +11,38 @@ deb_divide_mutate(df, l = l, s = s, d = d, x, bases = c(20, 12),
 \item{df}{A data frame that contains pounds, shillings, and pence variables.}
 
 \item{l}{Pounds column: Unquoted name of a numeric variable corresponding
-to pounds. Default is l.}
+to the pounds or librae unit. Default is l.}
 
 \item{s}{Shillings column: Unquoted name of numeric variable corresponding
-to shillings. Default is s.}
+to the shillings or solidi unit. Default is s.}
 
 \item{d}{Pence column: Unquoted name of numeric variable corresponding to
-pence. Default is d.}
+the pence or denarii unit. Default is d.}
 
-\item{x}{Divisor. The value by which the given pounds, shillings, and
-pence will be divided. Should be a numeric vector of length 1.}
+\item{x}{Divisor. The value by which \code{lsd} will be divided. A numeric vector
+of length 1.}
 
 \item{bases}{Numeric vector of length 2 used to specify the bases for
-the s or solidus and d or denarius values in the lsd variables. Default is
-\code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
-20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
-use alternative bases for the solidus and denarius values that were also
-in use.}
+the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12)},
+which conforms to the most widely used system of 1 pound = 20 shillings
+and 1 shilling = 12 pence. This argument makes it possible to use
+alternate bases for the shillings (s) and pence (d) units.}
 
 \item{replace}{Logical (default \code{FALSE}): when \code{TRUE} the new pounds,
 shillings, and pence variables will replace the original ones.}
 
-\item{suffix}{Suffix added to the column names for the pounds, shillings, and
-pence columns representing the divided values so that they are
-distinguished from the original pounds, shillings, and pence columns.
-Default is ".1". Should be a character vector of length 1.}
+\item{suffix}{Suffix added to the column names for the pounds, shillings,
+and pence columns representing the divided values to distinguish them
+from the original pounds, shillings, and pence columns. Default is ".1".
+Must be a character vector of length 1.}
 }
 \value{
 Returns a data frame with three new variables of pounds, shillings,
 and pence representing the divided values.
 }
 \description{
-Uses \code{\link[dplyr:mutate]{dplyr::mutate()}} to divide pounds, shillings, and pence by a given
-divisor (\code{x}). The value is returned in the form of three new variables
+Uses \code{\link[dplyr:mutate]{dplyr::mutate()}} to divide pounds, shillings, and pence variables by a
+divisor (\code{x}). The values are returned in the form of three new variables
 representing the calculated pounds, shillings and pence.
 }
 \examples{
@@ -51,16 +50,18 @@ representing the calculated pounds, shillings and pence.
 example <- data.frame(l = c(356, 10, 26, 12),
                       s = c(100, 18, 11, 16),
                       d = c(98, 11, 10, 5))
-deb_divide_mutate(example, l, s, d, x = 5)
+deb_divide_mutate(df = example, l = l, s = s, d = d, x = 5)
 
 # Change the suffix added to the new variables
-deb_divide_mutate(example, l, s, d,
+deb_divide_mutate(df = example,
+                  l = l, s = s, d = d,
                   x = 5,
                   suffix = ".div5")
 
 # Replace the existing pounds, shillings, and pence
 # with divided values
-deb_divide_mutate(example, l, s, d,
+deb_divide_mutate(df = example,
+                  l = l, s = s, d = d,
                   x = 5,
                   replace = TRUE)
 
@@ -74,3 +75,4 @@ Other lsd arithmetic functions: \code{\link{deb_add_mutate}},
   \code{\link{deb_subtract}}, \code{\link{deb_sum_df}},
   \code{\link{deb_sum}}
 }
+\concept{lsd arithmetic functions}

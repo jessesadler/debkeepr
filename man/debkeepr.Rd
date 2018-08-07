@@ -24,11 +24,11 @@ shillings, and pence values.
 \details{
 The system of recording value according to pounds, shillings, and pence — or
 to use the Latin terms from which the English derived libra, solidus, and
-denarius — developed in the 7th and 8th century during the rise of the
-Carolingian Empire. The ratios between the libra, solidus, and denarius (lsd)
-were never completely uniform, but most commonly there were 12 denarii in a
-solidus and 20 solidi in a libra. The custom of counting coins in dozens
-(solidus) and scores of dozens (libra) spread throughout the Carolingian
-Empire and became engrained in much of Europe until decimalization after the
+denarius (lsd) — developed in the 7th and 8th century during the rise of the
+Carolingian Empire. The bases for the solidus and denarius units were never
+completely uniform, but most commonly there were 12 denarii in a solidus and
+20 solidi in a libra. The custom of counting coins in dozens (solidi) and
+scores of dozens (librae) spread throughout the Carolingian Empire and
+became engrained in much of Europe until decimalization occurred after the
 French Revolution.
 }

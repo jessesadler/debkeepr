@@ -102,44 +102,42 @@ lsd_negative <- function(normalized, lsd, bases) {
 #'
 #' `deb_normalize()` uses the nomenclature of
 #' [l, s, and d](https://en.wikipedia.org/wiki/£sd) to represent pounds,
-#' shillings, and pence, which derives from the Latin terms
+#' shillings, and pence units. The abbreviations derive from the Latin terms
 #' [libra](https://en.wikipedia.org/wiki/French_livre),
 #' [solidus](https://en.wikipedia.org/wiki/Solidus_(coin)), and
 #' [denarius](https://en.wikipedia.org/wiki/Denarius). In the 8th century a
 #' solidus came to represent 12 denarii, and 240 denarii were made from one
 #' libra or pound of silver. The custom of counting coins in dozens (solidi)
-#' and scores of dozens (libra) spread throughout the Carolingian Empire and
+#' and scores of dozens (librae) spread throughout the Carolingian Empire and
 #' became engrained in much of Europe. However,
-#' [other ratios](https://en.wikipedia.org/wiki/Non-decimal_currency) between
-#' libra, solidus, and denarius were also in use. The `bases` argument
-#' makes it possible to specify alternative bases for the solidus and denarius
-#' values.
+#' [other bases](https://en.wikipedia.org/wiki/Non-decimal_currency) for the
+#' solidus and denarius units were also in use. The `bases` argument makes
+#' it possible to specify alternate bases for the solidus and denarius units.
 #'
 #' @param lsd Numeric vector of length 3 or list of numeric vectors of length
 #'   3. The first position of the vector represents the pounds value or l. The
 #'   second position represents the shillings value or s. And the third
 #'   position represents the pence value or d.
 #' @param bases Numeric vector of length 2 used to specify the bases for
-#'   the s or solidus and d or denarius values in `lsd` vectors. Default is
-#'   `c(20, 12)`, which conforms to the most widely used system of 1 libra =
-#'   20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
-#'   use alternative bases for the solidus and denarius values that were also
-#'   in use.
+#'   the shillings or s and pence or d units in `lsd`. Default is `c(20, 12)`,
+#'   which conforms to the most widely used system of 1 pound = 20 shillings
+#'   and 1 shilling = 12 pence. This argument makes it possible to use
+#'   alternate bases for the shillings (s) and pence (d) units.
 #'
-#' @return Returns either a named numeric vector of length 3 or a list of
-#'   named numeric vectors representing the values of pounds, shillings,
-#'   and pence. If the input lsd value is negative, the l, s, and d values
-#'   will all be negative.
+#' @return Returns either a named numeric vector of length 3 or a list of named
+#'   numeric vectors representing the normalized values of pounds, shillings,
+#'   and pence. If the input lsd value is negative, the l, s, and d values will
+#'   all be negative.
 #'
 #' @examples
 #' # Use to normalize the values of pounds, shillings, and pence
 #' deb_normalize(lsd = c(5, 55, 22))
 #'
 #' # Normalize values with alternative bases for solidus and denarius units
-#' # For instance, following Dutch system of gulden, stuivers, and penningen
+#' # For instance, the Dutch system of guilders, stuivers, and penningen
 #' deb_normalize(lsd = c(5, 55, 22), bases = c(20, 16))
 #'
-#' # It is possible to perform math within the function
+#' # It is possible to perform arithmetic within the function
 #' deb_normalize(lsd = c(5 + 6, 20 + 18, 8 + 11))
 #'
 #' # deb_normalize can deal with negative values
@@ -187,43 +185,37 @@ deb_normalize <- function(lsd, bases = c(20, 12)) {
 
 #' Normalize pounds, shillings, and pence variables in a data frame
 #'
-#' Normalize pounds, shillings, and pence variables in a data frame to
-#' to standard unit bases.
+#' Normalize pounds, shillings, and pence variables in a data frame to standard
+#' unit bases.
 #'
 #' `deb_normalize_df()` uses the nomenclature of
 #' [l, s, and d](https://en.wikipedia.org/wiki/£sd) to represent pounds,
-#' shillings, and pence, which derives from the Latin terms
+#' shillings, and pence units. The abbreviations derive from the Latin terms
 #' [libra](https://en.wikipedia.org/wiki/French_livre),
 #' [solidus](https://en.wikipedia.org/wiki/Solidus_(coin)), and
 #' [denarius](https://en.wikipedia.org/wiki/Denarius). In the 8th century a
 #' solidus came to represent 12 denarii, and 240 denarii were made from one
 #' libra or pound of silver. The custom of counting coins in dozens (solidi)
-#' and scores of dozens (libra) spread throughout the Carolingian Empire and
+#' and scores of dozens (librae) spread throughout the Carolingian Empire and
 #' became engrained in much of Europe. However,
-#' [other ratios](https://en.wikipedia.org/wiki/Non-decimal_currency) between
-#' libra, solidus, and denarius were also in use. The `bases` argument
-#' makes it possible to specify alternative bases for the solidus and denarius
-#' values.
+#' [other bases](https://en.wikipedia.org/wiki/Non-decimal_currency) for the
+#' solidus and denarius units were also in use. The `bases` argument makes
+#' it possible to specify alternate bases for the solidus and denarius units.
 #'
 #' @param df A data frame that contains pounds, shillings, and pence variables.
 #' @param l Pounds column: Unquoted name of a numeric variable corresponding
-#'   to pounds. Default is l.
+#'   to the pounds or librae unit. Default is l.
 #' @param s Shillings column: Unquoted name of numeric variable corresponding
-#'   to shillings. Default is s.
+#'   to the shillings or solidi unit. Default is s.
 #' @param d Pence column: Unquoted name of numeric variable corresponding to
-#'   pence. Default is d.
-#' @param bases Numeric vector of length 2 used to specify the bases for
-#'   the s or solidus and d or denarius values in the lsd variables. Default is
-#'   `c(20, 12)`, which conforms to the most widely used system of 1 libra =
-#'   20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
-#'   use alternative bases for the solidus and denarius values that were also
-#'   in use.
+#'   the pence or denarii unit. Default is d.
+#' @inheritParams deb_normalize
 #' @param replace Logical (default `TRUE`): when `TRUE` the new pounds,
-#'   shillings, and pence variables will replace the original ones.
+#'   shillings, and pence variables will replace the original variables.
 #' @param suffix Suffix added to the column names for the pounds, shillings,
-#'   and pence columns to distinguish new variables from the original pounds,
-#'   shillings, and pence columns if `replace = FALSE`. Default is ".1".
-#'   Should be a character vector of length 1.
+#'   and pence columns to distinguish the new variables from the original
+#'   pounds, shillings, and pence variables if `replace = FALSE`. Default is
+#'   ".1". Must be a character vector of length 1.
 #'
 #' @return Returns a data frame with normalized pounds, shillings, and pence,
 #'   variables.
@@ -237,7 +229,7 @@ deb_normalize <- function(lsd, bases = c(20, 12)) {
 #' deb_normalize_df(example, l = l, s = s, d = d)
 #'
 #' # Normalize values with alternative bases for solidus and denarius
-#' # For instance, following Dutch system of gulden, stuivers, and penningen
+#' # For instance, the Dutch system of guilders, stuivers, and penningen
 #' deb_normalize_df(example, l = l, s = s, d = d, bases = c(20, 16))
 #'
 #' @export

@@ -170,7 +170,7 @@ test_that("suffix check", {
                "suffix must be a character vector of length 1")
   expect_error(deb_normalize_df(ex_df, replace = FALSE, suffix = ""),
                paste("suffix cannot be an empty character vector.",
-                     "To keep the same variable names and replace the original variables use replace = TRUE",
+                     "Use replace = TRUE to replace the original variables where this is an option in the function",
                      sep = "\n"))
 })
 

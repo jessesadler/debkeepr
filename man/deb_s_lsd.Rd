@@ -2,45 +2,44 @@
 % Please edit documentation in R/lsd-decimalization.R
 \name{deb_s_lsd}
 \alias{deb_s_lsd}
-\title{Convert from decimalized shillings to pounds, shillings, and pence}
+\title{Conversion of decimalized shillings to pounds, shillings, and pence}
 \usage{
 deb_s_lsd(s, bases = c(20, 12))
 }
 \arguments{
-\item{s}{Decimalized shillings: numeric vector representing shillings to
-be converted into an lsd value.}
+\item{s}{Decimalized shillings: Numeric vector representing shillings to be
+converted into a pounds, shillings, and pence currency.}
 
 \item{bases}{Numeric vector of length 2 used to specify the bases for
-the s or solidus and d or denarius values in \code{lsd} vectors. Default is
-\code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
-20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
-use alternative bases for the solidus and denarius values that were also
-in use.}
+the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12)},
+which conforms to the most widely used system of 1 pound = 20 shillings
+and 1 shilling = 12 pence. This argument makes it possible to use
+alternate bases for the shillings (s) and pence (d) units.}
 }
 \value{
 Returns either a named numeric vector of length 3 or a list of
 named numeric vectors representing the values of pounds, shillings,
-and pence. If the input lsd value is negative, the l, s, and d values
-will all be negative.
+and pence.
 }
 \description{
 Convert decimalized shillings to the lsd system of pounds, shillings,
-and pence. The function returns the value from a decimal currency to the
-non-decimal currency of pounds, shillings, and pence.
-This is a wrapper around \code{\link[=deb_normalize]{deb_normalize()}}.
+and pence.
 }
 \examples{
 # Convert shillings to pounds, shillings, and pence
-deb_s_lsd(s = 2635)
+deb_s_lsd(s = 263)
 
 # The value for shillings can be negative
-deb_d_lsd(-2635)
+deb_s_lsd(s = -263)
 
 # Or it can have a decimal
-deb_d_lsd(2635.835)
+deb_s_lsd(s = 263.835)
+
+# With alternate bases for shillings and pence
+deb_s_lsd(s = 263.835, bases = c(20, 16))
 
 # s can be a vector of length > 1
 # Return a list of lsd vectors
-deb_s_lsd(c(2635, -2635, 2635.835))
+deb_s_lsd(s = c(263, -263, 263.835))
 
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/lsd-arithmetic.R
 \name{deb_subtract}
 \alias{deb_subtract}
-\title{Subtract two values of pounds, shillings, and pence}
+\title{Subtraction of two values of pounds, shillings, and pence}
 \usage{
 deb_subtract(lsd1, lsd2, bases = c(20, 12))
 }
@@ -14,27 +14,21 @@ position represents the pence value or d. lsd2 is the value or values to be
 subtracted from lsd1: \code{lsd1 - lsd2}.}
 
 \item{bases}{Numeric vector of length 2 used to specify the bases for
-the s or solidus and d or denarius values in \code{lsd} vectors. Default is
-\code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
-20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
-use alternative bases for the solidus and denarius values that were also
-in use.}
+the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12)},
+which conforms to the most widely used system of 1 pound = 20 shillings
+and 1 shilling = 12 pence. This argument makes it possible to use
+alternate bases for the shillings (s) and pence (d) units.}
 }
 \value{
 Returns either a named numeric vector of length 3 or a list of
 named numeric vectors representing the values of pounds, shillings,
-and pence. If the resulting lsd value is negative, the l, s, and d values
-will all be negative.
+and pence.
 }
 \description{
-Subtract and normalize two values of pounds, shillings, and pence
-that are given in the form of either numeric vectors or lists
-of numeric vectors (\code{lsd1} and \code{lsd2}). This is a wrapper around
-\code{\link[=deb_normalize]{deb_normalize()}}.
-}
-\details{
-If \code{lsd1} and \code{lsd2} are lists of different lengths or one is a vector,
-the shorter list will be recycled.
+Subtract two pounds, shillings, and pence values that are in the form of
+numeric vectors or lists of numeric vectors (\code{lsd1} and \code{lsd2}). If \code{lsd1}
+and \code{lsd2} are lists of different lengths, or one is a vector, the shorter
+list will be recycled.
 }
 \examples{
 # Subtract pounds, shillings, and pence
@@ -73,3 +67,4 @@ Other lsd arithmetic functions: \code{\link{deb_add_mutate}},
   \code{\link{deb_subtract_mutate}},
   \code{\link{deb_sum_df}}, \code{\link{deb_sum}}
 }
+\concept{lsd arithmetic functions}

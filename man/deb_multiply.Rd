@@ -12,32 +12,29 @@ deb_multiply(lsd, x, bases = c(20, 12))
 second position represents the shillings value or s. And the third
 position represents the pence value or d.}
 
-\item{x}{Multiplier. The value by which the given pounds, shillings, and
-pence will be multiplied. Should be a numeric vector of length 1.}
+\item{x}{Multiplier. The value by which \code{lsd} will be multiplied. A numeric
+vector of length 1.}
 
 \item{bases}{Numeric vector of length 2 used to specify the bases for
-the s or solidus and d or denarius values in \code{lsd} vectors. Default is
-\code{c(20, 12)}, which conforms to the most widely used system of 1 libra =
-20 solidi and 1 solidus = 12 denarii. This argument makes it possible to
-use alternative bases for the solidus and denarius values that were also
-in use.}
+the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12)},
+which conforms to the most widely used system of 1 pound = 20 shillings
+and 1 shilling = 12 pence. This argument makes it possible to use
+alternate bases for the shillings (s) and pence (d) units.}
 }
 \value{
-Returns either a named numeric vector of length 3 or a list of
-named numeric vectors representing the values of pounds, shillings,
-and pence.
+Returns either a named numeric vector of length 3 or a list of named
+numeric vectors representing the values of pounds, shillings, and pence.
 }
 \description{
-Multiply pounds, shillings, and pence by a given multiplier (\code{x}).
-The result is normalized to standard bases for shillings and pence
-according to the \code{bases} argument. This is a wrapper around
-\code{\link[=deb_normalize]{deb_normalize()}}.
+Multiply pounds, shillings, and pence by a multiplier (\code{x}). The result is
+normalized to standard bases for shillings and pence units according to the
+\code{bases} argument. This is a wrapper around \code{\link[=deb_normalize]{deb_normalize()}}.
 }
 \examples{
 # Multiply pounds, shillings, and pence by 5
 deb_multiply(lsd = c(5, 15, 8), x = 5)
 
-# Calculate commission of 3\% of sales of £3095 17s 6d
+# Calculate commission of 3\% of sales of £3095 17s. 6d.
 deb_multiply(lsd = c(3095, 17, 6), x = 0.03)
 
 # The l, s, and d values do not have to be normalized
@@ -66,3 +63,4 @@ Other lsd arithmetic functions: \code{\link{deb_add_mutate}},
   \code{\link{deb_subtract}}, \code{\link{deb_sum_df}},
   \code{\link{deb_sum}}
 }
+\concept{lsd arithmetic functions}

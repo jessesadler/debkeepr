@@ -12,17 +12,16 @@ deb_convert_bases(lsd, bases1, bases2, ratio = 1)
 second position represents the shillings value or s. And the third
 position represents the pence value or d.}
 
-\item{bases1}{Numeric vector of length 2 used to specify the bases for
-the s or solidus and d or denarius values in \code{lsd} vector(s). \code{bases1}
-represents the bases for the current \code{lsd} vector(s).}
+\item{bases1}{Numeric vector of length 2 used to specify the bases for the
+shillings or s and pence or d values of \code{lsd}. \code{bases1} represents the
+bases for the current \code{lsd} vector(s).}
 
 \item{bases2}{Numeric vector of length 2 used to specify the bases for
-the s or solidus and d or denarius values to which \code{lsd} will be
-converted.}
+the shillings or s and pence or d values to which \code{lsd} will be converted.}
 
 \item{ratio}{The ratio between the two currencies that possess different
-bases. Numeric vector of length 1 with the default of \code{1}. This value
-by which \code{lsd} is multiplied to create the new value.}
+bases. This is the value by which \code{lsd} is multiplied. Numeric vector of
+length 1 with the default of \code{1}.}
 }
 \value{
 Returns either a named numeric vector of length 3 or a list of
@@ -31,11 +30,11 @@ pence with the bases for shillings and pence conforming to \code{bases2}.
 }
 \description{
 Convert between pounds, shillings, and pence currencies that use different
-bases for the shillings and pence variables.
+bases for the shillings and pence units.
 }
 \details{
 \code{deb_convert_bases()} is similar to \code{\link[=deb_exchange]{deb_exchange()}}, but the latter performs
-exchanges on currencies that share the same shillings and pence bases.
+exchange on currencies that share the same shillings and pence bases.
 }
 \examples{
 # Conversion between pounds Flemish of 20 shillings and 12 pence
@@ -67,7 +66,7 @@ deb_convert_bases(lsd = c(1224, 19, 8),
                   bases1 = c(20, 16),
                   bases2 = c(20, 12),
                   ratio = 1/6) \%>\%
-  deb_exchange(rate_per_shillings = 12)
+  deb_exchange(shillings_rate = 12)
 
 # Convert a list of lsd vectors of guilders to pounds Flemish
 guilders_list <- list(c(1224, 19, 8), c(101, 5, 13), c(225, 13, 15))

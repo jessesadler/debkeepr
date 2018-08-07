@@ -2,74 +2,57 @@
 
 #' Calculate credit, debit, and current value of an account
 #'
-#' Calculate the total credit, debit, and the current value of a given account
-#' in the form of pounds, shillings, and pence.
+#' Calculate the total credit, debit, and current value of a given account in
+#' a transactions data frame.
 #'
 #' `deb_account()` is similar to [deb_account_summary()], but
 #' it only returns the information for one account instead of all accounts in
 #' the credit and/or debit variables of a transactions data frame.
 #'
 #' `deb_account()` is part of a family of functions meant to be used on
-#' data frames that contain transactions between accounts likely contained in
-#' an account book. The data frame should possess a similar structure to a
+#' data frames that contain transactions between accounts in an account
+#' book. The data frame should possess a similar structure to a
 #' [directed edge list](https://www.jessesadler.com/post/network-analysis-with-r/#nodes-edges).
-#' In this context, credit and debit variables filled with the ids of the
-#' accounts act as the edges of the network. Following the
+#' In this context, credit and debit variables contain the ids of the accounts
+#' and act as the edges of the network. Following the
 #' [nomenclature of accounting](https://en.wikipedia.org/wiki/Debits_and_credits),
-#' the credit variable represents the account from which a value goes out,
-#' while the debit variable represents the account that receives the value.
-#' Thus, from the credit account to the debit account.
-#'
-#' `deb_account()` uses the nomenclature of
-#' [l, s, and d](https://en.wikipedia.org/wiki/£sd) to represent pounds,
-#' shillings, and pence, which derives from the Latin terms
-#' [libra](https://en.wikipedia.org/wiki/French_livre),
-#' [solidus](https://en.wikipedia.org/wiki/Solidus_(coin)), and
-#' [denarius](https://en.wikipedia.org/wiki/Denarius). In the 8th century a
-#' solidus came to represent 12 denarii, and 240 denarii were made from one
-#' libra or pound of silver. The custom of counting coins in dozens (solidi)
-#' and scores of dozens (libra) spread throughout the Carolingian Empire and
-#' became engrained in much of Europe. However,
-#' [other ratios](https://en.wikipedia.org/wiki/Non-decimal_currency) between
-#' libra, solidus, and denarius were also in use. The `bases` argument
-#' makes it possible to specify alternative bases for the solidus and denarius
-#' values.
+#' the credit variable represents the account that the transactional value is
+#' from, while the debit variable represents the account that receives the
+#' value. Thus, from the credit account to the debit account.
 #'
 #' @family lsd account functions
-#' @param df A data frame containing transactions between accounts that has
-#'   values represented in the form of pounds, shillings, and pence variables.
-#'   The data frame should have two variables for accounts (credit and debit)
-#'   and variables for pounds, shillings, and pence.
+#' @param df A data frame containing transactions between accounts with
+#'   variables for the credit and debit accounts and values in the form of
+#'   pounds, shillings, and pence variables.
 #' @inheritParams deb_normalize_df
 #' @inheritParams deb_sum_df
 #' @param account_id The id of the account to be used to calculate the credit,
-#'   debit, and current values. The value for the account should be present in
+#'   debit, and current values. The value for the account must be present in
 #'   the credit and/or debit variables.
-#' @param credit credit column: Unquoted name of the credit variable. This is
-#'   the column from which the value of the transaction is from. Default
-#'   is credit. The credit column must be of the same class as the debit
-#'   column.
-#' @param debit debit column: Unquoted name of the debit variable. This is
-#'   the column to which the value of the transaction goes. Default
-#'   is debit. The debit column must be of the same class as the credit
-#'   column.
+#' @param credit Credit column: Unquoted name of the credit variable. This is
+#'   the variable that the transactional value is from. Default is credit. The
+#'   `credit` column must be of the same class as the `debit` column.
+#' @param debit Debit column: Unquoted name of the debit variable. This is
+#'   the variable that receives the transactional value. Default is debit. The
+#'   `debit` column must be of the same class as the `credit` column.
 #'
-#' @return Returns a tibble with three rows and four columns. The rows
+#' @return Returns a data frame with three rows and four columns. The rows
 #'   correspond to credit, debit, and current values in the form of
 #'   pounds, shillings, and pence. The names for the pounds, shillings,
-#'   and pence columns correspond to the input for `l`, `s`,
-#'   and `d`.
+#'   and pence variables correspond to the input for `l`, `s`, and `d`.
 #'
 #' @examples
 #' # Create a transactions data frame
-#' trans <- data.frame(credit = c("a", "b", "a", "c"),
-#'                     debit = c("b", "a", "c", "a"),
-#'                     l = c(10, 10, 7, 9),
-#'                     s = c(15, 15, 11, 2),
-#'                     d = c(6, 6, 8, 11))
+#' trans <- data.frame(credit = c("a", "b", "b", "a", "c"),
+#'                     debit = c("b", "a", "a", "c", "a"),
+#'                     l = c(10, 6, 4, 7, 9),
+#'                     s = c(15, 3, 11, 11, 2),
+#'                     d = c(6, 11, 7, 8, 11))
 #'
 #' # Credit, debit, and current value of account "a"
-#' deb_account(trans, account_id = "a", credit, debit, l , s, d)
+#' deb_account(df = trans, account_id = "a",
+#'             credit = credit, debit = debit,
+#'             l = l, s = s, d = d)
 #'
 #' @export
 
@@ -128,50 +111,50 @@ deb_account <- function(df,
 
 #' Calculate credit, debit, and current values of accounts
 #'
-#' Calculate the total credit, debit, and the current values in the form of
-#' pounds, shillings, and pence for all accounts in `df`. Credits and
-#' debits are both returned as positive numbers. If an account has more
-#' credits than debits, the current value will be returned as positive
-#' numbers. If the debits are greater, the current value will be returned
-#' as negative numbers.
+#' Calculate the total credit, debit, and the current values for all accounts
+#' in a transaction data frame. Credits and debits are both returned as
+#' positive numbers. If an account has more credit than debit, the current
+#' value will be returned as positive values. If the debit is greater, the
+#' current value will be returned as negative values.
 #'
-#' `deb_account_summary()` is similar to [deb_account()], but
-#' it returns the information for all accounts in a transaction data frame
-#' instead of one. If you only want to see the current values for each
-#' account, see [deb_current()].
+#' `deb_account_summary()` is similar to [deb_account()], but it returns the
+#' values for all accounts in a transaction data frame instead of one. If you
+#' only want to see the current values for single accounts, see
+#' [deb_current()].
 #'
 #' `deb_account_summary()` is part of a family of functions meant to be used on
-#' data frames that contain transactions between accounts likely contained in
-#' an account book. The data frame should possess a similar structure to a
+#' data frames that contain transactions between accounts in an account
+#' book. The data frame should possess a similar structure to a
 #' [directed edge list](https://www.jessesadler.com/post/network-analysis-with-r/#nodes-edges).
-#' In this context, credit and debit variables filled with the ids of the
-#' accounts act as the edges of the network. Following the
+#' In this context, credit and debit variables contain the ids of the accounts
+#' and act as the edges of the network. Following the
 #' [nomenclature of accounting](https://en.wikipedia.org/wiki/Debits_and_credits),
-#' the credit variable represents the account from which a value goes out,
-#' while the debit variable represents the account that receives the value.
-#' Thus, from the credit account to the debit account.
+#' the credit variable represents the account that the transactional value is
+#' from, while the debit variable represents the account that receives the
+#' value. Thus, from the credit account to the debit account.
 #'
 #' @family lsd account functions
 #'
 #' @inheritParams deb_account
 #'
 #' @return Returns a tibble with five columns and three rows for each account
-#'   present in the credit and/or debit variables of `df`. This
-#'   represents the total credit, debit, and current values of the accounts
-#'   in the form of pounds, shillings, and pence. The names for the pounds,
-#'   shillings, and pence columns correspond to the input for `l`, `s`,
+#'   present in the credit and/or debit variables of `df`. This represents the
+#'   total credit, debit, and current values of the accounts. The names for the
+#'   pounds, shillings, and pence columns correspond to the input for `l`, `s`,
 #'   and `d`.
 #'
 #' @examples
 #' # Create a transactions data frame
-#' trans <- data.frame(credit = c("a", "b", "a", "c"),
-#'                     debit = c("b", "a", "c", "a"),
-#'                     l = c(10, 10, 7, 9),
-#'                     s = c(15, 15, 11, 2),
-#'                     d = c(6, 6, 8, 11))
+#' trans <- data.frame(credit = c("a", "b", "b", "a", "c"),
+#'                     debit = c("b", "a", "a", "c", "a"),
+#'                     l = c(10, 6, 4, 7, 9),
+#'                     s = c(15, 3, 11, 11, 2),
+#'                     d = c(6, 11, 7, 8, 11))
 #'
 #' # Credit, debit, and current values of accounts present in trans
-#' deb_account_summary(trans, credit, debit, l, s, d)
+#' deb_account_summary(df = trans,
+#'                     credit = credit, debit = debit,
+#'                     l = l, s = s, d = d)
 #'
 #' @export
 
@@ -239,23 +222,22 @@ deb_account_summary <- function(df,
 
 #' Calculate the total credit of accounts
 #'
-#' Calculate the total credit of accounts in a transactions data frame (`df`)
-#' in the form of pounds, shillings, and pence.
+#' Calculate the total credit of accounts in a transactions data frame.
 #'
 #' `deb_credit()` is similar to [deb_account_summary()], but it only returns
 #' the credit values for the accounts in `df`. See [deb_debit()] to return
 #' the debit totals for the accounts in `df`.
 #'
 #' `deb_credit()` is part of a family of functions meant to be used on
-#' data frames that contain transactions between accounts likely contained in
-#' an account book. The data frame should possess a similar structure to a
+#' data frames that contain transactions between accounts in an account
+#' book. The data frame should possess a similar structure to a
 #' [directed edge list](https://www.jessesadler.com/post/network-analysis-with-r/#nodes-edges).
-#' In this context, credit and debit variables filled with the ids of the
-#' accounts act as the edges of the network. Following the
+#' In this context, credit and debit variables contain the ids of the accounts
+#' and act as the edges of the network. Following the
 #' [nomenclature of accounting](https://en.wikipedia.org/wiki/Debits_and_credits),
-#' the credit variable represents the account from which a value goes out,
-#' while the debit variable represents the account that receives the value.
-#' Thus, from the credit account to the debit account.
+#' the credit variable represents the account that the transactional value is
+#' from, while the debit variable represents the account that receives the
+#' value. Thus, from the credit account to the debit account.
 #'
 #' @family lsd account functions
 #'
@@ -263,21 +245,21 @@ deb_account_summary <- function(df,
 #'
 #' @return Returns a tibble with four columns and one row for each account
 #'   present in the transactions data frame (`df`). The values represent the
-#'   total value sent by each account to other accounts within `df` in the
-#'   form of pounds, shillings, and pence. The names for the pounds,
-#'   shillings, and pence columns correspond to the input for `l`, `s`,
-#'   and `d`.
+#'   total value sent by each account to other accounts within `df`. The names
+#'   for the pounds, shillings, and pence variables correspond to the input
+#'   for `l`, `s`, and `d`.
 #'
 #' @examples
 #' # Create a transactions data frame
-#' trans <- data.frame(credit = c("a", "b", "a", "c"),
-#'                     debit = c("b", "a", "c", "a"),
-#'                     l = c(10, 10, 7, 9),
-#'                     s = c(15, 15, 11, 2),
-#'                     d = c(6, 6, 8, 11))
+#' trans <- data.frame(credit = c("a", "b", "b", "a", "c"),
+#'                     debit = c("b", "a", "a", "c", "a"),
+#'                     l = c(10, 6, 4, 7, 9),
+#'                     s = c(15, 3, 11, 11, 2),
+#'                     d = c(6, 11, 7, 8, 11))
 #'
 #' # Total credit of accounts present in trans
-#' deb_credit(trans, credit, l, s, d)
+#' deb_credit(df = trans, credit = credit,
+#'            l = l, s = s, d = d)
 #'
 #' @export
 
@@ -306,23 +288,22 @@ deb_credit <- function(df,
 
 #' Calculate the total debit of accounts
 #'
-#' Calculate the total debit of accounts in a transactions data frame (`df`)
-#' in the form of pounds, shillings, and pence.
+#' Calculate the total debit of accounts in a transactions data frame.
 #'
 #' `deb_debit()` is similar to [deb_account_summary()], but it only returns
-#' the debit totals for the accounts in `df`. See [deb_credit()] to return
+#' the debit values for the accounts in `df`. See [deb_credit()] to return
 #' the credit totals for the accounts in `df`.
 #'
 #' `deb_debit()` is part of a family of functions meant to be used on
-#' data frames that contain transactions between accounts likely contained in
-#' an account book. The data frame should possess a similar structure to a
+#' data frames that contain transactions between accounts in an account
+#' book. The data frame should possess a similar structure to a
 #' [directed edge list](https://www.jessesadler.com/post/network-analysis-with-r/#nodes-edges).
-#' In this context, credit and debit variables filled with the ids of the
-#' accounts act as the edges of the network. Following the
+#' In this context, credit and debit variables contain the ids of the accounts
+#' and act as the edges of the network. Following the
 #' [nomenclature of accounting](https://en.wikipedia.org/wiki/Debits_and_credits),
-#' the credit variable represents the account from which a value goes out,
-#' while the debit variable represents the account that receives the value.
-#' Thus, from the credit account to the debit account.
+#' the credit variable represents the account that the transactional value is
+#' from, while the debit variable represents the account that receives the
+#' value. Thus, from the credit account to the debit account.
 #'
 #' @family lsd account functions
 #'
@@ -330,21 +311,21 @@ deb_credit <- function(df,
 #'
 #' @return Returns a tibble with four columns and one row for each account
 #'   present in the transactions data frame (`df`). The values represent the
-#'   total value sent by each account to other accounts within `df` in the
-#'   form of pounds, shillings, and pence. The names for the pounds,
-#'   shillings, and pence columns correspond to the input for `l`, `s`,
-#'   and `d`.
+#'   total value received by each account from other accounts within `df`. The
+#'   names for the pounds, shillings, and pence variables correspond to the
+#'   input for `l`, `s`, and `d`.
 #'
 #' @examples
 #' # Create a transactions data frame
-#' trans <- data.frame(credit = c("a", "b", "a", "c"),
-#'                     debit = c("b", "a", "c", "a"),
-#'                     l = c(10, 10, 7, 9),
-#'                     s = c(15, 15, 11, 2),
-#'                     d = c(6, 6, 8, 11))
+#' trans <- data.frame(credit = c("a", "b", "b", "a", "c"),
+#'                     debit = c("b", "a", "a", "c", "a"),
+#'                     l = c(10, 6, 4, 7, 9),
+#'                     s = c(15, 3, 11, 11, 2),
+#'                     d = c(6, 11, 7, 8, 11))
 #'
 #' # Total debit of accounts present in trans
-#' deb_debit(trans, debit, l, s, d)
+#' deb_debit(df = trans, debit = debit,
+#'           l = l, s = s, d = d)
 #'
 #' @export
 
@@ -373,48 +354,49 @@ deb_debit <- function(df,
 
 #' Calculate the current values of accounts
 #'
-#' Calculate the current values in the form of pounds, shillings, and pence
-#' for all accounts in `df`. If an account has more credits than debits,
-#' the current value will be returned as positive numbers. If the debits are
-#' greater, the current value will be returned as negative numbers.
+#' Calculate the current values of accounts in a transactions data frame. If an
+#' account has more credit than debit, the current value will be returned as
+#' positive values. If the debit is greater, the current value will be returned
+#' as negative values.
 #'
-#' `deb_current()` is similar to [deb_account_summary()],
-#' but it only returns the current values for the accounts in `df`.
-#' To see only the open accounts—only those accounts that have a current
-#' value greater than or less than zero—see [deb_open()].
+#' `deb_current()` is similar to [deb_account_summary()], but it only returns
+#' the current values for the accounts in `df`. To see only the open accounts
+#'  — only those accounts that have a current value greater than or less than
+#'  zero — see [deb_open()].
 #'
 #' `deb_current()` is part of a family of functions meant to be used on
-#' data frames that contain transactions between accounts likely contained in
-#' an account book. The data frame should possess a similar structure to a
+#' data frames that contain transactions between accounts in an account
+#' book. The data frame should possess a similar structure to a
 #' [directed edge list](https://www.jessesadler.com/post/network-analysis-with-r/#nodes-edges).
-#' In this context, credit and debit variables filled with the ids of the
-#' accounts act as the edges of the network. Following the
+#' In this context, credit and debit variables contain the ids of the accounts
+#' and act as the edges of the network. Following the
 #' [nomenclature of accounting](https://en.wikipedia.org/wiki/Debits_and_credits),
-#' the credit variable represents the account from which a value goes out,
-#' while the debit variable represents the account that receives the value.
-#' Thus, from the credit account to the debit account.
+#' the credit variable represents the account that the transactional value is
+#' from, while the debit variable represents the account that receives the
+#' value. Thus, from the credit account to the debit account.
 #'
 #' @family lsd account functions
 #'
 #' @inheritParams deb_account_summary
 #'
 #' @return Returns a tibble with four columns and one row for each account
-#'   present in the credit and/or debit variables of `df`. This
-#'   represents the current value of the accounts in the form of pounds,
-#'   shillings, and pence. The names for the pounds, shillings, and pence
-#'   columns correspond to the input for `l`, `s`, and `d`.
+#'   present in the credit and/or debit variables of `df`. This represents the
+#'   current value of the accounts in `df`. The names for the pounds,
+#'   shillings, and pence variables correspond to the input for `l`, `s`, and
+#'   `d`.
 #'
 #' @examples
 #' # Create a transactions data frame
-#' trans <- data.frame(credit = c("a", "b", "a", "c"),
-#'                     debit = c("b", "a", "c", "a"),
-#'                     l = c(10, 10, 7, 9),
-#'                     s = c(15, 15, 11, 2),
-#'                     d = c(6, 6, 8, 11))
+#' trans <- data.frame(credit = c("a", "b", "b", "a", "c"),
+#'                     debit = c("b", "a", "a", "c", "a"),
+#'                     l = c(10, 6, 4, 7, 9),
+#'                     s = c(15, 3, 11, 11, 2),
+#'                     d = c(6, 11, 7, 8, 11))
 #'
 #' # Current values of accounts present in trans
-#' deb_current(trans, credit, debit, l, s, d)
-#'
+#' deb_current(df = trans,
+#'             credit = credit, debit = debit,
+#'             l = l, s = s, d = d)
 #' @export
 
 deb_current <- function(df,
@@ -445,25 +427,25 @@ deb_current <- function(df,
 
 #' Calculate the current values of open accounts
 #'
-#' Calculate the current values in the form of pounds, shillings, and pence
-#' for all accounts in `df` and show only those accounts that have a
-#' positive or negative balance. If an account has more credits than
-#' debits, the current value will be returned as positive numbers. If the
-#' debits are greater, the current value will be returned as negative numbers.
+#' Calculate the current values of accounts in a transactions data frame and
+#' show only those accounts that have a positive or negative balance. If an
+#' account has more credit than debit, the current value will be returned as
+#' positive values. If the debit is greater, the current value will be returned
+#' as negative values.
 #'
 #' `deb_open()` is similar to [deb_current()], but it only returns current
 #' values for accounts that have a value that is not zero.
 #'
 #' `deb_open()` is part of a family of functions meant to be used on
-#' data frames that contain transactions between accounts likely contained in
-#' an account book. The data frame should possess a similar structure to a
+#' data frames that contain transactions between accounts in an account
+#' book. The data frame should possess a similar structure to a
 #' [directed edge list](https://www.jessesadler.com/post/network-analysis-with-r/#nodes-edges).
-#' In this context, credit and debit variables filled with the ids of the
-#' accounts act as the edges of the network. Following the
+#' In this context, credit and debit variables contain the ids of the accounts
+#' and act as the edges of the network. Following the
 #' [nomenclature of accounting](https://en.wikipedia.org/wiki/Debits_and_credits),
-#' the credit variable represents the account from which a value goes out,
-#' while the debit variable represents the account that receives the value.
-#' Thus, from the credit account to the debit account.
+#' the credit variable represents the account that the transactional value is
+#' from, while the debit variable represents the account that receives the
+#' value. Thus, from the credit account to the debit account.
 #'
 #' @family lsd account functions
 #'
@@ -473,19 +455,21 @@ deb_current <- function(df,
 #'   present in the credit and/or debit variables in `df` in which the
 #'   current value of pounds, shillings, and pence does not equal zero or
 #'   does not have a missing value in the current value. The names for the
-#'   pounds, shillings, and pence columns correspond to the input for `l`,
+#'   pounds, shillings, and pence variables correspond to the input for `l`,
 #'   `s`, and `d`.
 #'
 #' @examples
 #' # Create a transactions data frame
-#' trans <- data.frame(credit = c("a", "b", "a", "c"),
-#'                     debit = c("b", "a", "c", "a"),
-#'                     l = c(10, 10, 7, 9),
-#'                     s = c(15, 15, 11, 2),
-#'                     d = c(6, 6, 8, 11))
+#' trans <- data.frame(credit = c("a", "b", "b", "a", "c"),
+#'                     debit = c("b", "a", "a", "c", "a"),
+#'                     l = c(10, 6, 4, 7, 9),
+#'                     s = c(15, 3, 11, 11, 2),
+#'                     d = c(6, 11, 7, 8, 11))
 #'
 #' # Current values of open accounts present in trans
-#' deb_open(trans, credit, debit, l, s, d)
+#' deb_open(df = trans,
+#'          credit = credit, debit = debit,
+#'          l = l, s = s, d = d)
 #'
 #' @export
 
@@ -516,46 +500,46 @@ deb_open <- function(df,
 
 #' Calculate the balance of a transactions data frame
 #'
-#' Calculate the balance remaining on `df` in the form of pounds,
-#' shillings, and pence. This shows the total credit and debit remaining
-#' on the transactions data frame or account book.
+#' Calculate the balance remaining in `df`. This shows the total credit and
+#' debit remaining in the transactions data frame or account book.
 #'
-#' `deb_balance()` is based on [deb_open()]. The function adds the credits
+#' `deb_balance()` is based on [deb_open()]. The function sums the credits
 #' and debits of the accounts that remain open to calculate the capital
 #' remaining in the transactions data frame. The values for credit and debit
 #' should be the same, as each credit also has a corresponding debit. The
 #' exception is if there are missing values in `df` and `na.rm = FALSE`.
 #'
 #' `deb_balance()` is part of a family of functions meant to be used on
-#' data frames that contain transactions between accounts likely contained in
-#' an account book. The data frame should possess a similar structure to a
+#' data frames that contain transactions between accounts in an account
+#' book. The data frame should possess a similar structure to a
 #' [directed edge list](https://www.jessesadler.com/post/network-analysis-with-r/#nodes-edges).
-#' In this context, credit and debit variables filled with the ids of the
-#' accounts act as the edges of the network. Following the
+#' In this context, credit and debit variables contain the ids of the accounts
+#' and act as the edges of the network. Following the
 #' [nomenclature of accounting](https://en.wikipedia.org/wiki/Debits_and_credits),
-#' the credit variable represents the account from which a value goes out,
-#' while the debit variable represents the account that receives the value.
-#' Thus, from the credit account to the debit account.
+#' the credit variable represents the account that the transactional value is
+#' from, while the debit variable represents the account that receives the
+#' value. Thus, from the credit account to the debit account.
 #'
 #' @family lsd account functions
 #'
 #' @inheritParams deb_account_summary
 #'
 #' @return Returns a tibble with two rows showing the credit and debit
-#'   remaining in `df` in the form of pounds, shillings, and pence.
-#'   The names for the pounds, shillings, and pence columns correspond to
-#'   the input for `l`, `s`, and `d`.
+#'   remaining in `df`. The names for the pounds, shillings, and pence
+#'   variables correspond to the input for `l`, `s`, and `d`.
 #'
 #' @examples
 #' # Create a transactions data frame
-#' trans <- data.frame(credit = c("a", "b", "a", "c"),
-#'                     debit = c("b", "a", "c", "a"),
-#'                     l = c(10, 10, 7, 9),
-#'                     s = c(15, 15, 11, 2),
-#'                     d = c(6, 6, 8, 11))
+#' trans <- data.frame(credit = c("a", "b", "b", "a", "c"),
+#'                     debit = c("b", "a", "a", "c", "a"),
+#'                     l = c(10, 6, 4, 7, 9),
+#'                     s = c(15, 3, 11, 11, 2),
+#'                     d = c(6, 11, 7, 8, 11))
 #'
 #' # Credit and debit remaining on trans
-#' deb_balance(trans, credit, debit, l, s, d)
+#' deb_balance(df = trans,
+#'             credit = credit, debit = debit,
+#'             l = l, s = s, d = d)
 #'
 #' @export
 

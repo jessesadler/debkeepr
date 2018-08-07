@@ -24,12 +24,10 @@
 #'   the tibble will be equal to the length of `lsd_list`.
 #'
 #' @examples
-#' # Convert a list of lsd vectors to a tibble with
+#' # Convert a list of lsd vectors into a tibble with
 #' # pounds, shillings, and pence variables
-#' example <- list(c(4, 34, 89), c(-9, -75, -19), c(15.85, 36.15, 56))
+#' example <- list(c(4, 14, 9), c(-9, -5, -1), c(15, 15, 6))
 #' deb_list_to_df(example)
-#'
-#' @importFrom stats setNames
 #'
 #' @export
 
@@ -66,11 +64,11 @@ deb_list_to_df <- function(lsd_list) {
 #'
 #' @examples
 #' # Convert a data frame with pounds, shillings, and pence variables
-#' # to a list of lsd vectors
-#' example <- data.frame(l = c(35, -10, 26.725, 12),
-#'                       s = c(50, -48, 311.85, 76),
-#'                       d = c(89, -181, 70, 205))
-#' deb_df_to_list(example, l, s, d)
+#' # into a list of lsd vectors
+#' example <- data.frame(l = c(4, -9, 25),
+#'                       s = c(14, -5, 15),
+#'                       d = c(9, -1, 6))
+#' deb_df_to_list(example, l = l, s = s, d = d)
 #'
 #' # All variables aside from l, s, and d will be dropped
 #' example2 <- data.frame(credit = c("a", "b", "a", "c"),
@@ -78,7 +76,7 @@ deb_list_to_df <- function(lsd_list) {
 #'                        l = c(10, 10, 7, 9),
 #'                        s = c(15, 15, 11, 2),
 #'                        d = c(6, 6, 8, 11))
-#' deb_df_to_list(example, l, s, d)
+#' deb_df_to_list(example2, l = l, s = s, d = d)
 #'
 #' @export
 
