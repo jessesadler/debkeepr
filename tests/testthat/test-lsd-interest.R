@@ -27,6 +27,8 @@ test_that("interest calculation works", {
                deb_multiply(ex_vector, 1/16))
   expect_equal(deb_interest(ex_vector, with_principal = FALSE, duration = 5),
                deb_multiply(ex_vector, 5/16))
+  expect_equal(deb_interest(ex_vector, round = 0),
+               c(l = 10, s = 15, d = 10))
   expect_equal(deb_interest(ex_vector, interest = 0.10),
                c(l = 11, s = 3, d = 5.8))
   expect_equal(deb_interest(ex_vector, bases = c(8, 16)),
@@ -42,6 +44,10 @@ test_that("vectorization works", {
                list(c(l = 1, s = 18, d = 2.0625),
                     c(l = 0, s = 14, d = 7.55),
                     c(l = -1, s = -13, d = -2.875)))
+  expect_equal(deb_interest(ex_list, round = 0),
+               list(c(l = 32, s = 8, d = 11),
+                    c(l = 12, s = 8, d = 8),
+                    c(l = -28, s = -5, d = -1)))
 })
 
 test_that("interest mutate works",{
@@ -53,6 +59,10 @@ test_that("interest mutate works",{
                data.frame(l = c(1, 0, -1),
                           s = c(18, 14, -13),
                           d = c(2.0625, 7.55, -2.875)))
+  expect_equal(deb_interest_mutate(ex_df, replace = TRUE, round = 0),
+               data.frame(l = c(32, 12, -28),
+                          s = c(8, 8, -5),
+                          d = c(11, 8, -1)))
   expect_equal(deb_interest_mutate(ex_df, with_principal = FALSE,
                                    replace = TRUE, duration = 5, interest = 0.10),
                deb_multiply_mutate(ex_df, replace = TRUE, x = 0.50))

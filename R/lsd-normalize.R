@@ -50,14 +50,14 @@ lsd_decimal_check <- function(lsd, bases) {
 }
 
 # Actual normalization
-lsd_normalize <- function(lsd, bases) {
+lsd_normalize <- function(lsd, bases, round) {
   if (is.list(lsd)) {
-    return(purrr::map(lsd, ~ lsd_normalize(., bases)))
+    return(purrr::map(lsd, ~ lsd_normalize(., bases, round)))
   }
 
   lsd[1] <- lsd[1] + ((lsd[2] + lsd[3] %/% bases[2]) %/% bases[1])
   lsd[2] <- (lsd[2] + lsd[3] %/% bases[2]) %% bases[1]
-  lsd[3] <- round(lsd[3] %% bases[2], 5)
+  lsd[3] <- round(lsd[3] %% bases[2], round)
 
   if (any(is.na(lsd))) {
     return(stats::setNames(lsd, c("l", "s", "d")))
@@ -123,6 +123,8 @@ lsd_negative <- function(normalized, lsd, bases) {
 #'   which conforms to the most widely used system of 1 pound = 20 shillings
 #'   and 1 shilling = 12 pence. This argument makes it possible to use
 #'   alternate bases for the shillings (s) and pence (d) units.
+#' @param round Round pence to specified number of decimal places.
+#'   Default is 5. Set to 0 to return pence as whole numbers.
 #'
 #' @return Returns either a named numeric vector of length 3 or a list of named
 #'   numeric vectors representing the normalized values of pounds, shillings,
@@ -150,6 +152,12 @@ lsd_negative <- function(normalized, lsd, bases) {
 #' # Can also properly normalize decimalized pounds and shillings
 #' deb_normalize(lsd = c(8.7, 33.65, 15))
 #'
+#' # Round argument can be used to round pence unit to
+#' # specific decimal place and properly normalize value
+#' # Compare with default of round = 5 to round = 0
+#' deb_normalize(lsd = c(5.7, 44.742, 15), round = 5)
+#' deb_normalize(lsd = c(5.7, 44.742, 15), round = 0)
+#'
 #' # To normalize multiple lsd values use a list of lsd vectors
 #' lsd_list <- list(c(4, 34, 89), c(-9, -75, -19), c(15.85, 36.15, 56))
 #' deb_normalize(lsd = lsd_list)
@@ -172,12 +180,13 @@ lsd_negative <- function(normalized, lsd, bases) {
 #'
 #' @export
 
-deb_normalize <- function(lsd, bases = c(20, 12)) {
+deb_normalize <- function(lsd, bases = c(20, 12), round = 5) {
 
   lsd_check(lsd)
   bases_check(bases)
+  round_check(round)
   checked <- lsd_decimal_check(lsd, bases)
-  normalized <- lsd_normalize(checked, bases = bases)
+  normalized <- lsd_normalize(checked, bases = bases, round = round)
   lsd_negative(normalized, lsd, bases)
 }
 
@@ -223,8 +232,8 @@ deb_normalize <- function(lsd, bases = c(20, 12)) {
 #' @examples
 #' # Data frame with pounds, shillings, and pence variables
 #' example <- data.frame(l = c(35, -10, 26.725, 12),
-#'                       s = c(50, -48, 311.85, 76),
-#'                       d = c(89, -181, 70, 205))
+#'                       s = c(50, -48, 311.805, 76),
+#'                       d = c(89, -181, 80, 201))
 #' # Normalize the values of pounds, shillings, and pence
 #' deb_normalize_df(example, l = l, s = s, d = d)
 #'
@@ -232,11 +241,16 @@ deb_normalize <- function(lsd, bases = c(20, 12)) {
 #' # For instance, the Dutch system of guilders, stuivers, and penningen
 #' deb_normalize_df(example, l = l, s = s, d = d, bases = c(20, 16))
 #'
+#' # Round argument can be used to round pence unit to
+#' # specific decimal place and properly normalize values
+#' deb_normalize_df(example, l = l, s = s, d = d, round = 0)
+#'
 #' @export
 
 deb_normalize_df <- function(df,
                              l = l, s = s, d = d,
                              bases = c(20, 12),
+                             round = 5,
                              replace = TRUE,
                              suffix = ".1") {
   l <- rlang::enquo(l)
@@ -252,5 +266,6 @@ deb_normalize_df <- function(df,
                      !! l, !! s, !! d,
                      lsd_names = lsd_names,
                      replace = replace,
-                     bases = bases)
+                     bases = bases,
+                     round = round)
 }

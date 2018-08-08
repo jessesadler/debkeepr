@@ -1,7 +1,5 @@
 context("test-lsd-exchange.R")
 
-suppressPackageStartupMessages(library(purrr))
-
 ex_vector <- c(10, 3, 2)
 ex_vector2 <- c(20, 5, 8)
 neg_vector <- c(-8, -16, -6)
@@ -37,6 +35,8 @@ test_that("deb_exchange works", {
                c(l = 15, s = 4, d = 9))
   expect_equal(deb_exchange(ex_vector, shillings_rate = 30 + 3/12),
                c(l = 15, s = 7, d = 3.475))
+  expect_equal(deb_exchange(ex_vector, shillings_rate = 30 + 3/12, round = 0),
+               c(l = 15, s = 7, d = 3))
   expect_equal(deb_exchange(ex_vector, shillings_rate = 30, bases = c(8, 16)),
                c(l = 38, s = 7, d = 11.5))
 })
@@ -46,11 +46,17 @@ test_that("deb_exchange is vectorized", {
                list(c(l = 45, s = 16, d = 1.5),
                     c(l = 17, s = 11, d = 1.2),
                     c(l = -39, s = -17, d = -9)))
+  expect_equal(deb_exchange(ex_list, shillings_rate = 30, round = 0),
+               list(c(l = 45, s = 16, d = 2),
+                    c(l = 17, s = 11, d = 1),
+                    c(l = -39, s = -17, d = -9)))
 })
 
 test_that("deb_exchange_mutate works", {
   expect_equal(ncol(deb_exchange_mutate(ex_df, l, s, d, shillings_rate = 30)), 6)
   expect_equal(deb_exchange_mutate(ex_df, shillings_rate = 30, replace = TRUE), exchange_30)
+  expect_equal(deb_exchange_mutate(ex_df, shillings_rate = 30, round = 0)[ , 6],
+               c(2, 1, -9))
   expect_false(identical(deb_exchange_mutate(ex_df, shillings_rate = 30),
                          deb_exchange_mutate(ex_df, shillings_rate = 30, bases = c(8, 16))))
 })
@@ -68,6 +74,8 @@ test_that("deb_exchange_rate works", {
                c(l = 0, s = 12, d = 0))
   expect_equal(deb_exchange_rate(c(100, 0, 0), c(166, 13, 4)),
                c(l = 0, s = 33, d = 4))
+  expect_equal(deb_exchange_rate(c(100, 0, 0), c(166, 13, 0), round = 0),
+               c(l = 0, s = 33, d = 4))
   expect_equal(deb_exchange_rate(c(100, 0, 0), c(166, 2, 10), bases = c(8, 16)),
                c(l = 0, s = 13, d = 4.9))
   expect_equal(deb_exchange_rate(c(20, 10, 8), c(10, 5, 4), bases = c(40, 24)),
@@ -84,7 +92,7 @@ test_that("deb_exchange_rate works", {
 
 test_that("deb_exchange_rate is vectorized", {
   expect_equal(length(deb_exchange_rate(ex_list, ex_list2)), 3)
-  expect_equal(purrr::map(deb_exchange_rate(ex_list, ex_list2), ~ round(., 0)),
+  expect_equal(deb_exchange_rate(ex_list, ex_list2, round = 0),
                list(c(l = 0, s = 6, d = 8),
                     c(l = 0, s = 11, d = 7),
                     c(l = 0, s = -15, d = -3)))
@@ -93,6 +101,7 @@ test_that("deb_exchange_rate is vectorized", {
 test_that("deb_invert_rate works", {
   expect_equal(deb_invert_rate(c(0, 33, 4)), c(l = 0, s = 12, d = 0))
   expect_equal(deb_invert_rate(c(0, 12, 0)), c(l = 0, s = 33, d = 4))
+  expect_equal(deb_invert_rate(c(0, 33, 0), round = 0), c(l = 0, s = 12, d = 1))
   expect_equal(deb_invert_rate(c(0, 12, 0), output = "pence"),
                c(l = 0, s = 0, d = 400))
   expect_equal(deb_invert_rate(c(0, 12, 0), output = "pounds"),
@@ -109,6 +118,10 @@ test_that("deb_invert_rate is vectorized", {
                list(c(l = 0, s = 48, d = 0),
                     c(l = 0, s = 53, d = 4),
                     c(l = 0, s = 40, d = 0)))
+  expect_equal(deb_invert_rate(rate_list, bases = c(20, 16), round = 0),
+               list(c(l = 0, s = 12, d = 0),
+                    c(l = 0, s = 13, d = 5),
+                    c(l = 0, s = 10, d = 0)))
 })
 
 ## Error messages from exchange_rate_check ##

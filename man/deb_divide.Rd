@@ -4,7 +4,7 @@
 \alias{deb_divide}
 \title{Division of pounds, shillings, and pence}
 \usage{
-deb_divide(lsd, x, bases = c(20, 12))
+deb_divide(lsd, x, bases = c(20, 12), round = 5)
 }
 \arguments{
 \item{lsd}{Numeric vector of length 3 or list of numeric vectors of length
@@ -20,6 +20,9 @@ the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12
 which conforms to the most widely used system of 1 pound = 20 shillings
 and 1 shilling = 12 pence. This argument makes it possible to use
 alternate bases for the shillings (s) and pence (d) units.}
+
+\item{round}{Round pence to specified number of decimal places.
+Default is 5. Set to 0 to return pence as whole numbers.}
 }
 \value{
 Returns either a named numeric vector of length 3 or a list of named
@@ -43,6 +46,9 @@ deb_divide(lsd = c(63, 15, 8), x = -5)
 
 # Or decimals
 deb_divide(lsd = c(63.625, 15.35, 8), x = 5)
+
+# Use round argument to round pence unit to specific decimal place
+deb_divide(lsd = c(5, 15, 8), x = 3, round = 2)
 
 # Divide a list of lsd vectors by a divisor
 # This returns a list of named lsd values

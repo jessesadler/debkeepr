@@ -63,11 +63,11 @@
 #'
 #' @export
 
-deb_convert_bases <- function(lsd, bases1, bases2, ratio = 1) {
+deb_convert_bases <- function(lsd, bases1, bases2, ratio = 1, round = 5) {
   ratio_check(ratio)
 
   librae <- deb_lsd_l(lsd = lsd, bases = bases1) * ratio
-  deb_l_lsd(l = librae, bases = bases2)
+  deb_l_lsd(l = librae, bases = bases2, round = round)
 }
 
 
@@ -131,6 +131,7 @@ deb_convert_bases_mutate <- function(df,
                                      bases1,
                                      bases2,
                                      ratio = 1,
+                                     round = 5,
                                      suffix = ".1") {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
@@ -150,6 +151,7 @@ deb_convert_bases_mutate <- function(df,
                      s_column = !! s,
                      d_column = !! d,
                      bases = bases2,
+                     round = round,
                      suffix = suffix) %>%
     dplyr::select(-temp_librae_col)
 

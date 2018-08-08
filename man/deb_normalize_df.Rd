@@ -5,7 +5,7 @@
 \title{Normalize pounds, shillings, and pence variables in a data frame}
 \usage{
 deb_normalize_df(df, l = l, s = s, d = d, bases = c(20, 12),
-  replace = TRUE, suffix = ".1")
+  round = 5, replace = TRUE, suffix = ".1")
 }
 \arguments{
 \item{df}{A data frame that contains pounds, shillings, and pence variables.}
@@ -24,6 +24,9 @@ the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12
 which conforms to the most widely used system of 1 pound = 20 shillings
 and 1 shilling = 12 pence. This argument makes it possible to use
 alternate bases for the shillings (s) and pence (d) units.}
+
+\item{round}{Round pence to specified number of decimal places.
+Default is 5. Set to 0 to return pence as whole numbers.}
 
 \item{replace}{Logical (default \code{TRUE}): when \code{TRUE} the new pounds,
 shillings, and pence variables will replace the original variables.}
@@ -59,13 +62,17 @@ it possible to specify alternate bases for the solidus and denarius units.
 \examples{
 # Data frame with pounds, shillings, and pence variables
 example <- data.frame(l = c(35, -10, 26.725, 12),
-                      s = c(50, -48, 311.85, 76),
-                      d = c(89, -181, 70, 205))
+                      s = c(50, -48, 311.805, 76),
+                      d = c(89, -181, 80, 201))
 # Normalize the values of pounds, shillings, and pence
 deb_normalize_df(example, l = l, s = s, d = d)
 
 # Normalize values with alternative bases for solidus and denarius
 # For instance, the Dutch system of guilders, stuivers, and penningen
 deb_normalize_df(example, l = l, s = s, d = d, bases = c(20, 16))
+
+# Round argument can be used to round pence unit to
+# specific decimal place and properly normalize values
+deb_normalize_df(example, l = l, s = s, d = d, round = 0)
 
 }

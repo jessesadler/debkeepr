@@ -76,12 +76,20 @@ test_that("lsd multiplication works", {
                c(l = 1, s = 7, d = 0))
   expect_equal(deb_multiply(c(405, 0, 0), x = 0.0033333333),
                c(l = 1, s = 7, d = 0))
+  expect_equal(deb_multiply(c(100, 5, 10), x = 1 / 3),
+               c(l = 33, s = 8, d = 7.33333))
+  expect_equal(deb_multiply(c(100, 5, 10), x = 1 / 3, round = 0),
+               c(l = 33, s = 8, d = 7))
 })
 
 test_that("lsd multiplication is vectorized", {
-  expect_equal(deb_multiply(ex_list, 3),
+  expect_equal(deb_multiply(ex_list, x = 3),
                list(c(l = 91, s = 12, d = 3),
                     c(l = 35, s = 2, d = 2.4),
+                    c(l = -79, s = -15, d = -6)))
+  expect_equal(deb_multiply(ex_list, x = 3, round = 0),
+               list(c(l = 91, s = 12, d = 3),
+                    c(l = 35, s = 2, d = 2),
                     c(l = -79, s = -15, d = -6)))
 })
 
@@ -91,6 +99,8 @@ test_that("deb_multiply_mutate works", {
   expect_equal(deb_multiply_mutate(ex_df, l, s, d, x = 3), answer_x3)
   expect_equal(deb_multiply_mutate(ex_df, l, s, d, x = 3, replace = TRUE), answer_x3_replace)
   expect_equal(deb_multiply_mutate(ex_df, x = 0.3333333333, replace = TRUE), answer_x03)
+  expect_equal(deb_multiply_mutate(ex_df, x = 0.3333333333, replace = TRUE, round = 0)[ , 3],
+               c(7, 0, -3, 0, 0))
   # bases changes answer
   expect_false(identical(deb_multiply_mutate(ex_df, l, s, d, x = 3),
                          deb_multiply_mutate(ex_df, l, s, d, x = 3, bases = c(8, 16))))
@@ -110,12 +120,18 @@ test_that("lsd division works", {
                c(l = 1, s = 7, d = 0))
   expect_equal(deb_divide(c(350, 8, 0), x = 6),
                c(l = 58, s = 8, d = 0))
+  expect_equal(deb_divide(ex_vector, x = 3, round = 0),
+               c(l = 3, s = 7, d = 9))
 })
 
 test_that("lsd division is vectorized", {
-  expect_equal(deb_divide(ex_list, 2),
+  expect_equal(deb_divide(ex_list, x = 2),
                list(c(l = 15, s = 5, d = 4.5),
                     c(l = 5, s = 17, d = 0.4),
+                    c(l = -13, s = -5, d = -11)))
+  expect_equal(deb_divide(ex_list, x = 2, round = 0),
+               list(c(l = 15, s = 5, d = 4),
+                    c(l = 5, s = 17, d = 0),
                     c(l = -13, s = -5, d = -11)))
 })
 
@@ -125,9 +141,18 @@ test_that("deb_divide_mutate works", {
   expect_equal(deb_divide_mutate(ex_df, l, s, d, x = 2), answer_d2)
   expect_equal(deb_divide_mutate(ex_df, l, s, d, x = 2, replace = TRUE), answer_d2_replace)
   expect_equal(deb_divide_mutate(ex_df, x = 6, replace = TRUE), answer_d6)
+  expect_equal(deb_divide_mutate(ex_df, l, s, d, x = 2, round = 0, replace = TRUE)[ , 3],
+               c(4, 0, -11, 0, 0))
   # bases changes answer
   expect_false(identical(deb_divide_mutate(ex_df, l, s, d, x = 3),
                          deb_divide_mutate(ex_df, l, s, d, x = 3, bases = c(8, 16))))
+})
+
+test_that("round argument works", {
+  expect_equal(deb_divide(c(6, 8, 1), x = 3) %>% deb_multiply(x = 3),
+               c(l = 6, s = 8, d = 0.99999))
+  expect_equal(deb_divide(c(6, 8, 1), x = 3) %>% deb_multiply(x = 3, round = 4),
+               c(l = 6, s = 8, d = 1))
 })
 
 # Addition
@@ -136,6 +161,8 @@ test_that("lsd addition works", {
                c(l = 30, s = 8, d = 10))
   expect_equal(deb_add(ex_vector, dec_vector),
                c(l = 16, s = 18, d = 4.2))
+  expect_equal(deb_add(ex_vector, dec_vector, round = 0),
+               c(l = 16, s = 18, d = 4))
   expect_equal(deb_add(ex_vector, c(5, 7, 15), bases = c(8, 16)),
                c(l = 16, s = 3, d = 1))
 })
@@ -149,9 +176,10 @@ test_that("lsd addition is vectorized", {
                list(c(l = 40, s = 13, d = 11),
                     c(l = 21, s = 17, d = 2.8),
                     c(l = -16, s = -8, d = -8)))
-  expect_equal(deb_add(ex_vector, ex_list),
+  expect_equal(deb_add(ex_vector, ex_list), deb_add(ex_list, ex_vector))
+  expect_equal(deb_add(ex_vector, ex_list, round = 0),
                list(c(l = 40, s = 13, d = 11),
-                    c(l = 21, s = 17, d = 2.8),
+                    c(l = 21, s = 17, d = 3),
                     c(l = -16, s = -8, d = -8)))
   expect_equal(deb_add(ex_list, ex_vector, bases = c(8, 16)),
                list(c(l = 41, s = 5, d = 11),
@@ -166,6 +194,8 @@ test_that("deb_add_mutate works", {
                data.frame(l = c(36, 17, -20, 410, 356),
                           s = c(6, 9, -16, 15, 3),
                           d = c(5, 8.8, -2, 8, 8)))
+  expect_equal(deb_add_mutate(ex_df, l, s, d, lsd = c(5, 15, 8), round = 0, replace = TRUE)[ , 3],
+               c(5, 9, -2, 8, 8))
   # bases changes answer
   expect_false(identical(deb_add_mutate(ex_df, l, s, d, lsd = c(5, 15, 8)),
                          deb_add_mutate(ex_df, l, s, d, lsd = c(5, 15, 8), bases = c(8, 16))))
@@ -179,6 +209,8 @@ test_that("lsd subtract works", {
                c(l = -10, s = -2, d = -6))
   expect_equal(deb_subtract(ex_vector, dec_vector),
                c(l = 3, s = 7, d = 11.8))
+  expect_equal(deb_subtract(ex_vector, dec_vector, round = 0),
+               c(l = 3, s = 8, d = 0))
   expect_equal(deb_subtract(ex_vector, c(5, 7, 15), bases = c(8, 16)),
                c(l = 4, s = 3, d = 3))
 })
@@ -196,6 +228,10 @@ test_that("lsd subtract is vectorized", {
                list(c(l = -20, s = -7, d = -7),
                     c(l = -1, s = -10, d = -10.8),
                     c(l = 36, s = 15, d = 0)))
+  expect_equal(deb_subtract(ex_vector, ex_list, round = 0),
+               list(c(l = -20, s = -7, d = -7),
+                    c(l = -1, s = -10, d = -11),
+                    c(l = 36, s = 15, d = 0)))
 })
 
 test_that("deb_subtraction_mutate works", {
@@ -205,6 +241,8 @@ test_that("deb_subtraction_mutate works", {
                data.frame(l = c(24, 5, -32, 399, 344),
                           s = c(15, 18, -7, 4, 12),
                           d = c(1, 4.8, -6, 4, 4)))
+  expect_equal(deb_subtract_mutate(ex_df, l, s, d, lsd = c(5, 15, 8), round = 0, replace = TRUE)[ , 3],
+               c(1, 5, -6, 4, 4))
   # bases changes answer
   expect_false(identical(deb_subtract_mutate(ex_df, l, s, d, lsd = c(5, 15, 8)),
                          deb_subtract_mutate(ex_df, l, s, d, lsd = c(5, 15, 8), bases = c(8, 16))))

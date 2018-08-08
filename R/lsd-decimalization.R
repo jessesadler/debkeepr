@@ -72,9 +72,9 @@ deb_lsd_l <- function(lsd, bases = c(20, 12)) {
 #'
 #' @export
 
-deb_l_lsd <- function(l, bases = c(20, 12)) {
+deb_l_lsd <- function(l, bases = c(20, 12), round = 5) {
   if (length(l) > 1) {
-    return(purrr::map(l, ~ deb_l_lsd(., bases = bases)))
+    return(purrr::map(l, ~ deb_l_lsd(., bases = bases, round = round)))
   }
 
   if (!is.numeric(l)) {
@@ -83,7 +83,8 @@ deb_l_lsd <- function(l, bases = c(20, 12)) {
 
   # repeat 0 of length l for vectorization
   deb_normalize(c(l, rep(0, length(l)), rep(0, length(l))),
-                bases = bases)
+                bases = bases,
+                round = round)
 }
 
 ### solidi ###
@@ -161,9 +162,9 @@ deb_lsd_s <- function(lsd, bases = c(20, 12)) {
 #'
 #' @export
 
-deb_s_lsd <- function(s, bases = c(20, 12)) {
+deb_s_lsd <- function(s, bases = c(20, 12), round = 5) {
   if (length(s) > 1) {
-    return(purrr::map(s, ~ deb_s_lsd(., bases = bases)))
+    return(purrr::map(s, ~ deb_s_lsd(., bases = bases, round = round)))
   }
 
   if (!is.numeric(s)) {
@@ -172,7 +173,8 @@ deb_s_lsd <- function(s, bases = c(20, 12)) {
 
   # repeat 0 of length s for vectorization
   deb_normalize(c(rep(0, length(s)), s, rep(0, length(s))),
-                bases = bases)
+                bases = bases,
+                round = round)
 }
 
 ### denarii ###
@@ -206,15 +208,16 @@ deb_s_lsd <- function(s, bases = c(20, 12)) {
 #'
 #' @export
 
-deb_lsd_d <- function(lsd, bases = c(20, 12)) {
+deb_lsd_d <- function(lsd, bases = c(20, 12), round = 5) {
   if (is.list(lsd) == TRUE) {
-    return(purrr::map_dbl(lsd, ~ deb_lsd_d(., bases)))
+    return(purrr::map_dbl(lsd, ~ deb_lsd_d(., bases = bases, round = round)))
   }
   # checks
   lsd_check(lsd)
   bases_check(bases)
+  round_check(round)
 
-  round(lsd[1] * prod(bases) + lsd[2] * bases[2] + lsd[3], 5)
+  round(lsd[1] * prod(bases) + lsd[2] * bases[2] + lsd[3], round)
 }
 
 #' Conversion of pence to pounds, shillings, and pence
@@ -245,9 +248,9 @@ deb_lsd_d <- function(lsd, bases = c(20, 12)) {
 #'
 #' @export
 
-deb_d_lsd <- function(d, bases = c(20, 12)) {
+deb_d_lsd <- function(d, bases = c(20, 12), round = 5) {
   if (length(d) > 1) {
-    return(purrr::map(d, ~ deb_d_lsd(., bases = bases)))
+    return(purrr::map(d, ~ deb_d_lsd(., bases = bases, round = round)))
   }
 
   if (!is.numeric(d)) {
@@ -256,5 +259,6 @@ deb_d_lsd <- function(d, bases = c(20, 12)) {
 
   # repeat 0 of length d for vectorization
   deb_normalize(c(rep(0, length(d)), rep(0, length(d)), d),
-                bases = bases)
+                bases = bases,
+                round = round)
 }

@@ -30,6 +30,11 @@ test_that("solidi with decimal", {
   expect_equal(deb_solidi(-10, -18.8, -32), -1)
 })
 
+test_that("decimal denarii", {
+  expect_equal(deb_denarii(10, 18.8, 32), 5.6)
+  expect_equal(deb_denarii(10, 18.8, 32, round = 0), 6)
+})
+
 l_vector <- c(8, 8.325, -8.325, 10)
 s_vector <- c(36, 36.85, -36.85, 36.325)
 d_vector <- c(25, 25, -25, 18)
@@ -37,4 +42,6 @@ d_vector <- c(25, 25, -25, 18)
 test_that("vectorization works", {
   expect_equal(deb_librae(l_vector, s_vector, d_vector), c(9, 10, -10, 11))
   expect_equal(deb_solidi(l_vector, s_vector, d_vector), c(18, 5, -5, 17))
+  expect_equal(deb_denarii(l_vector, s_vector, d_vector), c(1, 5.2, -5.2, 9.9))
+  expect_equal(deb_denarii(l_vector, s_vector, d_vector, round = 0), c(1, 5, -5, 10))
 })

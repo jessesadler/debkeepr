@@ -7,32 +7,42 @@ test_that("decimalized to lsd works", {
   expect_equal(deb_l_lsd(-8), c(l = -8, s = 0, d = 0))
   expect_equal(deb_l_lsd(8.325), c(l = 8, s = 6, d = 6))
   expect_equal(deb_l_lsd(8.325, bases = c(8, 16)), c(l = 8, s = 2, d = 9.6))
+  expect_equal(deb_l_lsd(8.1275), c(l = 8, s = 2, d = 6.6))
+  expect_equal(deb_l_lsd(8.1275, round = 0), c(l = 8, s = 2, d = 7))
 
   # deb_s_lsd
   expect_equal(deb_s_lsd(123), c(l = 6, s = 3, d = 0))
   expect_equal(deb_s_lsd(-123), c(l = -6, s = -3, d = 0))
   expect_equal(deb_s_lsd(123.325), c(l = 6, s = 3, d = 3.9))
   expect_equal(deb_s_lsd(123.325, bases = c(8, 16)), c(l = 15, s = 3, d = 5.2))
+  expect_equal(deb_s_lsd(123.325, round = 0), c(l = 6, s = 3, d = 4))
 
   # deb_d_lsd
   expect_equal(deb_d_lsd(1339), c(l = 5, s = 11, d = 7))
   expect_equal(deb_d_lsd(-1339), c(l = -5, s = -11, d = -7))
   expect_equal(deb_d_lsd(1339.25), c(l = 5, s = 11, d = 7.25))
   expect_equal(deb_d_lsd(1339.25, bases = c(8, 16)), c(l = 10, s = 3, d = 11.25))
+  expect_equal(deb_d_lsd(1339.25, round = 0), c(l = 5, s = 11, d = 7))
 })
 
 test_that("vectorization works for separate l, s, d to lsd", {
   expect_equal(length(deb_l_lsd(c(8.325, -8.725))), 2)
   expect_equal(deb_l_lsd(c(8.325, -8.725)),
               list(c(l = 8, s = 6, d = 6), c(l = -8, s = -14, d = -6)))
+  expect_equal(deb_l_lsd(c(8.1275, -8.333), round = 0),
+               list(c(l = 8, s = 2, d = 7), c(l = -8, s = -6, d = -8)))
 
   expect_equal(length(deb_s_lsd(c(123, -123.325))), 2)
   expect_equal(deb_s_lsd(c(123, -123.325)),
                list(c(l = 6, s = 3, d = 0), c(l = -6, s = -3, d = -3.9)))
+  expect_equal(deb_s_lsd(c(123, -123.325), round = 0),
+               list(c(l = 6, s = 3, d = 0), c(l = -6, s = -3, d = -4)))
 
   expect_equal(length(deb_d_lsd(c(1339, -1339))), 2)
   expect_equal(deb_d_lsd(c(1339, -1339)),
                list(c(l = 5, s = 11, d = 7), c(l = -5, s = -11, d = -7)))
+  expect_equal(deb_d_lsd(c(5.25, 5.75), round = 0),
+               list(c(l = 0, s = 0, d = 5), c(l = 0, s = 0, d = 6)))
 })
 
 # Reverse of above
@@ -55,6 +65,7 @@ test_that("lsd to decimalized l, s, and d works", {
   expect_equal(deb_lsd_d(c(8.325, 6, 6)), 2076)
   expect_equal(deb_lsd_d(c(8.325, 6, 5.999999)), 2076)
   expect_equal(deb_lsd_d(c(8.325, 6, 5.99999)), 2075.99999)
+  expect_equal(deb_lsd_d(c(8.325, 6, 5.99999), round = 0), 2076)
   expect_equal(deb_lsd_d(c(8, 6, 6), bases = c(8, 16)), 1126)
 })
 
@@ -68,6 +79,8 @@ test_that("vectorization works for lsd to decimalized l, s, d", {
                c(610.750, 234.067, -531.833))
   expect_equal(deb_lsd_d(ex_list),
                c(7329.0, 2808.8, -6382.0))
+  expect_equal(deb_lsd_d(ex_list, round = 0),
+               c(7329, 2809, -6382))
 })
 
 test_that("non-numeric values are not accepted", {

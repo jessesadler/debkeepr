@@ -4,7 +4,7 @@
 \alias{deb_convert_bases}
 \title{Convert between different bases for shillings and pence units}
 \usage{
-deb_convert_bases(lsd, bases1, bases2, ratio = 1)
+deb_convert_bases(lsd, bases1, bases2, ratio = 1, round = 5)
 }
 \arguments{
 \item{lsd}{Numeric vector of length 3 or list of numeric vectors of length
@@ -22,6 +22,9 @@ the shillings or s and pence or d values to which \code{lsd} will be converted.}
 \item{ratio}{The ratio between the two currencies that possess different
 bases. This is the value by which \code{lsd} is multiplied. Numeric vector of
 length 1 with the default of \code{1}.}
+
+\item{round}{Round pence to specified number of decimal places.
+Default is 5. Set to 0 to return pence as whole numbers.}
 }
 \value{
 Returns either a named numeric vector of length 3 or a list of

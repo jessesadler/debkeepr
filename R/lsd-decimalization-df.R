@@ -11,8 +11,8 @@ decimalize_s <- function(l, s, d, bases = c(20, 12)) {
   l * bases[1] + s + d / bases[2]
 }
 
-decimalize_d <- function(l, s, d, bases = c(20, 12)) {
-  round(l * prod(bases) + s * bases[2] + d, 5)
+decimalize_d <- function(l, s, d, bases = c(20, 12), round = 5) {
+  round(l * prod(bases) + s * bases[2] + d, round)
 }
 
 #' Conversion of pounds, shillings and pence to pounds
@@ -54,6 +54,7 @@ deb_lsd_l_mutate <- function(df,
 
   lsd_column_check(df, l, s, d)
   bases_check(bases)
+  
   # Ensure that new column does not overwrite one of lsd columns
   suffix <- suffix_check(suffix)
   column_name <- decimal_columns(df, rlang::enquo(column_name), suffix)
@@ -106,6 +107,7 @@ deb_l_lsd_mutate <- function(df, pounds,
                              s_column = s,
                              d_column = d,
                              bases = c(20, 12),
+                             round = 5,
                              suffix = ".1") {
 
   pounds <- rlang::enquo(pounds)
@@ -134,7 +136,8 @@ deb_l_lsd_mutate <- function(df, pounds,
                      d = rep(0, length(!! pounds)),
                      lsd_names = lsd_names,
                      replace = FALSE,
-                     bases = bases)
+                     bases = bases,
+                     round = round)
 }
 
 #' Conversion of pounds, shillings and pence to shillings
@@ -174,6 +177,7 @@ deb_lsd_s_mutate <- function(df,
 
   lsd_column_check(df, l, s, d)
   bases_check(bases)
+  
   # Ensure that new column does not overwrite one of lsd columns
   suffix <- suffix_check(suffix)
   column_name <- decimal_columns(df, rlang::enquo(column_name), suffix)
@@ -218,6 +222,7 @@ deb_s_lsd_mutate <- function(df, shillings,
                              s_column = s,
                              d_column = d,
                              bases = c(20, 12),
+                             round = 5,
                              suffix = ".1") {
   shillings <- rlang::enquo(shillings)
 
@@ -245,7 +250,8 @@ deb_s_lsd_mutate <- function(df, shillings,
                      d = rep(0, length(!! shillings)),
                      lsd_names = lsd_names,
                      replace = FALSE,
-                     bases = bases)
+                     bases = bases,
+                     round = round)
 }
 
 #' Conversion of pounds, shillings and pence to pence
@@ -278,6 +284,7 @@ deb_lsd_d_mutate <- function(df,
                              l = l, s = s, d = d,
                              column_name = pence,
                              bases = c(20, 12),
+                             round = 5,
                              suffix = ".decimal") {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
@@ -285,11 +292,13 @@ deb_lsd_d_mutate <- function(df,
 
   lsd_column_check(df, l, s, d)
   bases_check(bases)
+  round_check(round)
+  
   # Ensure that new column does not overwrite one of lsd columns
   suffix <- suffix_check(suffix)
   column_name <- decimal_columns(df, rlang::enquo(column_name), suffix)
 
-  dplyr::mutate(df, !! column_name := decimalize_d(!! l, !! s, !! d, bases))
+  dplyr::mutate(df, !! column_name := decimalize_d(!! l, !! s, !! d, bases, round))
 }
 
 #' Conversion of decimalized pence into pounds, shillings, and pence variables
@@ -328,6 +337,7 @@ deb_d_lsd_mutate <- function(df, pence,
                              s_column = s,
                              d_column = d,
                              bases = c(20, 12),
+                             round = 5,
                              suffix = ".1") {
   pence <- rlang::enquo(pence)
 
@@ -355,5 +365,6 @@ deb_d_lsd_mutate <- function(df, pence,
                      d = !! pence,
                      lsd_names = lsd_names,
                      replace = FALSE,
-                     bases = bases)
+                     bases = bases,
+                     round = round)
 }

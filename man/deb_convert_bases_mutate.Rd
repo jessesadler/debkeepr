@@ -6,7 +6,7 @@
 frame}
 \usage{
 deb_convert_bases_mutate(df, l = l, s = s, d = d, bases1, bases2,
-  ratio = 1, suffix = ".1")
+  ratio = 1, round = 5, suffix = ".1")
 }
 \arguments{
 \item{df}{A data frame that contains pounds, shillings, and pence variables.}
@@ -30,6 +30,9 @@ converted.}
 \item{ratio}{The ratio between the two currencies that possess different
 bases. This is the value by which \code{l}, \code{s}, and \code{d} variables are
 multiplied. Numeric vector of length 1 with the default of \code{1}.}
+
+\item{round}{Round pence to specified number of decimal places.
+Default is 5. Set to 0 to return pence as whole numbers.}
 
 \item{suffix}{Suffix added to the column names for the pounds, shillings,
 and pence columns representing the converted values to distinguish them

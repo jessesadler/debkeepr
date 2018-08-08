@@ -5,7 +5,7 @@
 \title{Calculate credit, debit, and current values of accounts}
 \usage{
 deb_account_summary(df, credit = credit, debit = debit, l = l,
-  s = s, d = d, bases = c(20, 12), na.rm = FALSE)
+  s = s, d = d, bases = c(20, 12), round = 5, na.rm = FALSE)
 }
 \arguments{
 \item{df}{A data frame containing transactions between accounts with
@@ -34,6 +34,13 @@ the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12
 which conforms to the most widely used system of 1 pound = 20 shillings
 and 1 shilling = 12 pence. This argument makes it possible to use
 alternate bases for the shillings (s) and pence (d) units.}
+
+\item{round}{Round pence to specified number of decimal places. Default
+is 5. Rounding of the pence value takes place throughout the function and
+is not simply done at the end of the function call. This means that the
+credit, debit, and current values will add together correctly. However,
+the rounded values may be different than running the function without
+rounding and rounding pence values at the end.}
 
 \item{na.rm}{Logical. Passed on to \code{na.rm} argument in \code{\link[=sum]{sum()}}. Whether
 missing values (NA) should be removed. Default is \code{FALSE}.}

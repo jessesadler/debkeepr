@@ -49,6 +49,16 @@ bases_check <- function(bases) {
   }
 }
 
+# Check round
+round_check <- function(round) {
+  if (!is.numeric(round)) {
+    stop(call. = FALSE, "round must be numeric")
+  }
+  if (length(round) > 1) {
+    stop(call. = FALSE, "round must be a numeric vector of length 1")
+  }
+}
+
 # Check l, s, and d values and column names
 lsd_column_check <- function(df, l, s, d) {
 

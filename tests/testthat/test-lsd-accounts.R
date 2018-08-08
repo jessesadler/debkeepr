@@ -64,6 +64,11 @@ test_that("deb_account works", {
                               l = c(18, 19, -1),
                               s = c(7, 18, -11),
                               d = c(2.25, 5.5, -3.25)))
+  expect_equal(deb_account(example1, "a", round = 0),
+               tibble::tibble(relation = relation_v,
+                              l = c(18, 19, -1),
+                              s = c(7, 18, -11),
+                              d = c(2, 6, -4)))
   expect_equal(deb_account(example3, "a"),
                tibble::tibble(relation = relation_v,
                               l = c(23, 22, 1),
@@ -103,6 +108,9 @@ test_that("deb_account_summary works", {
                deb_account(example1, "c"))
   expect_equal(deb_account_summary(example4, from, to, pounds, shillings, pence)[7:9, 2:5],
                deb_account(example4, "c", from, to, pounds, shillings, pence))
+  # Round
+  expect_equal(deb_account_summary(example1, round = 0)[ , 5],
+               tibble(d = c(2, 6, -4, 6, 6, 0, 0, 8, 4)))
   # Deal with NA values
   expect_false(identical(deb_account_summary(example_na), deb_account_summary(example1)))
   expect_equal(deb_account_summary(example_na)[1, 3:5],
@@ -114,6 +122,8 @@ test_that("deb_credit works", {
   expect_equal(nrow(deb_credit(example1)), 3)
   expect_equal(deb_credit(example1),
                summary_answer[c(1, 4, 7), c(1, 3, 4, 5)])
+  expect_equal(deb_credit(example1, round = 0)[ , 4],
+               tibble(d = c(2, 6, 0)))
   expect_false(identical(deb_credit(example1),
                          deb_credit(example1, bases = c(8, 16))))
   # Accepts different names
@@ -130,6 +140,8 @@ test_that("deb_debit works", {
   expect_equal(nrow(deb_debit(example1)), 3)
   expect_equal(deb_debit(example1),
                summary_answer[c(2, 5, 8), c(1, 3, 4, 5)])
+  expect_equal(deb_debit(example1, round = 0)[ , 4],
+               tibble(d = c(6, 6, 8)))
   expect_false(identical(deb_debit(example1),
                          deb_debit(example1, bases = c(8, 16))))
   # Accepts different names
@@ -183,6 +195,11 @@ test_that("deb_balance works", {
                               l = c(1, 1),
                               s = c(11, 11),
                               d = c(3.25, 3.25)))
+  expect_equal(deb_balance(example1, round = 0),
+               tibble::tibble(relation = c("credit", "debit"),
+                              l = c(1, 1),
+                              s = c(11, 11),
+                              d = c(4, 4)))
   expect_equal(deb_balance(example3),
                tibble::tibble(relation = c("credit", "debit"),
                               l = c(54, 54),

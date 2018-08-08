@@ -5,7 +5,7 @@
 \title{Conversion of decimalized pence into pounds, shillings, and pence variables}
 \usage{
 deb_d_lsd_mutate(df, pence, l_column = l, s_column = s, d_column = d,
-  bases = c(20, 12), suffix = ".1")
+  bases = c(20, 12), round = 5, suffix = ".1")
 }
 \arguments{
 \item{df}{A data frame that contains a column of pence.}
@@ -28,6 +28,9 @@ the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12
 which conforms to the most widely used system of 1 pound = 20 shillings
 and 1 shilling = 12 pence. This argument makes it possible to use
 alternate bases for the shillings (s) and pence (d) units.}
+
+\item{round}{Round pence to specified number of decimal places.
+Default is 5. Set to 0 to return pence as whole numbers.}
 
 \item{suffix}{Suffix added to \code{l_column}, \code{s_column}, or \code{d_column} if \code{df}
 already contains variables with the same names. Default is ".1". Must be a

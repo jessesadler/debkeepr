@@ -32,6 +32,12 @@ test_that("base conversion works", {
                                  bases2 = c(20, 16),
                                  ratio = 6),
                c(l = 24, s = 10, d = 8))
+  expect_equal(deb_convert_bases(lsd = c(4, 1, 9.333),
+                                 bases1 = c(20, 12),
+                                 bases2 = c(20, 16),
+                                 ratio = 6,
+                                 round = 0),
+               c(l = 24, s = 10, d = 11))
 })
 
 lsd_list <- list(c(5, 6, 8), c(24, 10, 8), c(20, 13, 4))
@@ -41,6 +47,9 @@ gulden_list <- list(c(l = 1224, s = 19, d = 8),
 flemish_list <- list(c(l = 204, s = 3, d = 3),
                      c(l = 16, s = 17, d = 7.625),
                      c(l = 37, s = 12, d = 3.875))
+round_list <- list(c(l = 204, s = 3, d = 3),
+                   c(l = 16, s = 17, d = 8),
+                   c(l = 37, s = 12, d = 4))
 
 test_that("base conversion is vectorized", {
   expect_equal(deb_convert_bases(lsd = lsd_list,
@@ -54,6 +63,12 @@ test_that("base conversion is vectorized", {
                                  bases2 = c(20, 12),
                                  ratio = 1 / 6),
                flemish_list)
+  expect_equal(deb_convert_bases(lsd = gulden_list,
+                                 bases1 = c(20, 16),
+                                 bases2 = c(20, 12),
+                                 ratio = 1 / 6,
+                                 round = 0),
+               round_list)
   expect_equal(deb_convert_bases(lsd = flemish_list,
                                  bases1 = c(20, 12),
                                  bases2 = c(20, 16),
@@ -68,6 +83,7 @@ lsd_answer2 <- data.frame(pounds.1 = c(5, 24, 20), shillings.1 = c(13, 21, 26), 
 
 gulden_df <- data.frame(l = c(1224, 101, 225), s = c(19, 5, 13), d = c(8, 13, 15))
 flemish_answer <- data.frame(l.1 = c(204, 16, 37), s.1 = c(3, 17, 12), d.1 = c(3, 7.625, 3.875))
+round_answer <- data.frame(l.1 = c(204, 16, 37), s.1 = c(3, 17, 12), d.1 = c(3, 8, 4))
 
 flemish_df <- data.frame(l = c(204, 16, 37), s = c(3, 17, 12), d = c(3, 7.625, 3.875))
 gulden_answer <- data.frame(l.1 = c(1224, 101, 225), s.1 = c(19, 5, 13), d.1 = c(8, 13, 15))
@@ -82,6 +98,11 @@ test_that("base conversion mutate works", {
                                         bases1 = c(20, 16), bases2 = c(20, 12),
                                         ratio = 1 / 6)[ , 4:6],
                flemish_answer)
+  expect_equal(deb_convert_bases_mutate(gulden_df,
+                                        bases1 = c(20, 16), bases2 = c(20, 12),
+                                        ratio = 1 / 6,
+                                        round = 0)[ , 4:6],
+               round_answer)
   expect_equal(deb_convert_bases_mutate(flemish_df,
                                         bases1 = c(20, 12), bases2 = c(20, 16),
                                         ratio = 6)[ , 4:6],

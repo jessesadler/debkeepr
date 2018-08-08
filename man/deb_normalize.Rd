@@ -4,7 +4,7 @@
 \alias{deb_normalize}
 \title{Normalize pounds, shillings, and pence}
 \usage{
-deb_normalize(lsd, bases = c(20, 12))
+deb_normalize(lsd, bases = c(20, 12), round = 5)
 }
 \arguments{
 \item{lsd}{Numeric vector of length 3 or list of numeric vectors of length
@@ -17,6 +17,9 @@ the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12
 which conforms to the most widely used system of 1 pound = 20 shillings
 and 1 shilling = 12 pence. This argument makes it possible to use
 alternate bases for the shillings (s) and pence (d) units.}
+
+\item{round}{Round pence to specified number of decimal places.
+Default is 5. Set to 0 to return pence as whole numbers.}
 }
 \value{
 Returns either a named numeric vector of length 3 or a list of named
@@ -62,6 +65,12 @@ deb_normalize(lsd = c(5, -25, 22))
 
 # Can also properly normalize decimalized pounds and shillings
 deb_normalize(lsd = c(8.7, 33.65, 15))
+
+# Round argument can be used to round pence unit to
+# specific decimal place and properly normalize value
+# Compare with default of round = 5 to round = 0
+deb_normalize(lsd = c(5.7, 44.742, 15), round = 5)
+deb_normalize(lsd = c(5.7, 44.742, 15), round = 0)
 
 # To normalize multiple lsd values use a list of lsd vectors
 lsd_list <- list(c(4, 34, 89), c(-9, -75, -19), c(15.85, 36.15, 56))

@@ -45,7 +45,8 @@
 
 deb_exchange <- function(lsd,
                          shillings_rate,
-                         bases = c(20, 12)) {
+                         bases = c(20, 12),
+                         round = 5) {
   # Check exchange rate
   shillings_check(shillings_rate)
 
@@ -53,7 +54,8 @@ deb_exchange <- function(lsd,
 
   deb_multiply(lsd,
                x = shillings_rate,
-               bases = bases)
+               bases = bases,
+               round = round)
 }
 
 # Helper function to go from lsd to lsd when l = 0
@@ -152,11 +154,12 @@ normalized_to_d <- function(lsd, bases = c(20, 12)) {
 
 deb_exchange_rate <- function(lsd1, lsd2,
                               output = c("shillings", "pence", "pounds"),
-                              bases = c(20, 12)) {
+                              bases = c(20, 12),
+                              round = 5) {
   output <- rlang::arg_match(output)
 
   rate <- deb_lsd_l(lsd2, bases = bases) / deb_lsd_l(lsd1, bases = bases)
-  normalized <- deb_l_lsd(rate, bases = bases)
+  normalized <- deb_l_lsd(rate, bases = bases, round = round)
 
   res <- dplyr::case_when(output == "shillings" ~ normalized_to_sd(normalized, bases),
                           output == "pence" ~ normalized_to_d(normalized, bases),
@@ -204,12 +207,13 @@ deb_exchange_rate <- function(lsd1, lsd2,
 
 deb_invert_rate <- function(exchange_rate,
                             output = c("shillings", "pence", "pounds"),
-                            bases = c(20, 12)) {
+                            bases = c(20, 12),
+                            round = 5) {
   exchange_rate_check(exchange_rate)
   output <- rlang::arg_match(output)
 
   converted <- 1 / deb_lsd_l(exchange_rate, bases = bases)
-  normalized <- deb_l_lsd(converted, bases = bases)
+  normalized <- deb_l_lsd(converted, bases = bases, round = round)
 
   res <- dplyr::case_when(output == "shillings" ~ normalized_to_sd(normalized, bases),
                           output == "pence" ~ normalized_to_d(normalized, bases),
@@ -284,6 +288,7 @@ deb_exchange_mutate <- function(df,
                                 d = d,
                                 shillings_rate,
                                 bases = c(20, 12),
+                                round = 5,
                                 replace = FALSE,
                                 suffix = ".exchange") {
   l <- rlang::enquo(l)
@@ -304,5 +309,6 @@ deb_exchange_mutate <- function(df,
                      !! d * x,
                      lsd_names = lsd_names,
                      replace = replace,
-                     bases = bases)
+                     bases = bases,
+                     round = round)
 }

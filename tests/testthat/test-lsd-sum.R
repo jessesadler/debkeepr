@@ -43,6 +43,10 @@ test_that("deb_sum works", {
                c(l = 24, s = 2, d = 9))
   expect_equal(deb_sum(c(1, 6, 3.33333333), c(1, 6, 3.33333333), c(1, 7, 5.33333333)),
                c(l = 4, s = 0, d = 0))
+  expect_equal(deb_sum(c(1, 6, 3.33333333), c(1, 6, 3), c(1, 7, 6)),
+               c(l = 4, s = 0, d = 0.33333))
+  expect_equal(deb_sum(c(1, 6, 3.33333333), c(1, 6, 3), c(1, 7, 6), round = 0),
+               c(l = 4, s = 0, d = 0))
   expect_error(deb_sum(lsd_list, c("hello", "goodbye")),
                "lsd must be a numeric vector")
   expect_error(deb_sum(lsd_list, c(6, 3)),
@@ -59,6 +63,8 @@ test_that("deb_sum_df works on data frames", {
                data.frame(l = 18, s = 17, d = 3))
   expect_equal(deb_sum_df(example3),
                data.frame(l = 4, s = 0, d = 0))
+  expect_equal(deb_sum_df(example_dec, round = 0),
+               data.frame(l = 17, s = 15, d = 2))
 })
 
 test_that("na.rm works", {

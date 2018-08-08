@@ -20,6 +20,7 @@ test_that("individual l, s, and d helper functions work", {
   expect_equal(decimalize_l(8, 10, 6), 8.525)
   expect_equal(decimalize_s(8, 10, 6), 170.5)
   expect_equal(decimalize_d(8, 10, 6), 2046)
+  expect_equal(decimalize_d(8, 10, 6.3333, round = 0), 2046)
 
   expect_equal(round(decimalize_l(8, 10, 6, bases = c(8, 16)), 3), 9.297)
   expect_equal(decimalize_s(8, 10, 6, bases = c(8, 16)), 74.375)
@@ -59,6 +60,7 @@ test_that("lsd df to decimalized pence", {
   expect_equal(names(deb_lsd_d_mutate(ex_df, column_name = denarii)),
                c("l", "s", "d", "denarii"))
   expect_equal(deb_lsd_d_mutate(ex_df), cbind(ex_df, d_df))
+  expect_equal(deb_lsd_d_mutate(ex_df, round = 0)[ , 4], c(7329, 2809, -6382))
 })
 
 ## Decimalized values to lsd ##
@@ -102,14 +104,20 @@ test_that("Decimalized values df to lsd", {
   expect_equal(deb_l_lsd_mutate(df_decimal, decimal), l_decimal)
   expect_false(identical(deb_l_lsd_mutate(df_decimal, decimal),
                          deb_l_lsd_mutate(df_decimal, decimal, bases = c(8, 16))))
+  expect_equal(deb_l_lsd_mutate(df_decimal, decimal, round = 0)[ , 4],
+               c(6, 8, 8, -4, 0, NA))
 
   expect_equal(deb_s_lsd_mutate(df_decimal, decimal), s_decimal)
   expect_false(identical(deb_s_lsd_mutate(df_decimal, decimal),
                          deb_s_lsd_mutate(df_decimal, decimal, bases = c(8, 16))))
+  expect_equal(deb_s_lsd_mutate(df_decimal, decimal, round = 0)[ , 4],
+               c(10, 4, 4, -10, 0, NA))
 
   expect_equal(deb_d_lsd_mutate(df_decimal, decimal), d_decimal)
   expect_false(identical(deb_d_lsd_mutate(df_decimal, decimal),
                          deb_d_lsd_mutate(df_decimal, decimal, bases = c(8, 16))))
+  expect_equal(deb_d_lsd_mutate(df_decimal, decimal, round = 0)[ , 4],
+               c(4, 11, 11, -10, 0, NA))
 })
 
 test_that("column names change with lsd_column_names function", {

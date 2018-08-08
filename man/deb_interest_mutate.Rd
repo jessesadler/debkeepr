@@ -6,7 +6,7 @@
 \usage{
 deb_interest_mutate(df, l = l, s = s, d = d, interest = 0.0625,
   duration = 1, with_principal = TRUE, bases = c(20, 12),
-  replace = FALSE, suffix = ".interest")
+  round = 5, replace = FALSE, suffix = ".interest")
 }
 \arguments{
 \item{df}{A data frame that contains pounds, shillings, and pence variables.}
@@ -37,6 +37,9 @@ the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12
 which conforms to the most widely used system of 1 pound = 20 shillings
 and 1 shilling = 12 pence. This argument makes it possible to use
 alternate bases for the shillings (s) and pence (d) units.}
+
+\item{round}{Round pence to specified number of decimal places.
+Default is 5. Set to 0 to return pence as whole numbers.}
 
 \item{replace}{Logical (default \code{FALSE}): when \code{TRUE} the new pounds,
 shillings, and pence variables will replace the original ones.}

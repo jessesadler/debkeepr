@@ -44,22 +44,24 @@ deb_interest <- function(lsd,
                          interest = 0.0625,
                          duration = 1,
                          with_principal = TRUE,
-                         bases = c(20, 12)) {
+                         bases = c(20, 12),
+                         round = 5) {
   # vectorize
   if (is.list(lsd) == TRUE) {
     return(purrr::map(lsd, ~ deb_interest(.,
                                           interest = interest,
                                           duration = duration,
                                           with_principal = with_principal,
-                                          bases = bases)))
+                                          bases = bases,
+                                          round = round)))
   }
 
   interest_check(interest, duration, with_principal)
 
   if (with_principal == TRUE) {
-    deb_normalize(lsd + lsd * interest * duration, bases = bases)
+    deb_normalize(lsd + lsd * interest * duration, bases = bases, round = round)
   } else {
-    deb_normalize(lsd * interest * duration, bases = bases)
+    deb_normalize(lsd * interest * duration, bases = bases, round = round)
   }
 }
 
@@ -121,6 +123,7 @@ deb_interest_mutate <- function(df,
                                 duration = 1,
                                 with_principal = TRUE,
                                 bases = c(20, 12),
+                                round = 5,
                                 replace = FALSE,
                                 suffix = ".interest") {
   l <- rlang::enquo(l)
@@ -144,7 +147,8 @@ deb_interest_mutate <- function(df,
                        d = (!! d * x) + !! d,
                        lsd_names = lsd_names,
                        replace = replace,
-                       bases = bases)
+                       bases = bases,
+                       round = round)
   } else {
     lsd_mutate_columns(df,
                        l = !! l * x,
@@ -152,6 +156,7 @@ deb_interest_mutate <- function(df,
                        d = !! d * x,
                        lsd_names = lsd_names,
                        replace = replace,
-                       bases = bases)
+                       bases = bases,
+                       round = round)
   }
 }

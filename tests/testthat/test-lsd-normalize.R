@@ -98,6 +98,19 @@ test_that("bases checks work", {
                "The values in bases must both be positive")
 })
 
+## Error messages from bases_check ##
+test_that("round check works", {
+  expect_error(deb_normalize(ex_vector, round = "hello"),
+               "round must be numeric")
+  expect_error(deb_normalize(ex_vector, round = c(1, 3)),
+               "round must be a numeric vector of length 1")
+
+  expect_error(deb_normalize_df(ex_df, round = "hello"),
+               "round must be numeric")
+  expect_error(deb_normalize_df(ex_df, round = c(1, 3)),
+               "round must be a numeric vector of length 1")
+})
+
 ## lsd_decimal ##
 test_that("lsd_decimal_check", {
   expect_equal(lsd_decimal_check(decimal_vector, bases = c(20, 12)), c(5, 101, 64.9))
@@ -123,6 +136,7 @@ test_that("it goes together in deb_normalize", {
   expect_equal(deb_normalize(c(1, 19, 11.99999)), c(l = 1, s = 19, d = 11.99999))
   expect_equal(deb_normalize(c(1, 7, 15.999999), bases = c(8, 16)),
                c(l = 2, s = 0, d = 0))
+  expect_equal(deb_normalize(c(1, 5, 11 + 2/3), round = 0), c(l = 1, s = 6, d = 0))
 })
 
 ## Vectorization ##
@@ -131,6 +145,7 @@ test_that("vectorization works", {
   expect_equal(length(deb_normalize(ex_list)), 4)
   expect_equal(deb_normalize(ex_list), list_answer)
   expect_equal(deb_normalize(ex_list, bases = c(20, 16)), list_ratio)
+  expect_equal(deb_normalize(ex_list, round = 0)[[3]], c(l = 31, s = 6, d = 5))
 })
 
 ## basess ##
@@ -194,4 +209,5 @@ test_that("normalization_df works", {
   expect_equal(deb_normalize_df(ex_df, replace = TRUE, bases = c(20, 16)), df_ratio)
   expect_equal(deb_normalize_df(ex_df, replace = FALSE), cbind(ex_df, df_answer2))
   expect_equal(deb_normalize_df(na_df, replace = TRUE), na_answer)
+  expect_equal(deb_normalize_df(ex_df, replace = TRUE, round = 0)[ , 3], c(5, -1, 5, 1, 0))
 })
