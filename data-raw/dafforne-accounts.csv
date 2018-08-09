@@ -1,0 +1,48 @@
+id,account,ledger,person,description
+1,Cash,1,ego,Account for ready money
+2,Stock,1,ego,Account of one’s capital
+3,Wares,1,ego,Account for various merchandise
+4,Kettles,2,ego,Account for specific merchandise of kettles
+5,Jean du Boys - account current,2,Jean du Boys,Factor in Rouen
+6,Jacob Symonson - account by him in company,2,Jacob Symonson,Aggregation of various joint ventures with Jacob Symonson kept by him
+7,Jacob Symonson - account current,2,Jacob Symonson,"Current account with Jacob Symonson, partner and factor in Amsterdam"
+8,Jacob Symonson - Cochineal,3,Jacob Symonson,Sale of cochineal for Jacob Symonson on commission of 2%
+9,George Pinchback,3,George Pinchback,Account with the merchant George Pinchback in Plymouth
+10,Jacob Symonson - ready money,3,Jacob Symonson,Account of ready money with Jacob Symonson
+11,Voyage to Amsterdam - Jacob Symonson,4,Jacob Symonson,100 Leeds Dozens consigned to Jacob Symonson in Amsterdam
+12,Kerseys in company with Jacob Symonson,4,Jacob Symonson,"Purchase and sale of 150 kerseys: 1/3 for Jacob Symonson, 2/3 for me"
+13,James Wilkinson,4,James Wilkinson,Account with the merchant James Wilkinson
+14,Jacob Symonson - account by me in company,5,Jacob Symonson,Aggregation of various joint ventures with Jacob Symonson kept by me
+15,Jean du Boys - my interest account,5,Jean du Boys,Interest account of Jean du Boys as factor in Rouen
+16,Interest reckoning,5,ego,Special account to record interest
+17,Voyage to Lisbon - company with Randoll Rice,5,Randoll Rice,"100 double says consigned to Diego del Varino in Lisbon: 3/5 for Randoll Rice, 2/5 for me"
+18,Randoll Rice - account current,6,Randoll Rice,Running account with the merchant Randoll Rice
+19,Randoll Rice - account by me in company,6,Randoll Rice,"Company with Randoll Rice: 3/5 for Randoll Rice, 2/5 for me"
+20,Jean du Boys - company with Randoll Rice,6,Jean du Boys,"Jean du Boys as factor for the company in Rouen; 3/5 for Randoll Rice, 2/5 for me"
+21,Profit and loss - company with Randoll Rice,7,Randoll Rice,"Profit and loss account for company with Randoll Rice: 3/5 for Randoll Rice, 2/5 for me"
+22,Randoll Rice - my interest account,7,Randoll Rice,Interest account with the merchant Randoll Rice
+23,Profit and loss,7,ego,Profit and loss account for my capital: credits are profits and debits are losses
+24,Voyage to Lisbon - company with Jacob Symonson,8,Jacob Symonson,"96 black bays consigned to Diego del Varino in Lisbon: 2/3 for Jacob Symonson, 1/3 for me"
+25,Jacob Symonson - account of time,8,Jacob Symonson,For sale by Jacob Symonson in Amsterdam on credit
+26,Danzig exchange - company with Arthur Mumperson,8,Arthur Mumperson,"Exchange with Arthur Mumperson in Danzig: 1/2 for Arthur Mumperson, 1/2 for me"
+27,Jacob Symonson - Cambric cloth,8,Jacob Symonson,Sale of 60 pieces of Cambric cloth for Jacob Symonson
+28,Jacob Symonson - company with Randoll Rice,9,Jacob Symonson,"Jacob Symonson as a factor for the company with me and Randoll Rice: 3/5 for Randoll Rice, 2/5 for me"
+29,Figs - company with Randoll Rice,9,Randoll Rice,"For purchase and sale of figs from Lisbon by Diego del Varino : 3/5 for Randoll Rice, 2/5 for me"
+30,Diego de Varino - Company with Randoll Rice - ready money,9,Randoll Rice,"Ready money account for the factor Diego del Varino in Lisbon: 3/5 for Randoll Rice, 2/5 for me"
+31,Promise reckoning,10,ego,Account for purchases made on credit
+32,"Hendrick vander Linden, John van Does, Jaques Reinst - commodities",10,"Hendrick vander Linden, John van Does, Jaques Reinst","Acting as a factor for the sale of goods for a company: 1/2 for Hendrick vander Linden, 1/6 for John van Does, and 1/3 for Jaques Reinst"
+33,"Hendrick vander Linden, John van Does, Jaques Reinst - ready money",10,"Hendrick vander Linden, John van Does, Jaques Reinst","Factor account for reception of ready money for the sale of goods: 1/2 for Hendrick vander Linden, 1/6 for John van Does,  and 1/3 for Jaques Reinst"
+34,Silver,10,ego,Sale of 8 bars of silver
+35,Voyage to Antwerp - company with Randoll Rice,10,Randoll Rice,"Pepper, serrese, and wheat sent to Thomas Trust as factor in Antwerp: 3/5 for Randoll Rice, 2/5 for me"
+36,Diego del Varino - company with Randoll Rice - account of time,11,Diego del Varino,"Account for credit with Diego del Varino, factor in Lisbon: 3/5 for Randoll Rice, 2/5 for me"
+37,Andrew Hitchcock,11,Andrew Hitchcock,Account with the merchant Andrew Hitchcock
+38,Amsterdam exchange - company with Jacob Symonson,11,Jacob Symonson,"Bills of exchange with Jacob Symonson in Amsterdam: 1/2 for Jacob Symonson, 1/2 for me"
+39,Arthur Mumperson,12,Arthur Mumperson,Bills of exchange with Arthur Mumperson in Danzig
+40,Diego del Varino - fruits,12,Diego del Varino,Acting as a factor for the sale of fruit for Diego del Varino: 270 figs and 300 pieces of raisins
+41,Diego del Varino - ready money,12,Diego del Varino,Account of ready money for Diego del Varino in acting as his factor
+42,Diego del Varino - account current,12,Diego del Varino,Running account for Diego del Varino
+43,Thomas Trust - company with Randoll Rice - account of time,12,Thomas Trust,"Account of credit with Thomas Trust, factor in Antwerp for the company with Randoll Rice: 3/5 for Randoll Rice, 2/5 for me"
+44,Thomas Trust - company with Randoll Rice - ready money,13,Thomas Trust,"Account for ready money for Thomas Trust, factor in Antwerp for the company with Randoll Rice: 3/5 for Randoll Rice, 2/5 for me"
+45,Figs - company with Jacob Symonson,13,Jacob Symonson,"Account for 2908 figs bought in exchange for 96 bays in Lisbon by Diego del Varino: 2/3 for Jacob Symonson, 1/3 for me"
+46,"Hendrick vander Linden, John van Does, Jaques Reinst - account of time",13,"Hendrick vander Linden, John van Does, Jaques Reinst","Account of credit as a factor for a company: 1/2 for Hendrick vander Linden, 1/6 for John van Does,  and 1/3 for Jaques Reinst"
+47,Balance,13,ego,The account to balance the books

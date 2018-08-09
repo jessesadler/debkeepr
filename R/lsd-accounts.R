@@ -29,12 +29,14 @@
 #' @param account_id The id of the account to be used to calculate the credit,
 #'   debit, and current values. The value for the account must be present in
 #'   the credit and/or debit variables.
-#' @param credit Credit column: Unquoted name of the credit variable. This is
-#'   the variable that the transactional value is from. Default is credit. The
-#'   `credit` column must be of the same class as the `debit` column.
-#' @param debit Debit column: Unquoted name of the debit variable. This is
-#'   the variable that receives the transactional value. Default is debit. The
-#'   `debit` column must be of the same class as the `credit` column.
+#' @param credit Credit column: Unquoted name of the credit variable. This
+#'   represents the accounts that discharge the transactional values or from
+#'   which the values derive. Default is credit. The `credit` column must be
+#'   of the same class as the `debit` column.
+#' @param debit Debit column: Unquoted name of the debit variable. This
+#'   represents the accounts that receive the transactional values. Default is
+#'   debit. The `debit` column must be of the same class as the `credit`
+#'   column.
 #' @param round Round pence to specified number of decimal places. Default
 #'   is 5. Rounding of the pence value takes place throughout the function and
 #'   is not simply done at the end of the function call. This means that the
@@ -150,7 +152,8 @@ deb_account <- function(df,
 #'   present in the credit and/or debit variables of `df`. This represents the
 #'   total credit, debit, and current values of the accounts. The names for the
 #'   pounds, shillings, and pence columns correspond to the input for `l`, `s`,
-#'   and `d`.
+#'   and `d`. If an account has zero credit or debit transactions, it will not
+#'   have a summary row for that type of relation.
 #'
 #' @examples
 #' # Create a transactions data frame

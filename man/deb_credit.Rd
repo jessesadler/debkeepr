@@ -12,9 +12,10 @@ deb_credit(df, credit = credit, l = l, s = s, d = d,
 variables for the credit and debit accounts and values in the form of
 pounds, shillings, and pence variables.}
 
-\item{credit}{Credit column: Unquoted name of the credit variable. This is
-the variable that the transactional value is from. Default is credit. The
-\code{credit} column must be of the same class as the \code{debit} column.}
+\item{credit}{Credit column: Unquoted name of the credit variable. This
+represents the accounts that discharge the transactional values or from
+which the values derive. Default is credit. The \code{credit} column must be
+of the same class as the \code{debit} column.}
 
 \item{l}{Pounds column: Unquoted name of a numeric variable corresponding
 to the pounds or librae unit. Default is l.}

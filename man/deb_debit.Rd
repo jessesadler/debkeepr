@@ -12,9 +12,10 @@ deb_debit(df, debit = debit, l = l, s = s, d = d, bases = c(20,
 variables for the credit and debit accounts and values in the form of
 pounds, shillings, and pence variables.}
 
-\item{debit}{Debit column: Unquoted name of the debit variable. This is
-the variable that receives the transactional value. Default is debit. The
-\code{debit} column must be of the same class as the \code{credit} column.}
+\item{debit}{Debit column: Unquoted name of the debit variable. This
+represents the accounts that receive the transactional values. Default is
+debit. The \code{debit} column must be of the same class as the \code{credit}
+column.}
 
 \item{l}{Pounds column: Unquoted name of a numeric variable corresponding
 to the pounds or librae unit. Default is l.}

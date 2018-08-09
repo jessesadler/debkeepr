@@ -12,13 +12,15 @@ deb_account_summary(df, credit = credit, debit = debit, l = l,
 variables for the credit and debit accounts and values in the form of
 pounds, shillings, and pence variables.}
 
-\item{credit}{Credit column: Unquoted name of the credit variable. This is
-the variable that the transactional value is from. Default is credit. The
-\code{credit} column must be of the same class as the \code{debit} column.}
+\item{credit}{Credit column: Unquoted name of the credit variable. This
+represents the accounts that discharge the transactional values or from
+which the values derive. Default is credit. The \code{credit} column must be
+of the same class as the \code{debit} column.}
 
-\item{debit}{Debit column: Unquoted name of the debit variable. This is
-the variable that receives the transactional value. Default is debit. The
-\code{debit} column must be of the same class as the \code{credit} column.}
+\item{debit}{Debit column: Unquoted name of the debit variable. This
+represents the accounts that receive the transactional values. Default is
+debit. The \code{debit} column must be of the same class as the \code{credit}
+column.}
 
 \item{l}{Pounds column: Unquoted name of a numeric variable corresponding
 to the pounds or librae unit. Default is l.}
@@ -50,7 +52,8 @@ Returns a tibble with five columns and three rows for each account
 present in the credit and/or debit variables of \code{df}. This represents the
 total credit, debit, and current values of the accounts. The names for the
 pounds, shillings, and pence columns correspond to the input for \code{l}, \code{s},
-and \code{d}.
+and \code{d}. If an account has zero credit or debit transactions, it will not
+have a summary row for that type of relation.
 }
 \description{
 Calculate the total credit, debit, and the current values for all accounts

@@ -19,15 +19,19 @@ Description: `debkeepr` provides an interface for analyzing non-decimal
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Depends:
+    R (>= 3.1)
 Imports:
     dplyr,
     magrittr,
-    tibble,
+    purrr,
     rlang (>= 0.1.2),
-    purrr
+    tibble
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.0
 Suggests: 
-    testthat,
+    covr,
     knitr,
-    covr
+    testthat
+URL: https://github.com/jessesadler/debkeepr
+BugReports: https://github.com/jessesadler/debkeepr/issues

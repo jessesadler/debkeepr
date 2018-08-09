@@ -99,6 +99,8 @@ transactions_df <- data.frame(credit = sample(letters[1:4], 15, replace = TRUE),
                               stringsAsFactors = FALSE)
 ```
 
+`debkeepr` contains two data sets from the example journal and ledger in Richard Dafforne's *Merchant's Mirrour* from 1660. `dafforne_transactions` is a transactions data frame with 177 transactions. `dafforne_accounts` possesses information about the accounts in the journal and ledger.
+
 lsd vectors
 -----------
 
@@ -122,7 +124,25 @@ deb_normalize(lsd = c(10, 64, 21), bases = c(20, 16))
 #> 13  5  5
 ```
 
-You can normalize multiple lsd values by placing lsd vectors into a list. The below example demonstrates some of the types of values that can be properly normalized by `deb_normalize()`. The function accepts negative values or even a mix of positive and negative values within an lsd vector. Any of the values can also possess decimalized values.
+Another option available in almost all of the functions that deal with lsd values is to round the pence or denarius unit to a specified decimal place. The `round` argument helps to simplify the output and avoids the issue of rounding lsd values to a non-normalized value. The default is to round to the 5th decimal place.
+
+``` r
+# Using round outside of debkeepr functions can lead to non-normalized value
+round(c(9, 19, 11.999999), digits = 5)
+#> [1]  9 19 12
+
+# Normalization applied within rounding
+deb_normalize(lsd = c(9, 19, 11.999999), round = 5)
+#>  l  s  d 
+#> 10  0  0
+
+# Rounding is useful to return all pence values as whole numbers
+deb_normalize(lsd = c(5, 11, 8.95), round = 0)
+#>  l  s  d 
+#>  5 11  9
+```
+
+You can normalize multiple lsd values by placing lsd vectors into a list. The below example demonstrates some of the types of values that can be properly normalized by `deb_normalize()`. The function accepts negative values or even a mix of positive and negative values within an lsd vector. Any of the values can also possess decimalized values. All functions in `debkeepr` that work with lsd vectors also accept lists of lsd vectors.
 
 ``` r
 # To normalize multiple lsd values use a list of lsd vectors
@@ -160,9 +180,8 @@ deb_add(lsd1 = c(8, 14, 11), lsd2 = c(5, 13, 8))
 #>  l  s  d 
 #> 14  8  7
 
-# If one input is a list, the output is also a list
-# and thus different from deb_sum. Here, £5 13s. 8d.
-# is added to each lsd vector in lsd_list.
+# If one input is a list, the output is also a list and thus different
+# from deb_sum. Here, £5 13s. 8d. is added to each lsd vector in lsd_list.
 deb_add(lsd1 = lsd_list, lsd2 = c(5, 13, 8))
 #> [[1]]
 #>  l  s  d 
@@ -238,6 +257,38 @@ deb_divide(lsd = lsd_list, x = 3)
 #> 1.00000 6.00000 1.66667
 ```
 
+Because `lsd` is always the first argument in `debkeepr` functions that deal with lsd vectors and the inputs and outputs are the same, `debkeepr` functions can be chained together with the pipe (`%>%`). For instance, you can find the revenue gained by each of two partners who worked on a commission of 3% of goods valued at £1583 15s. 8d.
+
+``` r
+# 3% commision between two partners
+deb_multiply(lsd = c(1583, 15, 9), x = 0.03) %>% 
+  deb_divide(x = 2)
+#>      l      s      d 
+#> 23.000 15.000  1.635
+
+# Here, it may be practical to round to the nearest pence
+deb_multiply(lsd = c(1500, 15, 8), x = 0.03) %>% 
+  deb_divide(x = 2, round = 0)
+#>  l  s  d 
+#> 22 10  3
+```
+
+Changing the value for the `round` argument may be especially useful when dealing with multiplication and division. For example, an lsd value divided by a number and then the result multiplied by the same number may not be equivalent because of the default rounding.
+
+``` r
+# Not equivalent due to default rounding
+deb_divide(c(6, 8, 1), x = 3) %>% 
+  deb_multiply(x = 3)
+#>       l       s       d 
+#> 6.00000 8.00000 0.99999
+
+# Can be solved by reducing the rounding argument
+deb_divide(c(6, 8, 1), x = 3) %>% 
+  deb_multiply(x = 3, round = 4)
+#> l s d 
+#> 6 8 1
+```
+
 ### Financial functions
 
 Alongside arithmetic operations, `debkeepr` possesses functions to do common financial operations such as calculate interest and the exchange between different currencies. `deb_interest()` possesses arguments for the interest rate, the duration over which the interest should be calculated, and whether to include the principal or not in the answer. The default interest rate is 6.25%, which was the standard interest rate in the Low Countries at the end of the 16th century.
@@ -303,7 +354,7 @@ deb_invert_rate(exchange_rate = c(0, 33, 4), output = "pence")
 #>   0   0 144
 ```
 
-The most challenging exchange between currencies takes place when the bases for the solidus and denarius units differ between the two currencies. Though the system of 20-base solidus and 12-base denarius was widespread, various currencies used other bases. `deb_convert_bases()` provides a way to convert from one base system to another. It also has a `ratio` argument that can be used similarly to `deb_multiply()` to include an exchange rate between currencies in addition to the base conversion. A good example of this is the conversion between guilders and Flemish pounds. Both systems of money of account were used in the Low Countries. Flemish pounds used the 20 and 12 base system, but guilders consisted of 20 stuivers and 1 stuiver was equivalent to 16 penningen. In addition, the guilders and Flemish pounds currencies were tied together at a rate of 6 guilders to £1 Flemish. `deb_convert_bases()` can perform this and various other conversions between forms of measurement that use the tripartite based system of lsd.
+The most challenging exchange between currencies takes place when the bases for the solidus and denarius units differ between the two currencies. Though the system of 20-base solidus and 12-base denarius was widespread, various currencies used other bases. `deb_convert_bases()` provides a way to convert from one base system to another. It also has a `ratio` argument that can be used similarly to `deb_multiply()` to include an exchange rate between currencies in addition to the base conversion. A good example of this is the conversion between guilders and Flemish pounds, which were both used in the Low Countries in the seventeenth century. Flemish pounds used the 20 and 12 base system, but guilders consisted of 20 stuivers of 16 penningen. In addition, the guilders and Flemish pounds currencies were tied together at a rate of 6 guilders to £1 Flemish. `deb_convert_bases()` can perform this and various other conversions between forms of measurement that use the tripartite based system of lsd.
 
 ``` r
 # Convert Flemish pounds to guilders
@@ -351,16 +402,34 @@ The same arithmetic and financial operations used for lsd vectors and lists of l
 
 ``` r
 # Data frame to be normalized
-normalize_df <- data.frame(l = c(4, -9, 15.85),
-                           s = c(34, -75, 36.15),
-                           d = c(89, -19, 56))
+normalize_df <- data.frame(l = c(4, -9, 5.85),
+                           s = c(34, -75, 38.15),
+                           d = c(89, -19, 58))
 
 # Normalize the data frame
 deb_normalize_df(df = normalize_df, l = l, s = s, d = d)
 #>     l   s    d
 #> 1   6   1  5.0
 #> 2 -12 -16 -7.0
-#> 3  17  17  9.8
+#> 3   7  19 11.8
+```
+
+Like `deb_normalize()`, `deb_normalize_df()` can normalize lsd values to different bases for the solidus and denarius units and can round the denarius unit with proper normalization. The specification of lsd bases and rounding for the denarius unit are available in all relevant functions that deal with lsd values in data frames.
+
+``` r
+# Normalize with alternate bases
+deb_normalize_df(df = normalize_df, l = l, s = s, d = d, bases = c(20, 16))
+#>     l   s    d
+#> 1   5  19  9.0
+#> 2 -12 -16 -3.0
+#> 3   7  18 12.4
+
+# Round denarius unit to whole number
+deb_normalize_df(df = normalize_df, l = l, s = s, d = d, round = 0)
+#>     l   s  d
+#> 1   6   1  5
+#> 2 -12 -16 -7
+#> 3   8   0  0
 ```
 
 ### Arithmetic functions
@@ -469,7 +538,7 @@ deb_d_lsd(d = 2551)
 #> 10 12  7
 ```
 
-The equivalent decimalization functions that work on a data frame with lsd variables have the same basic functionality and naming convention. These functions are based on `dplyr::mutate()`, and they contain `_mutate` in the function names to distinguish them from those used for lsd vectors. Thus, `deb_lsd_s_mutate()` adds a decimalized solidi variable to a data frame with lsd variables. The default is to name these decimalized columns after the Latin convention of librae, solidi, and denarii. Conversely, `deb_s_lsd_mutate()` uses a decimalized solidi variable in a data frame to create three new variables corresponding to the pounds, shillings, and pence values.
+The equivalent decimalization functions that work on a data frame with lsd variables have the same basic functionality and naming convention. These functions are based on `dplyr::mutate()`, and they contain `_mutate` in the function names to distinguish them from those used for lsd vectors. Thus, `deb_lsd_s_mutate()` adds a decimalized solidi variable to a data frame with lsd variables. The default is to name these decimalized columns after the Latin convention of librae, solidi, and denarii. Conversely, `deb_s_lsd_mutate()` uses a decimalized solidi variable in a data frame to create three new variables corresponding to the pounds, shillings, and pence units.
 
 ``` r
 # Create decimalized solidi variable
@@ -480,22 +549,24 @@ deb_lsd_s_mutate(df = lsd_df)
 #> 3  3 18  5  78.41667
 
 # From decimalized solidi variable to lsd variables
-solidi_df <- data.frame(s = c(247.75, 108.91667, 78.41667))
+solidi_df <- data.frame(s = c(247.75, 108.916667, 78.416667))
 deb_s_lsd_mutate(df = solidi_df, shillings = s)
-#>           s l.1 s.1      d.1
-#> 1 247.75000  12   7  9.00000
-#> 2 108.91667   5   8 11.00004
-#> 3  78.41667   3  18  5.00004
+#>           s l.1 s.1 d.1
+#> 1 247.75000  12   7   9
+#> 2 108.91667   5   8  11
+#> 3  78.41667   3  18   5
 
 # Use the pipe to go to decimalized librae and then back to lsd
 lsd_df %>% 
-  deb_lsd_l_mutate(column_name = librae) %>%
-  deb_l_lsd_mutate(pounds = librae)
-#>    l  s  d    librae l.1 s.1 d.1
+  deb_lsd_l_mutate(column_name = pounds) %>%
+  deb_l_lsd_mutate(pounds = pounds)
+#>    l  s  d    pounds l.1 s.1 d.1
 #> 1 12  7  9 12.387500  12   7   9
 #> 2  5  8 11  5.445833   5   8  11
 #> 3  3 18  5  3.920833   3  18   5
 ```
+
+The functions that go from decimalized values to lsd values all contain a `round` argument for the denarius unit. In contrast, only the functions that convert lsd values to decimalized denarii have a `round` argument, as rounding decimalized librae and solidi would fundamentally alter the lsd value.
 
 Account books: transaction data frames
 --------------------------------------
