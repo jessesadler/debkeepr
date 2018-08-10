@@ -1,34 +1,24 @@
 ---
-output: github_document
+title: "1. Overview"
+author: "Jesse Sadler"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{1. Overview}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
-
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
+  comment = "#>"
 )
 ```
-
-# debkeepr: Analysis of Non-Decimal Currencies and Double-Entry Bookkeeping
-
-[![Travis build status](https://travis-ci.org/jessesadler/debkeepr.svg?branch=master)](https://travis-ci.org/jessesadler/debkeepr)
-[![Coverage status](https://codecov.io/gh/jessesadler/debkeepr/branch/master/graph/badge.svg)](https://codecov.io/github/jessesadler/debkeepr?branch=master)
 
 `debkeepr` provides an interface for analyzing non-decimal currencies that use the tripartite system of pounds, shillings, and pence. It includes functions to apply arithmetic and financial operations to single or multiple values and to analyze account books that use either [single-entry bookkeeping](https://en.wikipedia.org/wiki/Single-entry_bookkeeping_system) or [double-entry bookkeeping](https://en.wikipedia.org/wiki/Double-entry_bookkeeping_system) with the latter providing the name for `debkeepr`. The use of non-decimal currencies throughout the medieval and early modern period presents difficulties for the analysis of historical accounts. The pounds, shillings, and pence system complicates even relatively simple arithmetic manipulations, as each unit has to be [normalized](https://en.wikipedia.org/wiki/Arithmetic#Compound_unit_arithmetic) or converted to the correct base. `debkeepr` does the work of applying arithmetic operations and normalizing the units to the correct bases. `debkeepr` uses numeric vectors of length three, lists of such numeric vectors, and three separate variables in a data frame to represent pounds, shillings, and pence values.  
 
 The system of recording value according to pounds, shillings, and pence — or to use the Latin terms from which the English derived [libra](https://en.wikipedia.org/wiki/French_livre), [solidus](https://en.wikipedia.org/wiki/Solidus_(coin)), and [denarius](https://en.wikipedia.org/wiki/Denarius) — developed in the 7th and 8th century in the Carolingian Empire. The [ratios](https://en.wikipedia.org/wiki/Non-decimal_currency) between a libra, solidus, and denarius, or [lsd](https://en.wikipedia.org/wiki/%C2%A3sd) for short, were never completely uniform, but most commonly there were 12 denarii in a solidus and 20 solidi in a libra. The custom of counting coins in dozens (solidus) and scores of dozens (libra) spread throughout the Carolingian Empire and became engrained in much of Europe until decimalization after the French Revolution.
-
-## Installation
-`debkeepr` is still under development and in beta. Basic functionality should be stable at this point, but there could still be some breaking changes. You can install `debkeepr` from GitHub with [devtools](https://github.com/hadley/devtools):
-
-```{r devtools, eval = FALSE}
-# install.packages("devtools")
-devtools::install_github("jessesadler/debkeepr")
-```
 
 ## Overview
 - All of the functions in `debkeepr` begin with the prefix `deb_`, which is short for double-entry bookkeeping.

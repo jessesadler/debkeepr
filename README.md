@@ -31,7 +31,7 @@ Overview
 -   The functions are designed to be used with three types of input objects:
     -   Numeric vectors of length 3 in which the first position represents the libra (`l`) unit, the second position the solidus (`s`) unit, and the third position the denarius (`d`) unit. Such lsd vectors can either be a single numeric vector or a list of such vectors.
     -   A data frame that contains pounds, shillings, and pence variables alongside any other variables. The pounds, shillings, and pence columns can have any desired names, but the default is to have the columns named “l”, “s”, and “d” respectively.
-    -   The final object is a data frame that mimics the structure of an account book and can be thought of as a transactions data frame. In addition to pounds, shillings, and pence variables that denote the value of each transaction, a transactions data frame contains variables recording the [creditor and debtor](https://en.wikipedia.org/wiki/Debits_and_credits) for each transaction.
+    -   The final object is a data frame that mimics the structure of an account book and can be thought of as a transactions data frame. In addition to pounds, shillings, and pence variables that denote the value of each transaction, a transactions data frame contains variables recording the [credit and debit accounts](https://en.wikipedia.org/wiki/Debits_and_credits) for each transaction.
 -   There are equivalent functions to manipulate lsd vectors and data frames with lsd variables. Anything that can be done on an lsd vector can also be done to a data frame with lsd values. Functions that use a transactions data frame that also possess credit and debit variables do not have equivalent functions of lsd vectors.
 
 ### lsd objects
