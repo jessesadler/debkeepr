@@ -8,10 +8,12 @@ deb_interest(lsd, interest = 0.0625, duration = 1,
   with_principal = TRUE, bases = c(20, 12), round = 5)
 }
 \arguments{
-\item{lsd}{Numeric vector of length 3 or list of numeric vectors of length
-3. The first position of the vector represents the pounds value or l. The
-second position represents the shillings value or s. And the third
-position represents the pence value or d.}
+\item{lsd}{An lsd value. A vector of class lsd, a list of class lsd_list, or
+an object that can be coerced to these classes, namely a numeric vector of
+length 3 or a list of such vectors. The first position of the vector
+represents the pounds value or l. The second position represents the
+shillings value or s. And the third position represents the pence value
+or d.}
 
 \item{interest}{Interest rate in decimal form. A numeric vector of length 1.
 Default is 0.0625, or 6.25 percent, which was default interest rate in the
@@ -25,19 +27,17 @@ length 1. Default is 1.}
 pounds, shillings and pence value(s) will include the principal as well as
 the interest. When \code{FALSE} only the interest will be returned.}
 
-\item{bases}{Numeric vector of length 2 used to specify the bases for
-the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12)},
-which conforms to the most widely used system of 1 pound = 20 shillings
-and 1 shilling = 12 pence. This argument makes it possible to use
-alternate bases for the shillings (s) and pence (d) units.}
+\item{bases}{Numeric vector of length 2 used to specify the bases for the
+shillings or s and pence or d units. Default is \code{c(20, 12)}, which
+conforms to the most widely used system of 1 pound = 20 shillings and
+1 shilling = 12 pence. If \code{lsd} is of class lsd or lsd_list, the bases
+attribute will be used in the place of this argument.}
 
-\item{round}{Round pence to specified number of decimal places.
-Default is 5. Set to 0 to return pence as whole numbers.}
+\item{round}{Round pence unit to specified number of decimal places.
+Default is 5. Set to 0 to return pence as whole number.}
 }
 \value{
-Returns either a named numeric vector of length 3 or a list of
-named numeric vectors representing the values of pounds, shillings,
-and pence.
+Returns an lsd or lsd_list object with a bases attribute.
 }
 \description{
 Calculate the interest of pounds, shillings, and pence
@@ -55,10 +55,19 @@ deb_interest(lsd = c(10, 14, 5), interest = 0.08, duration = 5)
 # Or you can calculate only the interest
 deb_interest(lsd = c(10, 14, 5), duration = 5, with_principal = FALSE)
 
-# Interest of a list of lsd vectors at a single rate
-# This returns a list of named lsd values
-lsd_list <- list(c(40, 5, 9), c(29, 7, 1), c(35, 6, 5))
+# Interest for an lsd value with alternative bases
+deb_interest(lsd = c(10, 14, 5), duration = 5, bases = c(20, 16))
 
+# Interest of an object of class lsd will use the bases attribute
+lsd <- deb_as_lsd(lsd = c(10, 14, 5), bases = c(20, 16))
+deb_interest(lsd = lsd, duration = 5)
+
+# Interest of a list of lsd values at a single rate
+lsd_list <- list(c(40, 5, 9), c(29, 7, 1), c(35, 6, 5))
 deb_interest(lsd = lsd_list, interest = 0.08, duration = 5)
+
+# Or an lsd_list object with alternative bases
+lsd_list2 <- deb_as_lsd(lsd = lsd_list, bases = c(20, 16))
+deb_interest(lsd = lsd_list2, interest = 0.08, duration = 5)
 
 }

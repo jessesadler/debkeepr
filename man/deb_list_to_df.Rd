@@ -2,33 +2,33 @@
 % Please edit documentation in R/helpers.R
 \name{deb_list_to_df}
 \alias{deb_list_to_df}
-\title{List of lsd vectors to data frame of pounds, shillings, and pence}
+\title{List of lsd values to data frame of pounds, shillings, and pence}
 \usage{
 deb_list_to_df(lsd_list)
 }
 \arguments{
-\item{lsd_list}{A list of numeric vectors of length 3. The first position
-of the vector represents the pounds value or l. The second position
-represents the shillings value or s. And the third position represents
-the pence value or d.}
+\item{lsd_list}{An lsd_list object or a list of numeric vectors of length 3.
+The first position of the vector represents the pounds value or l. The
+second position represents the shillings value or s. And the third
+position represents the pence value or d.}
 }
 \value{
-Returns a tibble or \code{tbl_df} object with pounds, shillings, and
+Returns a tibble or tbl_df object with pounds, shillings, and
 pence variables named l, s, and d respectively. The number of rows in
 the tibble will be equal to the length of \code{lsd_list}.
 }
 \description{
-Transform a list of lsd vectors into a data frame that has pounds,
-shillings, and pence variables.
+Transform an lsd_list or a list of lsd values into a data frame that has
+pounds, shillings, and pence variables.
 }
 \details{
 \code{lsd_list_to_df} is a helper function to make it easier to convert between
 the two primary types of input objects of multiple lsd values used by
 \code{debkeepr}. See \code{\link[=deb_df_to_list]{deb_df_to_list()}} to convert a data frame with pounds,
-shillings, and pence variable to a list with lsd vectors.
+shillings, and pence variable to an lsd_list.
 }
 \examples{
-# Convert a list of lsd vectors into a tibble with
+# Convert a list of lsd values into a tibble with
 # pounds, shillings, and pence variables
 example <- list(c(4, 14, 9), c(-9, -5, -1), c(15, 15, 6))
 deb_list_to_df(example)

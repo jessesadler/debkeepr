@@ -8,21 +8,14 @@ deb_exchange_rate(lsd1, lsd2, output = c("shillings", "pence", "pounds"),
   bases = c(20, 12), round = 5)
 }
 \arguments{
-\item{lsd1}{Pounds, shillings, and pence value that is reduced to £1 and
+\item{lsd1, lsd2}{Pounds, shillings, and pence value that is reduced to £1 and
 against which \code{lsd2} is compared. Thus, \code{lsd1} is the "fixed currency" and
-\code{lsd2} is the "variable currency". \code{lsd1} is a numeric vector of length 3
-or list of numeric vectors of length 3. The first position of the vectors
-represents the pounds value or l. The second position represents the
-shillings value or s. And the third position represents the pence value
-or d.}
-
-\item{lsd2}{Pounds, shillings, and pence value that is compared to \code{lsd1}.
-When \code{lsd1} equals £1, \code{lsd2} equals the returned value. Thus, \code{lsd1} is
-the "fixed currency" and \code{lsd2} is the "variable currency". \code{lsd2} is a
-numeric vector of length 3 or list of numeric vectors of length 3. The
-first position of the vectors represents the pounds value or l. The second
-position represents the shillings value or s. And the third position
-represents the pence value or d.}
+\code{lsd2} is the "variable currency". A vector of class lsd, a list of class
+lsd_list, or an object that can be coerced to these classes, namely a
+numeric vector of length 3 or a list of such vectors. The first position
+of the vector represents the pounds value or l. The second position
+represents the shillings value or s. And the third position represents the
+pence value or d.}
 
 \item{output}{Choice of either \code{"shillings"}, \code{"pence"}, or \code{"pounds"} for
 the format in which the exchange rate will be returned. \code{"shillings"},
@@ -30,20 +23,21 @@ the default, returns the exchange rate in terms of shillings and pence.
 \code{"pence"} returns the exchange rate in terms of pence. \code{"pounds"} returns
 the exchange rate in terms of pounds, shillings, and pence.}
 
-\item{bases}{Numeric vector of length 2 used to specify the bases for
-the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12)},
-which conforms to the most widely used system of 1 pound = 20 shillings
-and 1 shilling = 12 pence. This argument makes it possible to use
-alternate bases for the shillings (s) and pence (d) units.}
+\item{bases}{Numeric vector of length 2 used to specify the bases for the
+shillings or s and pence or d units. Default is \code{c(20, 12)}, which
+conforms to the most widely used system of 1 pound = 20 shillings and
+1 shilling = 12 pence. If \code{lsd1} and/or \code{lsd2} is of class lsd or
+lsd_list, the bases attribute will be used in the place of this argument.
+If the bases attributes of \code{lsd1} and \code{lsd2} are different, an error will
+be thrown.}
 
-\item{round}{Round pence to specified number of decimal places.
-Default is 5. Set to 0 to return pence as whole numbers.}
+\item{round}{Round pence unit to specified number of decimal places.
+Default is 5. Set to 0 to return pence as whole number.}
 }
 \value{
-Returns either a named numeric vector of length 3 or a list of
-named numeric vectors representing the values of pounds, shillings,
-and pence. The format of the returned value is determined by the \code{output}
-argument. If \code{lsd1} > \code{lsd2}, the returned value will be greater that £1.
+Returns an lsd or lsd_list object with a bases attribute. The format
+of the returned value is determined by the \code{output} argument. If \code{lsd1} >
+\code{lsd2}, the returned value will be less than £1.
 }
 \description{
 Calculate the exchange rate between two sets of values in the form of
@@ -56,8 +50,8 @@ If \code{lsd1} and \code{lsd2} are lists of different lengths or one is a vector
 the shorter list will be recycled.
 }
 \examples{
-# Find the exchange rate if £166 13s 4d in one currency is
-# equivalent to £100 0s 0d in another currency in terms of shillings
+# Find the exchange rate if £166 13s. 4d. in one currency is
+# equivalent to £100 0s. 0d, in another currency in terms of shillings
 deb_exchange_rate(lsd1 = c(166, 13, 4), lsd2 = c(100, 0, 0))
 
 # Exchange rate for the opposite direction
@@ -78,8 +72,23 @@ deb_exchange_rate(lsd1 = c(100, 0, 0),
 deb_exchange_rate(lsd1 = c(100, 0, 0), lsd2 = c(166, 13, 4)) \%>\%
   deb_lsd_l()
 
-# To find the exchange rate for multiple currencies
-# use a list of lsd vectors for `lsd1` or `lsd2`
+# Exchange rate between currencies that use the same alternative bases
+deb_exchange_rate(lsd1 = c(100, 0, 0),
+                  lsd2 = c(166, 13, 4),
+                  bases = c(20, 16))
+
+# Exchange for an object of class lsd will use the bases attribute
+lsd_100 <- deb_as_lsd(lsd = c(100, 0, 0), bases = c(20, 16))
+deb_exchange_rate(lsd1 = lsd_100, lsd2 = c(166, 13, 4))
+
+# If lsd1 and lsd2 have different bases, the function will throw an error
+lsd_166 <- deb_as_lsd(lsd = c(166, 13, 4), bases = c(20, 12))
+\dontrun{
+deb_exchange_rate(lsd1 = lsd_100, lsd2 = lsd_166)
+}
+
+# To find the exchange rate for multiple currencies use a
+# list of lsd values or lsd_list objects for `lsd1` or `lsd2`
 list_a <- list(c(150, 0, 0), c(125, 0, 0), c(175, 13, 4))
 list_b <- list(c(125, 0, 0), c(75, 8, 4), c(100, 10, 0))
 
@@ -87,6 +96,6 @@ deb_exchange_rate(lsd1 = list_a, lsd2 = list_b)
 
 # Or find the exchange rate of multiple currencies to a
 # single currency by using a vector for `lsd2`
-deb_exchange_rate(lsd1 = list_a, lsd2 = c(100, 0, 0))
+deb_exchange_rate(lsd1 = list_a, lsd2 = lsd_166)
 
 }

@@ -7,29 +7,29 @@
 deb_exchange(lsd, shillings_rate, bases = c(20, 12), round = 5)
 }
 \arguments{
-\item{lsd}{Numeric vector of length 3 or list of numeric vectors of length
-3. The first position of the vector represents the pounds value or l. The
-second position represents the shillings value or s. And the third
-position represents the pence value or d.}
+\item{lsd}{An lsd value. A vector of class lsd, a list of class lsd_list, or
+an object that can be coerced to these classes, namely a numeric vector of
+length 3 or a list of such vectors. The first position of the vector
+represents the pounds value or l. The second position represents the
+shillings value or s. And the third position represents the pence value
+or d.}
 
 \item{shillings_rate}{The exchange rate. This follows the common practice
 of calculating the exchange rate between different currencies in terms
 of shillings. Thus, in terms of a given number over the base of shillings
 provided in the \code{bases} argument. A numeric vector of length 1.}
 
-\item{bases}{Numeric vector of length 2 used to specify the bases for
-the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12)},
-which conforms to the most widely used system of 1 pound = 20 shillings
-and 1 shilling = 12 pence. This argument makes it possible to use
-alternate bases for the shillings (s) and pence (d) units.}
+\item{bases}{Numeric vector of length 2 used to specify the bases for the
+shillings or s and pence or d units. Default is \code{c(20, 12)}, which
+conforms to the most widely used system of 1 pound = 20 shillings and
+1 shilling = 12 pence. If \code{lsd} is of class lsd or lsd_list, the bases
+attribute will be used in the place of this argument.}
 
-\item{round}{Round pence to specified number of decimal places.
-Default is 5. Set to 0 to return pence as whole numbers.}
+\item{round}{Round pence unit to specified number of decimal places.
+Default is 5. Set to 0 to return pence as whole number.}
 }
 \value{
-Returns either a named numeric vector of length 3 or a list of
-named numeric vectors representing the values of pounds, shillings,
-and pence.
+Returns an lsd or lsd_list object with a bases attribute.
 }
 \description{
 Exchange between pounds, shillings, and pence currencies that share the
@@ -45,7 +45,16 @@ between the two currencies use \code{\link[=deb_convert_bases]{deb_convert_bases
 }
 \examples{
 # Exchange at the rate of 31 shillings
-deb_exchange(lsd = c(850, 16, 5), shillings_rate = 31)
+deb_exchange(lsd = c(850, 16, 10), shillings_rate = 31)
+
+# Exchange between currencies that use the same alternative bases
+deb_exchange(lsd = c(850, 16, 10),
+             shillings_rate = 31,
+             bases = c(20, 16))
+
+# Exchange for an object of class lsd will use the bases attribute
+lsd <- deb_as_lsd(lsd = c(850, 16, 10), bases = c(20, 16))
+deb_exchange(lsd = lsd, shillings_rate = 31)
 
 # If the exchange rate is in shillings and pence, you can either
 # decimalize the shillings or add the pence and divide by 12 in
@@ -53,13 +62,15 @@ deb_exchange(lsd = c(850, 16, 5), shillings_rate = 31)
 # a repeating decimal, the latter approach is preferable.
 
 # Exchange at the rate of 31 shillings 4 pence
-deb_exchange(lsd = c(850, 16, 5), shillings_rate = 31.33333)
-deb_exchange(lsd = c(850, 16, 5), shillings_rate = 31 + 4/12)
+deb_exchange(lsd = c(850, 16, 10), shillings_rate = 31.33333)
+deb_exchange(lsd = c(850, 16, 10), shillings_rate = 31 + 4/12)
 
-# Exchange of a list of lsd vectors at a single rate
-# This returns a list of named lsd values
+# Exchange of a list of lsd values at a single rate
 lsd_list <- list(c(40, 5, 9), c(29, 7, 1), c(35, 6, 5))
-
 deb_exchange(lsd = lsd_list, shillings_rate = 31)
+
+# Or an lsd_list object with alternative bases
+lsd_list2 <- deb_as_lsd(lsd = lsd_list, bases = c(20, 16))
+deb_exchange(lsd = lsd_list2, shillings_rate = 31)
 
 }

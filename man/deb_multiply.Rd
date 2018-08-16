@@ -7,26 +7,27 @@
 deb_multiply(lsd, x, bases = c(20, 12), round = 5)
 }
 \arguments{
-\item{lsd}{Numeric vector of length 3 or list of numeric vectors of length
-3. The first position of the vector represents the pounds value or l. The
-second position represents the shillings value or s. And the third
-position represents the pence value or d.}
+\item{lsd}{An lsd value. A vector of class lsd, a list of class lsd_list, or
+an object that can be coerced to these classes, namely a numeric vector of
+length 3 or a list of such vectors. The first position of the vector
+represents the pounds value or l. The second position represents the
+shillings value or s. And the third position represents the pence value
+or d.}
 
 \item{x}{Multiplier. The value by which \code{lsd} will be multiplied. A numeric
 vector of length 1.}
 
-\item{bases}{Numeric vector of length 2 used to specify the bases for
-the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12)},
-which conforms to the most widely used system of 1 pound = 20 shillings
-and 1 shilling = 12 pence. This argument makes it possible to use
-alternate bases for the shillings (s) and pence (d) units.}
+\item{bases}{Numeric vector of length 2 used to specify the bases for the
+shillings or s and pence or d units. Default is \code{c(20, 12)}, which
+conforms to the most widely used system of 1 pound = 20 shillings and
+1 shilling = 12 pence. If \code{lsd} is of class lsd or lsd_list, the bases
+attribute will be used in the place of this argument.}
 
-\item{round}{Round pence to specified number of decimal places.
-Default is 5. Set to 0 to return pence as whole numbers.}
+\item{round}{Round pence unit to specified number of decimal places.
+Default is 5. Set to 0 to return pence as whole number.}
 }
 \value{
-Returns either a named numeric vector of length 3 or a list of named
-numeric vectors representing the values of pounds, shillings, and pence.
+Returns an lsd or lsd_list object with a bases attribute.
 }
 \description{
 Multiply pounds, shillings, and pence by a multiplier (\code{x}). The result is
@@ -36,6 +37,13 @@ normalized to standard bases for shillings and pence units according to the
 \examples{
 # Multiply pounds, shillings, and pence by 5
 deb_multiply(lsd = c(5, 15, 8), x = 5)
+
+# Multiply an lsd value that has alternative bases
+deb_multiply(lsd = c(5, 15, 8), x = 5, bases = c(20, 16))
+
+# Multiplying an object of class lsd will use the bases attribute
+lsd <- deb_as_lsd(lsd = c(5, 15, 8), bases = c(20, 16))
+deb_multiply(lsd = lsd, x = 5)
 
 # Calculate commission of 3\% of sales of £3095 17s. 6d.
 deb_multiply(lsd = c(3095, 17, 6), x = 0.03)
@@ -53,11 +61,13 @@ deb_multiply(lsd = c(5.625, 15.35, 8), x = 5)
 # Use round argument to round pence unit to specific decimal place
 deb_multiply(lsd = c(5, 15, 8), x = 2 / 3, round = 2)
 
-# Multiply a list of lsd vectors by a multiplier
-# This returns a list of named lsd values
+# Multiply a list of lsd values by a multiplier
 lsd_list <- list(c(40, 5, 9), c(29, 7, 1), c(35, 6, 5))
-
 deb_multiply(lsd = lsd_list, x = 5)
+
+# Or an lsd_list object with alternative bases
+lsd_list2 <- deb_as_lsd(lsd = lsd_list, bases = c(20, 16))
+deb_multiply(lsd = lsd_list2, x = 5)
 
 }
 \seealso{

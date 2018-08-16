@@ -1,26 +1,24 @@
 context("test-lsd-normalize.R")
 
-## Normalization functions, as well as basic checks for
-## lsd vector and lsd data frame
+x <- c(5, 84, 53)
+neg <- c(-5, -84, -53)
+dec <- c(5.875, 84.325, 55)
+mix <- c(5, -67, -35)
+b1 <- c(20, 12)
+b2 <- c(8, 16)
+x_b1 <- to_lsd(x, b1)
+x_b2 <- to_lsd(x, b2)
+neg_lsd <- to_lsd(neg, b1)
+dec_b1 <- to_lsd(dec, b1)
+dec_b2 <- to_lsd(dec, b2)
 
-ex_vector <- c(5, 84, 53)
-negative_vector <- c(-5, -84, -53)
-decimal_vector <- c(5.875, 84.325, 55)
-mix_vector <- c(5, -67, -35)
-ex_list <- list(c(35, 50, 89),
-                c(-10, -48, -181),
-                c(26.875, 84.365, 55),
-                c(12, 76, 205))
-list_answer <- list(c(l = 37, s = 17, d = 5),
-                    c(l = -13, s = -3, d = -1),
-                    c(l = 31, s = 6, d = 5.38),
-                    c(l = 16, s = 13, d = 1))
-list_ratio <- list(c(l = 37, s = 15, d = 9),
-                   c(l = -12, s = -19, d = -5),
-                   c(l = 31, s = 5, d = 4.84),
-                   c(l = 16, s = 8, d = 13))
-transactions <- data.frame(credit = sample(letters[1:5]),
-                           debit = sample(letters[1:5]))
+list1 <- list(c(35, 50, 89),
+              c(-10, -48, -181),
+              c(26.875, 84.365, 55),
+              c(12, 76, 205))
+list2 <- list(x_b2, dec_b2)
+lsd_list1 <- to_lsd(list1, b1)
+lsd_list2 <- to_lsd(list1, b2)
 
 ex_df <- data.frame(l = c(35, -10, 26.875, 12, 1),
                     s = c(50, -48, 84.365, 76, 19),
@@ -34,12 +32,6 @@ df_ratio <- data.frame(l = c(37, -12, 31, 16, 1),
 df_answer2 <- data.frame(l.1 = c(37, -13, 31, 16, 2),
                          s.1 = c(17, -3, 6, 13, 0),
                          d.1 = c(5, -1, 5.38, 1, 0))
-character_df <- data.frame(ch = c("hello", "goodbye"),
-                           n1 = c(6, 7),
-                           n2 = c(3, 4))
-column_names <- data.frame(pounds = c(37, -13, 31, 16),
-                           shillings = c(17, -3, 6, 13),
-                           pence = c(5, -1, 2.6, 1))
 na_df <- data.frame(l = c(35, -10, 26.875, 12),
                     s = c(50, -48, 84.365, 76),
                     d = c(89, -181, 55, NA))
@@ -47,74 +39,11 @@ na_answer <- data.frame(l = c(37, -13, 31, NA),
                         s = c(17, -3, 6, NA),
                         d = c(5, -1, 5.38, NA))
 
-## Error messages from lsd_check ##
-test_that("non-vector is an error", {
-  expect_error(deb_normalize(ex_df),
-               "lsd must be either a numeric vector or list of numeric vectors")
-})
-
-test_that("non-numeric is an error", {
-  expect_error(deb_normalize(c("hello", "goodbye")),
-               "lsd must be a numeric vector")
-  expect_error(deb_normalize(list(c("hello", "goodbye"), c(TRUE, FALSE))),
-               "lsd must be a list of numeric vectors")
-})
-
-test_that("length of lsd is 3", {
-  expect_error(deb_normalize(c(10, 9, 3, 5)),
-               paste("lsd must be a vector of length of 3.",
-                     "There must be a value for pounds, shillings, and pence.",
-                     sep = "\n"))
-  expect_error(deb_normalize(list(c(10, 9, 3, 5), c(6, 3), c(4, 6, 8))),
-               paste("lsd must be a list of numeric vectors of length 3.",
-                     "There must be a value for pounds, shillings, and pence.",
-                     sep = "\n"))
-})
-
-## Error messages from bases_check ##
-test_that("bases checks work", {
-  expect_error(deb_normalize(ex_vector, bases = NULL),
-               "bases must be a numeric vector")
-  expect_error(deb_normalize(ex_vector, bases = c("t", "r")),
-               "bases must be a numeric vector")
-  expect_error(deb_normalize(ex_vector, bases = c(8, 2, 4)),
-               "bases must be a numeric vector of length of 2")
-  expect_error(deb_normalize(ex_vector, bases = 8),
-               "bases must be a numeric vector of length of 2")
-  expect_error(deb_normalize(ex_vector, bases = c(20, 0)),
-               "Neither of the values in bases can be 0")
-  expect_error(deb_normalize(ex_vector, bases = c(0, 0)),
-               "Neither of the values in bases can be 0")
-  expect_error(deb_normalize(ex_vector, bases = c(20, -12)),
-               "The values in bases must both be positive")
-  expect_error(deb_normalize(ex_vector, bases = c(-20, -12)),
-               "The values in bases must both be positive")
-
-  expect_error(deb_normalize_df(ex_df, bases = NULL),
-               "bases must be a numeric vector")
-  expect_error(deb_normalize_df(ex_df, bases = c(20, 0)),
-               "Neither of the values in bases can be 0")
-  expect_error(deb_normalize_df(ex_df, bases = c(20, -12)),
-               "The values in bases must both be positive")
-})
-
-## Error messages from bases_check ##
-test_that("round check works", {
-  expect_error(deb_normalize(ex_vector, round = "hello"),
-               "round must be numeric")
-  expect_error(deb_normalize(ex_vector, round = c(1, 3)),
-               "round must be a numeric vector of length 1")
-
-  expect_error(deb_normalize_df(ex_df, round = "hello"),
-               "round must be numeric")
-  expect_error(deb_normalize_df(ex_df, round = c(1, 3)),
-               "round must be a numeric vector of length 1")
-})
 
 ## lsd_decimal ##
 test_that("lsd_decimal_check", {
-  expect_equal(lsd_decimal_check(decimal_vector, bases = c(20, 12)), c(5, 101, 64.9))
-  expect_equal(lsd_decimal_check(-decimal_vector, bases = c(20, 12)), c(5, 101, 64.9))
+  expect_equal(lsd_decimal_check(dec, bases = c(20, 12)), c(5, 101, 64.9))
+  expect_equal(lsd_decimal_check(-dec, bases = c(20, 12)), c(5, 101, 64.9))
   expect_equal(lsd_decimal_check(c(8.5, 7, 0), bases = c(20, 12)), c(8, 17, 0))
   expect_equal(lsd_decimal_check(c(8.5, 7, 0), bases = c(16, 12)), c(8, 15, 0))
   expect_equal(lsd_decimal_check(c(8, 29.875, 30), bases = c(20, 12)), c(8, 29, 40.5))
@@ -123,86 +52,76 @@ test_that("lsd_decimal_check", {
 
 ## Normalization of lsd ##
 test_that("it goes together in deb_normalize", {
-  expect_equal(deb_normalize(ex_vector), c(l = 9, s = 8, d = 5))
-  expect_equal(deb_normalize(negative_vector), c(l = -9, s = -8, d = -5))
-  expect_equal(deb_normalize(decimal_vector), c(l = 10, s = 6, d = 4.9))
-  expect_equal(deb_normalize(mix_vector), c(l = 1, s = 10, d = 1))
+  expect_equal(deb_normalize(x), to_lsd(c(9, 8, 5), b1))
+  expect_equal(deb_normalize(neg), to_lsd(c(-9, -8, -5), b1))
+  expect_equal(deb_normalize(dec), to_lsd(c(10, 6, 4.9), b1))
+  expect_equal(deb_normalize(mix), to_lsd(c(1, 10, 1), b1))
   expect_equal(deb_normalize(c(NA, 4, 5)),
-               stats::setNames(as.numeric(c(NA, NA, NA)), c("l", "s", "d")))
+               to_lsd(as.numeric(c(NA, NA, NA)), b1))
   # rounding and avoid d being equal to base of d
-  expect_equal(deb_normalize(c(1, 19, 11.999999)), c(l = 2, s = 0, d = 0))
-  expect_equal(deb_normalize(c(1, 18, 23.999999)), c(l = 2, s = 0, d = 0))
-  expect_equal(deb_normalize(c(-1, -19, -11.999999)), c(l = -2, s = 0, d = 0))
-  expect_equal(deb_normalize(c(1, 19, 11.99999)), c(l = 1, s = 19, d = 11.99999))
-  expect_equal(deb_normalize(c(1, 7, 15.999999), bases = c(8, 16)),
-               c(l = 2, s = 0, d = 0))
-  expect_equal(deb_normalize(c(1, 5, 11 + 2/3), round = 0), c(l = 1, s = 6, d = 0))
+  expect_equal(deb_normalize(c(1, 19, 11.999999)), to_lsd(c(2, 0, 0), b1))
+  expect_equal(deb_normalize(c(1, 18, 23.999999)), to_lsd(c(2, 0, 0), b1))
+  expect_equal(deb_normalize(c(-1, -19, -11.999999)), to_lsd(c(-2, 0, 0), b1))
+  expect_equal(deb_normalize(c(1, 19, 11.99999)), to_lsd(c(1, 19, 11.99999), b1))
+  expect_equal(deb_normalize(c(1, 7, 15.999999), b2),
+               to_lsd(c(2, 0, 0), c(8, 16)))
+  expect_equal(deb_normalize(c(1, 5, 11 + 2/3), round = 0), to_lsd(c(1, 6, 0), b1))
 })
 
 ## Vectorization ##
 test_that("vectorization works", {
-  expect_equal(is.list(deb_normalize(ex_list)), TRUE)
-  expect_equal(length(deb_normalize(ex_list)), 4)
-  expect_equal(deb_normalize(ex_list), list_answer)
-  expect_equal(deb_normalize(ex_list, bases = c(20, 16)), list_ratio)
-  expect_equal(deb_normalize(ex_list, round = 0)[[3]], c(l = 31, s = 6, d = 5))
+  expect_equal(is.list(deb_normalize(list1)), TRUE)
+  expect_equal(length(deb_normalize(list1)), 4)
+  expect_equal(deb_normalize(list1),
+               to_lsd(list(c(37, 17, 5),
+                           c(-13, -3, -1),
+                           c(31, 6, 5.38),
+                           c(16, 13, 1)), b1))
+  expect_equal(deb_normalize(list1, bases = c(20, 16)),
+               to_lsd(list(c(37, 15, 9),
+                           c(-12, -19, -5),
+                           c(31, 5, 4.84),
+                           c(16, 8, 13)), c(20, 16)))
+  expect_false(identical(deb_normalize(lsd_list1), deb_normalize(lsd_list2)))
+  expect_equal(deb_normalize(list1, round = 0)[[3]], to_lsd(c(31, 6, 5), b1))
 })
 
-## basess ##
+## bases ##
 test_that("different basess work", {
-  expect_equal(deb_normalize(ex_vector, bases = c(20, 12)),
-               c(l = 9, s = 8, d = 5))
-  expect_equal(deb_normalize(ex_vector, bases = c(20, 16)),
-               c(l = 9, s = 7, d = 5))
-  expect_equal(deb_normalize(negative_vector, bases = c(8, 16)),
-               c(l = -15, s = -7, d = -5))
+  expect_equal(deb_normalize(x, bases = c(20, 12)),
+               to_lsd(c(9, 8, 5), b1))
+  expect_equal(deb_normalize(x_b2),
+               to_lsd(c(15, 7, 5), b2))
+  expect_equal(deb_normalize(x, bases = c(20, 16)),
+               to_lsd(c(9, 7, 5), bases = c(20, 16)))
+  expect_equal(deb_normalize(neg, b2),
+               to_lsd(c(-15, -7, -5), b2))
 })
 
-# Checks for data frames #
-test_that("lsd_column_check work", {
-  expect_error(deb_normalize_df(ex_vector, l, s, d),
-               "df must be a data frame or data-frame like object")
-  expect_error(deb_normalize_df(ex_df, pounds, shillings, pence),
-               paste("Column names for l, s, and d must be provided if the",
-                     "default names of l, s, and d are not present in the data frame",
-                     sep = "\n"))
-  expect_error(deb_normalize_df(character_df, ch, n1, n2),
-               "l must be a numeric variable")
-  expect_error(deb_normalize_df(character_df, n1, ch, n2),
-               "s must be a numeric variable")
-  expect_error(deb_normalize_df(character_df, n1, n2, ch),
-               "d must be a numeric variable")
+## lsd and lsd_list class
+test_that("works with lsd class", {
+  # Creates lsd class
+  expect_s3_class(deb_normalize(x), "lsd")
+  expect_s3_class(deb_normalize(list1), "lsd_list")
+  # Maintains lsd class
+  expect_s3_class(deb_normalize(x_b1), "lsd")
+  expect_s3_class(deb_normalize(lsd_list1), "lsd_list")
+
+  # Use and maintain base attribute
+  expect_equal(deb_bases(deb_normalize(x_b2)), c(s = 8, d = 16))
+  expect_equal(deb_normalize(x_b2),
+               deb_normalize(x, bases = b2))
+  expect_equal(deb_bases(deb_normalize(lsd_list2)), c(s = 8, d = 16))
+  expect_equal(deb_normalize(lsd_list2),
+               deb_normalize(list1, bases = b2))
+
+  # Uses bases and creates lsd object from list of lsd vectors
+  expect_equal(deb_bases(deb_normalize(list2)), c(s = 8, d = 16))
+  expect_equal(deb_normalize(list2),
+               deb_normalize(list(x, dec), bases = b2))
 })
 
-test_that("suffix check", {
-  expect_error(deb_normalize_df(ex_df, replace = "a"),
-               "replace must be either TRUE or FALSE")
-  expect_error(deb_normalize_df(ex_df, replace = c(TRUE, FALSE)),
-               "replace must be a logical vector of length 1")
-  expect_error(deb_normalize_df(ex_df, replace = FALSE, suffix = 1),
-               "suffix must be a character vector")
-  expect_error(deb_normalize_df(ex_df, replace = FALSE, suffix = c(".1", ".2")),
-               "suffix must be a character vector of length 1")
-  expect_error(deb_normalize_df(ex_df, replace = FALSE, suffix = ""),
-               paste("suffix cannot be an empty character vector.",
-                     "Use replace = TRUE to replace the original variables where this is an option in the function",
-                     sep = "\n"))
-})
-
-test_that("lsd_column_names works",{
-  expect_equal(names(deb_normalize_df(ex_df, replace = FALSE)),
-               c("l", "s", "d", "l.1", "s.1", "d.1"))
-  expect_equal(names(deb_normalize_df(ex_df, replace = FALSE, suffix = "_x")),
-               c("l", "s", "d", "l_x", "s_x", "d_x"))
-  expect_equal(names(deb_normalize_df(column_names, l = pounds, s = shillings, d = pence,
-                                      replace = FALSE, suffix = "_x")),
-               c("pounds", "shillings", "pence", "pounds_x", "shillings_x", "pence_x"))
-  # Replace works with other columns present
-  expect_equal(names(deb_normalize_df(cbind(transactions, ex_df), replace = TRUE)),
-                     c("credit", "debit", "l", "s", "d"))
-})
-
-# Normalization #
+## Data frames
 
 test_that("normalization_df works", {
   expect_equal(deb_normalize_df(ex_df, replace = TRUE), df_answer)

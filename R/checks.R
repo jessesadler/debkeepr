@@ -3,12 +3,15 @@
 # Check that lsd is numeric vector of length 3 or
 # list of numeric vectors of length 3
 lsd_check <- function(lsd) {
-  if (is.vector(lsd) == FALSE) {
-    stop(call. = FALSE, "lsd must be either a numeric vector or list of numeric vectors")
+  if (rlang::is_bare_vector(lsd) == FALSE && deb_is_lsd(lsd) == FALSE) {
+    stop(call. = FALSE, paste("lsd must be a vector of class lsd, a list of class lsd_list,",
+                              "       or an object that can be coerced to these classes, namely",
+                              "       a numeric vector of length 3 or a list of such vectors.",
+                              sep = "\n"))
   }
 
   # check lsd vector
-  if (is.list(lsd) == FALSE & is.vector(lsd) == TRUE) {
+  if (rlang::is_list(lsd) == FALSE & rlang::is_vector(lsd) == TRUE) {
     if (!is.numeric(lsd)) {
       stop(call. = FALSE, "lsd must be a numeric vector")
     }
@@ -20,7 +23,7 @@ lsd_check <- function(lsd) {
   }
 
   # check lsd list
-  if (is.list(lsd) == TRUE) {
+  if (rlang::is_list(lsd) == TRUE) {
     if (!all(purrr::map_lgl(lsd, is.numeric))) {
       stop(call. = FALSE, "lsd must be a list of numeric vectors")
     }
@@ -203,6 +206,17 @@ arithmetic_check <- function(x) {
   }
 }
 
+arithmetic_list_check <- function(lsd1, lsd2) {
+  if (is.list(lsd1) & is.list(lsd2) == TRUE) {
+    if (length(lsd1) > 1 & length(lsd2) > 1) {
+      if (identical(length(lsd1), length(lsd2)) == FALSE) {
+        stop(call. = FALSE,
+             "If lsd1 and lsd2 are both lists, they must be the same length, or one must be of length 1.")
+      }
+    }
+  }
+}
+
 shillings_check <- function(x) {
   if (!is.numeric(x)) {
     stop(call. = FALSE, "shillings_rate must be numeric")
@@ -213,17 +227,19 @@ shillings_check <- function(x) {
   }
 }
 
-exchange_rate_check <- function(x) {
-  if (is.vector(x) == FALSE) {
-    stop(call. = FALSE, "exchange_rate must be either a numeric vector or list of numeric vectors")
+exchange_rate_check <- function(exchange_rate) {
+  if (rlang::is_bare_vector(exchange_rate) == FALSE && deb_is_lsd(exchange_rate) == FALSE) {
+    stop(call. = FALSE, paste("exchange_rate must be a vector of class lsd, a list of class lsd_list,",
+                              "       or an object that can be coerced to these classes, namely",
+                              "       a numeric vector or list of numeric vectors", sep = "\n"))
   }
 
   # check rate vector
-  if (is.list(x) == FALSE & is.vector(x) == TRUE) {
-    if (!is.numeric(x)) {
+  if (rlang::is_list(exchange_rate) == FALSE & rlang::is_vector(exchange_rate) == TRUE) {
+    if (!is.numeric(exchange_rate)) {
       stop(call. = FALSE, "exchange_rate must be a numeric vector")
     }
-    if (length(x) != 3) {
+    if (length(exchange_rate) != 3) {
       stop(call. = FALSE, paste("exchange_rate must be a vector of length of 3.",
                                 "There must be a value for pounds, shillings, and pence.",
                                 sep = "\n"))
@@ -231,11 +247,11 @@ exchange_rate_check <- function(x) {
   }
 
   # check rate list
-  if (is.list(x) == TRUE) {
-    if (!all(purrr::map_lgl(x, is.numeric))) {
+  if (rlang::is_list(exchange_rate) == TRUE) {
+    if (!all(purrr::map_lgl(exchange_rate, is.numeric))) {
       stop(call. = FALSE, "exchange_rate must be a list of numeric vectors")
     }
-    if (identical(purrr::map_dbl(x, length), rep(3, length(x))) == FALSE) {
+    if (identical(purrr::map_dbl(exchange_rate, length), rep(3, length(exchange_rate))) == FALSE) {
       stop(call. = FALSE, paste("exchange_rate must be a list of numeric vectors of length 3.",
                                 "There must be a value for pounds, shillings, and pence.",
                                 sep = "\n"))

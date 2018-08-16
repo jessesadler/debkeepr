@@ -8,11 +8,12 @@ deb_invert_rate(exchange_rate, output = c("shillings", "pence",
   "pounds"), bases = c(20, 12), round = 5)
 }
 \arguments{
-\item{exchange_rate}{Numeric vector of length 3 or list of numeric vectors
-of length 3 representing the exchange rate to be inverted. The first
-position of the vector represents the pounds value or l. The second
-position represents the shillings value or s. And the third position
-represents the pence value or d. The values do not need to be normalized.}
+\item{exchange_rate}{An lsd value. A vector of class lsd, a list of class lsd_list, or
+an object that can be coerced to these classes, namely a numeric vector of
+length 3 or a list of such vectors. The first position of the vector
+represents the pounds value or l. The second position represents the
+shillings value or s. And the third position represents the pence value
+or d. The values do not need to be normalized.}
 
 \item{output}{Choice of either \code{"shillings"}, \code{"pence"}, or \code{"pounds"} for
 the format in which the exchange rate will be returned. \code{"shillings"},
@@ -20,21 +21,19 @@ the default, returns the exchange rate in terms of shillings and pence.
 \code{"pence"} returns the exchange rate in terms of pence. \code{"pounds"} returns
 the exchange rate in terms of pounds, shillings, and pence.}
 
-\item{bases}{Numeric vector of length 2 used to specify the bases for
-the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12)},
-which conforms to the most widely used system of 1 pound = 20 shillings
-and 1 shilling = 12 pence. This argument makes it possible to use
-alternate bases for the shillings (s) and pence (d) units.}
+\item{bases}{Numeric vector of length 2 used to specify the bases for the
+shillings or s and pence or d units. Default is \code{c(20, 12)}, which
+conforms to the most widely used system of 1 pound = 20 shillings and
+1 shilling = 12 pence. If \code{lsd} is of class lsd or lsd_list, the bases
+attribute will be used in the place of this argument.}
 
-\item{round}{Round pence to specified number of decimal places.
-Default is 5. Set to 0 to return pence as whole numbers.}
+\item{round}{Round pence unit to specified number of decimal places.
+Default is 5. Set to 0 to return pence as whole number.}
 }
 \value{
-Returns either a named numeric vector of length 3 or a list of
-named numeric vectors representing the values of pounds, shillings,
-and pence. The format of the returned value is determined by the \code{output}
-argument, either pounds, shillings, and pence; shillings and pence; or
-just pence.
+Returns an lsd or lsd_list object with a bases attribute. The format
+of the returned value is determined by the \code{output} argument, either
+pounds, shillings, and pence; shillings and pence; or just pence.
 }
 \description{
 Given an exchange rate between two currencies, calculate the inverse rate,
@@ -48,6 +47,13 @@ deb_invert_rate(exchange_rate = c(0, 33, 4))
 # Inverse of an exchange rate of £2 13s. 4d. in pence
 deb_invert_rate(exchange_rate = c(2, 13, 4),
                 output = "pence")
+
+# Inverse of an exchange rate with alternative bases
+deb_invert_rate(exchange_rate = c(0, 33, 4), bases = c(20, 16))
+
+# Inverse rate of an object of class lsd will use the bases attribute
+lsd <- deb_as_lsd(lsd = c(0, 33, 4), bases = c(20, 16))
+deb_invert_rate(exchange_rate = lsd)
 
 # Find the inverse of multiple exchange rates
 rates <- list(c(0, 33, 4), c(0, 31, 0), c(0, 30, 0))

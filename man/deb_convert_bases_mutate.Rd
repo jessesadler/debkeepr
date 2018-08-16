@@ -31,8 +31,8 @@ converted.}
 bases. This is the value by which \code{l}, \code{s}, and \code{d} variables are
 multiplied. Numeric vector of length 1 with the default of \code{1}.}
 
-\item{round}{Round pence to specified number of decimal places.
-Default is 5. Set to 0 to return pence as whole numbers.}
+\item{round}{Round pence unit to specified number of decimal places.
+Default is 5. Set to 0 to return pence as whole number.}
 
 \item{suffix}{Suffix added to the column names for the pounds, shillings,
 and pence columns representing the converted values to distinguish them

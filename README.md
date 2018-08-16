@@ -5,7 +5,9 @@ debkeepr: Analysis of Non-Decimal Currencies and Double-Entry Bookkeeping
 
 [![Travis build status](https://travis-ci.org/jessesadler/debkeepr.svg?branch=master)](https://travis-ci.org/jessesadler/debkeepr) [![Coverage status](https://codecov.io/gh/jessesadler/debkeepr/branch/master/graph/badge.svg)](https://codecov.io/github/jessesadler/debkeepr?branch=master)
 
-`debkeepr` provides an interface for analyzing non-decimal currencies that use the tripartite system of pounds, shillings, and pence. It includes functions to apply arithmetic and financial operations to single or multiple values and to analyze account books that use either [single-entry bookkeeping](https://en.wikipedia.org/wiki/Single-entry_bookkeeping_system) or [double-entry bookkeeping](https://en.wikipedia.org/wiki/Double-entry_bookkeeping_system) with the latter providing the name for `debkeepr`. The use of non-decimal currencies throughout the medieval and early modern period presents difficulties for the analysis of historical accounts. The pounds, shillings, and pence system complicates even relatively simple arithmetic manipulations, as each unit has to be [normalized](https://en.wikipedia.org/wiki/Arithmetic#Compound_unit_arithmetic) or converted to the correct base. `debkeepr` does the work of applying arithmetic operations and normalizing the units to the correct bases. `debkeepr` uses numeric vectors of length three, lists of such numeric vectors, and three separate variables in a data frame to represent pounds, shillings, and pence values.
+`debkeepr` provides an interface for analyzing non-decimal currencies that use the tripartite system of pounds, shillings, and pence. It includes functions to apply arithmetic and financial operations to single or multiple values and to analyze account books that use either [single-entry bookkeeping](https://en.wikipedia.org/wiki/Single-entry_bookkeeping_system) or [double-entry bookkeeping](https://en.wikipedia.org/wiki/Double-entry_bookkeeping_system) with the latter providing the name for `debkeepr`. The use of non-decimal currencies throughout the medieval and early modern period presents difficulties for the analysis of historical accounts. The pounds, shillings, and pence system complicates even relatively simple arithmetic manipulations, as each unit has to be [normalized](https://en.wikipedia.org/wiki/Arithmetic#Compound_unit_arithmetic) or converted to the correct base.
+
+`debkeepr` implements two classes — `lsd` and `lsd_list` — to store pounds, shillings, and pence values and associate the values with bases for the shillings and pence units. The `lsd` class stores pounds, shillings, and pence values as numeric vectors of length three and possesses a bases attribute for the shillings and pence units. The `lsd_list` class consists of a list of `lsd` objects that have the same bases attribute that also possesses its own matching bases attribute. In addition, `debkeepr` provides an interface for analyzing pounds, shillings, and pence values stored as three separate variables in a data frame.
 
 The system of recording value according to pounds, shillings, and pence — or to use the Latin terms from which the English derived [libra](https://en.wikipedia.org/wiki/French_livre), [solidus](https://en.wikipedia.org/wiki/Solidus_(coin)), and [denarius](https://en.wikipedia.org/wiki/Denarius) — developed in the 7th and 8th century in the Carolingian Empire. The [ratios](https://en.wikipedia.org/wiki/Non-decimal_currency) between a libra, solidus, and denarius, or [lsd](https://en.wikipedia.org/wiki/%C2%A3sd) for short, were never completely uniform, but most commonly there were 12 denarii in a solidus and 20 solidi in a libra. The custom of counting coins in dozens (solidus) and scores of dozens (libra) spread throughout the Carolingian Empire and became engrained in much of Europe until decimalization after the French Revolution.
 
@@ -29,24 +31,42 @@ Overview
     -   Italian: lire, soldi, denari
     -   Flemish: ponden, schellingen, groten or penningen
 -   The functions are designed to be used with three types of input objects:
-    -   Numeric vectors of length 3 in which the first position represents the libra (`l`) unit, the second position the solidus (`s`) unit, and the third position the denarius (`d`) unit. Such lsd vectors can either be a single numeric vector or a list of such vectors.
-    -   A data frame that contains pounds, shillings, and pence variables alongside any other variables. The pounds, shillings, and pence columns can have any desired names, but the default is to have the columns named “l”, “s”, and “d” respectively.
-    -   The final object is a data frame that mimics the structure of an account book and can be thought of as a transactions data frame. In addition to pounds, shillings, and pence variables that denote the value of each transaction, a transactions data frame contains variables recording the [credit and debit accounts](https://en.wikipedia.org/wiki/Debits_and_credits) for each transaction.
--   There are equivalent functions to manipulate lsd vectors and data frames with lsd variables. Anything that can be done on an lsd vector can also be done to a data frame with lsd values. Functions that use a transactions data frame that also possess credit and debit variables do not have equivalent functions of lsd vectors.
+    1.  Numeric vectors of length 3 in which the value for the first position represents librae (`l`), the second position solidi (`s`), and the third position denarii (`d`). Such lsd vectors can either be a single numeric vector or a list of such vectors. The `lsd` and `lsd_list` classes attach a bases value for the solidus and denarius units to lsd vectors and lists of lsd vectors.
+    2.  A data frame that contains pounds, shillings, and pence variables alongside any other variables. The pounds, shillings, and pence columns can have any desired names, but the default is to have the columns named “l”, “s”, and “d” respectively.
+    3.  The final object is a data frame that mimics the structure of an account book and can be thought of as a transactions data frame. In addition to pounds, shillings, and pence variables that denote the value of each transaction, a transactions data frame contains variables recording the [creditor and debtor](https://en.wikipedia.org/wiki/Debits_and_credits) for each transaction.
+-   There are equivalent functions to manipulate lsd vectors and data frames with lsd variables. Almost anything that can be done on an lsd vector can also be done to a data frame with lsd values. Functions that use a transactions data frame that also possess credit and debit variables do not have equivalent functions of lsd vectors.
 
 ### lsd objects
 
-An lsd vector consists of a numeric vector of length three representing the pounds, shillings, and pence units. A set of lsd vectors can be created by placing multiple vectors in a list.
+`debkeepr` provides a consistent manner to manipulate single or sets of lsd values. Pounds, shillings, and pence values are stored as either numeric vectors of length 3 or lists of numeric vectors of length 3 that possess a bases attribute to record the bases for the solidus and denarius units of the values. An object of class `lsd` is a named numeric vector with a bases attribute. An `lsd_list` object builds upon the `lsd` class. It is a list of `lsd` objects that share the same bases, and it possesses a matching bases attribute itself.
+
+`lsd` and` lsd_list` objects are created using the `deb_as_lsd()` function, which accepts a numeric vector of length 3 or a list of such vectors for the lsd value(s) and a numeric vector of length 2 for the bases attribute of the lsd object. All functions in `debkeepr` that accept `lsd` and `lsd_list` objects will also accept numeric vectors and lists of numeric vectors alongside a bases argument. While `deb_as_lsd()` is the most explicit way to create an `lsd` or `lsd_list` object, all `debkeepr` functions that use lsd vectors convert any numeric vectors to `lsd` or `lsd_list` objects.
+
+The default for the bases argument in `debkeepr` functions is `c(20, 12)`, which conforms to the most widely used system of 1 pound = 20 shillings and 1 shilling = 12 pence. However, there also existed [systems that used different bases](https://en.wikipedia.org/wiki/Non-decimal_currency) for the solidus and denarius units. For example, the [money of account](https://en.wikipedia.org/wiki/Unit_of_account) in the [Dutch Republic](https://en.wikipedia.org/wiki/Stuiver) consisted of gulden, stuivers, and penningen. Like the more prevalent system of libra, solidus, and denarius, there were 20 stuivers in a gulden, but there were 16 penningen in a stuiver. `lsd` and `lsd_list` object keep track of the solidus and denarius units through the bases attribute. The bases attribute of the object is used instead of the bases argument in `debkeepr` functions. You can access the bases attribute with `deb_bases()`, and the only way to change the bases attribute is to do so explicitly with `deb_convert_bases()`.
 
 ``` r
 # Load debkeepr
 library(debkeepr)
 
-# Create lsd vector equivalent to £5 8s. 11d
+# Create lsd vector equivalent to £5 8s. 11d.
 lsd_vector <- c(5, 8, 11)
 
+# Create an object of class lsd
+lsd <- deb_as_lsd(lsd = c(5, 8, 11), bases = c(20, 12))
+
+# Create an object of class lsd for guilders value
+guilders <- deb_as_lsd(lsd = c(7, 16, 13), bases = c(20, 16))
+
+# Check the bases of guilders
+deb_bases(guilders)
+#>  s  d 
+#> 20 16
+
 # Create a list of lsd vectors
-lsd_list <- list(c(12, 7, 9), c(5, 8, 11), c(3, 18, 5))
+list_lsd_vector <- list(c(12, 7, 9), c(5, 8, 11), c(3, 18, 5))
+
+# Create an object of class lsd_list
+lsd_list <- deb_as_lsd(lsd = list_lsd_vector, bases = c(20, 12))
 ```
 
 `debkeepr` also works with data frames that contain separate variables for pounds, shillings, and pence. The functions default to use “l”, “s”, and “d” as the names of the pounds, shillings, and pence variables, so using these names simplifies the use of the functions.
@@ -113,9 +133,7 @@ deb_normalize(lsd = c(10, 64, 21))
 #> 13  5  9
 ```
 
-Notice that the result is a named vector with the elements of the vector named “l”, “s”, and “d” respectively.
-
-While much of Europe used the ratio of 1:20:240 from the 8th century on, there also existed [systems that used different bases](https://en.wikipedia.org/wiki/Non-decimal_currency) for the solidus and denarius units. For example, the [money of account](https://en.wikipedia.org/wiki/Unit_of_account) in the [Dutch Republic](https://en.wikipedia.org/wiki/Stuiver) consisted of guilders, stuivers, and penningen. Like the more prevalent system of libra, solidus, and denarius, there were 20 stuivers in a guilder, but there were 16 penningen in a stuiver. It is possible to normalize the above value with this alternative set of lsd bases, or any other bases, with the `bases` argument. This argument takes a numeric vector of length two, corresponding to the bases for the solidus and denarius units. The default is the most commonly used bases of 20 and 12: `c(20, 12)`. The desired bases can be set in all of the relevant functions in `debkeepr`.
+The bases for the solidus and denarius units can be changed on to any value with the bases argument.
 
 ``` r
 # Normalize a non-standard lsd vector with alternative bases
@@ -124,7 +142,7 @@ deb_normalize(lsd = c(10, 64, 21), bases = c(20, 16))
 #> 13  5  5
 ```
 
-Another option available in almost all of the functions that deal with lsd values is to round the pence or denarius unit to a specified decimal place. The `round` argument helps to simplify the output and avoids the issue of rounding lsd values to a non-normalized value. The default is to round to the 5th decimal place.
+Another option available in all of the functions that deal with lsd values is to round the pence or denarius unit to a specified decimal place. The `round` argument helps to simplify the output and avoids the issue of rounding lsd values to a non-normalized value. The default is to round to the 5th decimal place.
 
 ``` r
 # Using round outside of debkeepr functions can lead to non-normalized value

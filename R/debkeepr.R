@@ -7,13 +7,19 @@
 #' or double-entry bookkeeping with the latter providing the name for
 #' `debkeepr`. The use of non-decimal currencies throughout the medieval and
 #' early modern period presents difficulties for the analysis of historical
-#' accounts. The pounds, shillings, and pence system complicates even relatively
-#' simple arithmetic manipulations, as each unit has to be normalized or
-#' converted to the correct base. `debkeepr` does the work of applying
-#' arithmetic operations and normalizing the units to the correct bases.
-#' `debkeepr` uses numeric vectors of length three, lists of such numeric
-#' vectors, and three separate variables in a data frame to represent pounds,
-#' shillings, and pence values.
+#' accounts. The pounds, shillings, and pence system complicates even
+#' relatively simple arithmetic manipulations, as each unit has to be
+#' normalized or converted to the correct base.
+#'
+#' `debkeepr` implements two classes — lsd and lsd_list — to store pounds,
+#' shillings, and pence values and associate the values with bases for the
+#' shillings and pence units. The lsd class stores pounds, shillings, and pence
+#' values as numeric vectors of length three and possesses a bases attribute
+#' for the shillings and pence units. The lsd_list class consists of a list of
+#' lsd objects that have the same bases attribute that also possesses its own
+#' matching bases attribute. In addition, `debkeepr` provides an interface for
+#' analyzing pounds, shillings, and pence values stored as three separate
+#' variables in a data frame.
 #'
 #' The system of recording value according to pounds, shillings, and pence — or
 #' to use the Latin terms from which the English derived libra, solidus, and
@@ -24,6 +30,7 @@
 #' scores of dozens (librae) spread throughout the Carolingian Empire and
 #' became engrained in much of Europe until decimalization occurred after the
 #' French Revolution.
+#'
 #' @docType package
 #' @name debkeepr
 NULL

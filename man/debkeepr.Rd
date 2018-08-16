@@ -13,15 +13,21 @@ values and to analyze account books that use either single-entry bookkeeping
 or double-entry bookkeeping with the latter providing the name for
 \code{debkeepr}. The use of non-decimal currencies throughout the medieval and
 early modern period presents difficulties for the analysis of historical
-accounts. The pounds, shillings, and pence system complicates even relatively
-simple arithmetic manipulations, as each unit has to be normalized or
-converted to the correct base. \code{debkeepr} does the work of applying
-arithmetic operations and normalizing the units to the correct bases.
-\code{debkeepr} uses numeric vectors of length three, lists of such numeric
-vectors, and three separate variables in a data frame to represent pounds,
-shillings, and pence values.
+accounts. The pounds, shillings, and pence system complicates even
+relatively simple arithmetic manipulations, as each unit has to be
+normalized or converted to the correct base.
 }
 \details{
+\code{debkeepr} implements two classes — lsd and lsd_list — to store pounds,
+shillings, and pence values and associate the values with bases for the
+shillings and pence units. The lsd class stores pounds, shillings, and pence
+values as numeric vectors of length three and possesses a bases attribute
+for the shillings and pence units. The lsd_list class consists of a list of
+lsd objects that have the same bases attribute that also possesses its own
+matching bases attribute. In addition, \code{debkeepr} provides an interface for
+analyzing pounds, shillings, and pence values stored as three separate
+variables in a data frame.
+
 The system of recording value according to pounds, shillings, and pence — or
 to use the Latin terms from which the English derived libra, solidus, and
 denarius (lsd) — developed in the 7th and 8th century during the rise of the

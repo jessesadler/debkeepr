@@ -60,7 +60,7 @@ lsd_normalize <- function(lsd, bases, round) {
   lsd[3] <- round(lsd[3] %% bases[2], round)
 
   if (any(is.na(lsd))) {
-    return(stats::setNames(lsd, c("l", "s", "d")))
+    return(lsd)
   }
 
   # Case when denarii rounds up to its base
@@ -72,8 +72,7 @@ lsd_normalize <- function(lsd, bases, round) {
       lsd[2] <- 0
     }
   }
-
-  stats::setNames(lsd, c("l", "s", "d"))
+  lsd
 }
 
 # If lsd is negative return normalized as negative
@@ -112,32 +111,35 @@ lsd_negative <- function(normalized, lsd, bases) {
 #' became engrained in much of Europe. However,
 #' [other bases](https://en.wikipedia.org/wiki/Non-decimal_currency) for the
 #' solidus and denarius units were also in use. The `bases` argument makes
-#' it possible to specify alternate bases for the solidus and denarius units.
+#' it possible to specify alternative bases for the solidus and denarius units.
 #'
-#' @param lsd Numeric vector of length 3 or list of numeric vectors of length
-#'   3. The first position of the vector represents the pounds value or l. The
-#'   second position represents the shillings value or s. And the third
-#'   position represents the pence value or d.
-#' @param bases Numeric vector of length 2 used to specify the bases for
-#'   the shillings or s and pence or d units in `lsd`. Default is `c(20, 12)`,
-#'   which conforms to the most widely used system of 1 pound = 20 shillings
-#'   and 1 shilling = 12 pence. This argument makes it possible to use
-#'   alternate bases for the shillings (s) and pence (d) units.
-#' @param round Round pence to specified number of decimal places.
-#'   Default is 5. Set to 0 to return pence as whole numbers.
+#' @param lsd An lsd value. A vector of class lsd, a list of class lsd_list, or
+#'   an object that can be coerced to these classes, namely a numeric vector of
+#'   length 3 or a list of such vectors. The first position of the vector
+#'   represents the pounds value or l. The second position represents the
+#'   shillings value or s. And the third position represents the pence value
+#'   or d.
+#' @param bases Numeric vector of length 2 used to specify the bases for the
+#'   shillings or s and pence or d units. Default is `c(20, 12)`, which
+#'   conforms to the most widely used system of 1 pound = 20 shillings and
+#'   1 shilling = 12 pence. If `lsd` is of class lsd or lsd_list, the bases
+#'   attribute will be used in the place of this argument.
+#' @param round Round pence unit to specified number of decimal places.
+#'   Default is 5. Set to 0 to return pence as whole number.
 #'
-#' @return Returns either a named numeric vector of length 3 or a list of named
-#'   numeric vectors representing the normalized values of pounds, shillings,
-#'   and pence. If the input lsd value is negative, the l, s, and d values will
-#'   all be negative.
+#' @return Returns an lsd or lsd_list object with a bases attribute.
 #'
 #' @examples
 #' # Use to normalize the values of pounds, shillings, and pence
-#' deb_normalize(lsd = c(5, 55, 22))
+#' deb_normalize(lsd = c(5, 55, 42))
 #'
 #' # Normalize values with alternative bases for solidus and denarius units
 #' # For instance, the Dutch system of guilders, stuivers, and penningen
-#' deb_normalize(lsd = c(5, 55, 22), bases = c(20, 16))
+#' deb_normalize(lsd = c(5, 55, 42), bases = c(20, 16))
+#'
+#' # Normalizing an object of class lsd will use the bases attribute
+#' lsd <- deb_as_lsd(lsd = c(5, 55, 42), bases = c(20, 16))
+#' deb_normalize(lsd = lsd)
 #'
 #' # It is possible to perform arithmetic within the function
 #' deb_normalize(lsd = c(5 + 6, 20 + 18, 8 + 11))
@@ -158,9 +160,13 @@ lsd_negative <- function(normalized, lsd, bases) {
 #' deb_normalize(lsd = c(5.7, 44.742, 15), round = 5)
 #' deb_normalize(lsd = c(5.7, 44.742, 15), round = 0)
 #'
-#' # To normalize multiple lsd values use a list of lsd vectors
+#' # Normalize multiple values with an lsd_list or list of numeric vectors
 #' lsd_list <- list(c(4, 34, 89), c(-9, -75, -19), c(15.85, 36.15, 56))
 #' deb_normalize(lsd = lsd_list)
+#'
+#' # Or an lsd_list object with alternative bases
+#' lsd_list2 <- deb_as_lsd(lsd = lsd_list, bases = c(20, 16))
+#' deb_normalize(lsd = lsd_list2)
 #'
 #' # It is possible to do arithmetic within the lsd argument
 #' # if inputs are all vectors.
@@ -181,13 +187,14 @@ lsd_negative <- function(normalized, lsd, bases) {
 #' @export
 
 deb_normalize <- function(lsd, bases = c(20, 12), round = 5) {
-
   lsd_check(lsd)
+  bases <- validate_bases(lsd, bases)
   bases_check(bases)
   round_check(round)
   checked <- lsd_decimal_check(lsd, bases)
-  normalized <- lsd_normalize(checked, bases = bases, round = round)
-  lsd_negative(normalized, lsd, bases)
+  normalized <- lsd_normalize(checked, bases, round)
+  ret <- lsd_negative(normalized, lsd, bases)
+  to_lsd(ret, bases)
 }
 
 ## Normalize data frame ##
@@ -209,7 +216,7 @@ deb_normalize <- function(lsd, bases = c(20, 12), round = 5) {
 #' became engrained in much of Europe. However,
 #' [other bases](https://en.wikipedia.org/wiki/Non-decimal_currency) for the
 #' solidus and denarius units were also in use. The `bases` argument makes
-#' it possible to specify alternate bases for the solidus and denarius units.
+#' it possible to specify alternative bases for the solidus and denarius units.
 #'
 #' @param df A data frame that contains pounds, shillings, and pence variables.
 #' @param l Pounds column: Unquoted name of a numeric variable corresponding

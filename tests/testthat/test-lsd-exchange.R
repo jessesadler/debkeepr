@@ -1,12 +1,20 @@
 context("test-lsd-exchange.R")
 
-ex_vector <- c(10, 3, 2)
-ex_vector2 <- c(20, 5, 8)
-neg_vector <- c(-8, -16, -6)
-dec_vector <- c(5.85, 17.35, 10)
+x <- c(10, 3, 2)
+y <- c(20, 5, 8)
+neg <- c(-8, -16, -6)
+dec <- c(5.85, 17.35, 10)
+b1 <- c(20, 12)
+b2 <- c(8, 16)
+x_b1 <- to_lsd(x, b1)
+x_b2 <- to_lsd(x, b2)
+y_b2 <- to_lsd(y, b2)
 
-ex_list <- list(c(30, 10, 9), c(10.725, 18.65, 11), c(-26, -11, -10))
-ex_list2 <- list(ex_vector, dec_vector, ex_vector2)
+list1 <- list(c(30, 10, 9), c(10.725, 18.65, 11), c(-26, -11, -10))
+list2 <- list(x, y, dec)
+lsd_list1 <- to_lsd(list1, b2)
+lsd_list2 <- list(x_b2, y_b2, dec)
+lsd_list3 <- list(x_b1, x_b2, y_b2)
 
 ex_df <- data.frame(l = c(30, 10.725, -26),
                     s = c(10, 18.65, -11),
@@ -18,38 +26,53 @@ exchange_30 <- data.frame(l = c(45, 17, -39),
 rate_list <- list(c(0, 33, 4), c(0, 30, 0), c(0, 40, 0))
 
 test_that("exchange_rate_check works", {
-  expect_error(deb_exchange(ex_vector, shillings_rate = "a"),
+  expect_error(deb_exchange(x, shillings_rate = "a"),
                "shillings_rate must be numeric")
   expect_error(deb_exchange_mutate(ex_df, l, s, d, shillings_rate = "a"),
                "shillings_rate must be numeric")
-  expect_error(deb_exchange(ex_vector, shillings_rate = c(31, 32)),
+  expect_error(deb_exchange(x, shillings_rate = c(31, 32)),
                "shillings_rate must be a numeric vector of length 1")
   expect_error(deb_exchange_mutate(ex_df, l, s, d, shillings_rate = c(31, 32)),
                "shillings_rate must be a numeric vector of length 1")
 })
 
 test_that("deb_exchange works", {
-  expect_equal(deb_exchange(ex_vector, shillings_rate = 24),
-               deb_multiply(ex_vector, x = 24/20))
-  expect_equal(deb_exchange(ex_vector, shillings_rate = 30),
-               c(l = 15, s = 4, d = 9))
-  expect_equal(deb_exchange(ex_vector, shillings_rate = 30 + 3/12),
-               c(l = 15, s = 7, d = 3.475))
-  expect_equal(deb_exchange(ex_vector, shillings_rate = 30 + 3/12, round = 0),
-               c(l = 15, s = 7, d = 3))
-  expect_equal(deb_exchange(ex_vector, shillings_rate = 30, bases = c(8, 16)),
-               c(l = 38, s = 7, d = 11.5))
+  expect_equal(deb_exchange(x, shillings_rate = 24),
+               deb_multiply(x, x = 24/20))
+  expect_equal(deb_exchange(x, shillings_rate = 30),
+               to_lsd(c(15, 4, 9), b1))
+  expect_equal(deb_exchange(x, shillings_rate = 30 + 3/12),
+               to_lsd(c(15, 7, 3.475), b1))
+  expect_equal(deb_exchange(x, shillings_rate = 30 + 3/12, round = 0),
+               to_lsd(c(15, 7, 3), b1))
+  expect_equal(deb_exchange(x, shillings_rate = 30, bases = c(8, 16)),
+               to_lsd(c(38, 7, 11.5), b2))
 })
 
 test_that("deb_exchange is vectorized", {
-  expect_equal(deb_exchange(ex_list, shillings_rate = 30),
-               list(c(l = 45, s = 16, d = 1.5),
-                    c(l = 17, s = 11, d = 1.2),
-                    c(l = -39, s = -17, d = -9)))
-  expect_equal(deb_exchange(ex_list, shillings_rate = 30, round = 0),
-               list(c(l = 45, s = 16, d = 2),
-                    c(l = 17, s = 11, d = 1),
-                    c(l = -39, s = -17, d = -9)))
+  expect_equal(deb_exchange(list1, shillings_rate = 30),
+               to_lsd(list(c(45, 16, 1.5),
+                           c(17, 11, 1.2),
+                           c(-39, -17, -9)), b1))
+  expect_equal(deb_exchange(list1, shillings_rate = 16, bases = b2),
+               to_lsd(list(c(62, 5, 2),
+                           c(26, 2, 4.4),
+                           c(-54, -7, -4)), b2))
+  expect_equal(deb_exchange(list1, shillings_rate = 30, round = 0),
+               to_lsd(list(c(45, 16, 2),
+                           c(17, 11, 1),
+                           c(-39, -17, -9)), b1))
+})
+
+test_that("deb_exchange works with lsd objects", {
+  expect_identical(deb_exchange(x_b2, shillings_rate = 12),
+                   deb_exchange(x, shillings_rate = 12, bases = b2))
+  expect_identical(deb_exchange(lsd_list1, shillings_rate = 12),
+                   deb_exchange(list1, shillings_rate = 12, bases = b2))
+  expect_identical(deb_exchange(lsd_list2, shillings_rate = 12, round = 0),
+                   deb_exchange(list2, shillings_rate = 12, bases = b2, round = 0))
+  expect_error(deb_exchange(lsd_list3, shillings_rate = 12),
+               "All lsd vectors in a list must have the same bases")
 })
 
 test_that("deb_exchange_mutate works", {
@@ -62,72 +85,106 @@ test_that("deb_exchange_mutate works", {
 })
 
 test_that("normalized_to_sd helper works",{
-  expect_equal(normalized_to_sd(c(1, 11, 0)), c(0, 31, 0))
+  expect_equal(normalized_to_sd(c(1, 11, 0), b1), c(0, 31, 0))
+  expect_equal(normalized_to_sd(to_lsd(c(1, 11, 0), b1), b1), to_lsd(c(0, 31, 0), b1))
+  expect_equal(normalized_to_sd(list(x, y), b1),
+               to_lsd(list(c(0, 203, 2),
+                           c(0, 405, 8)), b1))
 })
 
 test_that("normalized_to_d helper works",{
-  expect_equal(normalized_to_d(c(1, 11, 6)), c(0, 0, 378))
+  expect_equal(normalized_to_d(c(1, 11, 6), b1), c(0, 0, 378))
+  expect_equal(normalized_to_d(to_lsd(c(1, 11, 6), b1), b1), to_lsd(c(0, 0, 378), b1))
+  expect_equal(normalized_to_d(list(x, y), bases = b1),
+               to_lsd(list(c(0, 0, 2438),
+                           c(0, 0, 4868)), b1))
 })
 
 test_that("deb_exchange_rate works", {
   expect_equal(deb_exchange_rate(c(166, 13, 4), c(100, 0, 0)),
-               c(l = 0, s = 12, d = 0))
+               to_lsd(c(0, 12, 0), b1))
   expect_equal(deb_exchange_rate(c(100, 0, 0), c(166, 13, 4)),
-               c(l = 0, s = 33, d = 4))
+               to_lsd(c(0, 33, 4), b1))
   expect_equal(deb_exchange_rate(c(100, 0, 0), c(166, 13, 0), round = 0),
-               c(l = 0, s = 33, d = 4))
+               to_lsd(c(0, 33, 4), b1))
   expect_equal(deb_exchange_rate(c(100, 0, 0), c(166, 2, 10), bases = c(8, 16)),
-               c(l = 0, s = 13, d = 4.9))
+               to_lsd(c(0, 13, 4.9), b2))
   expect_equal(deb_exchange_rate(c(20, 10, 8), c(10, 5, 4), bases = c(40, 24)),
-               c(l = 0, s = 20, d = 0))
+               to_lsd(c(0, 20, 0), c(40, 24)))
   expect_equal(deb_exchange_rate(c(166, 13, 4), c(100, 0, 0), output = "pence"),
-               c(l = 0, s = 0, d = 144))
+               to_lsd(c(0, 0, 144), b1))
   expect_equal(deb_exchange_rate(c(100, 0, 0), c(166, 13, 4), output = "pence"),
-               c(l = 0, s = 0, d = 400))
+               to_lsd(c(0, 0, 400), b1))
   expect_equal(deb_exchange_rate(c(166, 13, 4), c(100, 0, 0), output = "pounds"),
-               c(l = 0, s = 12, d = 0))
+               to_lsd(c(0, 12, 0), b1))
   expect_equal(deb_exchange_rate(c(100, 0, 0), c(166, 13, 4), output = "pounds"),
-               c(l = 1, s = 13, d = 4))
+               to_lsd(c(1, 13, 4), b1))
 })
 
 test_that("deb_exchange_rate is vectorized", {
-  expect_equal(length(deb_exchange_rate(ex_list, ex_list2)), 3)
-  expect_equal(deb_exchange_rate(ex_list, ex_list2, round = 0),
-               list(c(l = 0, s = 6, d = 8),
-                    c(l = 0, s = 11, d = 7),
-                    c(l = 0, s = -15, d = -3)))
+  expect_equal(length(deb_exchange_rate(list1, list2)), 3)
+  expect_equal(deb_exchange_rate(list1, list2, round = 0),
+               to_lsd(list(c(0, 6, 8),
+                           c(0, 34, 8),
+                           c(0, -5, -1)), b1))
+  expect_equal(deb_exchange_rate(list1, list2, bases = b2, round = 0),
+               to_lsd(list(c(0, 2, 10),
+                           c(0, 12, 9),
+                           c(0, -2, -6)), b2))
+})
+
+test_that("deb_exchange_rate works with lsd objects", {
+  expect_identical(deb_exchange_rate(x_b2, y_b2), deb_exchange_rate(x, y_b2))
+  expect_identical(deb_exchange_rate(lsd_list1, x), deb_exchange_rate(list1, x, bases = b2))
+  expect_identical(deb_exchange_rate(x, lsd_list2), deb_exchange_rate(x, list2, bases = b2))
+  expect_error(deb_exchange_rate(lsd_list3, lsd_list1),
+               "All lsd vectors in a list must have the same bases")
 })
 
 test_that("deb_invert_rate works", {
-  expect_equal(deb_invert_rate(c(0, 33, 4)), c(l = 0, s = 12, d = 0))
-  expect_equal(deb_invert_rate(c(0, 12, 0)), c(l = 0, s = 33, d = 4))
-  expect_equal(deb_invert_rate(c(0, 33, 0), round = 0), c(l = 0, s = 12, d = 1))
+  expect_equal(deb_invert_rate(c(0, 33, 4)), to_lsd(c(0, 12, 0), b1))
+  expect_equal(deb_invert_rate(c(0, 12, 0)), to_lsd(c(0, 33, 4), b1))
+  expect_equal(deb_invert_rate(c(0, 33, 0), round = 0), to_lsd(c(0, 12, 1), b1))
   expect_equal(deb_invert_rate(c(0, 12, 0), output = "pence"),
-               c(l = 0, s = 0, d = 400))
+               to_lsd(c(0, 0, 400), b1))
   expect_equal(deb_invert_rate(c(0, 12, 0), output = "pounds"),
-               c(l = 1, s = 13, d = 4))
+               to_lsd(c(1, 13, 4), b1))
+  expect_equal(deb_invert_rate(c(0, 12, 0), bases = b2), to_lsd(c(0, 5, 5.33333), b2))
 })
 
 test_that("deb_invert_rate is vectorized", {
   expect_equal(length(deb_invert_rate(rate_list)), 3)
   expect_equal(deb_invert_rate(rate_list),
-               list(c(l = 0, s = 12, d = 0),
-                    c(l = 0, s = 13, d = 4),
-                    c(l = 0, s = 10, d = 0)))
+               to_lsd(list(c(0, 12, 0),
+                      c(0, 13, 4),
+                      c(0, 10, 0)), b1))
   expect_equal(deb_invert_rate(rate_list, bases = c(40, 12)),
-               list(c(l = 0, s = 48, d = 0),
-                    c(l = 0, s = 53, d = 4),
-                    c(l = 0, s = 40, d = 0)))
+               to_lsd(list(c(0, 48, 0),
+                      c(0, 53, 4),
+                      c(0, 40, 0)), c(40, 12)))
   expect_equal(deb_invert_rate(rate_list, bases = c(20, 16), round = 0),
-               list(c(l = 0, s = 12, d = 0),
-                    c(l = 0, s = 13, d = 5),
-                    c(l = 0, s = 10, d = 0)))
+               to_lsd(list(c(0, 12, 0),
+                      c(0, 13, 5),
+                      c(0, 10, 0)), c(20, 16)))
+})
+
+test_that("deb_invert_rate works with lsd objects", {
+  expect_identical(deb_invert_rate(x_b2),
+                   deb_invert_rate(x, bases = b2))
+  expect_identical(deb_invert_rate(lsd_list1),
+                   deb_invert_rate(list1, bases = b2))
+  expect_identical(deb_invert_rate(lsd_list2, round = 0),
+                   deb_invert_rate(list2, bases = b2, round = 0))
+  expect_error(deb_invert_rate(lsd_list3),
+               "All lsd vectors in a list must have the same bases")
 })
 
 ## Error messages from exchange_rate_check ##
 test_that("non-vector is an error", {
   expect_error(deb_invert_rate(data.frame(a = c(1:4), b = c(5:8))),
-               "exchange_rate must be either a numeric vector or list of numeric vectors")
+               paste("exchange_rate must be a vector of class lsd, a list of class lsd_list,",
+                     "       or an object that can be coerced to these classes, namely",
+                     "       a numeric vector or list of numeric vectors", sep = "\n"))
 })
 
 test_that("non-numeric is an error", {

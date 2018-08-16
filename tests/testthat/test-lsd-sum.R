@@ -2,8 +2,22 @@ context("test-lsd-sum.R")
 
 suppressPackageStartupMessages(library(dplyr))
 
-lsd_list <- list(c(12, 7, 9), c(5, 8, 11), c(3, 18, 5))
+x <- c(10, 3, 2)
+y <- c(20, 5, 8)
+neg <- c(-8, -16, -6)
+dec <- c(5.85, 17.35, 10)
+b1 <- c(20, 12)
+b2 <- c(8, 16)
+x_b1 <- to_lsd(x, b1)
+x_b2 <- to_lsd(x, b2)
+y_b2 <- to_lsd(y, b2)
+
+list1 <- list(c(12, 7, 9), c(5, 8, 11), c(3, 18, 5))
 na_list <- list(c(12, 7, 9), c(5, 8, 11), c(3, 18, NA))
+list2 <- list(x, y, dec)
+lsd_list1 <- to_lsd(list1, b2)
+lsd_list2 <- list(x_b2, y_b2, dec)
+lsd_list3 <- list(x_b1, x_b2, y_b2)
 
 example1 <- data.frame(group = c(1, 2, 1, 2),
                        l = c(3, 5, 6, 2),
@@ -33,26 +47,41 @@ example_na <- data.frame(group = c(1, 2, 1, 2),
                          d = c(9, 11, 10, NA))
 
 test_that("deb_sum works", {
-  expect_equal(deb_sum(lsd_list),
-               c(l = 21, s = 15, d = 1))
-  expect_equal(deb_sum(lsd_list, c(-8, - 5, -5)),
-               c(l = 13, s = 9, d = 8))
-  expect_equal(deb_sum(lsd_list, c(8, 4, 9), c(6, 19, 10)),
-               c(l = 36, s = 19, d = 8))
-  expect_equal(deb_sum(lsd_list, bases = c(8, 16)),
-               c(l = 24, s = 2, d = 9))
+  expect_equal(deb_sum(list1),
+               to_lsd(c(21, 15, 1), b1))
+  expect_equal(deb_sum(list1, c(-8, - 5, -5)),
+               to_lsd(c(13, 9, 8), b1))
+  expect_equal(deb_sum(list1, c(8, 4, 9), c(6, 19, 10)),
+               to_lsd(c(36, 19, 8), b1))
+  expect_equal(deb_sum(list1, bases = b2),
+               to_lsd(c(24, 2, 9), b2))
   expect_equal(deb_sum(c(1, 6, 3.33333333), c(1, 6, 3.33333333), c(1, 7, 5.33333333)),
-               c(l = 4, s = 0, d = 0))
+               to_lsd(c(4, 0, 0), b1))
   expect_equal(deb_sum(c(1, 6, 3.33333333), c(1, 6, 3), c(1, 7, 6)),
-               c(l = 4, s = 0, d = 0.33333))
+               to_lsd(c(4, 0, 0.33333), b1))
   expect_equal(deb_sum(c(1, 6, 3.33333333), c(1, 6, 3), c(1, 7, 6), round = 0),
-               c(l = 4, s = 0, d = 0))
-  expect_error(deb_sum(lsd_list, c("hello", "goodbye")),
+               to_lsd(c(4, 0, 0), b1))
+  expect_error(deb_sum(list1, c("hello", "goodbye")),
                "lsd must be a numeric vector")
-  expect_error(deb_sum(lsd_list, c(6, 3)),
+  expect_error(deb_sum(list1, c(6, 3)),
                paste("lsd must be a vector of length of 3.",
                      "There must be a value for pounds, shillings, and pence.",
                      sep = "\n"))
+})
+
+test_that("deb_sum works with lsd objects", {
+  expect_identical(deb_sum(x_b2, y_b2, lsd_list1),
+                   deb_sum(x, y, list1, bases = b2))
+  expect_identical(deb_sum(lsd_list1),
+                   deb_sum(list1, bases = b2))
+  expect_identical(deb_sum(lsd_list1, x, y, dec),
+                   deb_sum(list1, x, y, dec, bases = b2))
+  expect_identical(deb_sum(lsd_list2, round = 0),
+                   deb_sum(list2, bases = b2, round = 0))
+  expect_error(deb_sum(lsd_list3),
+               "All lsd vectors in a list must have the same bases")
+  expect_error(deb_sum(x_b1, x_b2),
+               "All objects of class lsd must have the same bases")
 })
 
 test_that("deb_sum_df works on data frames", {
@@ -69,9 +98,9 @@ test_that("deb_sum_df works on data frames", {
 
 test_that("na.rm works", {
   expect_equal(deb_sum(na_list),
-               stats::setNames(as.numeric(c(NA, NA, NA)), c("l", "s", "d")))
+               to_lsd(as.numeric(c(NA, NA, NA)), b1))
   expect_equal(deb_sum(na_list, na.rm = TRUE),
-               deb_sum(lsd_list[1:2]))
+               deb_sum(list1[1:2]))
   expect_equal(deb_sum_df(example_na),
                data.frame(l = as.numeric(NA), s = as.numeric(NA), d = as.numeric(NA)))
   expect_equal(deb_sum_df(example_na, na.rm = TRUE),

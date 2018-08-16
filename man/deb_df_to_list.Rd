@@ -2,9 +2,9 @@
 % Please edit documentation in R/helpers.R
 \name{deb_df_to_list}
 \alias{deb_df_to_list}
-\title{Data frame of pounds, shillings, and pence to list of lsd vectors}
+\title{Data frame of pounds, shillings, and pence to lsd_list}
 \usage{
-deb_df_to_list(df, l = l, s = s, d = d)
+deb_df_to_list(df, l = l, s = s, d = d, bases = c(20, 12))
 }
 \arguments{
 \item{df}{A data frame that contains pounds, shillings, and pence variables.}
@@ -17,26 +17,30 @@ to the shillings or solidi unit. Default is s.}
 
 \item{d}{Pence column: Unquoted name of numeric variable corresponding to
 the pence or denarii unit. Default is d.}
+
+\item{bases}{Numeric vector of length 2 used to specify the bases for the
+shillings or s and pence or d units. Default is \code{c(20, 12)}, which
+conforms to the most widely used system of 1 pound = 20 shillings and
+1 shilling = 12 pence. If \code{lsd} is of class lsd or lsd_list, the bases
+attribute will be used in the place of this argument.}
 }
 \value{
-Returns a list of named numeric vectors representing the values of
-pounds, shillings, and pence. The length of the list will be equal to the
-number of rows in \code{df}. All variables in \code{df} aside from \code{l}, \code{s}, and \code{d}
-will be dropped.
+Returns an lsd_list object with a bases attribute. All variables in
+\code{df} aside from \code{l}, \code{s}, and \code{d} will be dropped.
 }
 \description{
 Transform a data frame that has pounds, shillings, and pence variables into
-a list of lsd vectors.
+an lsd_list object.
 }
 \details{
 \code{df_to_lsd_list} is a helper function to make it easier to convert between
 the two primary types of input objects of multiple lsd values used by
-\code{debkeepr}. See \code{\link[=deb_list_to_df]{deb_list_to_df()}} to convert a list of lsd vectors to a
+\code{debkeepr}. See \code{\link[=deb_list_to_df]{deb_list_to_df()}} to convert a list of lsd values to a
 data frame with pounds, shillings, and pence variables.
 }
 \examples{
 # Convert a data frame with pounds, shillings, and pence variables
-# into a list of lsd vectors
+# into a list an lsd_list
 example <- data.frame(l = c(4, -9, 25),
                       s = c(14, -5, 15),
                       d = c(9, -1, 6))

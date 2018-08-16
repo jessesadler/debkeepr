@@ -17,9 +17,7 @@
 #'   pounds, shillings and pence value(s) will include the principal as well as
 #'   the interest. When `FALSE` only the interest will be returned.
 #'
-#' @return Returns either a named numeric vector of length 3 or a list of
-#'   named numeric vectors representing the values of pounds, shillings,
-#'   and pence.
+#' @return Returns an lsd or lsd_list object with a bases attribute.
 #'
 #' @examples
 #' # Calculate the interest with the principal over a certain duration
@@ -32,11 +30,20 @@
 #' # Or you can calculate only the interest
 #' deb_interest(lsd = c(10, 14, 5), duration = 5, with_principal = FALSE)
 #'
-#' # Interest of a list of lsd vectors at a single rate
-#' # This returns a list of named lsd values
-#' lsd_list <- list(c(40, 5, 9), c(29, 7, 1), c(35, 6, 5))
+#' # Interest for an lsd value with alternative bases
+#' deb_interest(lsd = c(10, 14, 5), duration = 5, bases = c(20, 16))
 #'
+#' # Interest of an object of class lsd will use the bases attribute
+#' lsd <- deb_as_lsd(lsd = c(10, 14, 5), bases = c(20, 16))
+#' deb_interest(lsd = lsd, duration = 5)
+#'
+#' # Interest of a list of lsd values at a single rate
+#' lsd_list <- list(c(40, 5, 9), c(29, 7, 1), c(35, 6, 5))
 #' deb_interest(lsd = lsd_list, interest = 0.08, duration = 5)
+#'
+#' # Or an lsd_list object with alternative bases
+#' lsd_list2 <- deb_as_lsd(lsd = lsd_list, bases = c(20, 16))
+#' deb_interest(lsd = lsd_list2, interest = 0.08, duration = 5)
 #'
 #' @export
 
@@ -46,23 +53,25 @@ deb_interest <- function(lsd,
                          with_principal = TRUE,
                          bases = c(20, 12),
                          round = 5) {
-  # vectorize
-  if (is.list(lsd) == TRUE) {
-    return(purrr::map(lsd, ~ deb_interest(.,
-                                          interest = interest,
-                                          duration = duration,
-                                          with_principal = with_principal,
-                                          bases = bases,
-                                          round = round)))
-  }
-
   interest_check(interest, duration, with_principal)
+  bases <- validate_bases(lsd, bases)
 
-  if (with_principal == TRUE) {
-    deb_normalize(lsd + lsd * interest * duration, bases = bases, round = round)
-  } else {
-    deb_normalize(lsd * interest * duration, bases = bases, round = round)
+  if (is.list(lsd) == TRUE) {
+    # lists
+    if (with_principal == TRUE) {
+      lsd <- purrr::map(lsd, ~ . + . * interest * duration)
+    } else {
+      lsd <- purrr::map(lsd, ~ . * interest * duration)
+      }
+    } else {
+      # vectors
+      if (with_principal == TRUE) {
+        lsd <- lsd + lsd * interest * duration
+      } else {
+        lsd <- lsd * interest * duration
+      }
   }
+  deb_normalize(lsd = lsd, bases = bases, round = round)
 }
 
 #' Calculation of the interest of pounds, shillings, and pence in a data frame

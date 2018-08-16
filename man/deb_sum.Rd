@@ -7,50 +7,60 @@
 deb_sum(..., bases = c(20, 12), round = 5, na.rm = FALSE)
 }
 \arguments{
-\item{...}{Numeric vectors of length 3 and/or lists of numeric vectors of
-length 3. The first position of each vector represents the pounds value
-or l. The second position represents the shillings value or s. And the
-third position represents the pence value or d.}
+\item{...}{lsd values. Vectors of class lsd, lists of class lsd_list, or
+objects that can be coerced to these classes, namely numeric vectors of
+length 3 or lists of such vectors. All lsd and lsd_list objects must have
+the same bases. The first position of the vector represents the pounds
+value or l. The second position represents the shillings value or s. And
+the third position represents the pence value or d.}
 
-\item{bases}{Numeric vector of length 2 used to specify the bases for
-the shillings or s and pence or d units in \code{lsd}. Default is \code{c(20, 12)},
-which conforms to the most widely used system of 1 pound = 20 shillings
-and 1 shilling = 12 pence. This argument makes it possible to use
-alternate bases for the shillings (s) and pence (d) units.}
+\item{bases}{Numeric vector of length 2 used to specify the bases for the
+shillings or s and pence or d units. Default is \code{c(20, 12)}, which
+conforms to the most widely used system of 1 pound = 20 shillings and
+1 shilling = 12 pence. If any of the lsd values are lsd or lsd_list
+objects, the bases attribute will be used in the place of this argument.
+All lsd and lsd_list objects must have the same bases.}
 
-\item{round}{Round pence to specified number of decimal places.
-Default is 5. Set to 0 to return pence as whole numbers.}
+\item{round}{Round pence unit to specified number of decimal places.
+Default is 5. Set to 0 to return pence as whole number.}
 
 \item{na.rm}{Logical. Passed on to \code{na.rm} argument in \code{\link[=sum]{sum()}}. Whether
 missing values (NA) should be removed. Default is \code{FALSE}.}
 }
 \value{
-Returns a named numeric vector of length 3 representing the sum of
-the pounds, shillings, and pence from the lsd vectors. If the sum is
-negative, the l, s, and d values will all be negative.
+Returns an lsd object with a bases attribute.
 }
 \description{
-Sum multiple pounds, shillings, and pence values that are in the form of
-numeric vectors or lists of numeric vectors, reducing the vectors to a
-single pounds, shillings, and pence value.
+Sum multiple pounds, shillings, and pence values, reducing the values to a
+single pounds, shillings, and pence value in the form of an lsd object.
 }
 \details{
-See \code{\link[=deb_add]{deb_add()}} to add an lsd vector or list of lsd vectors to the
-elements of a list of lsd vectors.
+See \code{\link[=deb_add]{deb_add()}} to add an lsd value or list of lsd values to the
+elements of a list of lsd values.
 }
 \examples{
-# Sum of multiple lsd vectors
+# Sum of multiple lsd values
 deb_sum(c(12, 7, 9), c(5, 8, 11), c(3, 18, 5))
 
-# Sum of a list of lsd vectors
-lsd_list <- list(c(12, 7, 9), c(5, 8, 11), c(3, 18, 5))
+# Sum of multiple lsd values with alternative bases
+deb_sum(c(12, 7, 9), c(5, 8, 11), c(3, 18, 5), bases = c(20, 16))
+
+# If one value is an lsd object, the bases attribute will be used
+lsd <- deb_as_lsd(lsd = c(12, 7, 9), bases = c(20, 16))
+deb_sum(lsd, c(5, 8, 11), c(3, 18, 5))
+
+# Sum of a lsd_list object
+lsd_list <- deb_as_lsd(lsd = list(c(12, 7, 9), c(5, 8, 11), c(3, 18, 5)))
 deb_sum(lsd_list)
 
 # Sum of a mixture of lsd vectors and list of lsd vectors
 deb_sum(lsd_list, c(8, 4, 9), c(6, 19, 10))
 
-# Can use alternative bases for solidus and denarius units
-deb_sum(lsd_list, c(8, 4, 9), c(6, 19, 10), bases = c(20, 16))
+# Cannot find sum of lsd and/or lsd_list
+# objects that have different bases
+\dontrun{
+deb_sum(lsd, lsd_list)
+}
 
 }
 \seealso{

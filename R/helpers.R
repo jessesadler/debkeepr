@@ -3,28 +3,28 @@
 # list of lsd vectors to data frame and
 # data frame of l, s, d values to list of lsd vectors
 
-#' List of lsd vectors to data frame of pounds, shillings, and pence
+#' List of lsd values to data frame of pounds, shillings, and pence
 #'
-#' Transform a list of lsd vectors into a data frame that has pounds,
-#' shillings, and pence variables.
+#' Transform an lsd_list or a list of lsd values into a data frame that has
+#' pounds, shillings, and pence variables.
 #'
 #' `lsd_list_to_df` is a helper function to make it easier to convert between
 #' the two primary types of input objects of multiple lsd values used by
 #' `debkeepr`. See [deb_df_to_list()] to convert a data frame with pounds,
-#' shillings, and pence variable to a list with lsd vectors.
+#' shillings, and pence variable to an lsd_list.
 #'
 #' @family helper functions
-#' @param lsd_list A list of numeric vectors of length 3. The first position
-#'   of the vector represents the pounds value or l. The second position
-#'   represents the shillings value or s. And the third position represents
-#'   the pence value or d.
+#' @param lsd_list An lsd_list object or a list of numeric vectors of length 3.
+#'   The first position of the vector represents the pounds value or l. The
+#'   second position represents the shillings value or s. And the third
+#'   position represents the pence value or d.
 #'
-#' @return Returns a tibble or `tbl_df` object with pounds, shillings, and
+#' @return Returns a tibble or tbl_df object with pounds, shillings, and
 #'   pence variables named l, s, and d respectively. The number of rows in
 #'   the tibble will be equal to the length of `lsd_list`.
 #'
 #' @examples
-#' # Convert a list of lsd vectors into a tibble with
+#' # Convert a list of lsd values into a tibble with
 #' # pounds, shillings, and pence variables
 #' example <- list(c(4, 14, 9), c(-9, -5, -1), c(15, 15, 6))
 #' deb_list_to_df(example)
@@ -44,27 +44,25 @@ deb_list_to_df <- function(lsd_list) {
     tibble::as_tibble()
 }
 
-#' Data frame of pounds, shillings, and pence to list of lsd vectors
+#' Data frame of pounds, shillings, and pence to lsd_list
 #'
 #' Transform a data frame that has pounds, shillings, and pence variables into
-#' a list of lsd vectors.
+#' an lsd_list object.
 #'
 #' `df_to_lsd_list` is a helper function to make it easier to convert between
 #' the two primary types of input objects of multiple lsd values used by
-#' `debkeepr`. See [deb_list_to_df()] to convert a list of lsd vectors to a
+#' `debkeepr`. See [deb_list_to_df()] to convert a list of lsd values to a
 #' data frame with pounds, shillings, and pence variables.
 #'
 #' @family helper functions
 #' @inheritParams deb_normalize_df
 #'
-#' @return Returns a list of named numeric vectors representing the values of
-#'   pounds, shillings, and pence. The length of the list will be equal to the
-#'   number of rows in `df`. All variables in `df` aside from `l`, `s`, and `d`
-#'   will be dropped.
+#' @return Returns an lsd_list object with a bases attribute. All variables in
+#'   `df` aside from `l`, `s`, and `d` will be dropped.
 #'
 #' @examples
 #' # Convert a data frame with pounds, shillings, and pence variables
-#' # into a list of lsd vectors
+#' # into a list an lsd_list
 #' example <- data.frame(l = c(4, -9, 25),
 #'                       s = c(14, -5, 15),
 #'                       d = c(9, -1, 6))
@@ -80,7 +78,7 @@ deb_list_to_df <- function(lsd_list) {
 #'
 #' @export
 
-deb_df_to_list <- function(df, l = l, s = s, d = d) {
+deb_df_to_list <- function(df, l = l, s = s, d = d, bases = c(20, 12)) {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)
@@ -89,7 +87,7 @@ deb_df_to_list <- function(df, l = l, s = s, d = d) {
   if (is.data.frame(df) == FALSE) {
     stop(call. = FALSE, "df must be a data frame")
   }
-
+  bases_check(bases)
   lsd_column_check(df, l, s, d)
 
   lsd_df <- dplyr::select(df, !! l, !! s, !! d)
@@ -100,5 +98,5 @@ deb_df_to_list <- function(df, l = l, s = s, d = d) {
   as.list(lsd_df) %>%
     purrr::transpose() %>%
     purrr::simplify_all() %>%
-    purrr::map(~ stats::setNames(., c("l", "s", "d")))
+    to_lsd(bases)
 }

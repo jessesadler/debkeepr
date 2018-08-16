@@ -1,12 +1,20 @@
 context("test-lsd-arithmetic.R")
 
-ex_vector <- c(10, 3, 2)
-ex_vector2 <- c(20, 5, 8)
-neg_vector <- c(-8, -16, -6)
-dec_vector <- c(5.85, 17.35, 10)
+x <- c(10, 3, 2)
+y <- c(20, 5, 8)
+neg <- c(-8, -16, -6)
+dec <- c(5.85, 17.35, 10)
+b1 <- c(20, 12)
+b2 <- c(8, 16)
+x_b1 <- to_lsd(x, b1)
+x_b2 <- to_lsd(x, b2)
+y_b2 <- to_lsd(y, b2)
 
-ex_list <- list(c(30, 10, 9), c(10.725, 18.65, 11), c(-26, -11, -10))
-ex_list2 <- list(ex_vector, dec_vector, ex_vector2)
+list1 <- list(c(30, 10, 9), c(10.725, 18.65, 11), c(-26, -11, -10))
+list2 <- list(x, y, dec)
+lsd_list1 <- to_lsd(list1, b2)
+lsd_list2 <- list(x_b2, y_b2, dec)
+lsd_list3 <- list(x_b1, x_b2, y_b2)
 
 ex_df <- data.frame(l = c(30, 10.725, -26, 405, 350),
                     s = c(10, 18.65, -11, 0, 8),
@@ -59,38 +67,51 @@ test_that("arithmetic checks work", {
 
 # Multiplication
 test_that("lsd multiplication works", {
-  expect_equal(deb_multiply(ex_vector, x = 3),
-               c(l = 30, s = 9, d = 6))
-  expect_equal(deb_multiply(ex_vector, x = -3),
-               c(l = -30, s = -9, d = -6))
-  expect_equal(deb_multiply(neg_vector, x = 3),
-               c(l = -26, s = -9, d = -6))
-  expect_equal(deb_multiply(dec_vector, x = 3),
-               c(l = 20, s = 5, d = 6.6))
-  expect_equal(deb_multiply(ex_vector, x = 5.5),
-               c(l = 55, s = 17, d = 5))
-  expect_equal(deb_multiply(ex_vector2, x = 3, bases = c(8, 16)),
-               c(l = 62, s = 0, d = 8))
+  expect_equal(deb_multiply(x, x = 3),
+               to_lsd(c(30, 9, 6), b1))
+  expect_equal(deb_multiply(x, x = -3),
+               to_lsd(c(-30, -9, -6), b1))
+  expect_equal(deb_multiply(neg, x = 3),
+               to_lsd(c(-26, -9, -6), b1))
+  expect_equal(deb_multiply(dec, x = 3),
+               to_lsd(c(20, 5, 6.6), b1))
+  expect_equal(deb_multiply(y, x = 3, bases = c(8, 16)),
+               to_lsd(c(62, 0, 8), c(8, 16)))
   # Rounding and denarii base
   expect_equal(deb_multiply(c(405, 0, 0), x = 1/300),
-               c(l = 1, s = 7, d = 0))
+               to_lsd(c(1, 7, 0), b1))
   expect_equal(deb_multiply(c(405, 0, 0), x = 0.0033333333),
-               c(l = 1, s = 7, d = 0))
+               to_lsd(c(1, 7, 0), b1))
   expect_equal(deb_multiply(c(100, 5, 10), x = 1 / 3),
-               c(l = 33, s = 8, d = 7.33333))
+               to_lsd(c(33, 8, 7.33333), b1))
   expect_equal(deb_multiply(c(100, 5, 10), x = 1 / 3, round = 0),
-               c(l = 33, s = 8, d = 7))
+               to_lsd(c(33, 8, 7), b1))
 })
 
 test_that("lsd multiplication is vectorized", {
-  expect_equal(deb_multiply(ex_list, x = 3),
-               list(c(l = 91, s = 12, d = 3),
-                    c(l = 35, s = 2, d = 2.4),
-                    c(l = -79, s = -15, d = -6)))
-  expect_equal(deb_multiply(ex_list, x = 3, round = 0),
-               list(c(l = 91, s = 12, d = 3),
-                    c(l = 35, s = 2, d = 2),
-                    c(l = -79, s = -15, d = -6)))
+  expect_equal(deb_multiply(list1, x = 3),
+               to_lsd(list(c(91, 12, 3),
+                           c(35, 2, 2.4),
+                           c(-79, -15, -6)), b1))
+  expect_equal(deb_multiply(list1, x = 3, bases = b2),
+               to_lsd(list(c(93, 7, 11),
+                           c(39, 3, 6.6),
+                           c(-82, -2, -14)), b2))
+  expect_equal(deb_multiply(list1, x = 3, round = 0),
+               to_lsd(list(c(91, 12, 3),
+                           c(35, 2, 2),
+                           c(-79, -15, -6)), b1))
+})
+
+test_that("deb_multiply works with lsd objects", {
+  expect_identical(deb_multiply(x_b2, x = 3),
+                   deb_multiply(x, x = 3, bases = b2))
+  expect_identical(deb_multiply(lsd_list1, x = 3),
+                   deb_multiply(list1, x = 3, bases = b2))
+  expect_identical(deb_multiply(lsd_list2, x = 3, round = 0),
+                   deb_multiply(list2, x = 3, bases = b2, round = 0))
+  expect_error(deb_multiply(lsd_list3, x = 3),
+               "All lsd vectors in a list must have the same bases")
 })
 
 test_that("deb_multiply_mutate works", {
@@ -109,30 +130,52 @@ test_that("deb_multiply_mutate works", {
 
 # Division
 test_that("lsd division works", {
-  expect_equal(deb_divide(ex_vector, x = 3),
-               c(l = 3, s = 7, d = 8.66667))
-  expect_equal(deb_divide(neg_vector, x = 3),
-               c(l = -2, s = -18, d = -10))
-  expect_equal(deb_divide(ex_vector, x = 3, bases = c(8, 16)),
-               c(l = 3, s = 3, d = 11.33333))
+  expect_equal(deb_divide(x, x = 3),
+               to_lsd(c(3, 7, 8.66667), b1))
+  expect_equal(deb_divide(neg, x = 3),
+               to_lsd(c(-2, -18, -10), b1))
+  expect_equal(deb_divide(x, x = 3, bases = b2),
+               to_lsd(c(3, 3, 11.33333), b2))
   # Rounding and denarii base
   expect_equal(deb_divide(c(405, 0, 0), x = 300),
-               c(l = 1, s = 7, d = 0))
+               to_lsd(c(1, 7, 0), b1))
   expect_equal(deb_divide(c(350, 8, 0), x = 6),
-               c(l = 58, s = 8, d = 0))
-  expect_equal(deb_divide(ex_vector, x = 3, round = 0),
-               c(l = 3, s = 7, d = 9))
+               to_lsd(c(58, 8, 0), b1))
+  expect_equal(deb_divide(x, x = 3, round = 0),
+               to_lsd(c(3, 7, 9), b1))
 })
 
 test_that("lsd division is vectorized", {
-  expect_equal(deb_divide(ex_list, x = 2),
-               list(c(l = 15, s = 5, d = 4.5),
-                    c(l = 5, s = 17, d = 0.4),
-                    c(l = -13, s = -5, d = -11)))
-  expect_equal(deb_divide(ex_list, x = 2, round = 0),
-               list(c(l = 15, s = 5, d = 4),
-                    c(l = 5, s = 17, d = 0),
-                    c(l = -13, s = -5, d = -11)))
+  expect_equal(deb_divide(list1, x = 2),
+               to_lsd(list(c(15, 5, 4.5),
+                           c(5, 17, 0.4),
+                           c(-13, -5, -11)), b1))
+  expect_equal(deb_divide(list1, x = 2, bases = b2),
+               to_lsd(list(c(15, 5, 4.5),
+                           c(6, 4, 9.1),
+                           c(-13, -5, -13)), b2))
+  expect_equal(deb_divide(list1, x = 2, round = 0),
+               to_lsd(list(c(15, 5, 4),
+                           c(5, 17, 0),
+                           c(-13, -5, -11)), b1))
+})
+
+test_that("round argument works", {
+  expect_equal(deb_divide(c(6, 8, 1), x = 3) %>% deb_multiply(x = 3),
+               to_lsd(c(6, 8, 0.99999), b1))
+  expect_equal(deb_divide(c(6, 8, 1), x = 3) %>% deb_multiply(x = 3, round = 4),
+               to_lsd(c(6, 8, 1), b1))
+})
+
+test_that("deb_divide works with lsd objects", {
+  expect_identical(deb_divide(x_b2, x = 3),
+                   deb_divide(x, x = 3, bases = b2))
+  expect_identical(deb_divide(lsd_list1, x = 3),
+                   deb_divide(list1, x = 3, bases = b2))
+  expect_identical(deb_divide(lsd_list2, x = 3, round = 0),
+                   deb_divide(list2, x = 3, bases = b2, round = 0))
+  expect_error(deb_divide(lsd_list3, x = 3),
+               "All lsd vectors in a list must have the same bases")
 })
 
 test_that("deb_divide_mutate works", {
@@ -148,43 +191,64 @@ test_that("deb_divide_mutate works", {
                          deb_divide_mutate(ex_df, l, s, d, x = 3, bases = c(8, 16))))
 })
 
-test_that("round argument works", {
-  expect_equal(deb_divide(c(6, 8, 1), x = 3) %>% deb_multiply(x = 3),
-               c(l = 6, s = 8, d = 0.99999))
-  expect_equal(deb_divide(c(6, 8, 1), x = 3) %>% deb_multiply(x = 3, round = 4),
-               c(l = 6, s = 8, d = 1))
+## Addition and subtraction ##
+
+test_that("arithmetic_list_check works", {
+  expect_silent(arithmetic_list_check(list1, x))
+  expect_silent(arithmetic_list_check(list1, list(x)))
+  expect_error(arithmetic_list_check(list1, list(x, y)),
+               "If lsd1 and lsd2 are both lists, they must be the same length, or one must be of length 1.")
+})
+
+test_that("lsd list length is checked", {
+  # Check that length of lists are either the same or 1
+  # This is necessary for use of map2
+  expect_s3_class(deb_add(list1, list(x)), "lsd_list")
+  expect_error(deb_add(list1, list(x, y)),
+               "If lsd1 and lsd2 are both lists, they must be the same length, or one must be of length 1.")
+  expect_s3_class(deb_subtract(list1, list(x)), "lsd_list")
+  expect_error(deb_subtract(list1, list(x, y)),
+               "If lsd1 and lsd2 are both lists, they must be the same length, or one must be of length 1.")
 })
 
 # Addition
 test_that("lsd addition works", {
-  expect_equal(deb_add(ex_vector2, ex_vector),
-               c(l = 30, s = 8, d = 10))
-  expect_equal(deb_add(ex_vector, dec_vector),
-               c(l = 16, s = 18, d = 4.2))
-  expect_equal(deb_add(ex_vector, dec_vector, round = 0),
-               c(l = 16, s = 18, d = 4))
-  expect_equal(deb_add(ex_vector, c(5, 7, 15), bases = c(8, 16)),
-               c(l = 16, s = 3, d = 1))
+  expect_equal(deb_add(y, x),
+               to_lsd(c(30, 8, 10), b1))
+  expect_equal(deb_add(x, dec),
+               to_lsd(c(16, 18, 4.2), b1))
+  expect_equal(deb_add(x, dec, round = 0),
+               to_lsd(c(16, 18, 4), b1))
+  expect_equal(deb_add(x, c(5, 7, 15), bases = b2),
+               to_lsd(c(16, 3, 1), b2))
 })
 
 test_that("lsd addition is vectorized", {
-  expect_equal(deb_add(ex_list, ex_list2),
-               list(c(l = 40, s = 13, d = 11),
-                    c(l = 18, s = 9, d = 3),
-                    c(l = -6, s = -6, d = -2)))
-  expect_equal(deb_add(ex_list, ex_vector),
-               list(c(l = 40, s = 13, d = 11),
-                    c(l = 21, s = 17, d = 2.8),
-                    c(l = -16, s = -8, d = -8)))
-  expect_equal(deb_add(ex_vector, ex_list), deb_add(ex_list, ex_vector))
-  expect_equal(deb_add(ex_vector, ex_list, round = 0),
-               list(c(l = 40, s = 13, d = 11),
-                    c(l = 21, s = 17, d = 3),
-                    c(l = -16, s = -8, d = -8)))
-  expect_equal(deb_add(ex_list, ex_vector, bases = c(8, 16)),
-               list(c(l = 41, s = 5, d = 11),
-                    c(l = 23, s = 4, d = 4.2),
-                    c(l = -17, s = 0, d = -8)))
+  expect_equal(deb_add(list1, list2),
+               to_lsd(list(c(40, 13, 11),
+                           c(31, 19, 8.8),
+                           c(-19, -16, -7.8)), b1))
+  expect_equal(deb_add(list1, x),
+               to_lsd(list(c(40, 13, 11),
+                           c(21, 17, 2.8),
+                           c(-16, -8, -8)), b1))
+  expect_equal(deb_add(x, list1), deb_add(list1, x))
+  expect_equal(deb_add(x, list1, round = 0),
+               to_lsd(list(c(40, 13, 11),
+                           c(21, 17, 3),
+                           c(-16, -8, -8)), b1))
+  expect_equal(deb_add(list1, x, bases = b2),
+               to_lsd(list(c(41, 5, 11),
+                           c(23, 4, 4.2),
+                           c(-17, 0, -8)), b2))
+})
+
+test_that("deb_add works with lsd objects", {
+  expect_identical(deb_add(x_b2, y_b2), deb_add(x, y_b2))
+  expect_identical(deb_add(lsd_list1, x), deb_add(x, list1, b2))
+  expect_identical(deb_add(x, lsd_list2), deb_add(list2, x, b2))
+  expect_error(deb_add(lsd_list3, lsd_list1),
+               "All lsd vectors in a list must have the same bases")
 })
 
 test_that("deb_add_mutate works", {
@@ -203,35 +267,43 @@ test_that("deb_add_mutate works", {
 
 # Subtraction
 test_that("lsd subtract works", {
-  expect_equal(deb_subtract(ex_vector2, ex_vector),
-               c(l = 10, s = 2, d = 6))
-  expect_equal(deb_subtract(ex_vector, ex_vector2),
-               c(l = -10, s = -2, d = -6))
-  expect_equal(deb_subtract(ex_vector, dec_vector),
-               c(l = 3, s = 7, d = 11.8))
-  expect_equal(deb_subtract(ex_vector, dec_vector, round = 0),
-               c(l = 3, s = 8, d = 0))
-  expect_equal(deb_subtract(ex_vector, c(5, 7, 15), bases = c(8, 16)),
-               c(l = 4, s = 3, d = 3))
+  expect_equal(deb_subtract(y, x),
+               to_lsd(c(10, 2, 6), b1))
+  expect_equal(deb_subtract(x, y),
+               to_lsd(c(-10, -2, -6), b1))
+  expect_equal(deb_subtract(x, dec),
+               to_lsd(c(3, 7, 11.8), b1))
+  expect_equal(deb_subtract(x, dec, round = 0),
+               to_lsd(c(3, 8, d = 0), b1))
+  expect_equal(deb_subtract(x, c(5, 7, 15), bases = c(8, 16)),
+               to_lsd(c(4, 3, 3), b2))
 })
 
 test_that("lsd subtract is vectorized", {
-  expect_equal(deb_subtract(ex_list, ex_list2),
-               list(c(l = 20, s = 7, d = 7),
-                    c(l = 4, s = 18, d = 10.6),
-                    c(l = -46, s = -17, d = -6)))
-  expect_equal(deb_subtract(ex_list, ex_vector),
-               list(c(l = 20, s = 7, d = 7),
-                    c(l = 1, s = 10, d = 10.8),
-                    c(l = -36, s = -15, d = 0)))
-  expect_equal(deb_subtract(ex_vector, ex_list),
-               list(c(l = -20, s = -7, d = -7),
-                    c(l = -1, s = -10, d = -10.8),
-                    c(l = 36, s = 15, d = 0)))
-  expect_equal(deb_subtract(ex_vector, ex_list, round = 0),
-               list(c(l = -20, s = -7, d = -7),
-                    c(l = -1, s = -10, d = -11),
-                    c(l = 36, s = 15, d = 0)))
+  expect_equal(deb_subtract(list1, list2),
+               to_lsd(list(c(20, 7, 7),
+                    c(-8, -11, -7.2),
+                    c(-33, -7, -0.2)), b1))
+  expect_equal(deb_subtract(list1, x),
+               to_lsd(list(c(20, 7, 7),
+                    c(1, 10, 10.8),
+                    c(-36, -15, 0)), b1))
+  expect_equal(deb_subtract(x, list1),
+               to_lsd(list(c(-20, -7, -7),
+                    c(-1, -10, -10.8),
+                    c(36, 15, 0)), b1))
+  expect_equal(deb_subtract(x, list1, round = 0, bases = b2),
+               to_lsd(list(c(-20, -7, -7),
+                    c(-2, -6, 0),
+                    c(37, 6, 12)), b2))
+})
+
+test_that("deb_subtract works with lsd objects", {
+  expect_identical(deb_subtract(x_b2, y_b2), deb_subtract(x, y_b2))
+  expect_identical(deb_subtract(lsd_list1, x), deb_subtract(list1, x, b2))
+  expect_identical(deb_subtract(x, lsd_list2), deb_subtract(x, list2, b2))
+  expect_error(deb_subtract(lsd_list3, lsd_list1),
+               "All lsd vectors in a list must have the same bases")
 })
 
 test_that("deb_subtraction_mutate works", {
@@ -249,9 +321,9 @@ test_that("deb_subtraction_mutate works", {
 })
 
 test_that("lsd check works in add and subtract mutate", {
-  expect_error(deb_add_mutate(ex_df, l, s, d, lsd = list(ex_vector, ex_vector2)),
+  expect_error(deb_add_mutate(ex_df, l, s, d, lsd = list(x, y)),
                "lsd must be a numeric vector")
-  expect_error(deb_subtract_mutate(ex_df, l, s, d, lsd = list(ex_vector, ex_vector2)),
+  expect_error(deb_subtract_mutate(ex_df, l, s, d, lsd = list(x, y)),
                "lsd must be a numeric vector")
   expect_error(deb_add_mutate(ex_df, l, s, d, lsd = c(8, 16)),
                paste("lsd must be a vector of length of 3.",
