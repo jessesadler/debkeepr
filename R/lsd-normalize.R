@@ -78,11 +78,19 @@ lsd_normalize <- function(lsd, bases, round) {
 # If lsd is negative return normalized as negative
 lsd_negative <- function(normalized, lsd, bases) {
   # Vectorize
-  if (is.list(lsd)) {
+  if (is.list(lsd) & is.list(normalized)) {
     return(purrr::map2(normalized, lsd, ~ lsd_negative(normalized = .x,
                                                        lsd = .y,
                                                        bases = bases)))
   }
+
+  if (is.list(lsd) & is.vector(normalized)) {
+    normalized <- list(normalized)
+    return(purrr::map2(normalized, lsd, ~ lsd_negative(normalized = .x,
+                                                       lsd = .y,
+                                                       bases = bases)))
+  }
+
   # NA
   if (any(is.na(normalized))) {
     return(normalized)

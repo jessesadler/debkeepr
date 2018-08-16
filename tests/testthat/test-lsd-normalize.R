@@ -107,6 +107,10 @@ test_that("works with lsd class", {
   expect_s3_class(deb_normalize(x_b1), "lsd")
   expect_s3_class(deb_normalize(lsd_list1), "lsd_list")
 
+  # Works with a list of length 1
+  expect_s3_class(deb_normalize(list(x)), "lsd_list")
+  expect_s3_class(deb_normalize(deb_as_lsd(list(x))), "lsd_list")
+
   # Use and maintain base attribute
   expect_equal(deb_bases(deb_normalize(x_b2)), c(s = 8, d = 16))
   expect_equal(deb_normalize(x_b2),
