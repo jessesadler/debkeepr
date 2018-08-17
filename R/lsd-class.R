@@ -1,3 +1,5 @@
+## Define lsd class ##
+
 name_lsd_vector <- function(x) {
   stopifnot(is.numeric(x), length(x) == 3)
 
