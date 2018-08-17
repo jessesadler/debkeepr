@@ -1,57 +1,37 @@
-new_lsd <- function(x, bases) {
+name_lsd_vector <- function(x) {
   stopifnot(is.numeric(x), length(x) == 3)
+
+  rlang::set_names(x, c("l", "s", "d"))
+}
+
+new_lsd <- function(x, bases) {
+  stopifnot(is.list(x))
   stopifnot(is.numeric(bases), length(bases) == 2)
 
-  structure(stats::setNames(x, c("l", "s", "d")),
+  structure(x,
             class = "lsd",
             bases = bases)
 }
 
-new_lsd_list <- function(x, bases) {
-  stopifnot(is.list(x))
-
-  structure(x,
-            class = "lsd_list",
-            bases = bases)
-}
-
 to_lsd <- function(lsd, bases) {
-  # Vectors
+  # vectors
   if (rlang::is_list(lsd) == FALSE & rlang::is_vector(lsd) == TRUE) {
-    new_lsd(lsd, bases)
+    lsd <- list(name_lsd_vector(lsd))
   } else {
-    lsd <- purrr::map(lsd, ~ new_lsd(., bases = bases))
-    new_lsd_list(lsd, bases)
+    # lists
+    lsd <- purrr::map(lsd, name_lsd_vector)
   }
+  new_lsd(lsd, bases)
 }
 
-# Check if lsd is an lsd vector or lsd_list
 # Extract bases attribute if it exists, otherwise uses bases
-# Ensure that no lists have vectors with mixed bases
 validate_bases <- function(lsd, bases) {
   # Vectors
   if (rlang::is_list(lsd) == FALSE & rlang::is_vector(lsd) == TRUE) {
+    bases
+  } else {
     if (inherits(lsd, "lsd")) {
       attributes(lsd)$bases
-    } else {
-      bases
-    }
-    # Lists
-  } else {
-    if (inherits(lsd, "lsd_list")) {
-      attributes(lsd)$bases
-    } else if (any(purrr::map_lgl(lsd, ~ inherits(., "lsd"))) == TRUE) {
-      # Check if there are lsd vectors with mixed bases
-      # Compact enables non-lsd class vectors to be included
-      lsd_bases <- purrr::map(lsd, ~ attributes(.)$bases) %>%
-        purrr::compact()
-
-      if (length(unique(lsd_bases)) != 1) {
-        stop(call. = FALSE, "All lsd vectors in a list must have the same bases")
-      } else {
-        # Return bases from the bases of the lsd vectors
-        purrr::flatten_dbl(unique(lsd_bases))
-      }
     } else {
       bases
     }
@@ -65,17 +45,7 @@ validate_bases2 <- function(lsd1, lsd2, bases) {
       stop(call. = FALSE, "bases for lsd1 and lsd2 must be equivalent if both are of class lsd")
     }
   }
-  # In case lsd1 or lsd2 is a list with lsd vectors in it turn them to lsd lists
-  if (rlang::is_list(lsd1) == TRUE & deb_is_lsd(lsd1) == FALSE) {
-    if (any(purrr::map_lgl(lsd1, ~ inherits(., "lsd"))) == TRUE) {
-      lsd1 <- deb_as_lsd.list(lsd1)
-    }
-  }
-  if (rlang::is_list(lsd2) == TRUE & deb_is_lsd(lsd2) == FALSE) {
-    if (any(purrr::map_lgl(lsd2, ~ inherits(., "lsd"))) == TRUE) {
-      lsd2 <- deb_as_lsd.list(lsd2)
-    }
-  }
+
   # Options for lsd vs not lsd for determining bases
   if (deb_is_lsd(lsd1) == TRUE & deb_is_lsd(lsd2) == TRUE) {
     attributes(lsd1)$bases
@@ -90,25 +60,14 @@ validate_bases2 <- function(lsd1, lsd2, bases) {
 
 validate_bases_p <- function(lsd, bases) {
   # If no lsd objects or lists with lsd objects
-  if (rlang::is_false(any(purrr::map_lgl(lsd, deb_is_lsd))) &
-      rlang::is_false(any(
-        purrr::map_lgl(lsd, ~ any(
-          purrr::map_lgl(., ~ inherits(., "lsd")) == TRUE))))) {
+  if (any(purrr::map_lgl(lsd, deb_is_lsd)) == FALSE) {
     bases
   } else {
-    # Lists with lsd vectors
-    lsd_vectors <- purrr::map_lgl(lsd, deb_is_lsd) == FALSE &
-      purrr::map_lgl(lsd, ~ any(purrr::map_lgl(., ~ inherits(., "lsd")) == TRUE))
-    lsd_vectors <- lsd[which(lsd_vectors == TRUE)]
-    lsd_lists <- purrr::map(lsd_vectors, deb_as_lsd.list)
 
-    # lsd class
     lsd_class <- purrr::map_lgl(lsd, deb_is_lsd)
     lsd_class <- lsd[which(lsd_class == TRUE)]
 
-    all_lsd <- c(lsd_lists, lsd_class)
-
-    lsd_bases <- purrr::map(all_lsd, ~ attributes(.)$bases)
+    lsd_bases <- purrr::map(lsd_class, ~ attributes(.)$bases)
 
     if (length(unique(lsd_bases)) != 1) {
       stop(call. = FALSE, "All objects of class lsd must have the same bases")
@@ -225,17 +184,14 @@ deb_as_lsd.list <- function(lsd, bases = c(20, 12), ...) {
 #' @export
 deb_as_lsd.lsd <- function(lsd, bases, ...) lsd
 
-#' @rdname lsd
-#' @export
-deb_as_lsd.lsd_list <- function(lsd, bases, ...) lsd
 
-#' Test if an object is of class lsd or lsd_list
+#' Test if an object is of class lsd
 #'
-#' Test if an object is of class lsd or lsd_list.
+#' Test if an object is of class lsd.
 #'
 #' @param lsd An object.
 #'
-#' @return `TRUE` if object is of class lsd or lsd_list and `FALSE` if it
+#' @return `TRUE` if object is of class lsd and `FALSE` if it
 #'   is not.
 #'
 #' @examples
@@ -248,19 +204,14 @@ deb_as_lsd.lsd_list <- function(lsd, bases, ...) lsd
 #' @export
 
 deb_is_lsd <- function(lsd) {
-  if (is.list(lsd)) {
-    inherits(lsd, "lsd_list")
-  } else {
-    inherits(lsd, "lsd")
-  }
+  inherits(lsd, "lsd")
 }
 
 #' Find the bases of an lsd object
 #'
-#' Find the bases for the shillings (s) and pence (d) units of an lsd or
-#' lsd_list object.
+#' Find the bases for the shillings (s) and pence (d) units of an lsd object.
 #'
-#' @param lsd An object of class lsd or lsd_list.
+#' @param lsd An object of class lsd.
 #'
 #' @return Returns a named numeric vector of length 2 corresponding to the
 #'   shillings (s) and pence (d) units of `lsd`.
@@ -276,21 +227,21 @@ deb_is_lsd <- function(lsd) {
 
 deb_bases <- function(lsd) {
   if (deb_is_lsd(lsd) == FALSE) {
-    stop(call. = FALSE, "lsd must be of class lsd or lsd_list")
+    stop(call. = FALSE, "lsd must be of class lsd")
   } else {
-    stats::setNames(attributes(lsd)$bases, c("s", "d"))
+    rlang::set_names(attributes(lsd)$bases, c("s", "d"))
   }
 }
 
-## Subset lsd_list ##
+## Subset lsd ##
 #' @export
-`[.lsd_list` <- function(x, ...) {
-  new_lsd_list(NextMethod(), bases = attr(x, "bases"))
+`[.lsd` <- function(x, ...) {
+  new_lsd(NextMethod(), bases = attr(x, "bases"))
 }
 
 ## Combine ##
 #' @export
-`c.lsd_list` <- function(...) {
+`c.lsd` <- function(...) {
   lsd_list <- list(...)
   purrr::map(lsd_list, lsd_check)
   bases <- validate_bases_p(lsd_list, bases)
@@ -305,12 +256,6 @@ deb_bases <- function(lsd) {
 
 #' @export
 print.lsd <- function(x, ...) {
-  x <- format(x)
-  NextMethod(x, quote = FALSE, ...)
-}
-
-#' @export
-print.lsd_list <- function(x, ...) {
   x <- purrr::map(x, format)
   NextMethod(x, quote = FALSE, ...)
 }

@@ -49,8 +49,7 @@ test_that("df checks", {
 test_that("deb_df_to_list works",{
   expect_equal(is.list(deb_df_to_list(tbl1)), TRUE)
   expect_equal(length(deb_df_to_list(tbl1)), 4)
-  expect_s3_class(deb_df_to_list(tbl1), "lsd_list")
-  expect_s3_class(deb_df_to_list(tbl1)[[1]], "lsd")
+  expect_s3_class(deb_df_to_list(tbl1), "lsd")
   expect_equal(deb_df_to_list(tbl1), list1)
   expect_equal(deb_df_to_list(tbl1, bases = c(8, 16)), list2)
   expect_message(deb_df_to_list(transactions, l, s, d), "non-lsd variables were dropped")
