@@ -10,9 +10,8 @@ y_b2 <- to_lsd(y, b2)
 
 list1 <- list(c(30, 10, 9), c(10.725, 18.65, 11), c(-26, -11, -10))
 list2 <- list(x, y)
-lsd_list1 <- to_lsd(list1, b2)
-lsd_list2 <- list(x_b2, y_b2)
-lsd_list3 <- list(x_b1, x_b2, y_b2)
+list1_b1 <- to_lsd(list1, b1)
+list2_b2 <- to_lsd(list2, b2)
 
 # lsd to decimlaized
 test_that("lsd to decimalized l, s, and d works", {
@@ -54,32 +53,26 @@ test_that("decimalization works with lsd objects", {
   # deb_lsd_l
   expect_identical(deb_lsd_l(x_b2),
                    deb_lsd_l(x, bases = b2))
-  expect_identical(deb_lsd_l(lsd_list1),
-                   deb_lsd_l(list1, bases = b2))
-  expect_identical(deb_lsd_l(lsd_list2),
+  expect_identical(deb_lsd_l(list1_b1),
+                   deb_lsd_l(list1, bases = b1))
+  expect_identical(deb_lsd_l(list2_b2),
                    deb_lsd_l(list2, bases = b2))
-  expect_error(deb_lsd_l(lsd_list3),
-               "All lsd vectors in a list must have the same bases")
 
   # deb_lsd_s
   expect_identical(deb_lsd_s(x_b2),
                    deb_lsd_s(x, bases = b2))
-  expect_identical(deb_lsd_s(lsd_list1),
-                   deb_lsd_s(list1, bases = b2))
-  expect_identical(deb_lsd_s(lsd_list2),
+  expect_identical(deb_lsd_s(list1_b1),
+                   deb_lsd_s(list1, bases = b1))
+  expect_identical(deb_lsd_s(list2_b2),
                    deb_lsd_s(list2, bases = b2))
-  expect_error(deb_lsd_s(lsd_list3),
-               "All lsd vectors in a list must have the same bases")
 
   # deb_lsd_d
   expect_identical(deb_lsd_d(x_b2),
                    deb_lsd_d(x, bases = b2))
-  expect_identical(deb_lsd_d(lsd_list1),
-                   deb_lsd_d(list1, bases = b2))
-  expect_identical(deb_lsd_d(lsd_list2, round = 0),
+  expect_identical(deb_lsd_d(list1_b1),
+                   deb_lsd_d(list1, bases = b1))
+  expect_identical(deb_lsd_d(list2_b2, round = 0),
                    deb_lsd_d(list2, bases = b2, round = 0))
-  expect_error(deb_lsd_l(lsd_list3),
-               "All lsd vectors in a list must have the same bases")
 })
 
 test_that("non-numeric values are not accepted", {

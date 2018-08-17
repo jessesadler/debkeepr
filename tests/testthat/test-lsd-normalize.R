@@ -6,19 +6,17 @@ dec <- c(5.875, 84.325, 55)
 mix <- c(5, -67, -35)
 b1 <- c(20, 12)
 b2 <- c(8, 16)
-x_b1 <- to_lsd(x, b1)
 x_b2 <- to_lsd(x, b2)
-neg_lsd <- to_lsd(neg, b1)
-dec_b1 <- to_lsd(dec, b1)
 dec_b2 <- to_lsd(dec, b2)
 
 list1 <- list(c(35, 50, 89),
               c(-10, -48, -181),
               c(26.875, 84.365, 55),
               c(12, 76, 205))
-list2 <- list(x_b2, dec_b2)
-lsd_list1 <- to_lsd(list1, b1)
-lsd_list2 <- to_lsd(list1, b2)
+list2 <- list(x, dec, neg)
+list1_b1 <- to_lsd(list1, b1)
+list1_b2 <- to_lsd(list1, b2)
+list2_b2 <- to_lsd(list2, b2)
 
 ex_df <- data.frame(l = c(35, -10, 26.875, 12, 1),
                     s = c(50, -48, 84.365, 76, 19),
@@ -82,8 +80,8 @@ test_that("vectorization works", {
                            c(-12, -19, -5),
                            c(31, 5, 4.84),
                            c(16, 8, 13)), c(20, 16)))
-  expect_false(identical(deb_normalize(lsd_list1), deb_normalize(lsd_list2)))
-  expect_equal(deb_normalize(list1, round = 0)[[3]], to_lsd(c(31, 6, 5), b1))
+  expect_false(identical(deb_normalize(list1_b1), deb_normalize(list1_b2)))
+  expect_equal(deb_normalize(list1, round = 0)[3], to_lsd(c(31, 6, 5), b1))
 })
 
 ## bases ##
@@ -102,27 +100,21 @@ test_that("different basess work", {
 test_that("works with lsd class", {
   # Creates lsd class
   expect_s3_class(deb_normalize(x), "lsd")
-  expect_s3_class(deb_normalize(list1), "lsd_list")
+  expect_s3_class(deb_normalize(list1), "lsd")
   # Maintains lsd class
-  expect_s3_class(deb_normalize(x_b1), "lsd")
-  expect_s3_class(deb_normalize(lsd_list1), "lsd_list")
+  expect_s3_class(deb_normalize(x_b2), "lsd")
+  expect_s3_class(deb_normalize(list1_b1), "lsd")
 
   # Works with a list of length 1
-  expect_s3_class(deb_normalize(list(x)), "lsd_list")
-  expect_s3_class(deb_normalize(deb_as_lsd(list(x))), "lsd_list")
+  expect_s3_class(deb_normalize(list(x)), "lsd")
 
   # Use and maintain base attribute
   expect_equal(deb_bases(deb_normalize(x_b2)), c(s = 8, d = 16))
   expect_equal(deb_normalize(x_b2),
                deb_normalize(x, bases = b2))
-  expect_equal(deb_bases(deb_normalize(lsd_list2)), c(s = 8, d = 16))
-  expect_equal(deb_normalize(lsd_list2),
+  expect_equal(deb_bases(deb_normalize(list1_b2)), c(s = 8, d = 16))
+  expect_equal(deb_normalize(list1_b2),
                deb_normalize(list1, bases = b2))
-
-  # Uses bases and creates lsd object from list of lsd vectors
-  expect_equal(deb_bases(deb_normalize(list2)), c(s = 8, d = 16))
-  expect_equal(deb_normalize(list2),
-               deb_normalize(list(x, dec), bases = b2))
 })
 
 ## Data frames

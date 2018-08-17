@@ -5,14 +5,12 @@ y <- c(20, 5, 8)
 b1 <- c(20, 12)
 b2 <- c(8, 16)
 b3 <- c(20, 16)
-x_b1 <- to_lsd(x, b1)
 x_b2 <- to_lsd(x, b2)
 y_b2 <- to_lsd(y, b2)
 
 list1 <- list(x, y)
-lsd_list1 <- to_lsd(list1, b2)
-lsd_list2 <- list(x_b2, y_b2)
-lsd_list3 <- list(x_b1, x_b2, y_b2)
+list1_b1 <- to_lsd(list1, b1)
+list1_b2 <- to_lsd(list1, b2)
 
 test_that("ratio check works", {
   expect_error(deb_convert_bases(lsd = c(204, 3, 3),
@@ -30,12 +28,10 @@ test_that("ratio check works", {
 test_that("base conversion takes base attribute", {
   expect_identical(deb_convert_bases(x_b2, bases2 = b1),
                    deb_convert_bases(x, bases1 = b2, bases2 = b1))
-  expect_identical(deb_convert_bases(lsd_list1, bases2 = b1),
-                   deb_convert_bases(list1, bases1 = b2, bases2 = b1))
-  expect_identical(deb_convert_bases(lsd_list2, bases2 = b1, round = 0),
+  expect_identical(deb_convert_bases(list1_b1, bases2 = b2),
+                   deb_convert_bases(list1, bases1 = b1, bases2 = b2))
+  expect_identical(deb_convert_bases(list1_b2, bases2 = b1, round = 0),
                    deb_convert_bases(list1, bases1 = b2, bases2 = b1, round = 0))
-  expect_error(deb_convert_bases(lsd_list3, bases2 = b1),
-               "All lsd vectors in a list must have the same bases")
   expect_error(deb_convert_bases(lsd = c(5, 6, 8),
                                  bases2 = c(20, 24)),
                "lsd must have a bases attribute or a value must be provided for bases1")

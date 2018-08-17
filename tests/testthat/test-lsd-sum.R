@@ -15,9 +15,8 @@ y_b2 <- to_lsd(y, b2)
 list1 <- list(c(12, 7, 9), c(5, 8, 11), c(3, 18, 5))
 na_list <- list(c(12, 7, 9), c(5, 8, 11), c(3, 18, NA))
 list2 <- list(x, y, dec)
-lsd_list1 <- to_lsd(list1, b2)
-lsd_list2 <- list(x_b2, y_b2, dec)
-lsd_list3 <- list(x_b1, x_b2, y_b2)
+list1_b1 <- to_lsd(list1, b1)
+list2_b2 <- to_lsd(list2, b2)
 
 example1 <- data.frame(group = c(1, 2, 1, 2),
                        l = c(3, 5, 6, 2),
@@ -70,16 +69,14 @@ test_that("deb_sum works", {
 })
 
 test_that("deb_sum works with lsd objects", {
-  expect_identical(deb_sum(x_b2, y_b2, lsd_list1),
-                   deb_sum(x, y, list1, bases = b2))
-  expect_identical(deb_sum(lsd_list1),
-                   deb_sum(list1, bases = b2))
-  expect_identical(deb_sum(lsd_list1, x, y, dec),
-                   deb_sum(list1, x, y, dec, bases = b2))
-  expect_identical(deb_sum(lsd_list2, round = 0),
+  expect_identical(deb_sum(x_b2, y_b2, list2_b2),
+                   deb_sum(x, y, list2, bases = b2))
+  expect_identical(deb_sum(list2_b2),
+                   deb_sum(list2, bases = b2))
+  expect_identical(deb_sum(list1_b1, x, y, dec),
+                   deb_sum(list1, x, y, dec, bases = b1))
+  expect_identical(deb_sum(list2_b2, round = 0),
                    deb_sum(list2, bases = b2, round = 0))
-  expect_error(deb_sum(lsd_list3),
-               "All lsd vectors in a list must have the same bases")
   expect_error(deb_sum(x_b1, x_b2),
                "All objects of class lsd must have the same bases")
 })

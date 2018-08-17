@@ -15,9 +15,8 @@ transactions <- data.frame(credit = sample(letters[1:5]),
 ## lsd check ##
 test_that("non-vector is an error", {
   expect_error(deb_normalize(ex_df),
-               paste("lsd must be a vector of class lsd, a list of class lsd_list,",
-                     "       or an object that can be coerced to these classes, namely",
-                     "       a numeric vector of length 3 or a list of such vectors.",
+               paste("lsd must be a list of class lsd, or an object that can be coerced to these classes,",
+                     "       namely a numeric vector of length 3 or a list of such vectors.",
                      sep = "\n"))
 })
 

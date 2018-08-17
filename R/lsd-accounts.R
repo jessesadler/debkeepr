@@ -109,6 +109,7 @@ deb_account <- function(df,
     dplyr::mutate(denarii = decimalize_d(!! l, !! s, !! d, bases, round = round))
 
   lsd <- deb_d_lsd(credit$denarii - debit$denarii, bases = bases, round = round)
+  lsd <- unlist(lsd)
 
   current <- tibble::tibble(!! l_column := lsd[1],
                             !! s_column := lsd[2],

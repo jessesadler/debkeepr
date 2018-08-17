@@ -129,21 +129,6 @@ validate_bases_p <- function(lsd, bases) {
 #'                        c(8, 13, 4),
 #'                        c(5, 8, 10)))
 #'
-#' # A list of lsd objects must all have the same bases,
-#' # and will use the bases attribute of the lsd objects
-#' lsd1 <- deb_as_lsd(lsd = c(10, 8, 14), bases = c(20, 16))
-#' lsd2 <- deb_as_lsd(lsd = c(16, 13, 2), bases = c(20, 16))
-#' list_lsd1 <- list(lsd1, lsd2)
-#' deb_as_lsd(lsd = list_lsd1)
-#'
-#' # A list of lsd objects with different bases will throw and error
-#' lsd3 <- deb_as_lsd(lsd = c(6, 11, 8), bases = c(20, 12))
-#' list_lsd2 <- list(lsd1, lsd2, lsd3)
-#'
-#' \dontrun{
-#' deb_as_lsd(list_lsd2)
-#' }
-#'
 #' @name lsd
 NULL
 

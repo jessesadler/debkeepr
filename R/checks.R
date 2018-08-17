@@ -4,9 +4,8 @@
 # list of numeric vectors of length 3
 lsd_check <- function(lsd) {
   if (rlang::is_bare_vector(lsd) == FALSE && deb_is_lsd(lsd) == FALSE) {
-    stop(call. = FALSE, paste("lsd must be a vector of class lsd, a list of class lsd_list,",
-                              "       or an object that can be coerced to these classes, namely",
-                              "       a numeric vector of length 3 or a list of such vectors.",
+    stop(call. = FALSE, paste("lsd must be a list of class lsd, or an object that can be coerced to these classes,",
+                              "       namely a numeric vector of length 3 or a list of such vectors.",
                               sep = "\n"))
   }
 
@@ -229,9 +228,9 @@ shillings_check <- function(x) {
 
 exchange_rate_check <- function(exchange_rate) {
   if (rlang::is_bare_vector(exchange_rate) == FALSE && deb_is_lsd(exchange_rate) == FALSE) {
-    stop(call. = FALSE, paste("exchange_rate must be a vector of class lsd, a list of class lsd_list,",
-                              "       or an object that can be coerced to these classes, namely",
-                              "       a numeric vector or list of numeric vectors", sep = "\n"))
+    stop(call. = FALSE, paste("exchange_rate must be a list of class lsd, or an object that can be coerced to these",
+                              "       classes, namely a numeric vector of length 3 or a list of such vectors.",
+                              sep = "\n"))
   }
 
   # check rate vector

@@ -4,14 +4,12 @@ x <- c(10, 3, 2)
 y <- c(20, 5, 8)
 b1 <- c(20, 12)
 b2 <- c(8, 16)
-x_b1 <- to_lsd(x, b1)
 x_b2 <- to_lsd(x, b2)
 y_b2 <- to_lsd(y, b2)
 
 list1 <- list(c(30, 10, 9), c(10.725, 18.65, 11), c(-26, -11, -10))
-lsd_list1 <- to_lsd(list1, b2)
-lsd_list2 <- list(x_b2, y_b2)
-lsd_list3 <- list(x_b1, x_b2, y_b2)
+list1_b1 <- to_lsd(list1, b1)
+list2_b2 <- to_lsd(list(x, y), b2)
 
 ex_df <- data.frame(l = c(30, 10.725, -26),
                     s = c(10, 18.65, -11),
@@ -63,12 +61,10 @@ test_that("vectorization works", {
 test_that("deb_interest works with lsd objects", {
   expect_identical(deb_interest(x_b2),
                    deb_interest(x, bases = b2))
-  expect_identical(deb_interest(lsd_list1),
-                   deb_interest(list1, bases = b2))
-  expect_identical(deb_interest(lsd_list2, round = 0),
+  expect_identical(deb_interest(list1_b1),
+                   deb_interest(list1, bases = b1))
+  expect_identical(deb_interest(list2_b2, round = 0),
                    deb_interest(list(x, y), bases = b2, round = 0))
-  expect_error(deb_interest(lsd_list3),
-               "All lsd vectors in a list must have the same bases")
 })
 
 test_that("interest mutate works",{

@@ -7,7 +7,6 @@
 \alias{deb_as_lsd.numeric}
 \alias{deb_as_lsd.list}
 \alias{deb_as_lsd.lsd}
-\alias{deb_as_lsd.lsd_list}
 \title{A class for pounds, shillings and pence values}
 \usage{
 deb_as_lsd(lsd, bases = c(20, 12), ...)
@@ -19,8 +18,6 @@ deb_as_lsd(lsd, bases = c(20, 12), ...)
 \method{deb_as_lsd}{list}(lsd, bases = c(20, 12), ...)
 
 \method{deb_as_lsd}{lsd}(lsd, bases, ...)
-
-\method{deb_as_lsd}{lsd_list}(lsd, bases, ...)
 }
 \arguments{
 \item{lsd}{Numeric vector of length 3 or list of numeric vectors of length
@@ -75,20 +72,5 @@ deb_as_lsd(lsd = c(10, 8, 14), bases = c(20, 16))
 deb_as_lsd(lsd = list(c(10, 6, 8),
                        c(8, 13, 4),
                        c(5, 8, 10)))
-
-# A list of lsd objects must all have the same bases,
-# and will use the bases attribute of the lsd objects
-lsd1 <- deb_as_lsd(lsd = c(10, 8, 14), bases = c(20, 16))
-lsd2 <- deb_as_lsd(lsd = c(16, 13, 2), bases = c(20, 16))
-list_lsd1 <- list(lsd1, lsd2)
-deb_as_lsd(lsd = list_lsd1)
-
-# A list of lsd objects with different bases will throw and error
-lsd3 <- deb_as_lsd(lsd = c(6, 11, 8), bases = c(20, 12))
-list_lsd2 <- list(lsd1, lsd2, lsd3)
-
-\dontrun{
-deb_as_lsd(list_lsd2)
-}
 
 }

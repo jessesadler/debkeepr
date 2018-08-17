@@ -2,7 +2,7 @@
 % Please edit documentation in R/lsd-class.R
 \name{deb_is_lsd}
 \alias{deb_is_lsd}
-\title{Test if an object is of class lsd or lsd_list}
+\title{Test if an object is of class lsd}
 \usage{
 deb_is_lsd(lsd)
 }
@@ -10,11 +10,11 @@ deb_is_lsd(lsd)
 \item{lsd}{An object.}
 }
 \value{
-\code{TRUE} if object is of class lsd or lsd_list and \code{FALSE} if it
+\code{TRUE} if object is of class lsd and \code{FALSE} if it
 is not.
 }
 \description{
-Test if an object is of class lsd or lsd_list.
+Test if an object is of class lsd.
 }
 \examples{
 x <- c(5, 3, 8)

@@ -6,15 +6,13 @@ neg <- c(-8, -16, -6)
 dec <- c(5.85, 17.35, 10)
 b1 <- c(20, 12)
 b2 <- c(8, 16)
-x_b1 <- to_lsd(x, b1)
 x_b2 <- to_lsd(x, b2)
 y_b2 <- to_lsd(y, b2)
 
 list1 <- list(c(30, 10, 9), c(10.725, 18.65, 11), c(-26, -11, -10))
 list2 <- list(x, y, dec)
-lsd_list1 <- to_lsd(list1, b2)
-lsd_list2 <- list(x_b2, y_b2, dec)
-lsd_list3 <- list(x_b1, x_b2, y_b2)
+list1_b1 <- to_lsd(list1, b1)
+list2_b2 <- to_lsd(list2, b2)
 
 ex_df <- data.frame(l = c(30, 10.725, -26, 405, 350),
                     s = c(10, 18.65, -11, 0, 8),
@@ -106,12 +104,10 @@ test_that("lsd multiplication is vectorized", {
 test_that("deb_multiply works with lsd objects", {
   expect_identical(deb_multiply(x_b2, x = 3),
                    deb_multiply(x, x = 3, bases = b2))
-  expect_identical(deb_multiply(lsd_list1, x = 3),
-                   deb_multiply(list1, x = 3, bases = b2))
-  expect_identical(deb_multiply(lsd_list2, x = 3, round = 0),
+  expect_identical(deb_multiply(list1_b1, x = 3),
+                   deb_multiply(list1, x = 3, bases = b1))
+  expect_identical(deb_multiply(list2_b2, x = 3, round = 0),
                    deb_multiply(list2, x = 3, bases = b2, round = 0))
-  expect_error(deb_multiply(lsd_list3, x = 3),
-               "All lsd vectors in a list must have the same bases")
 })
 
 test_that("deb_multiply_mutate works", {
@@ -170,12 +166,10 @@ test_that("round argument works", {
 test_that("deb_divide works with lsd objects", {
   expect_identical(deb_divide(x_b2, x = 3),
                    deb_divide(x, x = 3, bases = b2))
-  expect_identical(deb_divide(lsd_list1, x = 3),
-                   deb_divide(list1, x = 3, bases = b2))
-  expect_identical(deb_divide(lsd_list2, x = 3, round = 0),
+  expect_identical(deb_divide(list1_b1, x = 3),
+                   deb_divide(list1, x = 3, bases = b1))
+  expect_identical(deb_divide(list2_b2, x = 3, round = 0),
                    deb_divide(list2, x = 3, bases = b2, round = 0))
-  expect_error(deb_divide(lsd_list3, x = 3),
-               "All lsd vectors in a list must have the same bases")
 })
 
 test_that("deb_divide_mutate works", {
@@ -203,10 +197,10 @@ test_that("arithmetic_list_check works", {
 test_that("lsd list length is checked", {
   # Check that length of lists are either the same or 1
   # This is necessary for use of map2
-  expect_s3_class(deb_add(list1, list(x)), "lsd_list")
+  expect_s3_class(deb_add(list1, list(x)), "lsd")
   expect_error(deb_add(list1, list(x, y)),
                "If lsd1 and lsd2 are both lists, they must be the same length, or one must be of length 1.")
-  expect_s3_class(deb_subtract(list1, list(x)), "lsd_list")
+  expect_s3_class(deb_subtract(list1, list(x)), "lsd")
   expect_error(deb_subtract(list1, list(x, y)),
                "If lsd1 and lsd2 are both lists, they must be the same length, or one must be of length 1.")
 })
@@ -245,10 +239,8 @@ test_that("lsd addition is vectorized", {
 
 test_that("deb_add works with lsd objects", {
   expect_identical(deb_add(x_b2, y_b2), deb_add(x, y_b2))
-  expect_identical(deb_add(lsd_list1, x), deb_add(x, list1, b2))
-  expect_identical(deb_add(x, lsd_list2), deb_add(list2, x, b2))
-  expect_error(deb_add(lsd_list3, lsd_list1),
-               "All lsd vectors in a list must have the same bases")
+  expect_identical(deb_add(list1_b1, x), deb_add(x, list1, b1))
+  expect_identical(deb_add(x, list2_b2), deb_add(list2, x, b2))
 })
 
 test_that("deb_add_mutate works", {
@@ -300,10 +292,8 @@ test_that("lsd subtract is vectorized", {
 
 test_that("deb_subtract works with lsd objects", {
   expect_identical(deb_subtract(x_b2, y_b2), deb_subtract(x, y_b2))
-  expect_identical(deb_subtract(lsd_list1, x), deb_subtract(list1, x, b2))
-  expect_identical(deb_subtract(x, lsd_list2), deb_subtract(x, list2, b2))
-  expect_error(deb_subtract(lsd_list3, lsd_list1),
-               "All lsd vectors in a list must have the same bases")
+  expect_identical(deb_subtract(list1_b1, x), deb_subtract(list1, x, b1))
+  expect_identical(deb_subtract(x, list2_b2), deb_subtract(x, list2, b2))
 })
 
 test_that("deb_subtraction_mutate works", {

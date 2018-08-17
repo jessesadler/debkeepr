@@ -7,15 +7,14 @@
 deb_bases(lsd)
 }
 \arguments{
-\item{lsd}{An object of class lsd or lsd_list.}
+\item{lsd}{An object of class lsd.}
 }
 \value{
 Returns a named numeric vector of length 2 corresponding to the
 shillings (s) and pence (d) units of \code{lsd}.
 }
 \description{
-Find the bases for the shillings (s) and pence (d) units of an lsd or
-lsd_list object.
+Find the bases for the shillings (s) and pence (d) units of an lsd object.
 }
 \examples{
 x <- deb_as_lsd(lsd = c(5, 3, 8), bases = c(20, 12))
