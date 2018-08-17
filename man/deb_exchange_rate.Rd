@@ -8,14 +8,11 @@ deb_exchange_rate(lsd1, lsd2, output = c("shillings", "pence", "pounds"),
   bases = c(20, 12), round = 5)
 }
 \arguments{
-\item{lsd1, lsd2}{Pounds, shillings, and pence value that is reduced to £1 and
-against which \code{lsd2} is compared. Thus, \code{lsd1} is the "fixed currency" and
-\code{lsd2} is the "variable currency". A vector of class lsd, a list of class
-lsd_list, or an object that can be coerced to these classes, namely a
-numeric vector of length 3 or a list of such vectors. The first position
-of the vector represents the pounds value or l. The second position
-represents the shillings value or s. And the third position represents the
-pence value or d.}
+\item{lsd1, lsd2}{Pounds, shillings, and pence value that is reduced to £1
+and against which \code{lsd2} is compared. Thus, \code{lsd1} is the "fixed currency"
+and \code{lsd2} is the "variable currency". Objects of class lsd or objects
+that can be coerced to class lsd: numeric vectors of length 3 or lists of
+such vectors.}
 
 \item{output}{Choice of either \code{"shillings"}, \code{"pence"}, or \code{"pounds"} for
 the format in which the exchange rate will be returned. \code{"shillings"},
@@ -26,16 +23,15 @@ the exchange rate in terms of pounds, shillings, and pence.}
 \item{bases}{Numeric vector of length 2 used to specify the bases for the
 shillings or s and pence or d units. Default is \code{c(20, 12)}, which
 conforms to the most widely used system of 1 pound = 20 shillings and
-1 shilling = 12 pence. If \code{lsd1} and/or \code{lsd2} is of class lsd or
-lsd_list, the bases attribute will be used in the place of this argument.
-If the bases attributes of \code{lsd1} and \code{lsd2} are different, an error will
-be thrown.}
+1 shilling = 12 pence. If \code{lsd1} and/or \code{lsd2} is of class lsd, the bases
+attribute will be used in the place of this argument. If the bases
+attributes of \code{lsd1} and \code{lsd2} are different, an error will be thrown.}
 
 \item{round}{Round pence unit to specified number of decimal places.
 Default is 5. Set to 0 to return pence as whole number.}
 }
 \value{
-Returns an lsd or lsd_list object with a bases attribute. The format
+Returns an object of class lsd with a bases attribute. The format
 of the returned value is determined by the \code{output} argument. If \code{lsd1} >
 \code{lsd2}, the returned value will be less than £1.
 }
@@ -88,7 +84,7 @@ deb_exchange_rate(lsd1 = lsd_100, lsd2 = lsd_166)
 }
 
 # To find the exchange rate for multiple currencies use a
-# list of lsd values or lsd_list objects for `lsd1` or `lsd2`
+# list of lsd values or lsd objects for `lsd1` or `lsd2`
 list_a <- list(c(150, 0, 0), c(125, 0, 0), c(175, 13, 4))
 list_b <- list(c(125, 0, 0), c(75, 8, 4), c(100, 10, 0))
 

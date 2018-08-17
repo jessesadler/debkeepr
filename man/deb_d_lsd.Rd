@@ -13,14 +13,14 @@ converted into a pounds, shillings, and pence currency.}
 \item{bases}{Numeric vector of length 2 used to specify the bases for the
 shillings or s and pence or d units. Default is \code{c(20, 12)}, which
 conforms to the most widely used system of 1 pound = 20 shillings and
-1 shilling = 12 pence. If \code{lsd} is of class lsd or lsd_list, the bases
-attribute will be used in the place of this argument.}
+1 shilling = 12 pence. If \code{lsd} is of class lsd, the bases attribute will
+be used in the place of this argument.}
 
 \item{round}{Round pence unit to specified number of decimal places.
 Default is 5. Set to 0 to return pence as whole number.}
 }
 \value{
-Returns an lsd or lsd_list object with a bases attribute.
+Returns an object of class lsd with a bases attribute.
 }
 \description{
 Convert decimalized pence to the lsd system of pounds, shillings, and pence.
@@ -35,8 +35,7 @@ deb_d_lsd(d = 2500, bases = c(20, 16))
 # The value for pence can be negative
 deb_d_lsd(d = -2500)
 
-# d can be a vector of length > 1, which
-# returns an lsd_list
+# d can be a vector of length > 1
 deb_d_lsd(d = c(2500, -2500, 4575))
 
 }

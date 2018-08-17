@@ -7,27 +7,21 @@
 deb_lsd_d(lsd, bases = c(20, 12), round = 5)
 }
 \arguments{
-\item{lsd}{An lsd value. A vector of class lsd, a list of class lsd_list, or
-an object that can be coerced to these classes, namely a numeric vector of
-length 3 or a list of such vectors. The first position of the vector
-represents the pounds value or l. The second position represents the
-shillings value or s. And the third position represents the pence value
-or d.}
+\item{lsd}{An lsd value. An object of class lsd or an object that can be
+coerced to class lsd: a numeric vector of length 3 or a list of such
+vectors.}
 
 \item{bases}{Numeric vector of length 2 used to specify the bases for the
 shillings or s and pence or d units. Default is \code{c(20, 12)}, which
 conforms to the most widely used system of 1 pound = 20 shillings and
-1 shilling = 12 pence. If \code{lsd} is of class lsd or lsd_list, the bases
-attribute will be used in the place of this argument.}
+1 shilling = 12 pence. If \code{lsd} is of class lsd, the bases attribute will
+be used in the place of this argument.}
 
 \item{round}{Round pence unit to specified number of decimal places.
 Default is 5. Set to 0 to return pence as whole number.}
 }
 \value{
-Returns a numeric vector of decimalized pence. If \code{lsd} is a
-vector or object of class lsd, the returned vector will be length 1. If
-\code{lsd} is a list of vectors or object of class lsd_list, the returned
-vector will be the same length as \code{lsd}.
+Returns a numeric vector of decimalized pence.
 }
 \description{
 Convert pounds, shillings, and pence to decimalized pence.
@@ -53,7 +47,7 @@ deb_lsd_d(lsd = c(6, 25, 17))
 lsd_list <- list(c(40, 5, 9), c(29, 7, 1), c(35, 6, 5))
 deb_lsd_d(lsd = lsd_list)
 
-# Or an lsd_list object with alternative bases
+# Or an lsd object with alternative bases
 lsd_list2 <- deb_as_lsd(lsd = lsd_list, bases = c(20, 16))
 deb_lsd_d(lsd = lsd_list2)
 

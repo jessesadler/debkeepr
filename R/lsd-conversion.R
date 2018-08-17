@@ -9,19 +9,19 @@
 #' exchange on currencies that share the same shillings and pence bases.
 #'
 #' `deb_convert_bases()` is the only way to change the bases attribute of an
-#' lsd or lsd_list object.
+#' lsd object.
 #'
 #' @inheritParams deb_normalize
 #' @param bases1 Numeric vector of length 2 used to specify the bases for the
-#'   shillings or s and pence or d values of `lsd`. If `lsd` is of class lsd or
-#'   lsd_list, the bases attribute will be used in the place of this argument.
+#'   shillings or s and pence or d values of `lsd`. If `lsd` is of class lsd,
+#'   the bases attribute will be used in the place of this argument.
 #' @param bases2 Numeric vector of length 2 used to specify the bases for
 #'   the shillings or s and pence or d values to which `lsd` will be converted.
 #' @param ratio The ratio between the two currencies that possess different
 #'   bases. This is the value by which `lsd` is multiplied. Numeric vector of
 #'   length 1 with the default of `1`.
 #'
-#' @return Returns an lsd or lsd_list object with a bases attribute conforming
+#' @return Returns an object of class lsd with a bases attribute conforming
 #'   to `bases2`.
 #'
 #' @examples
@@ -40,8 +40,7 @@
 #'                   bases2 = c(20, 12),
 #'                   ratio = 1/6)
 #'
-#' # If lsd is an lsd or lsd_list object,
-#' # bases1 will use the bases attribute
+#' # If input is an lsd object, bases1 will use the bases attribute
 #' guilders <- deb_as_lsd(lsd = c(1224, 19, 8), bases = c(20, 16))
 #' deb_convert_bases(lsd = guilders,
 #'                   bases2 = c(20, 12),
@@ -62,7 +61,7 @@
 #'                   ratio = 1/6) %>%
 #'   deb_exchange(shillings_rate = 12)
 #'
-#' # Convert an lsd_list of guilders to pounds Flemish
+#' # Convert an lsd object of guilders to pounds Flemish
 #' guilders_list <- deb_as_lsd(lsd = list(c(1224, 19, 8),
 #'                                        c(101, 5, 13),
 #'                                        c(225, 13, 15)),

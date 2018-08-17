@@ -10,8 +10,7 @@ deb_is_lsd(lsd)
 \item{lsd}{An object.}
 }
 \value{
-\code{TRUE} if object is of class lsd and \code{FALSE} if it
-is not.
+\code{TRUE} if object is of class lsd and \code{FALSE} if it is not.
 }
 \description{
 Test if an object is of class lsd.

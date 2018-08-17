@@ -33,16 +33,17 @@ conforms to the most widely used system of 1 pound = 20 shillings and
 \item{...}{Arguments passed on to further methods.}
 }
 \value{
-Returns an lsd or lsd_list object with a bases attribute.
+Returns an object of class lsd with a bases attribute.
 }
 \description{
-Pounds, shillings, and pence values are stored as either numeric vectors
-of length 3 or lists of numeric vectors of length 3 that possess a bases
-attribute to record the bases for the shillings or s and pence or d units
-of the values. An lsd object is a named numeric vector with a bases
-attribute. An lsd_list object builds upon this. It is a list of lsd objects
-that share the same bases, and it possesses a matching bases attribute
-itself.
+Pounds, shillings, and pence values are stored as lists of named numeric
+vectors of length 3 that possess a bases attribute to record the bases for
+the shillings or s and pence or d units of the values. The first position of
+each vector represents the pounds value or l. The second position represents
+the shillings value or s. And the third position represents the pence value
+or d. The bases attribute is stored as a named numeric vector of length 2
+with the first value recording the shillings base and the second value the
+base of the pence units.
 }
 \details{
 The lsd class and the \code{debkeepr} package use the nomenclature of
@@ -67,7 +68,7 @@ deb_as_lsd(lsd = c(10, 6, 8), bases = c(20, 12))
 # of guilders, stuivers, and penningen
 deb_as_lsd(lsd = c(10, 8, 14), bases = c(20, 16))
 
-# Create lsd_list object from a list of vectors
+# Create lsd object from a list of vectors
 # with the default bases of 20s. 12d.
 deb_as_lsd(lsd = list(c(10, 6, 8),
                        c(8, 13, 4),

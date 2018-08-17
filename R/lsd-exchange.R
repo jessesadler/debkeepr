@@ -18,7 +18,7 @@
 #'   of shillings. Thus, in terms of a given number over the base of shillings
 #'   provided in the `bases` argument. A numeric vector of length 1.
 #'
-#' @return Returns an lsd or lsd_list object with a bases attribute.
+#' @return Returns an object of class lsd with a bases attribute.
 #'
 #' @examples
 #' # Exchange at the rate of 31 shillings
@@ -46,7 +46,7 @@
 #' lsd_list <- list(c(40, 5, 9), c(29, 7, 1), c(35, 6, 5))
 #' deb_exchange(lsd = lsd_list, shillings_rate = 31)
 #'
-#' # Or an lsd_list object with alternative bases
+#' # Or an lsd object with alternative bases
 #' lsd_list2 <- deb_as_lsd(lsd = lsd_list, bases = c(20, 16))
 #' deb_exchange(lsd = lsd_list2, shillings_rate = 31)
 #'
@@ -102,21 +102,18 @@ normalized_to_d <- function(lsd, bases) {
 #' the shorter list will be recycled.
 #'
 #' @inheritParams deb_add
-#' @param lsd1,lsd2 Pounds, shillings, and pence value that is reduced to £1 and
-#'   against which `lsd2` is compared. Thus, `lsd1` is the "fixed currency" and
-#'   `lsd2` is the "variable currency". A vector of class lsd, a list of class
-#'   lsd_list, or an object that can be coerced to these classes, namely a
-#'   numeric vector of length 3 or a list of such vectors. The first position
-#'   of the vector represents the pounds value or l. The second position
-#'   represents the shillings value or s. And the third position represents the
-#'   pence value or d.
+#' @param lsd1,lsd2 Pounds, shillings, and pence value that is reduced to £1
+#'   and against which `lsd2` is compared. Thus, `lsd1` is the "fixed currency"
+#'   and `lsd2` is the "variable currency". Objects of class lsd or objects
+#'   that can be coerced to class lsd: numeric vectors of length 3 or lists of
+#'   such vectors.
 #' @param output Choice of either `"shillings"`, `"pence"`, or `"pounds"` for
 #'   the format in which the exchange rate will be returned. `"shillings"`,
 #'   the default, returns the exchange rate in terms of shillings and pence.
 #'   `"pence"` returns the exchange rate in terms of pence. `"pounds"` returns
 #'   the exchange rate in terms of pounds, shillings, and pence.
 #'
-#' @return Returns an lsd or lsd_list object with a bases attribute. The format
+#' @return Returns an object of class lsd with a bases attribute. The format
 #'   of the returned value is determined by the `output` argument. If `lsd1` >
 #'   `lsd2`, the returned value will be less than £1.
 #'
@@ -159,7 +156,7 @@ normalized_to_d <- function(lsd, bases) {
 #' }
 #'
 #' # To find the exchange rate for multiple currencies use a
-#' # list of lsd values or lsd_list objects for `lsd1` or `lsd2`
+#' # list of lsd values or lsd objects for `lsd1` or `lsd2`
 #' list_a <- list(c(150, 0, 0), c(125, 0, 0), c(175, 13, 4))
 #' list_b <- list(c(125, 0, 0), c(75, 8, 4), c(100, 10, 0))
 #'
@@ -197,14 +194,11 @@ deb_exchange_rate <- function(lsd1, lsd2,
 #'
 #' @inheritParams deb_normalize
 #' @inheritParams deb_exchange_rate
-#' @param exchange_rate An lsd value. A vector of class lsd, a list of class lsd_list, or
-#'   an object that can be coerced to these classes, namely a numeric vector of
-#'   length 3 or a list of such vectors. The first position of the vector
-#'   represents the pounds value or l. The second position represents the
-#'   shillings value or s. And the third position represents the pence value
-#'   or d. The values do not need to be normalized.
+#' @param exchange_rate An lsd value. An object of class lsd or an object that
+#'   can be coerced to class lsd: a numeric vector of length 3 or a list of
+#'   such vectors. The values do not need to be normalized.
 #'
-#' @return Returns an lsd or lsd_list object with a bases attribute. The format
+#' @return Returns an object of class lsd with a bases attribute. The format
 #'   of the returned value is determined by the `output` argument, either
 #'   pounds, shillings, and pence; shillings and pence; or just pence.
 #'

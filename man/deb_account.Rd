@@ -38,8 +38,8 @@ the pence or denarii unit. Default is d.}
 \item{bases}{Numeric vector of length 2 used to specify the bases for the
 shillings or s and pence or d units. Default is \code{c(20, 12)}, which
 conforms to the most widely used system of 1 pound = 20 shillings and
-1 shilling = 12 pence. If \code{lsd} is of class lsd or lsd_list, the bases
-attribute will be used in the place of this argument.}
+1 shilling = 12 pence. If \code{lsd} is of class lsd, the bases attribute will
+be used in the place of this argument.}
 
 \item{round}{Round pence to specified number of decimal places. Default
 is 5. Rounding of the pence value takes place throughout the function and

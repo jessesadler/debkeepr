@@ -12,7 +12,7 @@
 #' @param x Multiplier. The value by which `lsd` will be multiplied. A numeric
 #'   vector of length 1.
 #'
-#' @return Returns an lsd or lsd_list object with a bases attribute.
+#' @return Returns an object of class lsd with a bases attribute.
 #'
 #' @examples
 #' # Multiply pounds, shillings, and pence by 5
@@ -45,7 +45,7 @@
 #' lsd_list <- list(c(40, 5, 9), c(29, 7, 1), c(35, 6, 5))
 #' deb_multiply(lsd = lsd_list, x = 5)
 #'
-#' # Or an lsd_list object with alternative bases
+#' # Or an lsd object with alternative bases
 #' lsd_list2 <- deb_as_lsd(lsd = lsd_list, bases = c(20, 16))
 #' deb_multiply(lsd = lsd_list2, x = 5)
 #'
@@ -147,7 +147,7 @@ deb_multiply_mutate <- function(df,
 #' @param x Divisor. The value by which `lsd` will be divided. A numeric vector
 #'   of length 1.
 #'
-#' @return Returns an lsd or lsd_list object with a bases attribute.
+#' @return Returns an object of class lsd with a bases attribute.
 #'
 #' @examples
 #' # Divide pounds, shillings, and pence by a divisor
@@ -177,7 +177,7 @@ deb_multiply_mutate <- function(df,
 #' lsd_list <- list(c(40, 5, 9), c(29, 7, 1), c(35, 6, 5))
 #' deb_divide(lsd = lsd_list, x = 4)
 #'
-#' # Or an lsd_list object with alternative bases
+#' # Or an lsd object with alternative bases
 #' lsd_list2 <- deb_as_lsd(lsd = lsd_list, bases = c(20, 16))
 #' deb_divide(lsd = lsd_list2, x = 4)
 #'
@@ -269,8 +269,8 @@ deb_divide_mutate <- function(df,
 
 #' Addition of two values of pounds, shillings, and pence
 #'
-#' Add two pounds, shillings, and pence values that are in the form of numeric
-#' vectors or lists of numeric vectors (`lsd1` and `lsd2`). If one of `lsd1`
+#' Add two pounds, shillings, and pence values that are in the form of lsd
+#' objects, numeric vectors, or lists of numeric vectors. If one of `lsd1`
 #' and `lsd2` is a list and the other is a vector, the vector will be recycled.
 #'
 #' See [deb_sum()] to get the sum of multiple numeric vectors and/or lists of
@@ -279,22 +279,18 @@ deb_divide_mutate <- function(df,
 #' @family lsd arithmetic functions
 #'
 #' @inheritParams deb_normalize
-#' @param lsd1,lsd2 lsd values. Vectors of class lsd, lists of class lsd_list,
-#'   or objects that can be coerced to these classes, namely numeric vectors of
-#'   length 3 or lists of such vectors. If `lsd1` and `lsd2` are both lists,
-#'   they must be the same length, or one must be of length 1. The first
-#'   position of the vector represents the pounds value or l. The second
-#'   position represents the shillings value or s. And the third position
-#'   represents the pence value or d.
+#' @param lsd1,lsd2 lsd values. Objects of class lsd or objects that can be
+#'   coerced to class lsd: numeric vectors of length 3 or lists of such
+#'   vectors. If `lsd1` and `lsd2` are both lists, they must be the same
+#'   length, or one must be of length 1.
 #' @param bases Numeric vector of length 2 used to specify the bases for the
 #'   shillings or s and pence or d units. Default is `c(20, 12)`, which
 #'   conforms to the most widely used system of 1 pound = 20 shillings and
-#'   1 shilling = 12 pence. If `lsd1` and/or `lsd2` is of class lsd or
-#'   lsd_list, the bases attribute will be used in the place of this argument.
-#'   If the bases attributes of `lsd1` and `lsd2` are different, an error will
-#'   be thrown.
+#'   1 shilling = 12 pence. If `lsd1` and/or `lsd2` is of class lsd, the bases
+#'   attribute will be used in the place of this argument. If the bases
+#'   attributes of `lsd1` and `lsd2` are different, an error will be thrown.
 #'
-#' @return Returns an lsd or lsd_list object with a bases attribute.
+#' @return Returns an object of class lsd with a bases attribute.
 #'
 #' @examples
 #' # Add pounds, shillings, and pence
@@ -317,7 +313,7 @@ deb_divide_mutate <- function(df,
 #' deb_sum(c(56, 8, 5), c(19, 5, 7))
 #'
 #' # deb_add is useful when one or both of lsd1 and lsd2
-#' # are lists of numerical vectors or lsd_list objects
+#' # are lists of numerical vectors
 #'
 #' # With two lists of the same length each vector in lsd1
 #' # will be added to the corresponding vector in lsd2.
@@ -441,24 +437,20 @@ deb_add_mutate <- function(df,
 
 #' Subtraction of two values of pounds, shillings, and pence
 #'
-#' Subtract two pounds, shillings, and pence values that are in the form of
-#' numeric vectors or lists of numeric vectors (`lsd1` and `lsd2`). If one of
-#' `lsd1` and `lsd2` is a list and the other is a vector, the vector will be
-#' recycled.
+#' Subtract two pounds, shillings, and pence values that are in the form of lsd
+#' objects, numeric vectors, or lists of numeric vectors. If one of `lsd1`
+#' and `lsd2` is a list and the other is a vector, the vector will be recycled.
 #'
 #' @family lsd arithmetic functions
 #'
 #' @inheritParams deb_add
-#' @param lsd1,lsd2 lsd values. Vectors of class lsd, lists of class lsd_list,
-#'   or objects that can be coerced to these classes, namely numeric vectors of
-#'   length 3 or lists of such vectors. If `lsd1` and `lsd2` are both lists,
-#'   they must be the same length, or one must be of length 1. The first
-#'   position of the vector represents the pounds value or l. The second
-#'   position represents the shillings value or s. And the third position
-#'   represents the pence value or d. `lsd2` is the value or values to be
+#' @param lsd1,lsd2 lsd values. Objects of class lsd or objects that can be
+#'   coerced to class lsd: numeric vectors of length 3 or lists of such
+#'   vectors. If `lsd1` and `lsd2` are both lists, they must be the same
+#'   length, or one must be of length 1. `lsd2` is the value or values to be
 #'   subtracted from `lsd1`: `lsd1 - lsd2`.
 #'
-#' @return Returns an lsd or lsd_list object with a bases attribute.
+#' @return Returns an object of class lsd with a bases attribute.
 #'
 #' @examples
 #' # Subtract pounds, shillings, and pence
@@ -481,7 +473,7 @@ deb_add_mutate <- function(df,
 #' deb_normalize(lsd = c(56, 8, 5) - c(19, 5, 7))
 #'
 #' # deb_subtract is useful when one or both of lsd1 and lsd2
-#' # are lists of numerical vectors or lsd_list objects
+#' # are lists of numerical vectors
 #'
 #' # With two lists of the same length each vector in lsd1
 #' # will be subtracted from the corresponding vector in lsd2.

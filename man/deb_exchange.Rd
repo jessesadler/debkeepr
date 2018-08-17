@@ -7,12 +7,9 @@
 deb_exchange(lsd, shillings_rate, bases = c(20, 12), round = 5)
 }
 \arguments{
-\item{lsd}{An lsd value. A vector of class lsd, a list of class lsd_list, or
-an object that can be coerced to these classes, namely a numeric vector of
-length 3 or a list of such vectors. The first position of the vector
-represents the pounds value or l. The second position represents the
-shillings value or s. And the third position represents the pence value
-or d.}
+\item{lsd}{An lsd value. An object of class lsd or an object that can be
+coerced to class lsd: a numeric vector of length 3 or a list of such
+vectors.}
 
 \item{shillings_rate}{The exchange rate. This follows the common practice
 of calculating the exchange rate between different currencies in terms
@@ -22,14 +19,14 @@ provided in the \code{bases} argument. A numeric vector of length 1.}
 \item{bases}{Numeric vector of length 2 used to specify the bases for the
 shillings or s and pence or d units. Default is \code{c(20, 12)}, which
 conforms to the most widely used system of 1 pound = 20 shillings and
-1 shilling = 12 pence. If \code{lsd} is of class lsd or lsd_list, the bases
-attribute will be used in the place of this argument.}
+1 shilling = 12 pence. If \code{lsd} is of class lsd, the bases attribute will
+be used in the place of this argument.}
 
 \item{round}{Round pence unit to specified number of decimal places.
 Default is 5. Set to 0 to return pence as whole number.}
 }
 \value{
-Returns an lsd or lsd_list object with a bases attribute.
+Returns an object of class lsd with a bases attribute.
 }
 \description{
 Exchange between pounds, shillings, and pence currencies that share the
@@ -69,7 +66,7 @@ deb_exchange(lsd = c(850, 16, 10), shillings_rate = 31 + 4/12)
 lsd_list <- list(c(40, 5, 9), c(29, 7, 1), c(35, 6, 5))
 deb_exchange(lsd = lsd_list, shillings_rate = 31)
 
-# Or an lsd_list object with alternative bases
+# Or an lsd object with alternative bases
 lsd_list2 <- deb_as_lsd(lsd = lsd_list, bases = c(20, 16))
 deb_exchange(lsd = lsd_list2, shillings_rate = 31)
 

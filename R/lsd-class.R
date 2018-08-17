@@ -81,13 +81,14 @@ validate_bases_p <- function(lsd, bases) {
 
 #' A class for pounds, shillings and pence values
 #'
-#' Pounds, shillings, and pence values are stored as either numeric vectors
-#' of length 3 or lists of numeric vectors of length 3 that possess a bases
-#' attribute to record the bases for the shillings or s and pence or d units
-#' of the values. An lsd object is a named numeric vector with a bases
-#' attribute. An lsd_list object builds upon this. It is a list of lsd objects
-#' that share the same bases, and it possesses a matching bases attribute
-#' itself.
+#' Pounds, shillings, and pence values are stored as lists of named numeric
+#' vectors of length 3 that possess a bases attribute to record the bases for
+#' the shillings or s and pence or d units of the values. The first position of
+#' each vector represents the pounds value or l. The second position represents
+#' the shillings value or s. And the third position represents the pence value
+#' or d. The bases attribute is stored as a named numeric vector of length 2
+#' with the first value recording the shillings base and the second value the
+#' base of the pence units.
 #'
 #' The lsd class and the `debkeepr` package use the nomenclature of
 #' [l, s, and d](https://en.wikipedia.org/wiki/£sd) to represent pounds,
@@ -113,7 +114,7 @@ validate_bases_p <- function(lsd, bases) {
 #'   1 shilling = 12 pence.
 #' @param ... Arguments passed on to further methods.
 #'
-#' @return Returns an lsd or lsd_list object with a bases attribute.
+#' @return Returns an object of class lsd with a bases attribute.
 #'
 #' @examples
 #' # Create lsd object for £10 6s. 8d. with a numeric vector
@@ -123,7 +124,7 @@ validate_bases_p <- function(lsd, bases) {
 #' # of guilders, stuivers, and penningen
 #' deb_as_lsd(lsd = c(10, 8, 14), bases = c(20, 16))
 #'
-#' # Create lsd_list object from a list of vectors
+#' # Create lsd object from a list of vectors
 #' # with the default bases of 20s. 12d.
 #' deb_as_lsd(lsd = list(c(10, 6, 8),
 #'                        c(8, 13, 4),
@@ -176,8 +177,7 @@ deb_as_lsd.lsd <- function(lsd, bases, ...) lsd
 #'
 #' @param lsd An object.
 #'
-#' @return `TRUE` if object is of class lsd and `FALSE` if it
-#'   is not.
+#' @return `TRUE` if object is of class lsd and `FALSE` if it is not.
 #'
 #' @examples
 #' x <- c(5, 3, 8)

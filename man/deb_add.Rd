@@ -7,31 +7,27 @@
 deb_add(lsd1, lsd2, bases = c(20, 12), round = 5)
 }
 \arguments{
-\item{lsd1, lsd2}{lsd values. Vectors of class lsd, lists of class lsd_list,
-or objects that can be coerced to these classes, namely numeric vectors of
-length 3 or lists of such vectors. If \code{lsd1} and \code{lsd2} are both lists,
-they must be the same length, or one must be of length 1. The first
-position of the vector represents the pounds value or l. The second
-position represents the shillings value or s. And the third position
-represents the pence value or d.}
+\item{lsd1, lsd2}{lsd values. Objects of class lsd or objects that can be
+coerced to class lsd: numeric vectors of length 3 or lists of such
+vectors. If \code{lsd1} and \code{lsd2} are both lists, they must be the same
+length, or one must be of length 1.}
 
 \item{bases}{Numeric vector of length 2 used to specify the bases for the
 shillings or s and pence or d units. Default is \code{c(20, 12)}, which
 conforms to the most widely used system of 1 pound = 20 shillings and
-1 shilling = 12 pence. If \code{lsd1} and/or \code{lsd2} is of class lsd or
-lsd_list, the bases attribute will be used in the place of this argument.
-If the bases attributes of \code{lsd1} and \code{lsd2} are different, an error will
-be thrown.}
+1 shilling = 12 pence. If \code{lsd1} and/or \code{lsd2} is of class lsd, the bases
+attribute will be used in the place of this argument. If the bases
+attributes of \code{lsd1} and \code{lsd2} are different, an error will be thrown.}
 
 \item{round}{Round pence unit to specified number of decimal places.
 Default is 5. Set to 0 to return pence as whole number.}
 }
 \value{
-Returns an lsd or lsd_list object with a bases attribute.
+Returns an object of class lsd with a bases attribute.
 }
 \description{
-Add two pounds, shillings, and pence values that are in the form of numeric
-vectors or lists of numeric vectors (\code{lsd1} and \code{lsd2}). If one of \code{lsd1}
+Add two pounds, shillings, and pence values that are in the form of lsd
+objects, numeric vectors, or lists of numeric vectors. If one of \code{lsd1}
 and \code{lsd2} is a list and the other is a vector, the vector will be recycled.
 }
 \details{
@@ -59,7 +55,7 @@ deb_add(lsd1 = lsd1, lsd2 = lsd2)
 deb_sum(c(56, 8, 5), c(19, 5, 7))
 
 # deb_add is useful when one or both of lsd1 and lsd2
-# are lists of numerical vectors or lsd_list objects
+# are lists of numerical vectors
 
 # With two lists of the same length each vector in lsd1
 # will be added to the corresponding vector in lsd2.

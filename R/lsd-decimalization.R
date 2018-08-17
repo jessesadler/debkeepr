@@ -8,10 +8,7 @@
 #'
 #' @inheritParams deb_normalize
 #'
-#' @return Returns a numeric vector of decimalized pounds. If `lsd` is a
-#'   vector or object of class lsd, the returned vector will be length 1. If
-#'   `lsd` is a list of vectors or object of class lsd_list, the returned
-#'   vector will be the same length as `lsd`.
+#' @return Returns a numeric vector of decimalized pounds.
 #'
 #' @examples
 #' # Create decimalized pounds
@@ -34,7 +31,7 @@
 #' lsd_list <- list(c(40, 5, 9), c(29, 7, 1), c(35, 6, 5))
 #' deb_lsd_l(lsd = lsd_list)
 #'
-#' # Or an lsd_list object with alternative bases
+#' # Or an lsd object with alternative bases
 #' lsd_list2 <- deb_as_lsd(lsd = lsd_list, bases = c(20, 16))
 #' deb_lsd_l(lsd = lsd_list2)
 #'
@@ -62,7 +59,7 @@ deb_lsd_l <- function(lsd, bases = c(20, 12)) {
 #'   converted into a pounds, shillings, and pence currency.
 #' @inheritParams deb_normalize
 #'
-#' @return Returns an lsd or lsd_list object with a bases attribute.
+#' @return Returns an object of class lsd with a bases attribute.
 #'
 #' @examples
 #' # Conversion from pounds to pounds, shillings, and pence
@@ -75,8 +72,7 @@ deb_lsd_l <- function(lsd, bases = c(20, 12)) {
 #' # The value can be negative
 #' deb_l_lsd(l = -8.625)
 #'
-#' # l can be a vector of length > 1, which
-#' # returns an lsd_list
+#' # l can be a vector of length > 1
 #' deb_l_lsd(l = c(8.625, -8.625, 8))
 #'
 #' @export
@@ -104,10 +100,7 @@ deb_l_lsd <- function(l, bases = c(20, 12), round = 5) {
 #'
 #' @inheritParams deb_normalize
 #'
-#' @return  Returns a numeric vector of decimalized shillings. If `lsd` is a
-#'   vector or object of class lsd, the returned vector will be length 1. If
-#'   `lsd` is a list of vectors or object of class lsd_list, the returned
-#'   vector will be the same length as `lsd`.
+#' @return Returns a numeric vector of decimalized shillings.
 #'
 #' @examples
 #' # Create decimalized shillings
@@ -130,7 +123,7 @@ deb_l_lsd <- function(l, bases = c(20, 12), round = 5) {
 #' lsd_list <- list(c(40, 5, 9), c(29, 7, 1), c(35, 6, 5))
 #' deb_lsd_s(lsd = lsd_list)
 #'
-#' # Or an lsd_list object with alternative bases
+#' # Or an lsd object with alternative bases
 #' lsd_list2 <- deb_as_lsd(lsd = lsd_list, bases = c(20, 16))
 #' deb_lsd_s(lsd = lsd_list2)
 #'
@@ -158,7 +151,7 @@ deb_lsd_s <- function(lsd, bases = c(20, 12)) {
 #'   converted into a pounds, shillings, and pence currency.
 #' @inheritParams deb_normalize
 #'
-#' @return Returns an lsd or lsd_list object with a bases attribute.
+#' @return Returns an object of class lsd with a bases attribute.
 #'
 #' @examples
 #' # Convert shillings to pounds, shillings, and pence
@@ -173,8 +166,7 @@ deb_lsd_s <- function(lsd, bases = c(20, 12)) {
 #' # With alternative bases for shillings and pence
 #' deb_s_lsd(s = 263.835, bases = c(20, 16))
 #'
-#' # s can be a vector of length > 1, which
-#' # returns an lsd_list
+#' # s can be a vector of length > 1
 #' deb_s_lsd(s = c(263, -263, 263.835))
 #'
 #' @export
@@ -202,10 +194,7 @@ deb_s_lsd <- function(s, bases = c(20, 12), round = 5) {
 #'
 #' @inheritParams deb_normalize
 #'
-#' @return  Returns a numeric vector of decimalized pence. If `lsd` is a
-#'   vector or object of class lsd, the returned vector will be length 1. If
-#'   `lsd` is a list of vectors or object of class lsd_list, the returned
-#'   vector will be the same length as `lsd`.
+#' @return  Returns a numeric vector of decimalized pence.
 #'
 #' @examples
 #' # Create decimalized pence
@@ -228,7 +217,7 @@ deb_s_lsd <- function(s, bases = c(20, 12), round = 5) {
 #' lsd_list <- list(c(40, 5, 9), c(29, 7, 1), c(35, 6, 5))
 #' deb_lsd_d(lsd = lsd_list)
 #'
-#' # Or an lsd_list object with alternative bases
+#' # Or an lsd object with alternative bases
 #' lsd_list2 <- deb_as_lsd(lsd = lsd_list, bases = c(20, 16))
 #' deb_lsd_d(lsd = lsd_list2)
 #'
@@ -256,7 +245,7 @@ deb_lsd_d <- function(lsd, bases = c(20, 12), round = 5) {
 #'   converted into a pounds, shillings, and pence currency.
 #' @inheritParams deb_normalize
 #'
-#' @return Returns an lsd or lsd_list object with a bases attribute.
+#' @return Returns an object of class lsd with a bases attribute.
 #'
 #' @examples
 #' # Convert pence to pounds, shillings, and pence
@@ -268,8 +257,7 @@ deb_lsd_d <- function(lsd, bases = c(20, 12), round = 5) {
 #' # The value for pence can be negative
 #' deb_d_lsd(d = -2500)
 #'
-#' # d can be a vector of length > 1, which
-#' # returns an lsd_list
+#' # d can be a vector of length > 1
 #' deb_d_lsd(d = c(2500, -2500, 4575))
 #'
 #' @export

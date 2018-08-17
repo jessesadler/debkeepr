@@ -11,18 +11,15 @@
 #' @family lsd arithmetic functions
 #'
 #' @inheritParams deb_normalize
-#' @param ...  lsd values. Vectors of class lsd, lists of class lsd_list, or
-#'   objects that can be coerced to these classes, namely numeric vectors of
-#'   length 3 or lists of such vectors. All lsd and lsd_list objects must have
-#'   the same bases. The first position of the vector represents the pounds
-#'   value or l. The second position represents the shillings value or s. And
-#'   the third position represents the pence value or d.
+#' @param ... Objects of class lsd or objects that can be coerced to class lsd:
+#'   numeric vectors of length 3 or lists of such vectors. All lsd objects must
+#'   have the same bases.
 #' @param bases Numeric vector of length 2 used to specify the bases for the
 #'   shillings or s and pence or d units. Default is `c(20, 12)`, which
 #'   conforms to the most widely used system of 1 pound = 20 shillings and
-#'   1 shilling = 12 pence. If any of the lsd values are lsd or lsd_list
-#'   objects, the bases attribute will be used in the place of this argument.
-#'   All lsd and lsd_list objects must have the same bases.
+#'   1 shilling = 12 pence. If any of the lsd values are lsd objects, the bases
+#'   attribute will be used in the place of this argument. All lsd objects must
+#'   have the same bases.
 #' @param na.rm Logical. Passed on to `na.rm` argument in [sum()]. Whether
 #'   missing values (NA) should be removed. Default is `FALSE`.
 #'
@@ -39,15 +36,14 @@
 #' lsd <- deb_as_lsd(lsd = c(12, 7, 9), bases = c(20, 16))
 #' deb_sum(lsd, c(5, 8, 11), c(3, 18, 5))
 #'
-#' # Sum of a lsd_list object
+#' # Sum of a lsd object of length > 1
 #' lsd_list <- deb_as_lsd(lsd = list(c(12, 7, 9), c(5, 8, 11), c(3, 18, 5)))
 #' deb_sum(lsd_list)
 #'
 #' # Sum of a mixture of lsd vectors and list of lsd vectors
 #' deb_sum(lsd_list, c(8, 4, 9), c(6, 19, 10))
 #'
-#' # Cannot find sum of lsd and/or lsd_list
-#' # objects that have different bases
+#' # Cannot find sum of lsd objects that have different bases
 #' \dontrun{
 #' deb_sum(lsd, lsd_list)
 #' }

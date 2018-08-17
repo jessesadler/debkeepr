@@ -2,9 +2,8 @@
 
 #' Calculation of the interest of pounds, shillings, and pence
 #'
-#' Calculate the interest of pounds, shillings, and pence
-#' given an interest rate and a duration. The function does not
-#' calculate compound interest.
+#' Calculate the interest of pounds, shillings, and pence given an interest
+#' rate and a duration. The function does not calculate compound interest.
 #'
 #' @inheritParams deb_normalize
 #' @param interest Interest rate in decimal form. A numeric vector of length 1.
@@ -17,7 +16,7 @@
 #'   pounds, shillings and pence value(s) will include the principal as well as
 #'   the interest. When `FALSE` only the interest will be returned.
 #'
-#' @return Returns an lsd or lsd_list object with a bases attribute.
+#' @return Returns an object of class lsd with a bases attribute.
 #'
 #' @examples
 #' # Calculate the interest with the principal over a certain duration
@@ -41,7 +40,7 @@
 #' lsd_list <- list(c(40, 5, 9), c(29, 7, 1), c(35, 6, 5))
 #' deb_interest(lsd = lsd_list, interest = 0.08, duration = 5)
 #'
-#' # Or an lsd_list object with alternative bases
+#' # Or an lsd object with alternative bases
 #' lsd_list2 <- deb_as_lsd(lsd = lsd_list, bases = c(20, 16))
 #' deb_interest(lsd = lsd_list2, interest = 0.08, duration = 5)
 #'

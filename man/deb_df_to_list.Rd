@@ -2,7 +2,7 @@
 % Please edit documentation in R/helpers.R
 \name{deb_df_to_list}
 \alias{deb_df_to_list}
-\title{Data frame of pounds, shillings, and pence to lsd_list}
+\title{Data frame of pounds, shillings, and pence to an lsd object}
 \usage{
 deb_df_to_list(df, l = l, s = s, d = d, bases = c(20, 12))
 }
@@ -21,16 +21,16 @@ the pence or denarii unit. Default is d.}
 \item{bases}{Numeric vector of length 2 used to specify the bases for the
 shillings or s and pence or d units. Default is \code{c(20, 12)}, which
 conforms to the most widely used system of 1 pound = 20 shillings and
-1 shilling = 12 pence. If \code{lsd} is of class lsd or lsd_list, the bases
-attribute will be used in the place of this argument.}
+1 shilling = 12 pence. If \code{lsd} is of class lsd, the bases attribute will
+be used in the place of this argument.}
 }
 \value{
-Returns an lsd_list object with a bases attribute. All variables in
-\code{df} aside from \code{l}, \code{s}, and \code{d} will be dropped.
+Returns an lsd object with a bases attribute. All variables in \code{df}
+aside from \code{l}, \code{s}, and \code{d} will be dropped.
 }
 \description{
 Transform a data frame that has pounds, shillings, and pence variables into
-an lsd_list object.
+an lsd object.
 }
 \details{
 \code{df_to_lsd_list} is a helper function to make it easier to convert between
@@ -40,7 +40,7 @@ data frame with pounds, shillings, and pence variables.
 }
 \examples{
 # Convert a data frame with pounds, shillings, and pence variables
-# into a list an lsd_list
+# into a list an lsd object
 example <- data.frame(l = c(4, -9, 25),
                       s = c(14, -5, 15),
                       d = c(9, -1, 6))

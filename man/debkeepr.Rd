@@ -18,15 +18,12 @@ relatively simple arithmetic manipulations, as each unit has to be
 normalized or converted to the correct base.
 }
 \details{
-\code{debkeepr} implements two classes — lsd and lsd_list — to store pounds,
-shillings, and pence values and associate the values with bases for the
-shillings and pence units. The lsd class stores pounds, shillings, and pence
-values as numeric vectors of length three and possesses a bases attribute
-for the shillings and pence units. The lsd_list class consists of a list of
-lsd objects that have the same bases attribute that also possesses its own
-matching bases attribute. In addition, \code{debkeepr} provides an interface for
-analyzing pounds, shillings, and pence values stored as three separate
-variables in a data frame.
+\code{debkeepr} implements the lsd class to store pounds, shillings, and pence
+values and associate the values with bases for the shillings and pence
+units. Pounds, shillings, and pence values are stored as lists of named
+numeric vectors of length 3 that possess a bases attribute.  In addition,
+\code{debkeepr} provides an interface for analyzing pounds, shillings, and pence
+values stored as three separate variables in a data frame.
 
 The system of recording value according to pounds, shillings, and pence — or
 to use the Latin terms from which the English derived libra, solidus, and

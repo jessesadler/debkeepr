@@ -88,7 +88,7 @@ lsd_df <- data.frame(l = c(12, 5, 3),
 
 ```{r helpers}
 # list of lsd vectors to tibble or tbl_df
-deb_list_to_df(lsd_list = lsd_list)
+deb_list_to_df(lsd = lsd_list)
 
 # data frame to list of lsd vectors
 deb_df_to_list(df = lsd_df, l = l, s = s, d = d)

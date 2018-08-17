@@ -82,7 +82,7 @@ lsd_df <- data.frame(l = c(12, 5, 3),
 
 ``` r
 # list of lsd vectors to tibble or tbl_df
-deb_list_to_df(lsd_list = lsd_list)
+deb_list_to_df(lsd = lsd_list)
 #> # A tibble: 3 x 3
 #>       l     s     d
 #>   <dbl> <dbl> <dbl>

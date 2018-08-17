@@ -7,24 +7,21 @@
 deb_normalize(lsd, bases = c(20, 12), round = 5)
 }
 \arguments{
-\item{lsd}{An lsd value. A vector of class lsd, a list of class lsd_list, or
-an object that can be coerced to these classes, namely a numeric vector of
-length 3 or a list of such vectors. The first position of the vector
-represents the pounds value or l. The second position represents the
-shillings value or s. And the third position represents the pence value
-or d.}
+\item{lsd}{An lsd value. An object of class lsd or an object that can be
+coerced to class lsd: a numeric vector of length 3 or a list of such
+vectors.}
 
 \item{bases}{Numeric vector of length 2 used to specify the bases for the
 shillings or s and pence or d units. Default is \code{c(20, 12)}, which
 conforms to the most widely used system of 1 pound = 20 shillings and
-1 shilling = 12 pence. If \code{lsd} is of class lsd or lsd_list, the bases
-attribute will be used in the place of this argument.}
+1 shilling = 12 pence. If \code{lsd} is of class lsd, the bases attribute will
+be used in the place of this argument.}
 
 \item{round}{Round pence unit to specified number of decimal places.
 Default is 5. Set to 0 to return pence as whole number.}
 }
 \value{
-Returns an lsd or lsd_list object with a bases attribute.
+Returns an object of class lsd with a bases attribute.
 }
 \description{
 Normalize pounds, shillings, and pence to standard unit bases.
@@ -56,6 +53,14 @@ deb_normalize(lsd = c(5, 55, 42), bases = c(20, 16))
 lsd <- deb_as_lsd(lsd = c(5, 55, 42), bases = c(20, 16))
 deb_normalize(lsd = lsd)
 
+# Normalize multiple values with a list of numeric vectors
+lsd_list <- list(c(4, 34, 89), c(-9, -75, -19), c(15.85, 36.15, 56))
+deb_normalize(lsd = lsd_list)
+
+# Or an lsd object with alternative bases
+lsd_list2 <- deb_as_lsd(lsd = lsd_list, bases = c(20, 16))
+deb_normalize(lsd = lsd_list2)
+
 # It is possible to perform arithmetic within the function
 deb_normalize(lsd = c(5 + 6, 20 + 18, 8 + 11))
 
@@ -74,14 +79,6 @@ deb_normalize(lsd = c(8.7, 33.65, 15))
 # Compare with default of round = 5 to round = 0
 deb_normalize(lsd = c(5.7, 44.742, 15), round = 5)
 deb_normalize(lsd = c(5.7, 44.742, 15), round = 0)
-
-# Normalize multiple values with an lsd_list or list of numeric vectors
-lsd_list <- list(c(4, 34, 89), c(-9, -75, -19), c(15.85, 36.15, 56))
-deb_normalize(lsd = lsd_list)
-
-# Or an lsd_list object with alternative bases
-lsd_list2 <- deb_as_lsd(lsd = lsd_list, bases = c(20, 16))
-deb_normalize(lsd = lsd_list2)
 
 # It is possible to do arithmetic within the lsd argument
 # if inputs are all vectors.

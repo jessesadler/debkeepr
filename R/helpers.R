@@ -5,23 +5,20 @@
 
 #' List of lsd values to data frame of pounds, shillings, and pence
 #'
-#' Transform an lsd_list or a list of lsd values into a data frame that has
-#' pounds, shillings, and pence variables.
+#' Transform an object of class lsd or a list of lsd values into a data frame
+#' that has pounds, shillings, and pence variables.
 #'
 #' `lsd_list_to_df` is a helper function to make it easier to convert between
 #' the two primary types of input objects of multiple lsd values used by
 #' `debkeepr`. See [deb_df_to_list()] to convert a data frame with pounds,
-#' shillings, and pence variable to an lsd_list.
+#' shillings, and pence variable to an lsd object.
 #'
 #' @family helper functions
-#' @param lsd_list An lsd_list object or a list of numeric vectors of length 3.
-#'   The first position of the vector represents the pounds value or l. The
-#'   second position represents the shillings value or s. And the third
-#'   position represents the pence value or d.
+#' @param lsd An lsd object or a list of numeric vectors of length 3.
 #'
 #' @return Returns a tibble or tbl_df object with pounds, shillings, and
 #'   pence variables named l, s, and d respectively. The number of rows in
-#'   the tibble will be equal to the length of `lsd_list`.
+#'   the tibble will be equal to the length of `lsd`.
 #'
 #' @examples
 #' # Convert a list of lsd values into a tibble with
@@ -31,23 +28,23 @@
 #'
 #' @export
 
-deb_list_to_df <- function(lsd_list) {
+deb_list_to_df <- function(lsd) {
   # checks
-  if (is.list(lsd_list) == FALSE | is.data.frame(lsd_list) == TRUE) {
-    stop(call. = FALSE, "lsd_list must be a list of numeric vectors")
+  if (is.list(lsd) == FALSE | is.data.frame(lsd) == TRUE) {
+    stop(call. = FALSE, "lsd must be a list of numeric vectors")
   }
-  lsd_check(lsd_list)
+  lsd_check(lsd)
 
-  purrr::map(lsd_list, ~ stats::setNames(., c("l", "s", "d"))) %>%
+  purrr::map(lsd, ~ stats::setNames(., c("l", "s", "d"))) %>%
     purrr::transpose() %>%
     purrr::simplify_all() %>%
     tibble::as_tibble()
 }
 
-#' Data frame of pounds, shillings, and pence to lsd_list
+#' Data frame of pounds, shillings, and pence to an lsd object
 #'
 #' Transform a data frame that has pounds, shillings, and pence variables into
-#' an lsd_list object.
+#' an lsd object.
 #'
 #' `df_to_lsd_list` is a helper function to make it easier to convert between
 #' the two primary types of input objects of multiple lsd values used by
@@ -57,12 +54,12 @@ deb_list_to_df <- function(lsd_list) {
 #' @family helper functions
 #' @inheritParams deb_normalize_df
 #'
-#' @return Returns an lsd_list object with a bases attribute. All variables in
-#'   `df` aside from `l`, `s`, and `d` will be dropped.
+#' @return Returns an lsd object with a bases attribute. All variables in `df`
+#'   aside from `l`, `s`, and `d` will be dropped.
 #'
 #' @examples
 #' # Convert a data frame with pounds, shillings, and pence variables
-#' # into a list an lsd_list
+#' # into a list an lsd object
 #' example <- data.frame(l = c(4, -9, 25),
 #'                       s = c(14, -5, 15),
 #'                       d = c(9, -1, 6))

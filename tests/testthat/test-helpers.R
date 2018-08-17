@@ -26,9 +26,9 @@ transactions <- tibble::tibble(credit = c("a", "b", "a", "c"),
 
 test_that("lsd_list checks", {
   expect_error(deb_list_to_df(c(5, 7, 8)),
-               "lsd_list must be a list of numeric vectors")
+               "lsd must be a list of numeric vectors")
   expect_error(deb_list_to_df(tbl1),
-               "lsd_list must be a list of numeric vectors")
+               "lsd must be a list of numeric vectors")
 })
 
 test_that("deb_list_to_df works",{
