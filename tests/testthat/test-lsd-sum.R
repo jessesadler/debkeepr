@@ -17,6 +17,7 @@ na_list <- list(c(12, 7, 9), c(5, 8, 11), c(3, 18, NA))
 list2 <- list(x, y, dec)
 list1_b1 <- to_lsd(list1, b1)
 list2_b2 <- to_lsd(list2, b2)
+na_list_b1 <- to_lsd(na_list, b1)
 
 df1 <- data.frame(group = c(1, 2, 1, 2),
                   l = c(3, 5, 6, 2),
@@ -44,6 +45,11 @@ df_na <- data.frame(group = c(1, 2, 1, 2),
                     l = c(3, 5, 6, 2),
                     s = c(10, 18, 11, 16),
                     d = c(9, 11, 10, NA))
+
+df_dec_b1 <- deb_as_lsd_mutate(df_dec, bases = b1, replace = TRUE)
+df_dec_b2 <- deb_as_lsd_mutate(df_dec, lsd_column = b2, bases = b2, replace = TRUE)
+df_na_b2 <- deb_as_lsd_mutate(df_na, lsd_column = lsd_na, bases = b2, replace = TRUE)
+df_lsd <- cbind(df_dec_b1, df_dec_b2[2], df_na_b2[2])
 
 test_that("deb_sum works", {
   expect_equal(deb_sum(list1),
@@ -79,6 +85,57 @@ test_that("deb_sum works with lsd objects", {
                    deb_sum(list2, bases = b2, round = 0))
   expect_error(deb_sum(x_b1, x_b2),
                "All objects of class lsd must have the same bases")
+})
+
+test_that("deb_sum_simple is same as deb_sum",{
+  expect_equal(deb_sum(list1_b1), deb_sum_simple(list1_b1))
+  expect_equal(deb_sum(na_list_b1), deb_sum_simple(na_list_b1))
+  expect_equal(deb_sum(list2_b2, round = 0), deb_sum_simple(list2_b2, round = 0))
+  expect_equal(deb_sum(na_list_b1, na.rm = TRUE),
+               deb_sum_simple(na_list_b1, na.rm = TRUE))
+})
+
+test_that("deb_summarise works", {
+  # Same answers as deb_sum
+  expect_equal(deb_summarise(df_dec_b1, lsd)$lsd, deb_sum(df_dec_b1$lsd))
+  expect_equal(deb_summarise(df_dec_b2, b2)$b2, deb_sum(df_dec_b2$b2))
+  expect_equal(deb_summarise(df_dec_b1, lsd, round = 0)$lsd,
+               deb_sum(df_dec_b1$lsd, round = 0))
+  expect_equal(deb_summarise(df_na_b2, lsd_na)$lsd_na, deb_sum(df_na_b2$lsd_na))
+  expect_equal(deb_summarise(df_na_b2, lsd_na, na.rm = TRUE)$lsd_na,
+               deb_sum(df_na_b2$lsd_na, na.rm = TRUE))
+})
+
+test_that("deb_summarise works with multiple lsd columns", {
+  expect_equal(nrow(deb_summarise(df_lsd, lsd, b2, lsd_na, na.rm = TRUE)), 1)
+  expect_equal(ncol(deb_summarise(df_lsd, lsd, b2, lsd_na, na.rm = TRUE)), 3)
+  expect_equal(ncol(deb_summarise(df_lsd, lsd, b2)), 2)
+  expect_equal(deb_summarise(df_lsd, lsd, b2)[1], deb_summarise(df_lsd, lsd))
+  expect_equal(deb_summarise(df_lsd, lsd, b2)[2], deb_summarise(df_lsd, b2))
+})
+
+test_that("deb_summarise works with group_by", {
+  g <- df_dec_b1 %>%
+    group_by(group) %>%
+    deb_summarise(lsd)
+
+  g2 <- df_lsd %>%
+    group_by(group) %>%
+    deb_summarise(lsd, b2, lsd_na)
+
+  expect_equal(nrow(g), 2)
+  expect_equal(ncol(g), 2)
+  expect_equal(g$lsd, deb_as_lsd(list(c(8, 19, 10.38), c(8, 15, 4))))
+  expect_equal(ncol(g2), 4)
+})
+
+test_that("deb_summarise error works", {
+  expect_error(deb_summarise(df_dec_b1),
+               "Names for lsd list columns must be provided.")
+  expect_error(deb_summarise(df_dec_b1, group),
+               "Variables to summarise must be list columns of class lsd.")
+  expect_error(deb_summarise(df_dec_b1, lsd, group),
+               "Variables to summarise must be list columns of class lsd.")
 })
 
 test_that("deb_sum_df works on data frames", {

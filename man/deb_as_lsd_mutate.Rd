@@ -29,6 +29,9 @@ conforms to the most widely used system of 1 pound = 20 shillings and
 \item{replace}{Logical (default \code{FALSE}): when \code{TRUE} the original pounds,
 shillings, and pence columns — \code{l}, \code{s}, and \code{d} — will be removed.}
 }
+\value{
+Returns a data frame with a list column of class lsd.
+}
 \description{
 Create an lsd list column in a data frame from separate pounds, shillings,
 and pence variables in a data frame.
@@ -38,4 +41,30 @@ The newly created lsd list column possesses a bases attribute to record the
 bases for the shillings or s and pence or d units of the values. The lsd
 column can be manipulated with \code{debkeepr} functions in concert with
 \code{\link[dplyr:mutate]{dplyr::mutate()}}.
+}
+\examples{
+# Data frame with separate l, s, and d variables
+example <- data.frame(accounts = c(1, 2, 1, 2),
+                      l = c(3, 5, 6, 2),
+                      s = c(10, 18, 11, 16),
+                      d = c(9, 11, 10, 5))
+
+# Create an lsd list column
+deb_as_lsd_mutate(df = example,
+                  l = l, s = s, d = d,
+                  bases = c(20, 12))
+
+# Create an lsd list column with alternative bases
+deb_as_lsd_mutate(df = example,
+                  l = l, s = s, d = d,
+                  bases = c(20, 16))
+
+# Can replace original pounds, shillings, and pence variables
+# and can choose the name for the lsd list column
+deb_as_lsd_mutate(df = example,
+                  l = l, s = s, d = d,
+                  bases = c(20, 16),
+                  lsd_column = guilders,
+                  replace = TRUE)
+
 }

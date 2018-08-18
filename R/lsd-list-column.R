@@ -21,6 +21,35 @@
 #' @param lsd_column Unquoted name of the lsd list column. Default is lsd.
 #' @param replace Logical (default `FALSE`): when `TRUE` the original pounds,
 #'   shillings, and pence columns — `l`, `s`, and `d` — will be removed.
+#'
+#' @return Returns a data frame with a list column of class lsd.
+#'
+#' @examples
+#' # Data frame with separate l, s, and d variables
+#' example <- data.frame(accounts = c(1, 2, 1, 2),
+#'                       l = c(3, 5, 6, 2),
+#'                       s = c(10, 18, 11, 16),
+#'                       d = c(9, 11, 10, 5))
+#'
+#' # Create an lsd list column
+#' deb_as_lsd_mutate(df = example,
+#'                   l = l, s = s, d = d,
+#'                   bases = c(20, 12))
+#'
+#' # Create an lsd list column with alternative bases
+#' deb_as_lsd_mutate(df = example,
+#'                   l = l, s = s, d = d,
+#'                   bases = c(20, 16))
+#'
+#' # Can replace original pounds, shillings, and pence variables
+#' # and can choose the name for the lsd list column
+#' deb_as_lsd_mutate(df = example,
+#'                   l = l, s = s, d = d,
+#'                   bases = c(20, 16),
+#'                   lsd_column = guilders,
+#'                   replace = TRUE)
+#'
+#' @export
 
 deb_as_lsd_mutate <- function(df,
                               l = l, s = s, d = d,
