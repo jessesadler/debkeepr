@@ -31,9 +31,6 @@ test_that("lsd to decimalized l, s, and d works", {
   expect_equal(deb_lsd_d(c(8, 6, 6)), 1998)
   expect_equal(deb_lsd_d(c(-8, -6, -6)), -1998)
   expect_equal(deb_lsd_d(c(8.325, 6, 6)), 2076)
-  expect_equal(deb_lsd_d(c(8.325, 6, 5.999999)), 2076)
-  expect_equal(deb_lsd_d(c(8.325, 6, 5.99999)), 2075.99999)
-  expect_equal(deb_lsd_d(c(8.325, 6, 5.99999), round = 0), 2076)
   expect_equal(deb_lsd_d(c(8, 6, 6), bases = b2), 1126)
 })
 
@@ -45,8 +42,6 @@ test_that("vectorization works for lsd to decimalized l, s, d", {
                c(610.750, 234.067, -531.833))
   expect_equal(deb_lsd_d(list1),
                c(7329.0, 2808.8, -6382.0))
-  expect_equal(deb_lsd_d(list1, round = 0),
-               c(7329, 2809, -6382))
 })
 
 test_that("decimalization works with lsd objects", {
@@ -71,8 +66,8 @@ test_that("decimalization works with lsd objects", {
                    deb_lsd_d(x, bases = b2))
   expect_identical(deb_lsd_d(list1_b1),
                    deb_lsd_d(list1, bases = b1))
-  expect_identical(deb_lsd_d(list2_b2, round = 0),
-                   deb_lsd_d(list2, bases = b2, round = 0))
+  expect_identical(deb_lsd_d(list2_b2),
+                   deb_lsd_d(list2, bases = b2))
 })
 
 test_that("non-numeric values are not accepted", {

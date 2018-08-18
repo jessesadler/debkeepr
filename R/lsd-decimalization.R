@@ -223,17 +223,16 @@ deb_s_lsd <- function(s, bases = c(20, 12), round = 5) {
 #'
 #' @export
 
-deb_lsd_d <- function(lsd, bases = c(20, 12), round = 5) {
+deb_lsd_d <- function(lsd, bases = c(20, 12)) {
   # checks
   lsd_check(lsd)
-  round_check(round)
   bases <- validate_bases(lsd, bases)
   bases_check(bases)
 
   if (is.list(lsd) == TRUE) {
-    purrr::map_dbl(lsd, ~ round(.[1] * prod(bases) + .[2] * bases[2] + .[3], round))
+    purrr::map_dbl(lsd, ~ .[1] * prod(bases) + .[2] * bases[2] + .[3])
   } else {
-    unname(round(lsd[1] * prod(bases) + lsd[2] * bases[2] + lsd[3], round))
+    unname(lsd[1] * prod(bases) + lsd[2] * bases[2] + lsd[3])
   }
 }
 
