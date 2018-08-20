@@ -1,11 +1,16 @@
 context("test-lsd-list-column.R")
 
+suppressPackageStartupMessages(library(tibble))
+
 df1 <- data.frame(l = c(3, 5, 6, 2),
                   s = c(10, 18, 11, 16),
                   d = c(9, 11, 10, 5))
 df2 <- data.frame(pounds = c(3, 5, 6, 2),
                   shillings = c(10, 18, 11, 16),
                   pence = c(9, 11, 10, 5))
+tbl <- tibble(l = c(3, 5, 6, 2),
+              s = c(10, 18, 11, 16),
+              d = c(9, 11, 10, 5))
 lsd_list <- to_lsd(list(c(3, 10, 9),
                         c(5, 18, 11),
                         c(6, 11, 10),
@@ -15,6 +20,7 @@ lsd_list <- to_lsd(list(c(3, 10, 9),
 test_that("deb_as_lsd_mutate works", {
   expect_s3_class(deb_as_lsd_mutate(df1)$lsd, "lsd")
   expect_s3_class(deb_as_lsd_mutate(df2, pounds, shillings, pence)$lsd, "lsd")
+  expect_s3_class(deb_as_lsd_mutate(tbl)$lsd, "lsd")
   expect_named(deb_as_lsd_mutate(df2, pounds, shillings, pence, lsd_column = data),
                c("pounds", "shillings", "pence", "data"))
   expect_s3_class(deb_as_lsd_mutate(df1, lsd_column = data)$data, "lsd")

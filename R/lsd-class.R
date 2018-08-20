@@ -1,11 +1,6 @@
 ## Define lsd class ##
 
-name_lsd_vector <- function(x) {
-  stopifnot(is.numeric(x), length(x) == 3)
-
-  rlang::set_names(x, c("l", "s", "d"))
-}
-
+## Construction ---------------------------------------------------------------
 new_lsd <- function(x, bases) {
   stopifnot(is.list(x))
   stopifnot(is.numeric(bases), length(bases) == 2)
@@ -18,25 +13,19 @@ new_lsd <- function(x, bases) {
 to_lsd <- function(lsd, bases) {
   # vectors
   if (rlang::is_list(lsd) == FALSE & rlang::is_vector(lsd) == TRUE) {
-    lsd <- list(name_lsd_vector(lsd))
-  } else {
-    # lists
-    lsd <- purrr::map(lsd, name_lsd_vector)
+    lsd <- list(lsd)
   }
   new_lsd(lsd, bases)
 }
 
+## Validate bases -------------------------------------------------------------
+
 # Extract bases attribute if it exists, otherwise uses bases
 validate_bases <- function(lsd, bases) {
-  # Vectors
-  if (rlang::is_list(lsd) == FALSE & rlang::is_vector(lsd) == TRUE) {
-    bases
+  if (inherits(lsd, "lsd")) {
+    attributes(lsd)$bases
   } else {
-    if (inherits(lsd, "lsd")) {
-      attributes(lsd)$bases
-    } else {
       bases
-    }
   }
 }
 
@@ -47,7 +36,6 @@ validate_bases2 <- function(lsd1, lsd2, bases) {
       stop(call. = FALSE, "bases for lsd1 and lsd2 must be equivalent if both are of class lsd")
     }
   }
-
   # Options for lsd vs not lsd for determining bases
   if (deb_is_lsd(lsd1) == TRUE & deb_is_lsd(lsd2) == TRUE) {
     attributes(lsd1)$bases
@@ -65,7 +53,6 @@ validate_bases_p <- function(lsd, bases) {
   if (any(purrr::map_lgl(lsd, deb_is_lsd)) == FALSE) {
     bases
   } else {
-
     lsd_class <- purrr::map_lgl(lsd, deb_is_lsd)
     lsd_class <- lsd[which(lsd_class == TRUE)]
 
@@ -79,7 +66,7 @@ validate_bases_p <- function(lsd, bases) {
   }
 }
 
-## Coercion ##
+## Coercion -------------------------------------------------------------------
 
 #' A class for pounds, shillings and pence values
 #'
@@ -106,6 +93,9 @@ validate_bases_p <- function(lsd, bases) {
 #' solidus and denarius units were also in use. The `bases` attribute makes
 #' it possible to specify alternative bases for the solidus and denarius units.
 #'
+#' @param l Numeric vector representing the pounds unit.
+#' @param s Numeric vector representing the shillings unit.
+#' @param d Numeric vector representing the pence unit.
 #' @param lsd Numeric vector of length 3 or list of numeric vectors of length
 #'   3. The first position of the vector represents the pounds value or l. The
 #'   second position represents the shillings value or s. And the third
@@ -119,21 +109,49 @@ validate_bases_p <- function(lsd, bases) {
 #' @return Returns an object of class lsd with a bases attribute.
 #'
 #' @examples
-#' # Create lsd object for £10 6s. 8d. with a numeric vector
+#' ## Create lsd objects from separate l, s, and d vectors ##
+#'
+#' # lsd object for £10 6s. 8d.
+#' deb_lsd(l = 10, s = 6, d = 8, bases = c(20, 12))
+#'
+#' # lsd object for the Dutch system of guilders, stuivers, and penningen
+#' deb_lsd(l = 10, s = 6, d = 8, bases = c(20, 16))
+#'
+#' # lsd object from vectors of length > 1
+#' deb_lsd(l = c(10, 8, 5),
+#'         s = c(6, 13, 8),
+#'         d = c(8, 4, 10),
+#'         bases = c(20, 12))
+#'
+#' ## Create lsd objects from numeric vectors of length 3 ##
+#'
+#' # lsd object for £10 6s. 8d.
 #' deb_as_lsd(lsd = c(10, 6, 8), bases = c(20, 12))
 #'
-#' # Create lsd object for the Dutch system
-#' # of guilders, stuivers, and penningen
+#' # lsd object for the Dutch system of guilders, stuivers, and penningen
 #' deb_as_lsd(lsd = c(10, 8, 14), bases = c(20, 16))
 #'
-#' # Create lsd object from a list of vectors
-#' # with the default bases of 20s. 12d.
+#' # lsd object from a list of vectors
 #' deb_as_lsd(lsd = list(c(10, 6, 8),
-#'                        c(8, 13, 4),
-#'                        c(5, 8, 10)))
+#'                       c(8, 13, 4),
+#'                       c(5, 8, 10)))
 #'
 #' @name lsd
 NULL
+
+#' @rdname lsd
+#' @export
+deb_lsd <- function(l, s, d, bases = c(20, 12)) {
+
+  lsd <- list(l, s, d)
+  # checks
+  bases_check(bases)
+  separate_lsd_check(lsd)
+
+  purrr::transpose(lsd) %>%
+    purrr::simplify_all() %>%
+    to_lsd(bases = bases)
+}
 
 #' @rdname lsd
 #' @export
@@ -160,8 +178,6 @@ deb_as_lsd.numeric <- function(lsd, bases = c(20, 12), ...) {
 #' @rdname lsd
 #' @export
 deb_as_lsd.list <- function(lsd, bases = c(20, 12), ...) {
-  bases <- validate_bases(lsd, bases)
-
   lsd_check(lsd)
   bases_check(bases)
 
@@ -198,32 +214,39 @@ deb_is_lsd <- function(lsd) {
 #'
 #' Find the bases for the shillings (s) and pence (d) units of an lsd object.
 #'
-#' @param lsd An object of class lsd.
+#' @param ... Objects of class lsd.
 #'
-#' @return Returns a named numeric vector of length 2 corresponding to the
-#'   shillings (s) and pence (d) units of `lsd`.
+#' @return Returns list with a named numeric vector of length 2 corresponding
+#'   to the shillings (s) and pence (d) units of each lsd object.
 #'
 #' @examples
 #' x <- deb_as_lsd(lsd = c(5, 3, 8), bases = c(20, 12))
 #' y <- deb_as_lsd(lsd = c(5, 3, 8), bases = c(20, 16))
 #'
 #' deb_bases(x)
-#' deb_bases(y)
+#' deb_bases(x, y)
 #'
 #' @export
 
-deb_bases <- function(lsd) {
-  if (deb_is_lsd(lsd) == FALSE) {
-    stop(call. = FALSE, "lsd must be of class lsd")
+deb_bases <- function(...) {
+  lsd_list <- list(...)
+  if (all(purrr::map_lgl(lsd_list, deb_is_lsd)) == FALSE) {
+    stop(call. = FALSE, "Objects must be of class lsd")
+  }
+  if (length(lsd_list) == 1) {
+    purrr::map(lsd_list,
+               ~ rlang::set_names(attributes(.)$bases, c("s", "d"))) %>%
+      purrr::as_vector()
   } else {
-    rlang::set_names(attributes(lsd)$bases, c("s", "d"))
+    purrr::map(lsd_list,
+               ~ rlang::set_names(attributes(.)$bases, c("s", "d")))
   }
 }
 
 ## Subset lsd ##
 #' @export
 `[.lsd` <- function(x, ...) {
-  new_lsd(NextMethod(), bases = attr(x, "bases"))
+  to_lsd(NextMethod(), bases = attr(x, "bases"))
 }
 
 ## Combine ##
@@ -240,9 +263,14 @@ deb_bases <- function(lsd) {
 }
 
 ## print ##
-
-#' @export
 print.lsd <- function(x, ...) {
-  x <- purrr::map(x, format)
-  NextMethod(x, quote = FALSE, ...)
+  lsd <- x %>%
+    purrr::map(~ rlang::set_names(., c("l", "s", "d"))) %>%
+    purrr::transpose() %>%
+    purrr::simplify_all() %>%
+    as.data.frame()
+
+  row.names(lsd) <- paste0("[", 1:length(x), "]")
+
+  print.data.frame(lsd, row.names = TRUE, ...)
 }

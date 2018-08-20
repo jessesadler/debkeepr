@@ -266,7 +266,7 @@ test_that("lsd subtract works", {
   expect_equal(deb_subtract(x, dec),
                to_lsd(c(3, 7, 11.8), b1))
   expect_equal(deb_subtract(x, dec, round = 0),
-               to_lsd(c(3, 8, d = 0), b1))
+               to_lsd(c(3, 8, 0), b1))
   expect_equal(deb_subtract(x, c(5, 7, 15), bases = c(8, 16)),
                to_lsd(c(4, 3, 3), b2))
 })

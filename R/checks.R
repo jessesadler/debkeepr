@@ -34,6 +34,18 @@ lsd_check <- function(lsd) {
   }
 }
 
+separate_lsd_check <- function(lsd) {
+  # numeric
+  if (!all(purrr::map_lgl(lsd, is.numeric))) {
+    stop(call. = FALSE, "l, s, and d must be numeric")
+  }
+  # length
+  lengths <- purrr::map_int(lsd, length)
+  if (length(unique(lengths)) > 1L) {
+    stop(call. = FALSE, "l, s, and d must be vectors of equal length")
+  }
+}
+
 # Check bases
 bases_check <- function(bases) {
   # check bases
@@ -65,7 +77,7 @@ round_check <- function(round) {
 lsd_column_check <- function(df, l, s, d) {
 
   if (!is.data.frame(df)) {
-    stop(call. = FALSE, "df must be a data frame or data-frame like object")
+    stop(call. = FALSE, "df must be a data frame")
   }
 
   column_names <- c(rlang::quo_name(l),

@@ -82,7 +82,7 @@ test_that("round check works", {
 # Checks for data frames #
 test_that("lsd_column_check work", {
   expect_error(deb_normalize_df(x, l, s, d),
-               "df must be a data frame or data-frame like object")
+               "df must be a data frame")
   expect_error(deb_normalize_df(ex_df, pounds, shillings, pence),
                paste("Column names for l, s, and d must be provided if the",
                      "default names of l, s, and d are not present in the data frame",

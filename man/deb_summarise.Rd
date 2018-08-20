@@ -9,7 +9,7 @@ deb_summarise(df, ..., round = 5, na.rm = FALSE)
 \arguments{
 \item{df}{A data frame that contains pounds, shillings, and pence variables.}
 
-\item{...}{lsd list columns to be summed.}
+\item{...}{lsd list column or columns to be summed.}
 
 \item{round}{Round pence unit to specified number of decimal places.
 Default is 5. Set to 0 to return pence as whole number.}
@@ -39,7 +39,8 @@ library(dplyr)
 lsd_list <- deb_as_lsd(list(c(3, 10, 9),
                             c(5, 18, 11),
                             c(6, 11, 10),
-                            c(2, 16, 5)))
+                            c(2, 16, 5)),
+                       bases = c(20, 12))
 example <- tibble(group = c(1, 2, 1, 2),
                   lsd = lsd_list)
 

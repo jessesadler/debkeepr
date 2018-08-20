@@ -65,15 +65,10 @@ deb_as_lsd_mutate <- function(df,
   lsd_column_check(df, l, s, d)
   bases_check(bases)
 
-  ret <- dplyr::mutate(df, temp_lsd_column = purrr::pmap(
-    dplyr::select(df, !! l, !! s, !! d), c)) %>%
-    dplyr::mutate(temp_lsd_column = to_lsd(temp_lsd_column, bases)) %>%
-    dplyr::rename(!! lsd_column := temp_lsd_column)
+  ret <- dplyr::mutate(df, !! lsd_column := deb_lsd(!! l, !! s, !! d, bases))
 
   if (replace == TRUE) {
     ret <- dplyr::select(ret, -(!!l), -(!!s), -(!!d))
   }
-  temp_lsd_column <- NULL
-
   ret
 }

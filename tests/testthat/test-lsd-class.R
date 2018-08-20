@@ -14,7 +14,6 @@ list1_b1 <- to_lsd(list1, b1)
 list2_b2 <- to_lsd(list2, b2)
 
 test_that("constructors work", {
-  expect_equal(names(name_lsd_vector(x)), c("l", "s", "d"))
   expect_s3_class(new_lsd(list1, b1), "lsd")
   expect_equal(attributes(new_lsd(list1, b1))$bases, b1)
 })
@@ -22,7 +21,7 @@ test_that("constructors work", {
 test_that("helper works", {
   expect_s3_class(to_lsd(x, b1), "lsd")
   expect_s3_class(to_lsd(list1, b1), "lsd")
-  expect_equal(names(to_lsd(list1, b1)[[1]]), c("l", "s", "d"))
+  expect_equal(to_lsd(list1, b1)[[1]], x)
 })
 
 test_that("validator works", {
@@ -61,6 +60,14 @@ test_that("validate p works", {
 
   expect_error(validate_bases_p(list(x_b1, y_b2, list1_b1, x), b2),
                "All objects of class lsd must have the same bases")
+})
+
+test_that("construction works", {
+  expect_equal(deb_lsd(5, 8, 6, b1), x_b1)
+  expect_equal(deb_lsd(c(12, 7, 5), c(5, 12, 8), c(3, 11, 6), b2), list2_b2)
+
+  expect_error(deb_lsd("g", 4, 5), "l, s, and d must be numeric")
+  expect_error(deb_lsd(c(3, 2), 4, 5), "l, s, and d must be vectors of equal length")
 })
 
 test_that("coercion works", {
@@ -103,9 +110,11 @@ test_that("combine lsd_lst objects works", {
 })
 
 test_that("find bases works", {
-  expect_error(deb_bases(x), "lsd must be of class lsd")
+  expect_error(deb_bases(x), "Objects must be of class lsd")
   expect_equal(deb_bases(x_b1), c(s = 20, d = 12))
   expect_equal(deb_bases(list2_b2), c(s = 8, d = 16))
+  expect_equal(deb_bases(x_b1, list2_b2),
+               list(c(s = 20, d = 12), c(s = 8, d = 16)))
 })
 
 test_that("print output works", {

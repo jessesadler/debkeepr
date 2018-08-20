@@ -35,7 +35,7 @@ deb_list_to_df <- function(lsd) {
   }
   lsd_check(lsd)
 
-  purrr::map(lsd, ~ stats::setNames(., c("l", "s", "d"))) %>%
+  purrr::map(lsd, ~ rlang::set_names(., c("l", "s", "d"))) %>%
     purrr::transpose() %>%
     purrr::simplify_all() %>%
     tibble::as_tibble()
@@ -95,5 +95,6 @@ deb_df_to_list <- function(df, l = l, s = s, d = d, bases = c(20, 12)) {
   as.list(lsd_df) %>%
     purrr::transpose() %>%
     purrr::simplify_all() %>%
+    purrr::map(unname) %>%
     to_lsd(bases)
 }

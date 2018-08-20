@@ -2,6 +2,7 @@
 % Please edit documentation in R/lsd-class.R
 \name{lsd}
 \alias{lsd}
+\alias{deb_lsd}
 \alias{deb_as_lsd}
 \alias{deb_as_lsd.default}
 \alias{deb_as_lsd.numeric}
@@ -9,6 +10,8 @@
 \alias{deb_as_lsd.lsd}
 \title{A class for pounds, shillings and pence values}
 \usage{
+deb_lsd(l, s, d, bases = c(20, 12))
+
 deb_as_lsd(lsd, bases = c(20, 12), ...)
 
 \method{deb_as_lsd}{default}(lsd, bases = c(20, 12), ...)
@@ -20,15 +23,21 @@ deb_as_lsd(lsd, bases = c(20, 12), ...)
 \method{deb_as_lsd}{lsd}(lsd, bases, ...)
 }
 \arguments{
-\item{lsd}{Numeric vector of length 3 or list of numeric vectors of length
-3. The first position of the vector represents the pounds value or l. The
-second position represents the shillings value or s. And the third
-position represents the pence value or d.}
+\item{l}{Numeric vector representing the pounds unit.}
+
+\item{s}{Numeric vector representing the shillings unit.}
+
+\item{d}{Numeric vector representing the pence unit.}
 
 \item{bases}{Numeric vector of length 2 used to specify the bases for the
 shillings or s and pence or d units. Default is \code{c(20, 12)}, which
 conforms to the most widely used system of 1 pound = 20 shillings and
 1 shilling = 12 pence.}
+
+\item{lsd}{Numeric vector of length 3 or list of numeric vectors of length
+3. The first position of the vector represents the pounds value or l. The
+second position represents the shillings value or s. And the third
+position represents the pence value or d.}
 
 \item{...}{Arguments passed on to further methods.}
 }
@@ -61,17 +70,31 @@ solidus and denarius units were also in use. The \code{bases} attribute makes
 it possible to specify alternative bases for the solidus and denarius units.
 }
 \examples{
-# Create lsd object for £10 6s. 8d. with a numeric vector
+## Create lsd objects from separate l, s, and d vectors ##
+
+# lsd object for £10 6s. 8d.
+deb_lsd(l = 10, s = 6, d = 8, bases = c(20, 12))
+
+# lsd object for the Dutch system of guilders, stuivers, and penningen
+deb_lsd(l = 10, s = 6, d = 8, bases = c(20, 16))
+
+# lsd object from vectors of length > 1
+deb_lsd(l = c(10, 8, 5),
+        s = c(6, 13, 8),
+        d = c(8, 4, 10),
+        bases = c(20, 12))
+
+## Create lsd objects from numeric vectors of length 3 ##
+
+# lsd object for £10 6s. 8d.
 deb_as_lsd(lsd = c(10, 6, 8), bases = c(20, 12))
 
-# Create lsd object for the Dutch system
-# of guilders, stuivers, and penningen
+# lsd object for the Dutch system of guilders, stuivers, and penningen
 deb_as_lsd(lsd = c(10, 8, 14), bases = c(20, 16))
 
-# Create lsd object from a list of vectors
-# with the default bases of 20s. 12d.
+# lsd object from a list of vectors
 deb_as_lsd(lsd = list(c(10, 6, 8),
-                       c(8, 13, 4),
-                       c(5, 8, 10)))
+                      c(8, 13, 4),
+                      c(5, 8, 10)))
 
 }
