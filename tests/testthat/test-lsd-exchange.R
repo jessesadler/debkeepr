@@ -1,5 +1,8 @@
 context("test-lsd-exchange.R")
 
+suppressPackageStartupMessages(library(tibble))
+suppressPackageStartupMessages(library(dplyr))
+
 x <- c(10, 3, 2)
 y <- c(20, 5, 8)
 dec <- c(5.85, 17.35, 10)
@@ -13,6 +16,10 @@ list2 <- list(x, y, dec)
 list1_b1 <- to_lsd(list1, b1)
 list2_b2 <- to_lsd(list(x, y, dec), b2)
 rate_list <- list(c(0, 33, 4), c(0, 30, 0), c(0, 40, 0))
+
+tbl_b1 <- tibble(lsd = list1_b1)
+tbl_b2 <- tibble(lsd = list2_b2)
+rates <- to_lsd(list(c(0, 33, 4), c(0, 33, 4), c(0, 33, 4)), b1)
 
 ## Error messages from exchange_rate_check ##
 test_that("non-vector is an error", {
@@ -84,6 +91,19 @@ test_that("deb_exchange works with lsd objects", {
                    deb_exchange(list2, shillings_rate = 12, bases = b2, round = 0))
 })
 
+test_that("deb_exchange works with lsd column", {
+  # mutated column is lsd
+  expect_s3_class(mutate(tbl_b1, ex = deb_exchange(lsd, shillings_rate = 12))$ex, "lsd")
+  expect_equal(deb_bases(mutate(tbl_b2, ex = deb_exchange(lsd, shillings_rate = 12))$ex),
+               c(s = 8, d = 16))
+
+  # mutated column is same as normal deb_exchange
+  expect_identical(mutate(tbl_b1, lsd = deb_exchange(lsd, shillings_rate = 12))$lsd,
+                   deb_exchange(list1_b1, shillings_rate = 12))
+  expect_identical(mutate(tbl_b2, lsd = deb_exchange(lsd, shillings_rate = 12)),
+                   tibble(lsd = deb_exchange(list2_b2, shillings_rate = 12)))
+})
+
 test_that("normalized_to_sd helper works",{
   expect_equal(normalized_to_sd(c(1, 11, 0), b1), c(0, 31, 0))
   expect_equal(normalized_to_sd(to_lsd(c(1, 11, 0), b1), b1), to_lsd(c(0, 31, 0), b1))
@@ -139,6 +159,13 @@ test_that("deb_exchange_rate works with lsd objects", {
   expect_identical(deb_exchange_rate(x, list2_b2), deb_exchange_rate(x, list2, bases = b2))
 })
 
+test_that("deb_exchange_rate works with lsd column", {
+  # tbl with two currencies
+  tbl_rate <- mutate(tbl_b1, flemish = deb_exchange(lsd, shillings_rate = 33 + 4/12))
+  expect_identical(mutate(tbl_rate, rate = deb_exchange_rate(lsd, flemish))$rate,
+                   rates)
+})
+
 test_that("deb_invert_rate works", {
   expect_equal(deb_invert_rate(c(0, 33, 4)), to_lsd(c(0, 12, 0), b1))
   expect_equal(deb_invert_rate(c(0, 12, 0)), to_lsd(c(0, 33, 4), b1))
@@ -173,4 +200,9 @@ test_that("deb_invert_rate works with lsd objects", {
                    deb_invert_rate(list1, bases = b1))
   expect_identical(deb_invert_rate(list2_b2, round = 0),
                    deb_invert_rate(list2, bases = b2, round = 0))
+})
+
+test_that("deb_invert_rate works with lsd column", {
+  expect_identical(mutate(tibble(lsd = rates), inverse = deb_invert_rate(lsd))$inverse,
+                   deb_invert_rate(rates))
 })

@@ -189,6 +189,7 @@ deb_as_lsd.list <- function(lsd, bases = c(20, 12), ...) {
 #' @export
 deb_as_lsd.lsd <- function(lsd, bases, ...) lsd
 
+## about lsd ------------------------------------------------------------------
 
 #' Test if an object is of class lsd
 #'
@@ -211,9 +212,9 @@ deb_is_lsd <- function(lsd) {
   inherits(lsd, "lsd")
 }
 
-#' Find the bases of an lsd object
+#' Find the bases of lsd objects
 #'
-#' Find the bases for the shillings (s) and pence (d) units of an lsd object.
+#' Find the bases for the shillings (s) and pence (d) units of lsd objects.
 #'
 #' @param ... Objects of class lsd.
 #'
@@ -243,6 +244,8 @@ deb_bases <- function(...) {
                ~ rlang::set_names(attributes(.)$bases, c("s", "d")))
   }
 }
+
+## internal generics ----------------------------------------------------------
 
 ## Subset lsd ##
 #' @export

@@ -8,6 +8,7 @@ df1 <- data.frame(l = c(3, 5, 6, 2),
 df2 <- data.frame(pounds = c(3, 5, 6, 2),
                   shillings = c(10, 18, 11, 16),
                   pence = c(9, 11, 10, 5))
+df_lsd <- deb_as_lsd_mutate(df1, replace = TRUE)
 tbl <- tibble(l = c(3, 5, 6, 2),
               s = c(10, 18, 11, 16),
               d = c(9, 11, 10, 5))
@@ -36,6 +37,7 @@ test_that("deb_as_lsd_mutate works", {
 test_that("deb_from_lsd_mutate works", {
   expect_equal(ncol(deb_from_lsd_mutate(tbl_lsd1)), 4)
   expect_equal(ncol(deb_from_lsd_mutate(tbl_lsd2, lsd = data)), 4)
+  expect_equal(ncol(deb_from_lsd_mutate(df_lsd)), 4)
   expect_named(deb_from_lsd_mutate(tbl_lsd1, lsd, pounds, shillings, pence),
                c("lsd", "pounds", "shillings", "pence"))
   expect_equal(ncol(deb_from_lsd_mutate(tbl_lsd1, replace = TRUE)), 3)

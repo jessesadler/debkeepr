@@ -1,5 +1,8 @@
 context("test-lsd-normalize.R")
 
+suppressPackageStartupMessages(library(tibble))
+suppressPackageStartupMessages(library(dplyr))
+
 x <- c(5, 84, 53)
 neg <- c(-5, -84, -53)
 dec <- c(5.875, 84.325, 55)
@@ -17,6 +20,9 @@ list2 <- list(x, dec, neg)
 list1_b1 <- to_lsd(list1, b1)
 list1_b2 <- to_lsd(list1, b2)
 list2_b2 <- to_lsd(list2, b2)
+
+tbl_b1 <- tibble(lsd = list1_b1)
+tbl_b2 <- tibble(lsd = list1_b2)
 
 
 ## lsd_decimal ##
@@ -96,4 +102,21 @@ test_that("works with lsd class", {
   expect_equal(deb_bases(deb_normalize(list1_b2)), c(s = 8, d = 16))
   expect_equal(deb_normalize(list1_b2),
                deb_normalize(list1, bases = b2))
+})
+
+test_that("normalize works with lsd column", {
+  # mutate works
+  expect_equal(ncol(mutate(tbl_b1, lsd2 = deb_normalize(lsd))), 2)
+  expect_equal(ncol(mutate(tbl_b1, lsd = deb_normalize(lsd))), 1)
+
+  # mutated column is lsd
+  expect_s3_class(mutate(tbl_b1, lsd = deb_normalize(lsd))$lsd, "lsd")
+  expect_equal(deb_bases(mutate(tbl_b2, lsd = deb_normalize(lsd))$lsd),
+               c(s = 8, d = 16))
+
+  # mutated column is same as normal deb_normalize
+  expect_identical(mutate(tbl_b1, lsd = deb_normalize(lsd))$lsd,
+                   deb_normalize(list1_b1))
+  expect_identical(mutate(tbl_b2, lsd = deb_normalize(lsd)),
+                   tibble(lsd = deb_normalize(list1_b2)))
 })

@@ -1,5 +1,6 @@
 context("test-lsd-sum.R")
 
+suppressPackageStartupMessages(library(tibble))
 suppressPackageStartupMessages(library(dplyr))
 
 x <- c(10, 3, 2)
@@ -19,20 +20,10 @@ list1_b1 <- to_lsd(list1, b1)
 list2_b2 <- to_lsd(list2, b2)
 na_list_b1 <- to_lsd(na_list, b1)
 
-
-df_dec <- data.frame(group = c(1, 2, 1, 2),
-                     l = c(8.425, 5, 0, 2),
-                     s = c(0, 18, 11.365, 16),
-                     d = c(0, 11, 0, 5))
-df_na <- data.frame(group = c(1, 2, 1, 2),
-                    l = c(3, 5, 6, 2),
-                    s = c(10, 18, 11, 16),
-                    d = c(9, 11, 10, NA))
-
-df_dec_b1 <- deb_as_lsd_mutate(df_dec, bases = b1, replace = TRUE)
-df_dec_b2 <- deb_as_lsd_mutate(df_dec, lsd_column = b2, bases = b2, replace = TRUE)
-df_na_b2 <- deb_as_lsd_mutate(df_na, lsd_column = lsd_na, bases = b2, replace = TRUE)
-df_lsd <- cbind(df_dec_b1, df_dec_b2[2], df_na_b2[2])
+tbl_b1 <- tibble(group = c(1, 2, 1), b1 = list1_b1)
+tbl_b2 <- tibble(group = c(1, 2, 1), b2 = list2_b2)
+tbl_na <- tibble(group = c(1, 2, 1), na = na_list_b1)
+tbl_lsd <- tibble(group = c(1, 2, 1), b1 = list1_b1, b2 = list2_b2, na = na_list_b1)
 
 test_that("deb_sum works", {
   expect_equal(deb_sum(list1),
@@ -87,43 +78,43 @@ test_that("deb_sum_simple is same as deb_sum",{
 
 test_that("deb_summarise works", {
   # Same answers as deb_sum
-  expect_equal(deb_summarise(df_dec_b1, lsd)$lsd, deb_sum(df_dec_b1$lsd))
-  expect_equal(deb_summarise(df_dec_b2, b2)$b2, deb_sum(df_dec_b2$b2))
-  expect_equal(deb_summarise(df_dec_b1, lsd, round = 0)$lsd,
-               deb_sum(df_dec_b1$lsd, round = 0))
-  expect_equal(deb_summarise(df_na_b2, lsd_na)$lsd_na, deb_sum(df_na_b2$lsd_na))
-  expect_equal(deb_summarise(df_na_b2, lsd_na, na.rm = TRUE)$lsd_na,
-               deb_sum(df_na_b2$lsd_na, na.rm = TRUE))
+  expect_equal(deb_summarise(tbl_b1, b1)$b1, deb_sum(tbl_b1$b1))
+  expect_equal(deb_summarise(tbl_b2, b2)$b2, deb_sum(list2_b2))
+  expect_equal(deb_summarise(tbl_b2, b2, round = 0)$b2,
+               deb_sum(list2_b2, round = 0))
+  expect_equal(deb_summarise(tbl_na, na)$na, deb_sum(na_list_b1))
+  expect_equal(deb_summarise(tbl_na, na, na.rm = TRUE)$na,
+               deb_sum(na_list_b1, na.rm = TRUE))
 })
 
 test_that("deb_summarise works with multiple lsd columns", {
-  expect_equal(nrow(deb_summarise(df_lsd, lsd, b2, lsd_na, na.rm = TRUE)), 1)
-  expect_equal(ncol(deb_summarise(df_lsd, lsd, b2, lsd_na, na.rm = TRUE)), 3)
-  expect_equal(ncol(deb_summarise(df_lsd, lsd, b2)), 2)
-  expect_equal(deb_summarise(df_lsd, lsd, b2)[1], deb_summarise(df_lsd, lsd))
-  expect_equal(deb_summarise(df_lsd, lsd, b2)[2], deb_summarise(df_lsd, b2))
+  expect_equal(nrow(deb_summarise(tbl_lsd, b1, b2, na, na.rm = TRUE)), 1)
+  expect_equal(ncol(deb_summarise(tbl_lsd, b1, b2, na, na.rm = TRUE)), 3)
+  expect_equal(ncol(deb_summarise(tbl_lsd, b1, b2)), 2)
+  expect_identical(deb_summarise(tbl_lsd, b1, b2)[1], deb_summarise(tbl_lsd, b1))
+  expect_identical(deb_summarise(tbl_lsd, b1, b2)[2], deb_summarise(tbl_lsd, b2))
 })
 
 test_that("deb_summarise works with group_by", {
-  g <- df_dec_b1 %>%
+  g <- tbl_b1 %>%
     group_by(group) %>%
-    deb_summarise(lsd)
+    deb_summarise(b1)
 
-  g2 <- df_lsd %>%
+  g2 <- tbl_lsd %>%
     group_by(group) %>%
-    deb_summarise(lsd, b2, lsd_na)
+    deb_summarise(b1, b2, na)
 
   expect_equal(nrow(g), 2)
   expect_equal(ncol(g), 2)
-  expect_equal(g$lsd, deb_as_lsd(list(c(8, 19, 10.38), c(8, 15, 4))))
+  expect_equal(g$b1, deb_as_lsd(list(c(16, 6, 2), c(5, 8, 11))))
   expect_equal(ncol(g2), 4)
 })
 
 test_that("deb_summarise error works", {
-  expect_error(deb_summarise(df_dec_b1),
+  expect_error(deb_summarise(tbl_b1),
                "Names for lsd list columns must be provided.")
-  expect_error(deb_summarise(df_dec_b1, group),
+  expect_error(deb_summarise(tbl_b1, group),
                "Variables to summarise must be list columns of class lsd.")
-  expect_error(deb_summarise(df_dec_b1, lsd, group),
+  expect_error(deb_summarise(tbl_b1, b1, group),
                "Variables to summarise must be list columns of class lsd.")
 })

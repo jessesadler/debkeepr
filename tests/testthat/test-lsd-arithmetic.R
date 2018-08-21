@@ -1,5 +1,8 @@
 context("test-lsd-arithmetic.R")
 
+suppressPackageStartupMessages(library(tibble))
+suppressPackageStartupMessages(library(dplyr))
+
 x <- c(10, 3, 2)
 y <- c(20, 5, 8)
 neg <- c(-8, -16, -6)
@@ -13,6 +16,9 @@ list1 <- list(c(30, 10, 9), c(10.725, 18.65, 11), c(-26, -11, -10))
 list2 <- list(x, y, dec)
 list1_b1 <- to_lsd(list1, b1)
 list2_b2 <- to_lsd(list2, b2)
+
+tbl_b1 <- tibble(lsd = list1_b1)
+tbl_b2 <- tibble(lsd = list2_b2)
 
 # Checks
 test_that("arithmetic checks work", {
@@ -73,6 +79,22 @@ test_that("deb_multiply works with lsd objects", {
                    deb_multiply(list2, x = 3, bases = b2, round = 0))
 })
 
+test_that("deb_multiply works with lsd column", {
+  # mutate works
+  expect_equal(ncol(mutate(tbl_b1, lsd2 = deb_multiply(lsd, x = 3))), 2)
+  expect_equal(ncol(mutate(tbl_b1, lsd = deb_multiply(lsd, x = 3))), 1)
+
+  # mutated column is lsd
+  expect_s3_class(mutate(tbl_b1, lsd = deb_multiply(lsd, x = 3))$lsd, "lsd")
+  expect_equal(deb_bases(mutate(tbl_b2, lsd = deb_multiply(lsd, x = 3))$lsd),
+               c(s = 8, d = 16))
+
+  # mutated column is same as normal deb_multiply
+  expect_identical(mutate(tbl_b1, lsd = deb_multiply(lsd, x = 3))$lsd,
+                   deb_multiply(list1_b1, x = 3))
+  expect_identical(mutate(tbl_b2, lsd = deb_multiply(lsd, x = 3)),
+                   tibble(lsd = deb_multiply(list2_b2, x = 3)))
+})
 
 # Division
 test_that("lsd division works", {
@@ -122,6 +144,18 @@ test_that("deb_divide works with lsd objects", {
                    deb_divide(list2, x = 3, bases = b2, round = 0))
 })
 
+test_that("deb_divide works with lsd column", {
+  # mutated column is lsd
+  expect_s3_class(mutate(tbl_b1, lsd = deb_divide(lsd, x = 3))$lsd, "lsd")
+  expect_equal(deb_bases(mutate(tbl_b2, lsd = deb_divide(lsd, x = 3))$lsd),
+               c(s = 8, d = 16))
+
+  # mutated column is same as normal deb_divide
+  expect_identical(mutate(tbl_b1, lsd = deb_divide(lsd, x = 3))$lsd,
+                   deb_divide(list1_b1, x = 3))
+  expect_identical(mutate(tbl_b2, lsd = deb_divide(lsd, x = 3)),
+                   tibble(lsd = deb_divide(list2_b2, x = 3)))
+})
 
 ## Addition and subtraction ##
 
@@ -181,6 +215,22 @@ test_that("deb_add works with lsd objects", {
   expect_identical(deb_add(x, list2_b2), deb_add(list2, x, b2))
 })
 
+test_that("deb_add works with lsd column", {
+  # errors work
+  expect_error(mutate(tbl_b1, lsd = deb_add(lsd, x_b2)),
+               "bases for lsd1 and lsd2 must be equivalent if both are of class lsd.")
+
+  # mutated column is lsd
+  expect_s3_class(mutate(tbl_b1, lsd = deb_add(lsd, x))$lsd, "lsd")
+  expect_equal(deb_bases(mutate(tbl_b2, lsd = deb_add(lsd, x_b2))$lsd),
+               c(s = 8, d = 16))
+
+  # mutated column is same as normal deb_add
+  expect_identical(mutate(tbl_b1, lsd = deb_add(lsd, list1_b1))$lsd,
+                   deb_add(list1_b1, list1_b1))
+  expect_identical(mutate(tbl_b2, lsd = deb_add(lsd, list2_b2)),
+                   tibble(lsd = deb_add(list2_b2, list2_b2)))
+})
 
 # Subtraction
 test_that("lsd subtract works", {
@@ -219,4 +269,21 @@ test_that("deb_subtract works with lsd objects", {
   expect_identical(deb_subtract(x_b2, y_b2), deb_subtract(x, y_b2))
   expect_identical(deb_subtract(list1_b1, x), deb_subtract(list1, x, b1))
   expect_identical(deb_subtract(x, list2_b2), deb_subtract(x, list2, b2))
+})
+
+test_that("deb_subtract works with lsd column", {
+  # errors work
+  expect_error(mutate(tbl_b1, lsd = deb_subtract(lsd, x_b2)),
+               "bases for lsd1 and lsd2 must be equivalent if both are of class lsd.")
+
+  # mutated column is lsd
+  expect_s3_class(mutate(tbl_b1, lsd = deb_subtract(lsd, x))$lsd, "lsd")
+  expect_equal(deb_bases(mutate(tbl_b2, lsd = deb_subtract(lsd, x_b2))$lsd),
+               c(s = 8, d = 16))
+
+  # mutated column is same as normal deb_add
+  expect_identical(mutate(tbl_b1, lsd = deb_subtract(lsd, list1_b1))$lsd,
+                   deb_subtract(list1_b1, list1_b1))
+  expect_identical(mutate(tbl_b2, lsd = deb_subtract(lsd, list2_b2)),
+                   tibble(lsd = deb_subtract(list2_b2, list2_b2)))
 })

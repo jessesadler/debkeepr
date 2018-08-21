@@ -13,6 +13,15 @@ list2 <- list(x, y)
 list1_b1 <- to_lsd(list1, b1)
 list2_b2 <- to_lsd(list2, b2)
 
+tbl_b1 <- tibble(lsd = list1_b1)
+tbl_b2 <- tibble(lsd = list2_b2)
+
+l1 <- c(8, 8.325, -8.1275)
+s1 <- c(123, 123.325, -123.5)
+d1 <- c(1339, 1339.25, -1339)
+
+tbl_lsd <- tibble(l = l1, s = s1, d = d1)
+
 # lsd to decimlaized
 test_that("lsd to decimalized l, s, and d works", {
   # deb_lsd_l
@@ -70,14 +79,38 @@ test_that("decimalization works with lsd objects", {
                    deb_lsd_d(list2, bases = b2))
 })
 
+test_that("decimalization works with lsd column", {
+  # mutated column is same as normal decimalization
+
+  # deb_lsd_l
+  expect_identical(mutate(tbl_b1, l = deb_lsd_l(lsd))$l,
+                   deb_lsd_l(list1_b1))
+  expect_identical(mutate(tbl_b2, l = deb_lsd_l(lsd)),
+                   tibble(lsd = list2_b2,
+                          l = deb_lsd_l(list2_b2)))
+
+  # deb_lsd_s
+  expect_identical(mutate(tbl_b1, s = deb_lsd_s(lsd))$s,
+                   deb_lsd_s(list1_b1))
+  expect_identical(mutate(tbl_b2, s = deb_lsd_s(lsd)),
+                   tibble(lsd = list2_b2,
+                          s = deb_lsd_s(list2_b2)))
+
+  # deb_lsd_d
+  expect_identical(mutate(tbl_b1, d = deb_lsd_d(lsd))$d,
+                   deb_lsd_d(list1_b1))
+  expect_identical(mutate(tbl_b2, d = deb_lsd_d(lsd)),
+                   tibble(lsd = list2_b2,
+                          d = deb_lsd_d(list2_b2)))
+})
+
+# Decimals to lsd
 test_that("non-numeric values are not accepted", {
-  # decimal to lsd
   expect_error(deb_l_lsd("j"), "l must be numeric")
   expect_error(deb_s_lsd("r"), "s must be numeric")
   expect_error(deb_d_lsd("s"), "d must be numeric")
 })
 
-# Decimals to lsd
 test_that("decimalized to lsd works", {
   # deb_l_lsd
   expect_equal(deb_l_lsd(8), to_lsd(c(8, 0, 0), b1))
@@ -126,4 +159,29 @@ test_that("vectorization works for separate l, s, d to lsd", {
                to_lsd(list(c(10, 3, 11), c(-10, -3, -11)), b2))
   expect_equal(deb_d_lsd(c(5.25, 5.75), round = 0),
                to_lsd(list(c(0, 0, 5), c(0, 0, 6)), b1))
+})
+
+test_that("decimalization works with lsd column", {
+  # mutated column is same as normal decimalization
+
+  # deb_l_lsd
+  expect_s3_class(mutate(tbl_lsd, lsd = deb_l_lsd(l))$lsd, "lsd")
+  expect_equal(deb_bases(mutate(tbl_lsd, lsd = deb_l_lsd(l, b2))$lsd),
+               c(s = 8, d = 16))
+  expect_equal(mutate(tbl_lsd, lsd = deb_l_lsd(l, b2))$lsd,
+               deb_l_lsd(l1, b2))
+
+  # deb_s_lsd
+  expect_s3_class(mutate(tbl_lsd, lsd = deb_s_lsd(l))$lsd, "lsd")
+  expect_equal(deb_bases(mutate(tbl_lsd, lsd = deb_s_lsd(l, b2))$lsd),
+               c(s = 8, d = 16))
+  expect_equal(mutate(tbl_lsd, lsd = deb_s_lsd(l, b2))$lsd,
+               deb_s_lsd(l1, b2))
+
+  # deb_d_lsd
+  expect_s3_class(mutate(tbl_lsd, lsd = deb_d_lsd(l))$lsd, "lsd")
+  expect_equal(deb_bases(mutate(tbl_lsd, lsd = deb_d_lsd(l, b2))$lsd),
+               c(s = 8, d = 16))
+  expect_equal(mutate(tbl_lsd, lsd = deb_d_lsd(l, b2))$lsd,
+               deb_d_lsd(l1, b2))
 })

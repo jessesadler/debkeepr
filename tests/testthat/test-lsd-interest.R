@@ -1,5 +1,8 @@
 context("test-lsd-interest.R")
 
+suppressPackageStartupMessages(library(tibble))
+suppressPackageStartupMessages(library(dplyr))
+
 x <- c(10, 3, 2)
 y <- c(20, 5, 8)
 b1 <- c(20, 12)
@@ -10,6 +13,9 @@ y_b2 <- to_lsd(y, b2)
 list1 <- list(c(30, 10, 9), c(10.725, 18.65, 11), c(-26, -11, -10))
 list1_b1 <- to_lsd(list1, b1)
 list2_b2 <- to_lsd(list(x, y), b2)
+
+tbl_b1 <- tibble(lsd = list1_b1)
+tbl_b2 <- tibble(lsd = list2_b2)
 
 test_that("interest checks work", {
   expect_error(deb_interest(x, interest = "t"),
@@ -61,4 +67,17 @@ test_that("deb_interest works with lsd objects", {
                    deb_interest(list1, bases = b1))
   expect_identical(deb_interest(list2_b2, round = 0),
                    deb_interest(list(x, y), bases = b2, round = 0))
+})
+
+test_that("deb_interest works with lsd column", {
+  # mutated column is lsd
+  expect_s3_class(mutate(tbl_b1, lsd = deb_interest(lsd))$lsd, "lsd")
+  expect_equal(deb_bases(mutate(tbl_b2, lsd = deb_interest(lsd))$lsd),
+               c(s = 8, d = 16))
+
+  # mutated column is same as normal deb_interest
+  expect_identical(mutate(tbl_b1, lsd = deb_interest(lsd, duration = 5))$lsd,
+                   deb_interest(list1_b1, duration = 5))
+  expect_identical(mutate(tbl_b2, lsd = deb_interest(lsd, interest = 0.08)),
+                   tibble(lsd = deb_interest(list2_b2, interest = 0.08)))
 })

@@ -12,17 +12,17 @@ list2 <- to_lsd(list(c(35, 50, 89),
                      c(26.875, 84.1333, 55),
                      c(12, 76, 205)),
                 bases = c(8, 16))
-tbl1 <- tibble::tibble(l = c(35, -10, 26.875, 12),
-                         s = c(50, -48, 84.1333, 76),
-                         d = c(89, -181, 55, 205))
-tbl2 <- tibble::tibble(pounds = c(35, -10, 26.875, 12),
-                          shillings = c(50, -48, 84.1333, 76),
-                          pence = c(89, -181, 55, 205))
-transactions <- tibble::tibble(credit = c("a", "b", "a", "c"),
-                               debit = c("b", "a", "c", "a"),
-                               l = c(35, -10, 26.875, 12),
-                               s = c(50, -48, 84.1333, 76),
-                               d = c(89, -181, 55, 205))
+tbl1 <- tibble(l = c(35, -10, 26.875, 12),
+               s = c(50, -48, 84.1333, 76),
+               d = c(89, -181, 55, 205))
+tbl2 <- tibble(pounds = c(35, -10, 26.875, 12),
+               shillings = c(50, -48, 84.1333, 76),
+               pence = c(89, -181, 55, 205))
+transactions <- tibble(credit = c("a", "b", "a", "c"),
+                       debit = c("b", "a", "c", "a"),
+                       l = c(35, -10, 26.875, 12),
+                       s = c(50, -48, 84.1333, 76),
+                       d = c(89, -181, 55, 205))
 
 test_that("lsd_list checks", {
   expect_error(deb_list_to_df(c(5, 7, 8)),
