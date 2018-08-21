@@ -11,10 +11,6 @@ list1 <- list(c(30, 10, 9), c(10.725, 18.65, 11), c(-26, -11, -10))
 list1_b1 <- to_lsd(list1, b1)
 list2_b2 <- to_lsd(list(x, y), b2)
 
-ex_df <- data.frame(l = c(30, 10.725, -26),
-                    s = c(10, 18.65, -11),
-                    d = c(9, 11, -10))
-
 test_that("interest checks work", {
   expect_error(deb_interest(x, interest = "t"),
                "interest must be numeric")
@@ -65,24 +61,4 @@ test_that("deb_interest works with lsd objects", {
                    deb_interest(list1, bases = b1))
   expect_identical(deb_interest(list2_b2, round = 0),
                    deb_interest(list(x, y), bases = b2, round = 0))
-})
-
-test_that("interest mutate works",{
-  expect_equal(deb_interest_mutate(ex_df, replace = TRUE),
-               data.frame(l = c(32, 12, -28),
-                          s = c(8, 8, -5),
-                          d = c(11.0625, 8.35, -0.875)))
-  expect_equal(deb_interest_mutate(ex_df, with_principal = FALSE, replace = TRUE),
-               data.frame(l = c(1, 0, -1),
-                          s = c(18, 14, -13),
-                          d = c(2.0625, 7.55, -2.875)))
-  expect_equal(deb_interest_mutate(ex_df, replace = TRUE, round = 0),
-               data.frame(l = c(32, 12, -28),
-                          s = c(8, 8, -5),
-                          d = c(11, 8, -1)))
-  expect_equal(deb_interest_mutate(ex_df, with_principal = FALSE,
-                                   replace = TRUE, duration = 5, interest = 0.10),
-               deb_multiply_mutate(ex_df, replace = TRUE, x = 0.50))
-  expect_false(identical(deb_interest_mutate(ex_df),
-                         deb_interest_mutate(ex_df, bases = c(8, 16))))
 })

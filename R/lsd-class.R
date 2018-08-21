@@ -100,6 +100,7 @@ validate_bases_p <- function(lsd, bases) {
 #'   3. The first position of the vector represents the pounds value or l. The
 #'   second position represents the shillings value or s. And the third
 #'   position represents the pence value or d.
+#' @param x An object.
 #' @param bases Numeric vector of length 2 used to specify the bases for the
 #'   shillings or s and pence or d units. Default is `c(20, 12)`, which
 #'   conforms to the most widely used system of 1 pound = 20 shillings and
@@ -263,6 +264,9 @@ deb_bases <- function(...) {
 }
 
 ## print ##
+
+#' @rdname lsd
+#' @export
 print.lsd <- function(x, ...) {
   lsd <- x %>%
     purrr::map(~ rlang::set_names(., c("l", "s", "d"))) %>%

@@ -77,13 +77,8 @@ deb_add(lsd1 = list(c(56, 8, 5),
 
 }
 \seealso{
-Other lsd arithmetic functions: \code{\link{deb_add_mutate}},
-  \code{\link{deb_divide_mutate}},
-  \code{\link{deb_divide}},
-  \code{\link{deb_multiply_mutate}},
-  \code{\link{deb_multiply}},
-  \code{\link{deb_subtract_mutate}},
-  \code{\link{deb_subtract}}, \code{\link{deb_sum_df}},
+Other lsd arithmetic functions: \code{\link{deb_divide}},
+  \code{\link{deb_multiply}}, \code{\link{deb_subtract}},
   \code{\link{deb_sum}}
 }
 \concept{lsd arithmetic functions}

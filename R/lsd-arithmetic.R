@@ -64,76 +64,6 @@ deb_multiply <- function(lsd, x, bases = c(20, 12), round = 5) {
   deb_normalize(lsd = lsd, bases = bases, round = round)
 }
 
-#' Multiplication of pounds, shillings, and pence in a data frame
-#'
-#' Uses [dplyr::mutate()] to multiply pounds, shillings, and pence variables by
-#' a multiplier (`x`). The values are returned in the form of three new
-#' variables representing the calculated pounds, shillings and pence.
-#'
-#' @family lsd arithmetic functions
-#'
-#' @inheritParams deb_normalize_df
-#' @inheritParams deb_multiply
-#' @param replace Logical (default `FALSE`): when `TRUE` the new pounds,
-#'   shillings, and pence variables will replace the original ones.
-#' @param suffix Suffix added to the column names for the pounds, shillings,
-#'   and pence columns representing the multiplied values to distinguish them
-#'   from the original pounds, shillings, and pence columns. Default is ".1".
-#'   Must be a character vector of length 1.
-#'
-#' @return Returns a data frame with three new variables of pounds, shillings,
-#'   and pence representing the multiplied values.
-#'
-#' @examples
-#' # Multiply a data frame of values by 5
-#' example <- data.frame(l = c(35, 10, 26, 12),
-#'                       s = c(10, 18, 11, 16),
-#'                       d = c(9, 11, 10, 5))
-#' deb_multiply_mutate(df = example, l = l, s = s, d = d, x = 5)
-#'
-#' # Change the suffix added to the new variables
-#' deb_multiply_mutate(df = example,
-#'                     l = l, s = s, d = d,
-#'                     x = 5,
-#'                     suffix = ".x5")
-#'
-#' # Replace the existing pounds, shillings, and pence
-#' # with multiplied values
-#' deb_multiply_mutate(df = example,
-#'                     l = l, s = s, d = d,
-#'                     x = 5,
-#'                     replace = TRUE)
-#'
-#' @export
-
-deb_multiply_mutate <- function(df,
-                                l = l,
-                                s = s,
-                                d = d,
-                                x,
-                                bases = c(20, 12),
-                                round = 5,
-                                replace = FALSE,
-                                suffix = ".1") {
-  l <- rlang::enquo(l)
-  s <- rlang::enquo(s)
-  d <- rlang::enquo(d)
-
-  # Checks
-  arithmetic_check(x)
-  lsd_column_check(df, l, s, d)
-  suffix <- suffix_check(suffix, replace)
-  lsd_names <- lsd_column_names(df, l, s, d, suffix)
-
-  lsd_mutate_columns(df,
-                     !! l * x,
-                     !! s * x,
-                     !! d * x,
-                     lsd_names = lsd_names,
-                     replace = replace,
-                     bases = bases,
-                     round = round)
-}
 
 #' Division of pounds, shillings, and pence
 #'
@@ -196,76 +126,6 @@ deb_divide <- function(lsd, x, bases = c(20, 12), round = 5) {
   deb_normalize(lsd = lsd, bases = bases, round = round)
 }
 
-#' Division of pounds, shillings, and pence in a data frame
-#'
-#' Uses [dplyr::mutate()] to divide pounds, shillings, and pence variables by a
-#' divisor (`x`). The values are returned in the form of three new variables
-#' representing the calculated pounds, shillings and pence.
-#'
-#' @family lsd arithmetic functions
-#'
-#' @inheritParams deb_normalize_df
-#' @inheritParams deb_divide
-#' @param replace Logical (default `FALSE`): when `TRUE` the new pounds,
-#'   shillings, and pence variables will replace the original ones.
-#' @param suffix Suffix added to the column names for the pounds, shillings,
-#'   and pence columns representing the divided values to distinguish them
-#'   from the original pounds, shillings, and pence columns. Default is ".1".
-#'   Must be a character vector of length 1.
-#'
-#' @return Returns a data frame with three new variables of pounds, shillings,
-#'   and pence representing the divided values.
-#'
-#' @examples
-#' # Divide a data frame of values by 5
-#' example <- data.frame(l = c(356, 10, 26, 12),
-#'                       s = c(100, 18, 11, 16),
-#'                       d = c(98, 11, 10, 5))
-#' deb_divide_mutate(df = example, l = l, s = s, d = d, x = 5)
-#'
-#' # Change the suffix added to the new variables
-#' deb_divide_mutate(df = example,
-#'                   l = l, s = s, d = d,
-#'                   x = 5,
-#'                   suffix = ".div5")
-#'
-#' # Replace the existing pounds, shillings, and pence
-#' # with divided values
-#' deb_divide_mutate(df = example,
-#'                   l = l, s = s, d = d,
-#'                   x = 5,
-#'                   replace = TRUE)
-#'
-#' @export
-
-deb_divide_mutate <- function(df,
-                              l = l,
-                              s = s,
-                              d = d,
-                              x,
-                              bases = c(20, 12),
-                              round = 5,
-                              replace = FALSE,
-                              suffix = ".1") {
-  l <- rlang::enquo(l)
-  s <- rlang::enquo(s)
-  d <- rlang::enquo(d)
-
-  # Checks
-  arithmetic_check(x)
-  lsd_column_check(df, l, s, d)
-  suffix <- suffix_check(suffix, replace)
-  lsd_names <- lsd_column_names(df, l, s, d, suffix)
-
-  lsd_mutate_columns(df,
-                     !! l / x,
-                     !! s / x,
-                     !! d / x,
-                     lsd_names = lsd_names,
-                     replace = replace,
-                     bases = bases,
-                     round = round)
-}
 
 #' Addition of two values of pounds, shillings, and pence
 #'
@@ -336,7 +196,7 @@ deb_divide_mutate <- function(df,
 #' @export
 
 deb_add <- function(lsd1, lsd2, bases = c(20, 12), round = 5) {
-  arithmetic_list_check(lsd1, lsd2)
+  arithmetic_check2(lsd1, lsd2)
   bases <- validate_bases2(lsd1, lsd2, bases)
 
   if (is.list(lsd1) | is.list(lsd2) == TRUE) {
@@ -355,85 +215,6 @@ deb_add <- function(lsd1, lsd2, bases = c(20, 12), round = 5) {
   deb_normalize(lsd = lsd, bases = bases, round = round)
 }
 
-#' Addition of pounds, shillings, and pence in a data frame
-#'
-#' Uses [dplyr::mutate()] to add pounds, shillings, and pence variables by a
-#' pounds, shillings, and pence value. The values are returned in the form of
-#' three new variables representing the calculated pounds, shillings and pence.
-#'
-#' See [deb_sum_df()] to get a sum of the lsd values in a data frame.
-#'
-#' @family lsd arithmetic functions
-#'
-#' @inheritParams deb_normalize_df
-#' @param lsd Numeric vector of length 3 that represents the value to be added
-#'   to the `l`, `s`, and `d` variables. The first position of the vector
-#'   represents the pounds value or l. The second position represents the
-#'   shillings value or s. And the third position represents the pence value
-#'   or d.
-#' @param replace Logical (default `FALSE`): when `TRUE` the new pounds,
-#'   shillings, and pence variables will replace the original ones.
-#' @param suffix Suffix added to the column names for the pounds, shillings,
-#'   and pence columns representing the added values to distinguish them
-#'   from the original pounds, shillings, and pence columns. Default is ".1".
-#'   Must be a character vector of length 1.
-#'
-#' @return Returns a data frame with three new variables of pounds, shillings,
-#'   and pence representing the added values.
-#'
-#' @examples
-#' # Add a data frame of lsd values by £5 15s. 8d
-#' example <- data.frame(l = c(35, 10, 26, 12),
-#'                       s = c(10, 18, 11, 16),
-#'                       d = c(9, 11, 10, 5))
-#' deb_add_mutate(df = example,
-#'                l = l, s = s, d = d,
-#'                lsd = c(5, 15, 8))
-#'
-#' # Replace the existing pounds, shillings, and pence
-#' # with added values
-#' deb_add_mutate(df = example,
-#'                l = l, s = s, d = d,
-#'                lsd = c(5, 15, 8),
-#'                replace = TRUE)
-#'
-#' @export
-
-deb_add_mutate <- function(df,
-                           l = l,
-                           s = s,
-                           d = d,
-                           lsd,
-                           bases = c(20, 12),
-                           round = 5,
-                           replace = FALSE,
-                           suffix = ".1") {
-  l <- rlang::enquo(l)
-  s <- rlang::enquo(s)
-  d <- rlang::enquo(d)
-
-  # Checks
-  if (!is.numeric(lsd)) {
-    stop(call. = FALSE, "lsd must be a numeric vector")
-  }
-  if (length(lsd) != 3) {
-    stop(call. = FALSE, paste("lsd must be a vector of length of 3.",
-                              "There must be a value for pounds, shillings, and pence.",
-                              sep = "\n"))
-  }
-  lsd_column_check(df, l, s, d)
-  suffix <- suffix_check(suffix, replace)
-  lsd_names <- lsd_column_names(df, l, s, d, suffix)
-
-  lsd_mutate_columns(df,
-                     !! l + lsd[1],
-                     !! s + lsd[2],
-                     !! d + lsd[3],
-                     lsd_names = lsd_names,
-                     replace = replace,
-                     bases = bases,
-                     round = round)
-}
 
 #' Subtraction of two values of pounds, shillings, and pence
 #'
@@ -495,7 +276,7 @@ deb_add_mutate <- function(df,
 #' @export
 
 deb_subtract <- function(lsd1, lsd2, bases = c(20, 12), round = 5) {
-  arithmetic_list_check(lsd1, lsd2)
+  arithmetic_check2(lsd1, lsd2)
   bases <- validate_bases2(lsd1, lsd2, bases)
 
   if (is.list(lsd1) | is.list(lsd2) == TRUE) {
@@ -512,80 +293,4 @@ deb_subtract <- function(lsd1, lsd2, bases = c(20, 12), round = 5) {
   }
 
   deb_normalize(lsd = lsd, bases = bases, round = round)
-}
-
-#' Subtraction of pounds, shillings, and pence in a data frame
-#'
-#' Uses [dplyr::mutate()] to subtract pounds, shillings, and pence variables by
-#' a pounds, shillings, and pence value. The values are returned in the form of
-#' three new variables representing the calculated pounds, shillings and pence.
-#'
-#' @family lsd arithmetic functions
-#'
-#' @inheritParams deb_normalize_df
-#' @param lsd Numeric vector of length 3 that represents the lsd value to be
-#'   subtracted from the `l`, `s`, and `d` variables. The first position of the
-#'   vector represents the pounds value or l. The second position represents
-#'   the shillings value or s. And the third position represents the pence
-#'   value or d.
-#' @param suffix Suffix added to the column names for the pounds, shillings,
-#'   and pence columns representing the subtracted values to distinguish them
-#'   from the original pounds, shillings, and pence columns. Default is ".1".
-#'   Must be a character vector of length 1.
-#'
-#' @return Returns a data frame with three new variables of pounds, shillings,
-#'   and pence representing the subtracted values.
-#'
-#' @examples
-#' # Subtract a data frame of lsd values by £5 15s. 8d
-#' example <- data.frame(l = c(35, 10, 26, 12),
-#'                       s = c(10, 18, 11, 16),
-#'                       d = c(9, 11, 10, 5))
-#' deb_subtract_mutate(df = example,
-#'                     l = l, s = s, d = d,
-#'                     lsd = c(5, 15, 8))
-#'
-#' # Replace the existing pounds, shillings, and pence
-#' # with multiplied values
-#' deb_subtract_mutate(df = example,
-#'                     l = l, s = s, d = d,
-#'                     lsd = c(5, 15, 8),
-#'                     replace = TRUE)
-#'
-#' @export
-
-deb_subtract_mutate <- function(df,
-                                l = l,
-                                s = s,
-                                d = d,
-                                lsd,
-                                bases = c(20, 12),
-                                round = 5,
-                                replace = FALSE,
-                                suffix = ".1") {
-  l <- rlang::enquo(l)
-  s <- rlang::enquo(s)
-  d <- rlang::enquo(d)
-
-  # Checks
-  if (!is.numeric(lsd)) {
-    stop(call. = FALSE, "lsd must be a numeric vector")
-  }
-  if (length(lsd) != 3) {
-    stop(call. = FALSE, paste("lsd must be a vector of length of 3.",
-                              "There must be a value for pounds, shillings, and pence.",
-                              sep = "\n"))
-  }
-  lsd_column_check(df, l, s, d)
-  suffix <- suffix_check(suffix, replace)
-  lsd_names <- lsd_column_names(df, l, s, d, suffix)
-
-  lsd_mutate_columns(df,
-                     !! l - lsd[1],
-                     !! s - lsd[2],
-                     !! d - lsd[3],
-                     lsd_names = lsd_names,
-                     replace = replace,
-                     bases = bases,
-                     round = round)
 }

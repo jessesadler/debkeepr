@@ -52,7 +52,7 @@ deb_list_to_df <- function(lsd) {
 #' data frame with pounds, shillings, and pence variables.
 #'
 #' @family helper functions
-#' @inheritParams deb_normalize_df
+#' @inheritParams deb_as_lsd_mutate
 #'
 #' @return Returns an lsd object with a bases attribute. All variables in `df`
 #'   aside from `l`, `s`, and `d` will be dropped.

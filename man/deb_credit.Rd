@@ -4,33 +4,20 @@
 \alias{deb_credit}
 \title{Calculate the total credit of accounts}
 \usage{
-deb_credit(df, credit = credit, l = l, s = s, d = d,
-  bases = c(20, 12), round = 5, na.rm = FALSE)
+deb_credit(df, credit = credit, lsd = lsd, round = 5,
+  na.rm = FALSE)
 }
 \arguments{
-\item{df}{A data frame containing transactions between accounts with
-variables for the credit and debit accounts and values in the form of
-pounds, shillings, and pence variables.}
+\item{df}{A data frame containing transactions between accounts and values
+in the form of an lsd list column.}
 
 \item{credit}{Credit column: Unquoted name of the credit variable. This
 represents the accounts that discharge the transactional values or from
 which the values derive. Default is credit. The \code{credit} column must be
 of the same class as the \code{debit} column.}
 
-\item{l}{Pounds column: Unquoted name of a numeric variable corresponding
-to the pounds or librae unit. Default is l.}
-
-\item{s}{Shillings column: Unquoted name of numeric variable corresponding
-to the shillings or solidi unit. Default is s.}
-
-\item{d}{Pence column: Unquoted name of numeric variable corresponding to
-the pence or denarii unit. Default is d.}
-
-\item{bases}{Numeric vector of length 2 used to specify the bases for the
-shillings or s and pence or d units. Default is \code{c(20, 12)}, which
-conforms to the most widely used system of 1 pound = 20 shillings and
-1 shilling = 12 pence. If \code{lsd} is of class lsd, the bases attribute will
-be used in the place of this argument.}
+\item{lsd}{lsd list column: Unquoted name of an lsd list column of pounds,
+shillings, and pence values with a bases attribute.}
 
 \item{round}{Round pence to specified number of decimal places. Default
 is 5. Rounding of the pence value takes place throughout the function and
@@ -43,14 +30,13 @@ rounding and rounding pence values at the end.}
 missing values (NA) should be removed. Default is \code{FALSE}.}
 }
 \value{
-Returns a tibble with four columns and one row for each account
-present in the transactions data frame (\code{df}). The values represent the
-total value sent by each account to other accounts within \code{df}. The names
-for the pounds, shillings, and pence variables correspond to the input
-for \code{l}, \code{s}, and \code{d}.
+Returns a tibble with one row for each account in \code{df} with the
+values in an lsd list column. The values represent the total value sent
+by each account to other accounts within \code{df}.
 }
 \description{
-Calculate the total credit of accounts in a transactions data frame.
+Calculate the total credit of accounts in a transactions data frame with an
+lsd list column.
 }
 \details{
 \code{deb_credit()} is similar to \code{\link[=deb_account_summary]{deb_account_summary()}}, but it only returns
@@ -69,26 +55,29 @@ from, while the debit variable represents the account that receives the
 value. Thus, from the credit account to the debit account.
 }
 \examples{
+library(tibble)
+
 # Create a transactions data frame
-trans <- data.frame(credit = c("a", "b", "b", "a", "c"),
-                    debit = c("b", "a", "a", "c", "a"),
-                    l = c(10, 6, 4, 7, 9),
-                    s = c(15, 3, 11, 11, 2),
-                    d = c(6, 11, 7, 8, 11))
+lsd_list <- deb_as_lsd(list(c(10, 15, 6),
+                            c(6, 3, 11),
+                            c(4, 11, 7),
+                            c(7, 11, 8),
+                            c(9, 2, 11)),
+                       bases = c(20, 12))
+trans <- tibble(credit = c("a", "b", "b", "a", "c"),
+                debit = c("b", "a", "a", "c", "a"),
+                lsd = lsd_list)
 
 # Total credit of accounts present in trans
-deb_credit(df = trans, credit = credit,
-           l = l, s = s, d = d)
+deb_credit(df = trans,
+            credit = credit,
+            lsd = lsd)
 
 }
 \seealso{
-Other lsd account functions: \code{\link{deb_account2}},
-  \code{\link{deb_account_summary2}},
-  \code{\link{deb_account_summary}},
-  \code{\link{deb_account}}, \code{\link{deb_balance2}},
-  \code{\link{deb_balance}}, \code{\link{deb_credit2}},
-  \code{\link{deb_current2}}, \code{\link{deb_current}},
-  \code{\link{deb_debit2}}, \code{\link{deb_debit}},
-  \code{\link{deb_open2}}, \code{\link{deb_open}}
+Other lsd account functions: \code{\link{deb_account_summary}},
+  \code{\link{deb_account}}, \code{\link{deb_balance}},
+  \code{\link{deb_current}}, \code{\link{deb_debit}},
+  \code{\link{deb_open}}
 }
 \concept{lsd account functions}

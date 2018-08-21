@@ -73,7 +73,7 @@ round_check <- function(round) {
   }
 }
 
-lsd_column_check2 <- function(df, lsd) {
+lsd_list_column_check <- function(df, lsd) {
   if (!is.data.frame(df)) {
     stop(call. = FALSE, "df must be a data frame")
   }
@@ -137,17 +137,7 @@ lsd_column_names <- function(df, l, s, d, suffix) {
   lsd_names
 }
 
-decimal_columns <- function(df, column_name, suffix) {
-  column_name <- rlang::quo_name(column_name)
-
-  if (column_name %in% names(df)) {
-    paste0(column_name, suffix)
-  } else {
-    column_name
-  }
-}
-
-suffix_check <- function(suffix, replace = FALSE) {
+suffix_check <- function(suffix, replace) {
   if (!is.logical(replace)) {
     stop(call. = FALSE, "replace must be either TRUE or FALSE")
   }
@@ -231,7 +221,7 @@ arithmetic_check <- function(x) {
   }
 }
 
-arithmetic_list_check <- function(lsd1, lsd2) {
+arithmetic_check2 <- function(lsd1, lsd2) {
   if (is.list(lsd1) & is.list(lsd2) == TRUE) {
     if (length(lsd1) > 1 & length(lsd2) > 1) {
       if (identical(length(lsd1), length(lsd2)) == FALSE) {
@@ -258,7 +248,6 @@ exchange_rate_check <- function(exchange_rate) {
                               "       classes, namely a numeric vector of length 3 or a list of such vectors.",
                               sep = "\n"))
   }
-
   # check rate vector
   if (rlang::is_list(exchange_rate) == FALSE & rlang::is_vector(exchange_rate) == TRUE) {
     if (!is.numeric(exchange_rate)) {
@@ -270,7 +259,6 @@ exchange_rate_check <- function(exchange_rate) {
                                 sep = "\n"))
     }
   }
-
   # check rate list
   if (rlang::is_list(exchange_rate) == TRUE) {
     if (!all(purrr::map_lgl(exchange_rate, is.numeric))) {

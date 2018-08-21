@@ -4,13 +4,12 @@
 \alias{deb_account}
 \title{Calculate credit, debit, and current value of an account}
 \usage{
-deb_account(df, account_id, credit = credit, debit = debit, l = l,
-  s = s, d = d, bases = c(20, 12), round = 5, na.rm = FALSE)
+deb_account(df, account_id, credit = credit, debit = debit,
+  lsd = lsd, round = 5, na.rm = FALSE)
 }
 \arguments{
-\item{df}{A data frame containing transactions between accounts with
-variables for the credit and debit accounts and values in the form of
-pounds, shillings, and pence variables.}
+\item{df}{A data frame containing transactions between accounts and values
+in the form of an lsd list column.}
 
 \item{account_id}{The id of the account to be used to calculate the credit,
 debit, and current values. The value for the account must be present in
@@ -26,20 +25,8 @@ represents the accounts that receive the transactional values. Default is
 debit. The \code{debit} column must be of the same class as the \code{credit}
 column.}
 
-\item{l}{Pounds column: Unquoted name of a numeric variable corresponding
-to the pounds or librae unit. Default is l.}
-
-\item{s}{Shillings column: Unquoted name of numeric variable corresponding
-to the shillings or solidi unit. Default is s.}
-
-\item{d}{Pence column: Unquoted name of numeric variable corresponding to
-the pence or denarii unit. Default is d.}
-
-\item{bases}{Numeric vector of length 2 used to specify the bases for the
-shillings or s and pence or d units. Default is \code{c(20, 12)}, which
-conforms to the most widely used system of 1 pound = 20 shillings and
-1 shilling = 12 pence. If \code{lsd} is of class lsd, the bases attribute will
-be used in the place of this argument.}
+\item{lsd}{lsd list column: Unquoted name of an lsd list column of pounds,
+shillings, and pence values with a bases attribute.}
 
 \item{round}{Round pence to specified number of decimal places. Default
 is 5. Rounding of the pence value takes place throughout the function and
@@ -52,19 +39,17 @@ rounding and rounding pence values at the end.}
 missing values (NA) should be removed. Default is \code{FALSE}.}
 }
 \value{
-Returns a data frame with three rows and four columns. The rows
-correspond to credit, debit, and current values in the form of
-pounds, shillings, and pence. The names for the pounds, shillings,
-and pence variables correspond to the input for \code{l}, \code{s}, and \code{d}.
+Returns a tibble with three rows corresponding to the credit,
+debit, and current values in an lsd list column.
 }
 \description{
-Calculate the total credit, debit, and current value of a given account in
-a transactions data frame.
+Calculate the total credit, debit, and current value of an account in a
+transactions data frame with an lsd list column.
 }
 \details{
-\code{deb_account()} is similar to \code{\link[=deb_account_summary]{deb_account_summary()}}, but
-it only returns the information for one account instead of all accounts in
-the credit and/or debit variables of a transactions data frame.
+\code{deb_account()} is similar to \code{\link[=deb_account_summary]{deb_account_summary()}}, but it only returns
+the information for one account instead of all accounts in the credit and/or
+debit variables of a transactions data frame.
 
 \code{deb_account()} is part of a family of functions meant to be used on
 data frames that contain transactions between accounts in an account
@@ -78,27 +63,31 @@ from, while the debit variable represents the account that receives the
 value. Thus, from the credit account to the debit account.
 }
 \examples{
+library(tibble)
+
 # Create a transactions data frame
-trans <- data.frame(credit = c("a", "b", "b", "a", "c"),
-                    debit = c("b", "a", "a", "c", "a"),
-                    l = c(10, 6, 4, 7, 9),
-                    s = c(15, 3, 11, 11, 2),
-                    d = c(6, 11, 7, 8, 11))
+lsd_list <- deb_as_lsd(list(c(10, 15, 6),
+                            c(6, 3, 11),
+                            c(4, 11, 7),
+                            c(7, 11, 8),
+                            c(9, 2, 11)),
+                       bases = c(20, 12))
+trans <- tibble(credit = c("a", "b", "b", "a", "c"),
+                debit = c("b", "a", "a", "c", "a"),
+                lsd = lsd_list)
 
 # Credit, debit, and current value of account "a"
-deb_account(df = trans, account_id = "a",
-            credit = credit, debit = debit,
-            l = l, s = s, d = d)
+deb_account(df = trans,
+             account_id = "a",
+             credit = credit,
+             debit = debit,
+             lsd = lsd)
 
 }
 \seealso{
-Other lsd account functions: \code{\link{deb_account2}},
-  \code{\link{deb_account_summary2}},
-  \code{\link{deb_account_summary}},
-  \code{\link{deb_balance2}}, \code{\link{deb_balance}},
-  \code{\link{deb_credit2}}, \code{\link{deb_credit}},
-  \code{\link{deb_current2}}, \code{\link{deb_current}},
-  \code{\link{deb_debit2}}, \code{\link{deb_debit}},
-  \code{\link{deb_open2}}, \code{\link{deb_open}}
+Other lsd account functions: \code{\link{deb_account_summary}},
+  \code{\link{deb_balance}}, \code{\link{deb_credit}},
+  \code{\link{deb_current}}, \code{\link{deb_debit}},
+  \code{\link{deb_open}}
 }
 \concept{lsd account functions}

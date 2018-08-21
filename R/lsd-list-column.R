@@ -132,10 +132,10 @@ deb_from_lsd_mutate <- function(df,
                                 suffix = ".1",
                                 replace = FALSE) {
   lsd <- rlang::enquo(lsd)
-  lsd_column_check2(df, lsd)
+  lsd_list_column_check(df, lsd)
 
   # Column names: avoid overwriting l, s, and d columns
-  suffix <- suffix_check(suffix)
+  suffix <- suffix_check(suffix, replace)
   lsd_names <- lsd_column_names(df,
                                 rlang::enquo(l_column),
                                 rlang::enquo(s_column),

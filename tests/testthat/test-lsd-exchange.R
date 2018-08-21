@@ -12,25 +12,38 @@ list1 <- list(c(30, 10, 9), c(10.725, 18.65, 11), c(-26, -11, -10))
 list2 <- list(x, y, dec)
 list1_b1 <- to_lsd(list1, b1)
 list2_b2 <- to_lsd(list(x, y, dec), b2)
-
-
-ex_df <- data.frame(l = c(30, 10.725, -26),
-                    s = c(10, 18.65, -11),
-                    d = c(9, 11, -10))
-
-exchange_30 <- data.frame(l = c(45, 17, -39),
-                          s = c(16, 11, -17),
-                          d = c(1.5, 1.2, -9))
 rate_list <- list(c(0, 33, 4), c(0, 30, 0), c(0, 40, 0))
+
+## Error messages from exchange_rate_check ##
+test_that("non-vector is an error", {
+  expect_error(deb_invert_rate(data.frame(a = c(1:4), b = c(5:8))),
+               paste("exchange_rate must be a list of class lsd, or an object that can be coerced to these",
+                     "       classes, namely a numeric vector of length 3 or a list of such vectors.",
+                     sep = "\n"))
+})
+
+test_that("non-numeric is an error", {
+  expect_error(deb_invert_rate(c("hello", "goodbye")),
+               "exchange_rate must be a numeric vector")
+  expect_error(deb_invert_rate(list(c("hello", "goodbye"), c(TRUE, FALSE))),
+               "exchange_rate must be a list of numeric vectors")
+})
+
+test_that("length of exchange_rate is 3", {
+  expect_error(deb_invert_rate(c(10, 9, 3, 5)),
+               paste("exchange_rate must be a vector of length of 3.",
+                     "There must be a value for pounds, shillings, and pence.",
+                     sep = "\n"))
+  expect_error(deb_invert_rate(list(c(10, 9, 3, 5), c(6, 3), c(4, 6, 8))),
+               paste("exchange_rate must be a list of numeric vectors of length 3.",
+                     "There must be a value for pounds, shillings, and pence.",
+                     sep = "\n"))
+})
 
 test_that("exchange_rate_check works", {
   expect_error(deb_exchange(x, shillings_rate = "a"),
                "shillings_rate must be numeric")
-  expect_error(deb_exchange_mutate(ex_df, l, s, d, shillings_rate = "a"),
-               "shillings_rate must be numeric")
   expect_error(deb_exchange(x, shillings_rate = c(31, 32)),
-               "shillings_rate must be a numeric vector of length 1")
-  expect_error(deb_exchange_mutate(ex_df, l, s, d, shillings_rate = c(31, 32)),
                "shillings_rate must be a numeric vector of length 1")
 })
 
@@ -69,15 +82,6 @@ test_that("deb_exchange works with lsd objects", {
                    deb_exchange(list1, shillings_rate = 12, bases = b1))
   expect_identical(deb_exchange(list2_b2, shillings_rate = 12, round = 0),
                    deb_exchange(list2, shillings_rate = 12, bases = b2, round = 0))
-})
-
-test_that("deb_exchange_mutate works", {
-  expect_equal(ncol(deb_exchange_mutate(ex_df, l, s, d, shillings_rate = 30)), 6)
-  expect_equal(deb_exchange_mutate(ex_df, shillings_rate = 30, replace = TRUE), exchange_30)
-  expect_equal(deb_exchange_mutate(ex_df, shillings_rate = 30, round = 0)[ , 6],
-               c(2, 1, -9))
-  expect_false(identical(deb_exchange_mutate(ex_df, shillings_rate = 30),
-                         deb_exchange_mutate(ex_df, shillings_rate = 30, bases = c(8, 16))))
 })
 
 test_that("normalized_to_sd helper works",{
@@ -169,30 +173,4 @@ test_that("deb_invert_rate works with lsd objects", {
                    deb_invert_rate(list1, bases = b1))
   expect_identical(deb_invert_rate(list2_b2, round = 0),
                    deb_invert_rate(list2, bases = b2, round = 0))
-})
-
-## Error messages from exchange_rate_check ##
-test_that("non-vector is an error", {
-  expect_error(deb_invert_rate(data.frame(a = c(1:4), b = c(5:8))),
-               paste("exchange_rate must be a list of class lsd, or an object that can be coerced to these",
-                     "       classes, namely a numeric vector of length 3 or a list of such vectors.",
-                     sep = "\n"))
-})
-
-test_that("non-numeric is an error", {
-  expect_error(deb_invert_rate(c("hello", "goodbye")),
-               "exchange_rate must be a numeric vector")
-  expect_error(deb_invert_rate(list(c("hello", "goodbye"), c(TRUE, FALSE))),
-               "exchange_rate must be a list of numeric vectors")
-})
-
-test_that("length of exchange_rate is 3", {
-  expect_error(deb_invert_rate(c(10, 9, 3, 5)),
-               paste("exchange_rate must be a vector of length of 3.",
-                     "There must be a value for pounds, shillings, and pence.",
-                     sep = "\n"))
-  expect_error(deb_invert_rate(list(c(10, 9, 3, 5), c(6, 3), c(4, 6, 8))),
-               paste("exchange_rate must be a list of numeric vectors of length 3.",
-                     "There must be a value for pounds, shillings, and pence.",
-                     sep = "\n"))
 })

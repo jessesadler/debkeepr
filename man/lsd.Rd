@@ -8,6 +8,7 @@
 \alias{deb_as_lsd.numeric}
 \alias{deb_as_lsd.list}
 \alias{deb_as_lsd.lsd}
+\alias{print.lsd}
 \title{A class for pounds, shillings and pence values}
 \usage{
 deb_lsd(l, s, d, bases = c(20, 12))
@@ -21,6 +22,8 @@ deb_as_lsd(lsd, bases = c(20, 12), ...)
 \method{deb_as_lsd}{list}(lsd, bases = c(20, 12), ...)
 
 \method{deb_as_lsd}{lsd}(lsd, bases, ...)
+
+\method{print}{lsd}(x, ...)
 }
 \arguments{
 \item{l}{Numeric vector representing the pounds unit.}
@@ -40,6 +43,8 @@ second position represents the shillings value or s. And the third
 position represents the pence value or d.}
 
 \item{...}{Arguments passed on to further methods.}
+
+\item{x}{An object.}
 }
 \value{
 Returns an object of class lsd with a bases attribute.

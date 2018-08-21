@@ -1,213 +1,215 @@
-context("test-lsd-accounts.R")
+context("test-lsd-accounts2.R")
 
 suppressPackageStartupMessages(library(tibble))
 
-df1 <- tibble::tibble(credit = c("a", "b", "a", "c"),
-                      debit = c("b", "a", "c", "a"),
-                      l = c(10, 10, 7, 9),
-                      s = c(15, 15, 11, 2),
-                      d = c(6, 6, 8.25, 11.5))
-df2 <- tibble::tibble(from = c("a", "b", "a", "c"),
-                      to = c("b", "a", "c", "a"),
-                      pounds = c(10, 10, 7, 9),
-                      shillings = c(15, 15, 11, 2),
-                      pence = c(6, 6, 8.25, 11.5))
-df_na <- tibble::tibble(credit = c("a", "b", "a", "c", "a"),
-                        debit = c("b", "a", "c", "a", "b"),
-                        l = c(10, 10, 7, 9, NA),
-                        s = c(15, 15, 11, 2, 4),
-                        d = c(6, 6, 8.25, 11.5, 6))
-
+b1 <- c(20, 12)
+b2 <- c(8, 16)
+tbl_b1 <- tibble(credit = c("a", "b", "a", "c"),
+                 debit = c("b", "a", "c", "a"),
+                 lsd = deb_lsd(l = c(10, 10, 7, 9),
+                               s = c(15, 15, 11, 2),
+                               d = c(6, 6, 8.25, 11.5)))
+tbl_b2 <- tibble(from = c("a", "b", "a", "c"),
+                 to = c("b", "a", "c", "a"),
+                 data = deb_lsd(l = c(10, 10, 7, 9),
+                                s = c(15, 15, 11, 2),
+                                d = c(6, 6, 8.25, 11.5),
+                                bases = b2))
+tbl_na <- tibble(credit = c("a", "b", "a", "c", "a"),
+                 debit = c("b", "a", "c", "a", "b"),
+                 lsd = deb_lsd(l = c(10, 10, 7, 9, NA),
+                               s = c(15, 15, 11, 2, 4),
+                               d = c(6, 6, 8.25, 11.5, 6)))
+tbl_na2 <- tibble(credit = c("a", "b", "a", "c", "c"),
+                  debit = c("b", "a", "c", "a", "a"),
+                  lsd = deb_lsd(l = c(10, 10, 7, 9, NA),
+                                s = c(15, 15, 11, 2, 4),
+                                d = c(6, 6, 8.25, 11.5, 6)))
+set.seed(240)
+big_tbl <- tibble(credit = sample(letters[1:4], 15, replace = TRUE),
+                  debit = sample(letters[1:4], 15, replace = TRUE),
+                  lsd = deb_lsd(l = sample(1:30, 15, replace = TRUE),
+                                s = sample(1:19, 15, replace = TRUE),
+                                d = sample(1:11, 15, replace = TRUE)))
 relation_v <- c("credit", "debit", "current")
 
-summary_answer <- tibble::tibble(account_id = rep(c("a", "b", "c"), each = 3),
-                                 relation = rep(relation_v, 3),
-                                 l = c(18, 19, -1, 10, 10, 0, 9, 7, 1),
-                                 s = c(7, 18, -11, 15, 15, 0, 2, 11, 11),
-                                 d = c(2.25, 5.5, -3.25, 6, 6, 0, 11.5, 8.25, 3.25))
-
-set.seed(240)
-df3 <- tibble::tibble(credit = sample(letters[1:4], 15, replace = TRUE),
-                      debit = sample(letters[1:4], 15, replace = TRUE),
-                      l = sample(1:30, 15, replace = TRUE),
-                      s = sample(1:19, 15, replace = TRUE),
-                      d = sample(1:11, 15, replace = TRUE))
-set.seed(240)
-df4 <- tibble::tibble(from = sample(letters[1:4], 15, replace = TRUE),
-                      to = sample(letters[1:4], 15, replace = TRUE),
-                      pounds = sample(1:30, 15, replace = TRUE),
-                      shillings = sample(1:19, 15, replace = TRUE),
-                      pence = sample(1:11, 15, replace = TRUE))
+summary_b1 <- tibble(account_id = rep(c("a", "b", "c"), each = 3),
+                     relation = rep(relation_v, 3),
+                     lsd = deb_lsd(l = c(18, 19, -1, 10, 10, 0, 9, 7, 1),
+                                   s = c(7, 18, -11, 15, 15, 0, 2, 11, 11),
+                                   d = c(2.25, 5.5, -3.25, 6, 6, 0, 11.5, 8.25, 3.25)))
+summary_b2 <- tibble(account_id = rep(c("a", "b", "c"), each = 3),
+                     relation = rep(relation_v, 3),
+                     data = deb_lsd(l = c(20, 21, 0, 11, 11, 0, 9, 8, 0),
+                                    s = c(2, 2, -7, 7, 7, 0, 2, 3, 7),
+                                    d = c(14.25, 1.5, -3.25, 6, 6, 0, 11.5, 8.25, 3.25),
+                                    bases = b2))
 
 # credit_check makes checks for all lsd-account functions
 test_that("credit_check works", {
-  expect_error(deb_account(df1),
+  expect_error(deb_account(b1),
+               "df must be a data frame")
+  expect_error(deb_account(tbl_b1),
                "argument \"account_id\" is missing, with no default")
-  expect_error(deb_account(df1, account_id = "d"),
+  expect_error(deb_account(tbl_b1, account_id = "d"),
                "account_id must be a value present in the credit and/or debit variables")
-  expect_error(deb_account(df1, "a", credit = credit, debit = l),
+  expect_error(deb_account(tbl_b1, "a", credit = credit, debit = lsd),
                "credit and debit variables must be of the same class")
-  expect_error(deb_account(df2, "a"),
+  expect_error(deb_account(tbl_b2, "a", lsd = data),
                paste("Column names for credit and/or debit must be provided if",
                      "the default names of credit and/or debit are not present in the data frame",
                      sep = "\n"))
-  expect_error(deb_account(df2, "a", credit = from, debit = to),
-               paste("Column names for l, s, and d must be provided if the",
-                     "default names of l, s, and d are not present in the data frame",
-                     sep = "\n"))
+  expect_error(deb_account(tbl_b2, "a", credit = from, debit = to),
+               paste("Column name for lsd list column must be provided,",
+                     "if the default name of lsd is not present in df.",
+                     sep = " "))
+  expect_error(deb_account(tbl_b1, "a", lsd = credit),
+               "lsd must be an lsd list column")
 })
 
 ## deb_account ##
 test_that("deb_account works", {
-  expect_equal(deb_account(df1, "a"),
-               tibble::tibble(relation = relation_v,
-                              l = c(18, 19, -1),
-                              s = c(7, 18, -11),
-                              d = c(2.25, 5.5, -3.25)))
-  expect_equal(deb_account(df1, "a", round = 0),
-               tibble::tibble(relation = relation_v,
-                              l = c(18, 19, -1),
-                              s = c(7, 18, -11),
-                              d = c(2, 6, -4)))
-  expect_equal(deb_account(df3, "a"),
-               tibble::tibble(relation = relation_v,
-                              l = c(23, 22, 1),
-                              s = c(4, 3, 0),
-                              d = c(2, 8, 6)))
-  expect_false(identical(deb_account(df1, "a"),
-                         deb_account(df1, "a", bases = c(8, 16))))
-  expect_equal(deb_account(df1, "a", na.rm = TRUE),
-               deb_account(df1, "a"))
-})
-
-test_that("deb_account accepts different column names", {
-  expect_equal(names(deb_account(df2, "a", from, to, pounds, shillings, pence)),
-               c("relation", "pounds", "shillings", "pence"))
-  expect_equal(deb_account(df2, "a", from, to, pounds, shillings, pence),
-               tibble::tibble(relation = relation_v,
-                              pounds = c(18, 19, -1),
-                              shillings = c(7, 18, -11),
-                              pence = c(2.25, 5.5, -3.25)))
-  expect_equal(deb_account(df4, "a", from, to, pounds, shillings, pence),
-               tibble::tibble(relation = relation_v,
-                              pounds = c(23, 22, 1),
-                              shillings = c(4, 3, 0),
-                              pence = c(2, 8, 6)))
+  expect_identical(deb_account(tbl_b1, "a"),
+                   tibble(relation = relation_v,
+                          lsd = deb_lsd(l = c(18, 19, -1),
+                                        s = c(7, 18, -11),
+                                        d = c(2.25, 5.5, -3.25))))
+  expect_identical(deb_account(tbl_b1, "a", round = 0),
+                   tibble(relation = relation_v,
+                          lsd = deb_lsd(l = c(18, 19, -1),
+                                        s = c(7, 18, -11),
+                                        d = c(2, 6, -4))))
+  expect_identical(deb_account(big_tbl, "a"),
+                   tibble(relation = relation_v,
+                          lsd = deb_lsd(l = c(23, 22, 1),
+                                        s = c(4, 3, 0),
+                                        d = c(2, 8, 6))))
+  expect_identical(deb_account(tbl_b2, "a", from, to, data),
+                   tibble(relation = relation_v,
+                          data = deb_lsd(l = c(20, 21, 0),
+                                         s = c(2, 2, -7),
+                                         d = c(14.25, 1.5, -3.25),
+                                         bases = b2)))
+  expect_identical(deb_account(tbl_na, "a", na.rm = TRUE),
+                   deb_account(tbl_b1, "a"))
+  expect_identical(deb_account(tbl_na, "a", na.rm = FALSE),
+                   tibble(relation = relation_v,
+                          lsd = deb_as_lsd(list(as.numeric(c(NA, NA, NA)),
+                                                c(19, 18, 5.5),
+                                                as.numeric(c(NA, NA, NA))))))
 })
 
 test_that("deb_account_summary works", {
-  expect_equal(nrow(deb_account_summary(df1)), 9)
-  expect_equal(deb_account_summary(df1), summary_answer)
-  expect_false(identical(deb_account_summary(df1),
-                         deb_account_summary(df1, bases = c(8, 16))))
-  # Accepts different names
-  expect_equal(names(deb_account_summary(df2, from, to, pounds, shillings, pence)),
-               c("account_id", "relation", "pounds", "shillings", "pence"))
+  expect_equal(nrow(deb_account_summary(tbl_b1)), 9)
+  expect_identical(deb_account_summary(tbl_b1), summary_b1)
+  expect_identical(deb_account_summary(tbl_b2, from, to, data), summary_b2)
+
   # One set of deb_account_summary is equal to deb_account for that account
-  expect_equal(deb_account_summary(df1)[7:9, 2:5],
-               deb_account(df1, "c"))
-  expect_equal(deb_account_summary(df4, from, to, pounds, shillings, pence)[7:9, 2:5],
-               deb_account(df4, "c", from, to, pounds, shillings, pence))
+  expect_identical(deb_account_summary(tbl_b1)[7:9, 2:3],
+                   deb_account(tbl_b1, "c"))
+  expect_identical(deb_account_summary(tbl_b2, from, to, data)[7:9, 2:3],
+                   deb_account(tbl_b2, "c", from, to, data))
   # Round
-  expect_equal(deb_account_summary(df1, round = 0)[ , 5],
-               tibble(d = c(2, 6, -4, 6, 6, 0, 0, 8, 4)))
+  expect_identical(deb_account_summary(tbl_b1, round = 0)[7:9, 2:3],
+                   deb_account(tbl_b1, "c", round = 0))
   # Deal with NA values
-  expect_false(identical(deb_account_summary(df_na), deb_account_summary(df1)))
-  expect_equal(deb_account_summary(df_na)[1, 3:5],
-               tibble::tibble(l = as.numeric(NA), s = as.numeric(NA), d = as.numeric(NA)))
-  expect_equal(deb_account_summary(df_na, na.rm = TRUE), deb_account_summary(df1))
+  expect_identical(deb_account_summary(tbl_b1),
+                   deb_account_summary(tbl_na, na.rm = TRUE))
+  expect_false(identical(deb_account_summary(tbl_b1), deb_account_summary(tbl_na)))
+  expect_identical(deb_account_summary(tbl_na)[4:6, 2:3],
+                   deb_account(tbl_na, "b"))
 })
 
 test_that("deb_credit works", {
-  expect_equal(nrow(deb_credit(df1)), 3)
-  expect_equal(deb_credit(df1),
-               summary_answer[c(1, 4, 7), c(1, 3, 4, 5)])
-  expect_equal(deb_credit(df1, round = 0)[ , 4],
-               tibble(d = c(2, 6, 0)))
-  expect_false(identical(deb_credit(df1),
-                         deb_credit(df1, bases = c(8, 16))))
-  # Accepts different names
-  expect_equal(names(deb_credit(df2, from, pounds, shillings, pence)),
-               c("account_id", "pounds", "shillings", "pence"))
+  expect_equal(nrow(deb_credit(tbl_b1)), 3)
+  expect_identical(deb_credit(tbl_b1),
+                   summary_b1[c(1, 4, 7), c(1, 3)])
+  expect_identical(deb_credit(tbl_b2, from, data),
+                   summary_b2[c(1, 4, 7), c(1, 3)])
+  # Round
+  expect_identical(deb_credit(tbl_b1, round = 0)[3 , 2],
+                   deb_account(tbl_b1, "c", round = 0)[1, 2])
   # Deal with NA values
-  expect_false(identical(deb_credit(df_na), deb_credit(df1)))
-  expect_equal(deb_credit(df_na)[1, 2:4],
-               tibble::tibble(l = as.numeric(NA), s = as.numeric(NA), d = as.numeric(NA)))
-  expect_equal(deb_credit(df_na, na.rm = TRUE), deb_credit(df1))
+  expect_identical(deb_credit(tbl_na, na.rm = TRUE),
+                   deb_credit(tbl_b1))
+  expect_identical(deb_credit(tbl_na),
+                   deb_account_summary(tbl_na)[c(1, 4, 7), c(1, 3)])
 })
 
 test_that("deb_debit works", {
-  expect_equal(nrow(deb_debit(df1)), 3)
-  expect_equal(deb_debit(df1),
-               summary_answer[c(2, 5, 8), c(1, 3, 4, 5)])
-  expect_equal(deb_debit(df1, round = 0)[ , 4],
-               tibble(d = c(6, 6, 8)))
-  expect_false(identical(deb_debit(df1),
-                         deb_debit(df1, bases = c(8, 16))))
-  # Accepts different names
-  expect_equal(names(deb_debit(df2, to, pounds, shillings, pence)),
-               c("account_id", "pounds", "shillings", "pence"))
+  expect_equal(nrow(deb_debit(tbl_b1)), 3)
+  expect_identical(deb_debit(tbl_b1),
+                   summary_b1[c(2, 5, 8), c(1, 3)])
+  expect_identical(deb_debit(tbl_b2, to, data),
+                   summary_b2[c(2, 5, 8), c(1, 3)])
+  # Round
+  expect_identical(deb_debit(tbl_b1, round = 0)[3 , 2],
+                   deb_account(tbl_b1, "c", round = 0)[2, 2])
   # Deal with NA values
-  expect_false(identical(deb_debit(df_na), deb_debit(df1)))
-  expect_equal(deb_debit(df_na)[2, 2:4],
-               tibble::tibble(l = as.numeric(NA), s = as.numeric(NA), d = as.numeric(NA)))
-  expect_equal(deb_debit(df_na, na.rm = TRUE), deb_debit(df1))
+  expect_identical(deb_debit(tbl_na, na.rm = TRUE),
+                   deb_debit(tbl_b1))
+  expect_identical(deb_debit(tbl_na),
+                   deb_account_summary(tbl_na)[c(2, 5, 8), c(1, 3)])
 })
 
 test_that("deb_current works", {
   # Values come from deb_account_summary.
-  # Do not need to test them.
-  expect_equal(nrow(deb_current(df1)), 3)
-  expect_equal(nrow(deb_current(df3)), 4)
-  expect_false(identical(deb_current(df3),
-                         deb_current(df3, bases = c(8, 16))))
-  expect_equal(names(deb_current(df1)),
-               c("account_id", "l", "s", "d"))
+  expect_equal(nrow(deb_current(tbl_b1)), 3)
+  expect_equal(nrow(deb_current(big_tbl)), 4)
+  expect_identical(deb_current(tbl_b1),
+                   summary_b1[c(3, 6, 9), c(1, 3)])
+  expect_identical(deb_current(tbl_b2, from, to, data),
+                   summary_b2[c(3, 6, 9), c(1, 3)])
+
   # Deal with NA values
-  expect_false(identical(deb_current(df_na), deb_current(df1)))
-  expect_equal(deb_current(df_na)[1, 2:4],
-               tibble::tibble(l = as.numeric(NA), s = as.numeric(NA), d = as.numeric(NA)))
-  expect_equal(deb_current(df_na, na.rm = TRUE), deb_current(df1))
+  expect_identical(deb_current(tbl_na, na.rm = TRUE),
+                   deb_current(tbl_b1))
+  expect_identical(deb_current(tbl_na),
+                   deb_account_summary(tbl_na)[c(3, 6, 9), c(1, 3)])
 })
 
 test_that("deb_open works", {
   # Values come from deb_account_summary.
-  # Do not need to test them.
-  expect_equal(nrow(deb_open(df1)), 2)
-  expect_equal(nrow(deb_open(df3)), 4)
-  expect_false(identical(deb_open(df3),
-                         deb_open(df3, bases = c(8, 16))))
+  expect_equal(nrow(deb_open(tbl_b1)), 2)
+  expect_equal(nrow(deb_open(big_tbl)), 4)
+  expect_identical(deb_open(tbl_b1),
+                   summary_b1[c(3, 9), c(1, 3)])
+  expect_identical(deb_open(tbl_b2, from, to, data),
+                   summary_b2[c(3, 9), c(1, 3)])
   # Deal with NA values
-  expect_false(identical(deb_open(df_na), deb_open(df1)))
+  expect_identical(deb_open(tbl_na, na.rm = TRUE),
+                   deb_open(tbl_b1))
   # Rows with NA are excluded
-  expect_equal(nrow(deb_open(df_na)), 1)
-  expect_equal(deb_open(df_na, na.rm = TRUE), deb_open(df1))
+  expect_equal(nrow(deb_open(tbl_na)), 1)
 })
 
 test_that("deb_balance works", {
-  expect_equal(nrow(deb_balance(df1)), 2)
-  expect_false(identical(deb_balance(df1),
-                         deb_balance(df1, bases = c(8, 16))))
-  expect_equal(names(deb_balance(df1)),
-                     c("relation", "l", "s", "d"))
-  expect_equal(deb_balance(df1),
-               tibble::tibble(relation = c("credit", "debit"),
-                              l = c(1, 1),
-                              s = c(11, 11),
-                              d = c(3.25, 3.25)))
-  expect_equal(deb_balance(df1, round = 0),
-               tibble::tibble(relation = c("credit", "debit"),
-                              l = c(1, 1),
-                              s = c(11, 11),
-                              d = c(4, 4)))
-  expect_equal(deb_balance(df3),
-               tibble::tibble(relation = c("credit", "debit"),
-                              l = c(54, 54),
-                              s = c(8, 8),
-                              d = c(9, 9)))
+  expect_equal(nrow(deb_balance(tbl_b1)), 2)
+  expect_identical(deb_balance(tbl_b1),
+                   tibble(relation = c("credit", "debit"),
+                          lsd = deb_lsd(l = c(1, 1),
+                                        s = c(11, 11),
+                                        d = c(3.25, 3.25))))
+  expect_identical(deb_balance(tbl_b2, from, to, data),
+                   tibble(relation = c("credit", "debit"),
+                          data = deb_lsd(l = c(0, 0),
+                                        s = c(7, 7),
+                                        d = c(3.25, 3.25),
+                                        bases = b2)))
+  expect_identical(deb_balance(big_tbl),
+                   tibble(relation = c("credit", "debit"),
+                          lsd = deb_lsd(l = c(54, 54),
+                                        s = c(8, 8),
+                                        d = c(9, 9))))
   # Deal with NA values
-  expect_false(identical(deb_balance(df_na), deb_balance(df1)))
-  expect_equal(deb_balance(df_na)[2, 2:4],
-               tibble::tibble(l = 0, s = 0, d = 0))
-  expect_equal(deb_balance(df_na, na.rm = TRUE), deb_balance(df1))
+  expect_identical(deb_balance(tbl_na, na.rm = TRUE),
+                   deb_balance(tbl_b1))
+  expect_identical(deb_balance(tbl_na),
+                   tibble(relation = c("credit", "debit"),
+                          lsd = deb_as_lsd(list(c(1, 11, 3.25),
+                                                as.numeric(c(NA, NA, NA))))))
+  expect_identical(deb_balance(tbl_na2),
+                   tibble(relation = c("credit", "debit"),
+                          lsd = deb_as_lsd(list(as.numeric(c(NA, NA, NA)),
+                                                as.numeric(c(NA, NA, NA))))))
 })

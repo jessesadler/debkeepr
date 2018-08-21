@@ -14,43 +14,6 @@ list2 <- list(x, y, dec)
 list1_b1 <- to_lsd(list1, b1)
 list2_b2 <- to_lsd(list2, b2)
 
-ex_df <- data.frame(l = c(30, 10.725, -26, 405, 350),
-                    s = c(10, 18.65, -11, 0, 8),
-                    d = c(9, 11, -10, 0, 0))
-
-answer_x3 <- data.frame(l = c(30, 10.725, -26, 405, 350),
-                        s = c(10, 18.65, -11, 0, 8),
-                        d = c(9, 11, -10, 0, 0),
-                        l.1 = c(91, 35, -79, 1215, 1051),
-                        s.1 = c(12, 2, -15, 0, 4),
-                        d.1 = c(3, 2.4, -6, 0, 0))
-answer_x3_replace <- data.frame(l = c(91, 35, -79, 1215, 1051),
-                                s = c(12, 2, -15, 0, 4),
-                                d = c(3, 2.4, -6, 0, 0))
-answer_x03 <- data.frame(l = c(10, 3, -8, 135, 116),
-                         s = c(3, 18, -17, 0, 16),
-                         d = c(7, 0.26667, -3.33333, 0, 0))
-
-answer_d2 <- data.frame(l = c(30, 10.725, -26, 405, 350),
-                        s = c(10, 18.65, -11, 0, 8),
-                        d = c(9, 11, -10, 0, 0),
-                        l.1 = c(15, 5, -13, 202, 175),
-                        s.1 = c(5, 17, -5, 10, 4),
-                        d.1 = c(4.5, 0.4, -11, 0, 0))
-answer_d2_replace <- data.frame(l = c(15, 5, -13, 202, 175),
-                                s = c(5, 17, -5, 10, 4),
-                                d = c(4.5, 0.4, -11, 0, 0))
-answer_d6 <- data.frame(l = c(5, 1, -4, 67, 58),
-                        s = c(1, 19, -8, 10, 8),
-                        d = c(9.5, 0.13333, -7.66667, 0, 0))
-
-na_df <- data.frame(l = c(30, 10.725, -26),
-                    s = c(10, 18.65, -11),
-                    d = c(NA, 11, -10))
-na_replace <- data.frame(l = c(NA, 35, -79),
-                         s = c(NA, 2, -15),
-                         d = c(NA, 2.4, -6))
-
 # Checks
 test_that("arithmetic checks work", {
   expect_error(deb_multiply(c(9, 3, 6), x = "d"),
@@ -110,19 +73,6 @@ test_that("deb_multiply works with lsd objects", {
                    deb_multiply(list2, x = 3, bases = b2, round = 0))
 })
 
-test_that("deb_multiply_mutate works", {
-  expect_equal(ncol(deb_multiply_mutate(ex_df, l, s, d, x = 2)), 6)
-  expect_equal(ncol(deb_multiply_mutate(ex_df, l, s, d, x = 2, replace = TRUE)), 3)
-  expect_equal(deb_multiply_mutate(ex_df, l, s, d, x = 3), answer_x3)
-  expect_equal(deb_multiply_mutate(ex_df, l, s, d, x = 3, replace = TRUE), answer_x3_replace)
-  expect_equal(deb_multiply_mutate(ex_df, x = 0.3333333333, replace = TRUE), answer_x03)
-  expect_equal(deb_multiply_mutate(ex_df, x = 0.3333333333, replace = TRUE, round = 0)[ , 3],
-               c(7, 0, -3, 0, 0))
-  # bases changes answer
-  expect_false(identical(deb_multiply_mutate(ex_df, l, s, d, x = 3),
-                         deb_multiply_mutate(ex_df, l, s, d, x = 3, bases = c(8, 16))))
-  expect_equal(deb_multiply_mutate(na_df, replace = TRUE, x = 3), na_replace)
-})
 
 # Division
 test_that("lsd division works", {
@@ -172,25 +122,13 @@ test_that("deb_divide works with lsd objects", {
                    deb_divide(list2, x = 3, bases = b2, round = 0))
 })
 
-test_that("deb_divide_mutate works", {
-  expect_equal(ncol(deb_divide_mutate(ex_df, l, s, d, x = 2)), 6)
-  expect_equal(ncol(deb_divide_mutate(ex_df, l, s, d, x = 2, replace = TRUE)), 3)
-  expect_equal(deb_divide_mutate(ex_df, l, s, d, x = 2), answer_d2)
-  expect_equal(deb_divide_mutate(ex_df, l, s, d, x = 2, replace = TRUE), answer_d2_replace)
-  expect_equal(deb_divide_mutate(ex_df, x = 6, replace = TRUE), answer_d6)
-  expect_equal(deb_divide_mutate(ex_df, l, s, d, x = 2, round = 0, replace = TRUE)[ , 3],
-               c(4, 0, -11, 0, 0))
-  # bases changes answer
-  expect_false(identical(deb_divide_mutate(ex_df, l, s, d, x = 3),
-                         deb_divide_mutate(ex_df, l, s, d, x = 3, bases = c(8, 16))))
-})
 
 ## Addition and subtraction ##
 
-test_that("arithmetic_list_check works", {
-  expect_silent(arithmetic_list_check(list1, x))
-  expect_silent(arithmetic_list_check(list1, list(x)))
-  expect_error(arithmetic_list_check(list1, list(x, y)),
+test_that("arithmetic_check2 works", {
+  expect_silent(arithmetic_check2(list1, x))
+  expect_silent(arithmetic_check2(list1, list(x)))
+  expect_error(arithmetic_check2(list1, list(x, y)),
                "If lsd1 and lsd2 are both lists, they must be the same length, or one must be of length 1.")
 })
 
@@ -243,19 +181,6 @@ test_that("deb_add works with lsd objects", {
   expect_identical(deb_add(x, list2_b2), deb_add(list2, x, b2))
 })
 
-test_that("deb_add_mutate works", {
-  expect_equal(ncol(deb_add_mutate(ex_df, l, s, d, lsd = c(5, 15, 8))), 6)
-  expect_equal(ncol(deb_add_mutate(ex_df, l, s, d, lsd = c(5, 15, 8), replace = TRUE)), 3)
-  expect_equal(deb_add_mutate(ex_df, l, s, d, lsd = c(5, 15, 8), replace = TRUE),
-               data.frame(l = c(36, 17, -20, 410, 356),
-                          s = c(6, 9, -16, 15, 3),
-                          d = c(5, 8.8, -2, 8, 8)))
-  expect_equal(deb_add_mutate(ex_df, l, s, d, lsd = c(5, 15, 8), round = 0, replace = TRUE)[ , 3],
-               c(5, 9, -2, 8, 8))
-  # bases changes answer
-  expect_false(identical(deb_add_mutate(ex_df, l, s, d, lsd = c(5, 15, 8)),
-                         deb_add_mutate(ex_df, l, s, d, lsd = c(5, 15, 8), bases = c(8, 16))))
-})
 
 # Subtraction
 test_that("lsd subtract works", {
@@ -294,33 +219,4 @@ test_that("deb_subtract works with lsd objects", {
   expect_identical(deb_subtract(x_b2, y_b2), deb_subtract(x, y_b2))
   expect_identical(deb_subtract(list1_b1, x), deb_subtract(list1, x, b1))
   expect_identical(deb_subtract(x, list2_b2), deb_subtract(x, list2, b2))
-})
-
-test_that("deb_subtraction_mutate works", {
-  expect_equal(ncol(deb_subtract_mutate(ex_df, l, s, d, lsd = c(5, 15, 8))), 6)
-  expect_equal(ncol(deb_subtract_mutate(ex_df, l, s, d, lsd = c(5, 15, 8), replace = TRUE)), 3)
-  expect_equal(deb_subtract_mutate(ex_df, l, s, d, lsd = c(5, 15, 8), replace = TRUE),
-               data.frame(l = c(24, 5, -32, 399, 344),
-                          s = c(15, 18, -7, 4, 12),
-                          d = c(1, 4.8, -6, 4, 4)))
-  expect_equal(deb_subtract_mutate(ex_df, l, s, d, lsd = c(5, 15, 8), round = 0, replace = TRUE)[ , 3],
-               c(1, 5, -6, 4, 4))
-  # bases changes answer
-  expect_false(identical(deb_subtract_mutate(ex_df, l, s, d, lsd = c(5, 15, 8)),
-                         deb_subtract_mutate(ex_df, l, s, d, lsd = c(5, 15, 8), bases = c(8, 16))))
-})
-
-test_that("lsd check works in add and subtract mutate", {
-  expect_error(deb_add_mutate(ex_df, l, s, d, lsd = list(x, y)),
-               "lsd must be a numeric vector")
-  expect_error(deb_subtract_mutate(ex_df, l, s, d, lsd = list(x, y)),
-               "lsd must be a numeric vector")
-  expect_error(deb_add_mutate(ex_df, l, s, d, lsd = c(8, 16)),
-               paste("lsd must be a vector of length of 3.",
-                     "There must be a value for pounds, shillings, and pence.",
-                     sep = "\n"))
-  expect_error(deb_subtract_mutate(ex_df, l, s, d, lsd = c(8, 16)),
-               paste("lsd must be a vector of length of 3.",
-                     "There must be a value for pounds, shillings, and pence.",
-                     sep = "\n"))
 })
