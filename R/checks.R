@@ -73,6 +73,20 @@ round_check <- function(round) {
   }
 }
 
+lsd_column_check2 <- function(df, lsd) {
+  if (!is.data.frame(df)) {
+    stop(call. = FALSE, "df must be a data frame")
+  }
+  if (!rlang::quo_name(lsd) %in% names(df)) {
+    stop(call. = FALSE, paste("Column name for lsd list column must be provided,",
+                              "if the default name of lsd is not present in df.",
+                              sep = " "))
+  }
+  if (!inherits(rlang::eval_tidy(lsd, df), "lsd")) {
+    stop(call. = FALSE, "lsd must be an lsd list column")
+  }
+}
+
 # Check l, s, and d values and column names
 lsd_column_check <- function(df, l, s, d) {
 

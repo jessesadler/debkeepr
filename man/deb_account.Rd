@@ -92,9 +92,13 @@ deb_account(df = trans, account_id = "a",
 
 }
 \seealso{
-Other lsd account functions: \code{\link{deb_account_summary}},
-  \code{\link{deb_balance}}, \code{\link{deb_credit}},
-  \code{\link{deb_current}}, \code{\link{deb_debit}},
-  \code{\link{deb_open}}
+Other lsd account functions: \code{\link{deb_account2}},
+  \code{\link{deb_account_summary2}},
+  \code{\link{deb_account_summary}},
+  \code{\link{deb_balance2}}, \code{\link{deb_balance}},
+  \code{\link{deb_credit2}}, \code{\link{deb_credit}},
+  \code{\link{deb_current2}}, \code{\link{deb_current}},
+  \code{\link{deb_debit2}}, \code{\link{deb_debit}},
+  \code{\link{deb_open2}}, \code{\link{deb_open}}
 }
 \concept{lsd account functions}
