@@ -72,3 +72,82 @@ deb_as_lsd_mutate <- function(df,
   }
   ret
 }
+
+#' Create separate pounds, shillings, and pence columns
+#'
+#' Create separate pounds, shillings, and pence columns from an lsd list column
+#' in a data frame.
+#'
+#' The newly created pounds, shillings, and pence variables will lose their
+#' connection to the lsd bases attribute in the lsd list column.
+#'
+#' @param df A data frame that contains an lsd list column.
+#' @param lsd lsd list column: Unquoted name of an lsd list column of pounds,
+#'   shillings, and pence values with a bases attribute.
+#' @param l_column An unquoted name for the pounds column created by the
+#'   function. Default is l.
+#' @param s_column An unquoted name for the shillings column created by
+#'   the function. Default is s.
+#' @param d_column An unquoted name for the pence column created by the
+#'   function. Default is d.
+#' @param suffix Suffix added to `l_column`, `s_column`, or `d_column` if `df`
+#'   already contains variables with the same names. Default is ".1". Must be a
+#'   character vector of length 1.
+#' @param replace Logical (default `FALSE`): when `TRUE` the original lsd list
+#'   column — `lsd` — will be removed.
+#'
+#' @return Returns a data frame with a three new variables representing pounds,
+#'   shillings, and pence with equivalent values to `lsd`.
+#'
+#' @examples
+#' library(tibble)
+#'
+#' # Tibble with an lsd list column
+#' example <- tibble(accounts = c(1, 2, 1, 2),
+#'                   lsd = deb_lsd(l = c(3, 5, 6, 2),
+#'                                 s = c(10, 18, 11, 16),
+#'                                 d = c(9, 11, 10, 5)))
+#'
+#' # Create separate l, s, and d variables
+#' deb_from_lsd_mutate(df = example,
+#'                   lsd = lsd)
+#'
+#'
+#' # Can replace original lsd list column and choose the
+#' # names for the pounds, shillings, and pence variables
+#' deb_from_lsd_mutate(df = example,
+#'                    lsd = lsd,
+#'                    l_column = pounds,
+#'                    s_column = shillings,
+#'                    d_column = pence,
+#'                    replace = TRUE)
+#'
+#' @export
+
+deb_from_lsd_mutate <- function(df,
+                                lsd = lsd,
+                                l_column = l,
+                                s_column = s,
+                                d_column = d,
+                                suffix = ".1",
+                                replace = FALSE) {
+  lsd <- rlang::enquo(lsd)
+  lsd_column_check2(df, lsd)
+
+  # Column names: avoid overwriting l, s, and d columns
+  suffix <- suffix_check(suffix)
+  lsd_names <- lsd_column_names(df,
+                                rlang::enquo(l_column),
+                                rlang::enquo(s_column),
+                                rlang::enquo(d_column),
+                                suffix)
+  ret <- dplyr::mutate(df,
+                       !! lsd_names[1] := purrr::map_dbl(!! lsd, 1),
+                       !! lsd_names[2] := purrr::map_dbl(!! lsd, 2),
+                       !! lsd_names[3] := purrr::map_dbl(!! lsd, 3))
+  if (replace == TRUE) {
+    ret <- dplyr::select(ret, -(!!lsd))
+  }
+  ret
+
+}
