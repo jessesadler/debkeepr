@@ -192,6 +192,7 @@ lsd_negative <- function(normalized, lsd, bases) {
 #' @export
 
 deb_normalize <- function(lsd, bases = c(20, 12), round = 5) {
+  lsd <- null_check(lsd)
   lsd_check(lsd)
   bases <- validate_bases(lsd, bases)
   bases_check(bases)

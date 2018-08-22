@@ -39,6 +39,7 @@
 
 deb_lsd_l <- function(lsd, bases = c(20, 12)) {
   # checks
+  lsd <- null_check(lsd)
   lsd_check(lsd)
   bases <- validate_bases(lsd, bases)
   bases_check(bases)
@@ -46,7 +47,7 @@ deb_lsd_l <- function(lsd, bases = c(20, 12)) {
   if (is.list(lsd) == TRUE) {
     purrr::map_dbl(lsd, ~ .[1] + .[2] / bases[1] + .[3] / prod(bases))
   } else {
-    unname(lsd[1] + lsd[2] / bases[1] + lsd[3] / prod(bases))
+    lsd[1] + lsd[2] / bases[1] + lsd[3] / prod(bases)
   }
 }
 
@@ -131,6 +132,7 @@ deb_l_lsd <- function(l, bases = c(20, 12), round = 5) {
 
 deb_lsd_s <- function(lsd, bases = c(20, 12)) {
   # checks
+  lsd <- null_check(lsd)
   lsd_check(lsd)
   bases <- validate_bases(lsd, bases)
   bases_check(bases)
@@ -138,7 +140,7 @@ deb_lsd_s <- function(lsd, bases = c(20, 12)) {
   if (is.list(lsd) == TRUE) {
     purrr::map_dbl(lsd, ~ .[1] * bases[1] + .[2] + .[3] / bases[2])
   } else {
-    unname(lsd[1] * bases[1] + lsd[2] + lsd[3] / bases[2])
+    lsd[1] * bases[1] + lsd[2] + lsd[3] / bases[2]
   }
 }
 
@@ -225,6 +227,7 @@ deb_s_lsd <- function(s, bases = c(20, 12), round = 5) {
 
 deb_lsd_d <- function(lsd, bases = c(20, 12)) {
   # checks
+  lsd <- null_check(lsd)
   lsd_check(lsd)
   bases <- validate_bases(lsd, bases)
   bases_check(bases)
@@ -232,7 +235,7 @@ deb_lsd_d <- function(lsd, bases = c(20, 12)) {
   if (is.list(lsd) == TRUE) {
     purrr::map_dbl(lsd, ~ .[1] * prod(bases) + .[2] * bases[2] + .[3])
   } else {
-    unname(lsd[1] * prod(bases) + lsd[2] * bases[2] + lsd[3])
+    lsd[1] * prod(bases) + lsd[2] * bases[2] + lsd[3]
   }
 }
 

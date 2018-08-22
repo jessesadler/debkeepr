@@ -76,6 +76,7 @@ deb_convert_bases <- function(lsd,
                               bases1 = NULL, bases2,
                               ratio = 1, round = 5) {
   ratio_check(ratio)
+  lsd <- null_check(lsd)
   bases1 <- validate_bases(lsd, bases1)
 
   if (is.null(bases1)) {

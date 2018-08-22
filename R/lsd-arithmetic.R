@@ -54,6 +54,7 @@
 deb_multiply <- function(lsd, x, bases = c(20, 12), round = 5) {
   arithmetic_check(x)
   bases <- validate_bases(lsd, bases)
+  lsd <- null_check(lsd)
 
   if (is.list(lsd) == TRUE) {
     lsd <- purrr::map(lsd, ~ . * x)
@@ -116,6 +117,7 @@ deb_multiply <- function(lsd, x, bases = c(20, 12), round = 5) {
 deb_divide <- function(lsd, x, bases = c(20, 12), round = 5) {
   arithmetic_check(x)
   bases <- validate_bases(lsd, bases)
+  lsd <- null_check(lsd)
 
   if (is.list(lsd) == TRUE) {
     lsd <- purrr::map(lsd, ~ . / x)
@@ -198,6 +200,8 @@ deb_divide <- function(lsd, x, bases = c(20, 12), round = 5) {
 deb_add <- function(lsd1, lsd2, bases = c(20, 12), round = 5) {
   arithmetic_check2(lsd1, lsd2)
   bases <- validate_bases2(lsd1, lsd2, bases)
+  lsd1 <- null_check(lsd1)
+  lsd2 <- null_check(lsd2)
 
   if (is.list(lsd1) | is.list(lsd2) == TRUE) {
     # ensure that both are lists to recycle correctly
@@ -278,6 +282,8 @@ deb_add <- function(lsd1, lsd2, bases = c(20, 12), round = 5) {
 deb_subtract <- function(lsd1, lsd2, bases = c(20, 12), round = 5) {
   arithmetic_check2(lsd1, lsd2)
   bases <- validate_bases2(lsd1, lsd2, bases)
+  lsd1 <- null_check(lsd1)
+  lsd2 <- null_check(lsd2)
 
   if (is.list(lsd1) | is.list(lsd2) == TRUE) {
     # ensure that both are lists to recycle correctly

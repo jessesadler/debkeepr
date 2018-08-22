@@ -272,13 +272,9 @@ deb_bases <- function(...) {
 #' @export
 print.lsd <- function(x, ...) {
   # Turn NA and NULL to NA vector to enable change to df
-  if (any(purrr::map_lgl(x, rlang::is_na))) {
-    missing <- purrr::map_lgl(x, rlang::is_na)
+  if (any(purrr::map_lgl(x, ~ length(.) != 3))) {
+    missing <- purrr::map_lgl(x, ~ length(.) != 3)
     x[which(missing == TRUE)] <- list(c(as.numeric(NA), as.numeric(NA), as.numeric(NA)))
-  }
-  if (any(purrr::map_lgl(x, rlang::is_null))) {
-    nulls <- purrr::map_lgl(x, rlang::is_null)
-    x[which(nulls == TRUE)] <- list(c(as.numeric(NA), as.numeric(NA), as.numeric(NA)))
   }
 
   lsd <-  x %>%

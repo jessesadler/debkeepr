@@ -174,6 +174,8 @@ deb_exchange_rate <- function(lsd1, lsd2,
                               round = 5) {
   output <- rlang::arg_match(output)
   bases <- validate_bases2(lsd1, lsd2, bases)
+  lsd1 <- null_check(lsd1)
+  lsd2 <- null_check(lsd2)
 
   rate <- deb_lsd_l(lsd2, bases = bases) / deb_lsd_l(lsd1, bases = bases)
   normalized <- deb_l_lsd(rate, bases = bases, round = round)
@@ -228,6 +230,7 @@ deb_invert_rate <- function(exchange_rate,
                             output = c("shillings", "pence", "pounds"),
                             bases = c(20, 12),
                             round = 5) {
+  exchange_rate <- null_check(exchange_rate)
   exchange_rate_check(exchange_rate)
   output <- rlang::arg_match(output)
   bases <- validate_bases(exchange_rate, bases)

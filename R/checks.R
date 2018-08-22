@@ -4,7 +4,7 @@
 # list of numeric vectors of length 3
 lsd_check <- function(lsd) {
   if (rlang::is_bare_vector(lsd) == FALSE && deb_is_lsd(lsd) == FALSE) {
-    stop(call. = FALSE, paste("lsd must be a list of class lsd, or an object that can be coerced to these classes,",
+    stop(call. = FALSE, paste("lsd must be a list of class lsd, or an object that can be coerced to this class,",
                               "       namely a numeric vector of length 3 or a list of such vectors.",
                               sep = "\n"))
   }
@@ -32,6 +32,14 @@ lsd_check <- function(lsd) {
                                 sep = "\n"))
     }
   }
+}
+
+null_check <- function(lsd) {
+  if (any(purrr::map_lgl(lsd, rlang::is_null))) {
+    nulls <- purrr::map_lgl(lsd, rlang::is_null)
+    lsd[which(nulls == TRUE)] <- list(c(as.numeric(NA), as.numeric(NA), as.numeric(NA)))
+  }
+  lsd
 }
 
 separate_lsd_check <- function(lsd) {
@@ -244,8 +252,8 @@ shillings_check <- function(x) {
 
 exchange_rate_check <- function(exchange_rate) {
   if (rlang::is_bare_vector(exchange_rate) == FALSE && deb_is_lsd(exchange_rate) == FALSE) {
-    stop(call. = FALSE, paste("exchange_rate must be a list of class lsd, or an object that can be coerced to these",
-                              "       classes, namely a numeric vector of length 3 or a list of such vectors.",
+    stop(call. = FALSE, paste("exchange_rate must be a list of class lsd, or an object that can be coerced to this",
+                              "       class, namely a numeric vector of length 3 or a list of such vectors.",
                               sep = "\n"))
   }
   # check rate vector

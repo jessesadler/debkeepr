@@ -54,6 +54,7 @@ deb_interest <- function(lsd,
                          round = 5) {
   interest_check(interest, duration, with_principal)
   bases <- validate_bases(lsd, bases)
+  lsd <- null_check(lsd)
 
   if (is.list(lsd) == TRUE) {
     # lists

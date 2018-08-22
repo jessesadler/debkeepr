@@ -62,7 +62,6 @@ deb_as_lsd_mutate <- function(df,
   d <- rlang::enquo(d)
   lsd_column <- rlang::quo_name(rlang::enquo(lsd_column))
 
-
   lsd_column_check(df, l, s, d)
   bases_check(bases)
 

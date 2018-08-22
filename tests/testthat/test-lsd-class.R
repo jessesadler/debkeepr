@@ -117,7 +117,16 @@ test_that("find bases works", {
                list(c(s = 20, d = 12), c(s = 8, d = 16)))
 })
 
+# Able to print with NA or NULL
+with_null <- list1_b1
+with_null[2] <- list(NULL)
+with_na <- list1_b1
+with_na[2] <- NA
+
+
 test_that("print output works", {
   expect_that(print(x_b1), prints_text())
   expect_that(print(list1_b1), prints_text())
+  expect_that(print(with_null), prints_text())
+  expect_that(print(with_na), prints_text())
 })

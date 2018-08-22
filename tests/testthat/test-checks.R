@@ -3,16 +3,19 @@ context("test-checks.R")
 suppressPackageStartupMessages(library(tibble))
 
 x <- c(5, 84, 53)
+lsd_list <- deb_lsd(l = c(35, 12, 1),
+                    s = c(10, 16, 19),
+                    d = c(9, 5, 11))
+with_null <- lsd_list
+with_null[3] <- list(NULL)
+
 tbl <- tibble(l = c(35, 12, 1),
               s = c(10, 16, 19),
               d = c(9, 5, 11))
 tbl_lsd <- tibble(l = c(35, 12, 1),
                   s = c(10, 16, 19),
                   d = c(9, 5, 11),
-                  lsd = deb_lsd(l = c(35, 12, 1),
-                                s = c(10, 16, 19),
-                                d = c(9, 5, 11),
-                                bases = c(20, 12)))
+                  lsd = lsd_list)
 
 character_df <- data.frame(ch = c("hello", "goodbye"),
                            n1 = c(6, 7),
@@ -22,6 +25,16 @@ column_names <- data.frame(pounds = c(37, -13, 31, 16),
                            pence = c(5, -1, 2.6, 1))
 transactions <- data.frame(credit = sample(letters[1:5]),
                            debit = sample(letters[1:5]))
+
+## null check ##
+test_that("null check turns null to NA vector", {
+  expect_equal(null_check(x), x)
+  expect_equal(null_check(lsd_list), lsd_list)
+  expect_equal(null_check(with_null), deb_lsd(l = c(35, 12, NA),
+                                              s = c(10, 16, NA),
+                                              d = c(9, 5, NA)))
+})
+
 ## lsd check ##
 test_that("non-vector is an error", {
   expect_error(deb_normalize(tbl),

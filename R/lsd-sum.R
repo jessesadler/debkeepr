@@ -8,6 +8,7 @@ deb_sum_simple <- function(lsd, round = 5, na.rm = FALSE) {
   }
 
   bases <- attributes(lsd)$bases
+  lsd <- null_check(lsd)
 
   # Remove lsd vectors that have NA if na.rm = TRUE
   if (na.rm == TRUE) {
