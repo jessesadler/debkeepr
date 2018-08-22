@@ -58,20 +58,18 @@ value. Thus, from the credit account to the debit account.
 library(tibble)
 
 # Create a transactions data frame
-lsd_list <- deb_as_lsd(list(c(10, 15, 6),
-                            c(6, 3, 11),
-                            c(4, 11, 7),
-                            c(7, 11, 8),
-                            c(9, 2, 11)),
-                       bases = c(20, 12))
+lsd_list <- deb_lsd(l = c(10, 6, 4, 7, 9),
+                    s = c(15, 3, 11, 11, 2),
+                    d = c(6, 11, 7, 8, 11),
+                    bases = c(20, 12))
 trans <- tibble(credit = c("a", "b", "b", "a", "c"),
                 debit = c("b", "a", "a", "c", "a"),
                 lsd = lsd_list)
 
 # Total credit of accounts present in trans
 deb_credit(df = trans,
-            credit = credit,
-            lsd = lsd)
+           credit = credit,
+           lsd = lsd)
 
 }
 \seealso{

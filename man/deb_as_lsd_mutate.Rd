@@ -24,7 +24,8 @@ shillings or s and pence or d units. Default is \code{c(20, 12)}, which
 conforms to the most widely used system of 1 pound = 20 shillings and
 1 shilling = 12 pence.}
 
-\item{lsd_column}{Unquoted name of the lsd list column. Default is lsd.}
+\item{lsd_column}{Unquoted name of the lsd list column to be created.
+Default is lsd.}
 
 \item{replace}{Logical (default \code{FALSE}): when \code{TRUE} the original pounds,
 shillings, and pence columns — \code{l}, \code{s}, and \code{d} — will be removed.}

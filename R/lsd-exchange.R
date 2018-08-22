@@ -102,11 +102,11 @@ normalized_to_d <- function(lsd, bases) {
 #' the shorter list will be recycled.
 #'
 #' @inheritParams deb_add
-#' @param lsd1,lsd2 Pounds, shillings, and pence value that is reduced to £1
-#'   and against which `lsd2` is compared. Thus, `lsd1` is the "fixed currency"
-#'   and `lsd2` is the "variable currency". Objects of class lsd or objects
-#'   that can be coerced to class lsd: numeric vectors of length 3 or lists of
-#'   such vectors.
+#' @param lsd1,lsd2 `lsd1` is the pounds, shillings, and pence value that is
+#'   reduced to £1 and against which `lsd2` is compared. Thus, `lsd1` is the
+#'   "fixed currency" and `lsd2` is the "variable currency". Objects of class
+#'   lsd or objects that can be coerced to class lsd: numeric vectors of length
+#'   3 or lists of such vectors.
 #' @param output Choice of either `"shillings"`, `"pence"`, or `"pounds"` for
 #'   the format in which the exchange rate will be returned. `"shillings"`,
 #'   the default, returns the exchange rate in terms of shillings and pence.

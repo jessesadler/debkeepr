@@ -24,8 +24,8 @@ rates <- to_lsd(list(c(0, 33, 4), c(0, 33, 4), c(0, 33, 4)), b1)
 ## Error messages from exchange_rate_check ##
 test_that("non-vector is an error", {
   expect_error(deb_invert_rate(data.frame(a = c(1:4), b = c(5:8))),
-               paste("exchange_rate must be a list of class lsd, or an object that can be coerced to these",
-                     "       classes, namely a numeric vector of length 3 or a list of such vectors.",
+               paste("exchange_rate must be a list of class lsd, or an object that can be coerced to this",
+                     "       class, namely a numeric vector of length 3 or a list of such vectors.",
                      sep = "\n"))
 })
 

@@ -113,12 +113,12 @@ lsd_negative <- function(normalized, lsd, bases) {
 #' [libra](https://en.wikipedia.org/wiki/French_livre),
 #' [solidus](https://en.wikipedia.org/wiki/Solidus_(coin)), and
 #' [denarius](https://en.wikipedia.org/wiki/Denarius). In the 8th century a
-#' solidus came to represent 12 denarii, and 240 denarii were made from one
-#' libra or pound of silver. The custom of counting coins in dozens (solidi)
-#' and scores of dozens (librae) spread throughout the Carolingian Empire and
-#' became engrained in much of Europe. However,
+#' solidus came to represent 12 denarii coins, and 240 denarii were made from
+#' one libra or pound of silver. The custom of counting coins in dozens
+#' (solidi) and scores of dozens (librae) spread throughout the Carolingian
+#' Empire and became engrained in much of Europe. However,
 #' [other bases](https://en.wikipedia.org/wiki/Non-decimal_currency) for the
-#' solidus and denarius units were also in use. The `bases` argument makes
+#' solidus and denarius units were also in use. The `bases` attribute makes
 #' it possible to specify alternative bases for the solidus and denarius units.
 #'
 #' @param lsd An lsd value. An object of class lsd or an object that can be

@@ -50,14 +50,14 @@ position represents the pence value or d.}
 Returns an object of class lsd with a bases attribute.
 }
 \description{
-Pounds, shillings, and pence values are stored as lists of named numeric
-vectors of length 3 that possess a bases attribute to record the bases for
-the shillings or s and pence or d units of the values. The first position of
-each vector represents the pounds value or l. The second position represents
-the shillings value or s. And the third position represents the pence value
-or d. The bases attribute is stored as a named numeric vector of length 2
-with the first value recording the shillings base and the second value the
-base of the pence units.
+Pounds, shillings, and pence values are stored as a list of numeric vectors
+of length 3 that possesses a bases attribute to record the non-decimal bases
+for the shillings and pence units of the values. The first position of each
+vector represents the pounds value or l. The second position represents the
+shillings value or s. And the third position represents the pence value or
+d. The bases attribute is stored as a numeric vector of length 2 with the
+first value recording the shillings base and the second value the base of
+the pence units. lsd objects can be used as list columns in a data frame.
 }
 \details{
 The lsd class and the \code{debkeepr} package use the nomenclature of
@@ -66,10 +66,10 @@ shillings, and pence units. The abbreviations derive from the Latin terms
 \href{https://en.wikipedia.org/wiki/French_livre}{libra},
 \href{https://en.wikipedia.org/wiki/Solidus_(coin)}{solidus}, and
 \href{https://en.wikipedia.org/wiki/Denarius}{denarius}. In the 8th century a
-solidus came to represent 12 denarii, and 240 denarii were made from one
-libra or pound of silver. The custom of counting coins in dozens (solidi)
-and scores of dozens (librae) spread throughout the Carolingian Empire and
-became engrained in much of Europe. However,
+solidus came to represent 12 denarii coins, and 240 denarii were made from
+one libra or pound of silver. The custom of counting coins in dozens
+(solidi) and scores of dozens (librae) spread throughout the Carolingian
+Empire and became engrained in much of Europe. However,
 \href{https://en.wikipedia.org/wiki/Non-decimal_currency}{other bases} for the
 solidus and denarius units were also in use. The \code{bases} attribute makes
 it possible to specify alternative bases for the solidus and denarius units.
@@ -83,7 +83,7 @@ deb_lsd(l = 10, s = 6, d = 8, bases = c(20, 12))
 # lsd object for the Dutch system of guilders, stuivers, and penningen
 deb_lsd(l = 10, s = 6, d = 8, bases = c(20, 16))
 
-# lsd object from vectors of length > 1
+# lsd object from vectors of length > 1: all must be the same length
 deb_lsd(l = c(10, 8, 5),
         s = c(6, 13, 8),
         d = c(8, 4, 10),

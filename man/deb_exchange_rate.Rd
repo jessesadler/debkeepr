@@ -8,11 +8,11 @@ deb_exchange_rate(lsd1, lsd2, output = c("shillings", "pence", "pounds"),
   bases = c(20, 12), round = 5)
 }
 \arguments{
-\item{lsd1, lsd2}{Pounds, shillings, and pence value that is reduced to £1
-and against which \code{lsd2} is compared. Thus, \code{lsd1} is the "fixed currency"
-and \code{lsd2} is the "variable currency". Objects of class lsd or objects
-that can be coerced to class lsd: numeric vectors of length 3 or lists of
-such vectors.}
+\item{lsd1, lsd2}{\code{lsd1} is the pounds, shillings, and pence value that is
+reduced to £1 and against which \code{lsd2} is compared. Thus, \code{lsd1} is the
+"fixed currency" and \code{lsd2} is the "variable currency". Objects of class
+lsd or objects that can be coerced to class lsd: numeric vectors of length
+3 or lists of such vectors.}
 
 \item{output}{Choice of either \code{"shillings"}, \code{"pence"}, or \code{"pounds"} for
 the format in which the exchange rate will be returned. \code{"shillings"},

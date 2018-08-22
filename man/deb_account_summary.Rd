@@ -36,10 +36,10 @@ missing values (NA) should be removed. Default is \code{FALSE}.}
 }
 \value{
 Returns a tibble with three rows for each account present in the
-credit and/or debit variables of \code{df}. This represents the total credit,
-debit, and current values of the accounts in an lsd list column. If an
-account does not have any credit or debit transactions, it will not have
-a summary row for that type of relation.
+credit and/or debit variables of \code{df} with the total credit, debit, and
+current values of the accounts in an lsd list column. If an account does
+not have any credit or debit transactions, it will not have a summary row
+for that type of relation.
 }
 \description{
 Calculate the total credit, debit, and the current values for all accounts
@@ -69,21 +69,19 @@ value. Thus, from the credit account to the debit account.
 library(tibble)
 
 # Create a transactions data frame
-lsd_list <- deb_as_lsd(list(c(10, 15, 6),
-                            c(6, 3, 11),
-                            c(4, 11, 7),
-                            c(7, 11, 8),
-                            c(9, 2, 11)),
-                       bases = c(20, 12))
+lsd_list <- deb_lsd(l = c(10, 6, 4, 7, 9),
+                    s = c(15, 3, 11, 11, 2),
+                    d = c(6, 11, 7, 8, 11),
+                    bases = c(20, 12))
 trans <- tibble(credit = c("a", "b", "b", "a", "c"),
                 debit = c("b", "a", "a", "c", "a"),
                 lsd = lsd_list)
 
 # Credit, debit, and current values of accounts present in trans
 deb_account_summary(df = trans,
-                     credit = credit,
-                     debit = debit,
-                     lsd = lsd)
+                    credit = credit,
+                    debit = debit,
+                    lsd = lsd)
 
 }
 \seealso{

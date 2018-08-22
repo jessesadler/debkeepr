@@ -44,29 +44,27 @@
 #'   rounding and rounding pence values at the end.
 #' @inheritParams deb_sum
 #'
-#' @return Returns a tibble with three rows corresponding to the credit,
-#'   debit, and current values in an lsd list column.
+#' @return Returns a tibble with three rows with the credit, debit, and current
+#'   values in an lsd list column.
 #'
 #' @examples
 #' library(tibble)
 #'
 #' # Create a transactions data frame
-#' lsd_list <- deb_as_lsd(list(c(10, 15, 6),
-#'                             c(6, 3, 11),
-#'                             c(4, 11, 7),
-#'                             c(7, 11, 8),
-#'                             c(9, 2, 11)),
-#'                        bases = c(20, 12))
+#' lsd_list <- deb_lsd(l = c(10, 6, 4, 7, 9),
+#'                     s = c(15, 3, 11, 11, 2),
+#'                     d = c(6, 11, 7, 8, 11),
+#'                     bases = c(20, 12))
 #' trans <- tibble(credit = c("a", "b", "b", "a", "c"),
 #'                 debit = c("b", "a", "a", "c", "a"),
 #'                 lsd = lsd_list)
 #'
 #' # Credit, debit, and current value of account "a"
 #' deb_account(df = trans,
-#'              account_id = "a",
-#'              credit = credit,
-#'              debit = debit,
-#'              lsd = lsd)
+#'             account_id = "a",
+#'             credit = credit,
+#'             debit = debit,
+#'             lsd = lsd)
 #'
 #' @export
 
@@ -133,30 +131,28 @@ deb_account <- function(df, account_id,
 #' @inheritParams deb_account
 #'
 #' @return Returns a tibble with three rows for each account present in the
-#'   credit and/or debit variables of `df`. This represents the total credit,
-#'   debit, and current values of the accounts in an lsd list column. If an
-#'   account does not have any credit or debit transactions, it will not have
-#'   a summary row for that type of relation.
+#'   credit and/or debit variables of `df` with the total credit, debit, and
+#'   current values of the accounts in an lsd list column. If an account does
+#'   not have any credit or debit transactions, it will not have a summary row
+#'   for that type of relation.
 #'
 #' @examples
 #' library(tibble)
 #'
 #' # Create a transactions data frame
-#' lsd_list <- deb_as_lsd(list(c(10, 15, 6),
-#'                             c(6, 3, 11),
-#'                             c(4, 11, 7),
-#'                             c(7, 11, 8),
-#'                             c(9, 2, 11)),
-#'                        bases = c(20, 12))
+#' lsd_list <- deb_lsd(l = c(10, 6, 4, 7, 9),
+#'                     s = c(15, 3, 11, 11, 2),
+#'                     d = c(6, 11, 7, 8, 11),
+#'                     bases = c(20, 12))
 #' trans <- tibble(credit = c("a", "b", "b", "a", "c"),
 #'                 debit = c("b", "a", "a", "c", "a"),
 #'                 lsd = lsd_list)
 #'
 #' # Credit, debit, and current values of accounts present in trans
 #' deb_account_summary(df = trans,
-#'                      credit = credit,
-#'                      debit = debit,
-#'                      lsd = lsd)
+#'                     credit = credit,
+#'                     debit = debit,
+#'                     lsd = lsd)
 #'
 #' @export
 
@@ -245,20 +241,18 @@ deb_account_summary <- function(df,
 #' library(tibble)
 #'
 #' # Create a transactions data frame
-#' lsd_list <- deb_as_lsd(list(c(10, 15, 6),
-#'                             c(6, 3, 11),
-#'                             c(4, 11, 7),
-#'                             c(7, 11, 8),
-#'                             c(9, 2, 11)),
-#'                        bases = c(20, 12))
+#' lsd_list <- deb_lsd(l = c(10, 6, 4, 7, 9),
+#'                     s = c(15, 3, 11, 11, 2),
+#'                     d = c(6, 11, 7, 8, 11),
+#'                     bases = c(20, 12))
 #' trans <- tibble(credit = c("a", "b", "b", "a", "c"),
 #'                 debit = c("b", "a", "a", "c", "a"),
 #'                 lsd = lsd_list)
 #'
 #' # Total credit of accounts present in trans
 #' deb_credit(df = trans,
-#'             credit = credit,
-#'             lsd = lsd)
+#'            credit = credit,
+#'            lsd = lsd)
 #'
 #' @export
 
@@ -312,20 +306,18 @@ deb_credit <- function(df,
 #' library(tibble)
 #'
 #' # Create a transactions data frame
-#' lsd_list <- deb_as_lsd(list(c(10, 15, 6),
-#'                             c(6, 3, 11),
-#'                             c(4, 11, 7),
-#'                             c(7, 11, 8),
-#'                             c(9, 2, 11)),
-#'                        bases = c(20, 12))
+#' lsd_list <- deb_lsd(l = c(10, 6, 4, 7, 9),
+#'                     s = c(15, 3, 11, 11, 2),
+#'                     d = c(6, 11, 7, 8, 11),
+#'                     bases = c(20, 12))
 #' trans <- tibble(credit = c("a", "b", "b", "a", "c"),
 #'                 debit = c("b", "a", "a", "c", "a"),
 #'                 lsd = lsd_list)
 #'
 #' # Total debit of accounts present in trans
 #' deb_debit(df = trans,
-#'            debit = debit,
-#'            lsd = lsd)
+#'           debit = debit,
+#'           lsd = lsd)
 #'
 #' @export
 
@@ -382,21 +374,19 @@ deb_debit <- function(df,
 #' library(tibble)
 #'
 #' # Create a transactions data frame
-#' lsd_list <- deb_as_lsd(list(c(10, 15, 6),
-#'                             c(6, 3, 11),
-#'                             c(4, 11, 7),
-#'                             c(7, 11, 8),
-#'                             c(9, 2, 11)),
-#'                        bases = c(20, 12))
+#' lsd_list <- deb_lsd(l = c(10, 6, 4, 7, 9),
+#'                     s = c(15, 3, 11, 11, 2),
+#'                     d = c(6, 11, 7, 8, 11),
+#'                     bases = c(20, 12))
 #' trans <- tibble(credit = c("a", "b", "b", "a", "c"),
 #'                 debit = c("b", "a", "a", "c", "a"),
 #'                 lsd = lsd_list)
 #'
 #' # Current values of accounts present in trans
 #' deb_current(df = trans,
-#'              credit = credit,
-#'              debit = debit,
-#'              lsd = lsd)
+#'             credit = credit,
+#'             debit = debit,
+#'             lsd = lsd)
 #' @export
 
 deb_current <- function(df,
@@ -444,30 +434,27 @@ deb_current <- function(df,
 #'
 #' @inheritParams deb_account_summary
 #'
-#' @return Returns a tibble with one row for each account in `df` in which the
-#'   current value of pounds, shillings, and pence contained in an lsd list
-#'   column does not equal zero or does not have a missing value in the
-#'   current value.
+#' @return Returns a tibble with one row for each account in `df` where the
+#'   current value in an lsd list column does not equal zero or does not have
+#'   a missing value in the current value.
 #'
 #' @examples
 #' library(tibble)
 #'
 #' # Create a transactions data frame
-#' lsd_list <- deb_as_lsd(list(c(10, 15, 6),
-#'                             c(6, 3, 11),
-#'                             c(4, 11, 7),
-#'                             c(7, 11, 8),
-#'                             c(9, 2, 11)),
-#'                        bases = c(20, 12))
+#' lsd_list <- deb_lsd(l = c(10, 6, 4, 7, 9),
+#'                     s = c(15, 3, 11, 11, 2),
+#'                     d = c(6, 11, 7, 8, 11),
+#'                     bases = c(20, 12))
 #' trans <- tibble(credit = c("a", "b", "b", "a", "c"),
 #'                 debit = c("b", "a", "a", "c", "a"),
 #'                 lsd = lsd_list)
 #'
 #' # Current values of open accounts present in trans
 #' deb_open(df = trans,
-#'           credit = credit,
-#'           debit = debit,
-#'           lsd = lsd)
+#'          credit = credit,
+#'          debit = debit,
+#'          lsd = lsd)
 #'
 #' @export
 

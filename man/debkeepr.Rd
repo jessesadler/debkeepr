@@ -20,10 +20,9 @@ normalized or converted to the correct base.
 \details{
 \code{debkeepr} implements the lsd class to store pounds, shillings, and pence
 values and associate the values with bases for the shillings and pence
-units. Pounds, shillings, and pence values are stored as lists of named
-numeric vectors of length 3 that possess a bases attribute.  In addition,
-\code{debkeepr} provides an interface for analyzing pounds, shillings, and pence
-values stored as three separate variables in a data frame.
+units. Pounds, shillings, and pence values are stored are stored as a list
+of numeric vectors of length 3 that possesses a bases attribute. In
+addition, lsd objects can be used as list columns in a data frame.
 
 The system of recording value according to pounds, shillings, and pence — or
 to use the Latin terms from which the English derived libra, solidus, and

@@ -18,7 +18,8 @@
 #' @param d Pence column: Unquoted name of numeric variable corresponding to
 #'   the pence or denarii unit. Default is d.
 #' @inheritParams deb_as_lsd
-#' @param lsd_column Unquoted name of the lsd list column. Default is lsd.
+#' @param lsd_column Unquoted name of the lsd list column to be created.
+#'   Default is lsd.
 #' @param replace Logical (default `FALSE`): when `TRUE` the original pounds,
 #'   shillings, and pence columns — `l`, `s`, and `d` — will be removed.
 #'
