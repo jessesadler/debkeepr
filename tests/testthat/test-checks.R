@@ -71,6 +71,8 @@ test_that("bases checks work", {
                "bases must be a numeric vector of length of 2")
   expect_error(deb_normalize(x, bases = 8),
                "bases must be a numeric vector of length of 2")
+  expect_error(deb_normalize(x, bases = as.numeric(c(NA, NA))),
+               "Neither of the values in bases can be NA")
   expect_error(deb_normalize(x, bases = c(20, 0)),
                "Neither of the values in bases can be 0")
   expect_error(deb_normalize(x, bases = c(0, 0)),
@@ -92,30 +94,30 @@ test_that("round check works", {
 
 # Checks for data frames #
 test_that("lsd_column_check work", {
-  expect_error(deb_as_lsd_mutate(x, l, s, d),
+  expect_error(deb_lsd_gather(x, l, s, d),
                "df must be a data frame")
-  expect_error(deb_as_lsd_mutate(tbl, pounds, shillings, pence),
+  expect_error(deb_lsd_gather(tbl, pounds, shillings, pence),
                paste("Column names for l, s, and d must be provided if the",
                      "default names of l, s, and d are not present in the data frame",
                      sep = "\n"))
-  expect_error(deb_as_lsd_mutate(character_df, ch, n1, n2),
+  expect_error(deb_lsd_gather(character_df, ch, n1, n2),
                "l must be a numeric variable")
-  expect_error(deb_as_lsd_mutate(character_df, n1, ch, n2),
+  expect_error(deb_lsd_gather(character_df, n1, ch, n2),
                "s must be a numeric variable")
-  expect_error(deb_as_lsd_mutate(character_df, n1, n2, ch),
+  expect_error(deb_lsd_gather(character_df, n1, n2, ch),
                "d must be a numeric variable")
 })
 
 test_that("suffix check", {
-  expect_error(deb_from_lsd_mutate(tbl_lsd, replace = "a"),
+  expect_error(deb_lsd_spread(tbl_lsd, replace = "a"),
                "replace must be either TRUE or FALSE")
-  expect_error(deb_from_lsd_mutate(tbl_lsd, replace = c(TRUE, FALSE)),
+  expect_error(deb_lsd_spread(tbl_lsd, replace = c(TRUE, FALSE)),
                "replace must be a logical vector of length 1")
-  expect_error(deb_from_lsd_mutate(tbl_lsd, replace = FALSE, suffix = 1),
+  expect_error(deb_lsd_spread(tbl_lsd, replace = FALSE, suffix = 1),
                "suffix must be a character vector")
-  expect_error(deb_from_lsd_mutate(tbl_lsd, replace = FALSE, suffix = c(".1", ".2")),
+  expect_error(deb_lsd_spread(tbl_lsd, replace = FALSE, suffix = c(".1", ".2")),
                "suffix must be a character vector of length 1")
-  expect_error(deb_from_lsd_mutate(tbl_lsd, replace = FALSE, suffix = ""),
+  expect_error(deb_lsd_spread(tbl_lsd, replace = FALSE, suffix = ""),
                paste("suffix cannot be an empty character vector.",
                      "Use replace = TRUE to replace the original variables where this is an option in the function",
                      sep = "\n"))

@@ -63,6 +63,9 @@ bases_check <- function(bases) {
   if (length(bases) != 2) {
     stop(call. = FALSE, "bases must be a numeric vector of length of 2")
   }
+  if (any(is.na(bases))) {
+    stop(call. = FALSE, "Neither of the values in bases can be NA")
+  }
   if (any(bases == 0)) {
     stop(call. = FALSE, "Neither of the values in bases can be 0")
   }

@@ -10,6 +10,9 @@
 #' column can be manipulated with `debkeepr` functions in concert with
 #' [dplyr::mutate()].
 #'
+#' To return the lsd list column to separate l, s, and d variables use
+#' [deb_lsd_spread()].
+#'
 #' @param df A data frame that contains pounds, shillings, and pence variables.
 #' @param l Pounds column: Unquoted name of a numeric variable corresponding
 #'   to the pounds or librae unit. Default is l.
@@ -33,30 +36,30 @@
 #'                       d = c(9, 11, 10, 5))
 #'
 #' # Create an lsd list column
-#' deb_as_lsd_mutate(df = example,
-#'                   l = l, s = s, d = d,
-#'                   bases = c(20, 12))
+#' deb_lsd_gather(df = example,
+#'                l = l, s = s, d = d,
+#'                bases = c(20, 12))
 #'
 #' # Create an lsd list column with alternative bases
-#' deb_as_lsd_mutate(df = example,
-#'                   l = l, s = s, d = d,
-#'                   bases = c(20, 16))
+#' deb_lsd_gather(df = example,
+#'                l = l, s = s, d = d,
+#'                bases = c(20, 16))
 #'
 #' # Can replace original pounds, shillings, and pence variables
 #' # and can choose the name for the lsd list column
-#' deb_as_lsd_mutate(df = example,
-#'                   l = l, s = s, d = d,
-#'                   bases = c(20, 16),
-#'                   lsd_column = guilders,
-#'                   replace = TRUE)
+#' deb_lsd_gather(df = example,
+#'                l = l, s = s, d = d,
+#'                bases = c(20, 16),
+#'                lsd_column = guilders,
+#'                replace = TRUE)
 #'
 #' @export
 
-deb_as_lsd_mutate <- function(df,
-                              l = l, s = s, d = d,
-                              bases = c(20, 12),
-                              lsd_column = lsd,
-                              replace = FALSE) {
+deb_lsd_gather <- function(df,
+                           l = l, s = s, d = d,
+                           bases = c(20, 12),
+                           lsd_column = lsd,
+                           replace = FALSE) {
   l <- rlang::enquo(l)
   s <- rlang::enquo(s)
   d <- rlang::enquo(d)
@@ -80,6 +83,9 @@ deb_as_lsd_mutate <- function(df,
 #'
 #' The newly created pounds, shillings, and pence variables will lose their
 #' connection to the lsd bases attribute in the lsd list column.
+#'
+#' To return the separate l, s, and d variables to an lsd list column use
+#' [deb_lsd_gather()].
 #'
 #' @param df A data frame that contains an lsd list column.
 #' @param lsd lsd list column: Unquoted name of an lsd list column of pounds,
@@ -109,28 +115,28 @@ deb_as_lsd_mutate <- function(df,
 #'                                 d = c(9, 11, 10, 5)))
 #'
 #' # Create separate l, s, and d variables
-#' deb_from_lsd_mutate(df = example,
-#'                   lsd = lsd)
+#' deb_lsd_spread(df = example,
+#'                lsd = lsd)
 #'
 #'
 #' # Can replace original lsd list column and choose the
 #' # names for the pounds, shillings, and pence variables
-#' deb_from_lsd_mutate(df = example,
-#'                    lsd = lsd,
-#'                    l_column = pounds,
-#'                    s_column = shillings,
-#'                    d_column = pence,
-#'                    replace = TRUE)
+#' deb_lsd_spread(df = example,
+#'                lsd = lsd,
+#'                l_column = pounds,
+#'                s_column = shillings,
+#'                d_column = pence,
+#'                replace = TRUE)
 #'
 #' @export
 
-deb_from_lsd_mutate <- function(df,
-                                lsd = lsd,
-                                l_column = l,
-                                s_column = s,
-                                d_column = d,
-                                suffix = ".1",
-                                replace = FALSE) {
+deb_lsd_spread <- function(df,
+                           lsd = lsd,
+                           l_column = l,
+                           s_column = s,
+                           d_column = d,
+                           suffix = ".1",
+                           replace = FALSE) {
   lsd <- rlang::enquo(lsd)
   lsd_list_column_check(df, lsd)
 

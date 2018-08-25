@@ -104,7 +104,7 @@ deb_sum <- function(..., bases = c(20, 12), round = 5, na.rm = FALSE) {
 #' summarised. When used in conjunction with [dplyr::group_by()],
 #' [deb_summarise()] will return a sum of the lsd list columns for each group.
 #'
-#' @inheritParams deb_as_lsd_mutate
+#' @inheritParams deb_lsd_gather
 #' @param ... lsd list column or columns to be summed.
 #' @inheritParams deb_sum
 #'
