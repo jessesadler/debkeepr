@@ -4,7 +4,7 @@
 \name{dafforne_transactions}
 \alias{dafforne_transactions}
 \title{Transactions from the example journal and ledger of Richard Dafforne}
-\format{A data frame with 177 rows and 10 variables.}
+\format{A data frame with 177 rows and 8 variables.}
 \source{
 Richard Dafforne, \emph{The Merchant's Mirrour, Or Directions for the}
 \emph{Perfect Ordering and Keeping of His Accounts}, Third Edition, (London,
@@ -43,9 +43,8 @@ correspond to the \code{id} variable in \code{dafforne_accounts}.
 \item \code{date}: Date on which the transaction was entered into the journal. Date
 conforms to the Anglican calendar that used the old Julian calendar with
 the new year on 25 March. Encoded as a date object.
-\item \code{l}: Pounds sterling of 20 sterling and 240 pence.
-\item \code{s}: Shillings sterling of 12 pence.
-\item \code{d}: Pence sterling of 240 pence per pound sterling.
+\item \code{lsd}: List column of class lsd with pounds, shillings, and pence
+values. Bases for shillings and pence is 20 and 12 respectively.
 \item \code{journal}: Page on which the transaction is recorded in the journal.
 \item \code{ledger}: The pages on which the transaction is recorded in the ledger.
 The number before the slash is the page on which the debit is recorded.

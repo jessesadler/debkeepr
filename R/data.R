@@ -48,7 +48,7 @@
 #' journal, which deal with the balancing of the book. These transactions can
 #' be recreated using the lsd account functions in `debkeepr`.
 #'
-#' @format A data frame with 177 rows and 10 variables.
+#' @format A data frame with 177 rows and 8 variables.
 #'
 #' @section Variables:
 #'
@@ -63,9 +63,8 @@
 #'   * `date`: Date on which the transaction was entered into the journal. Date
 #'     conforms to the Anglican calendar that used the old Julian calendar with
 #'     the new year on 25 March. Encoded as a date object.
-#'   * `l`: Pounds sterling of 20 sterling and 240 pence.
-#'   * `s`: Shillings sterling of 12 pence.
-#'   * `d`: Pence sterling of 240 pence per pound sterling.
+#'   * `lsd`: List column of class lsd with pounds, shillings, and pence
+#'     values. Bases for shillings and pence is 20 and 12 respectively.
 #'   * `journal`: Page on which the transaction is recorded in the journal.
 #'   * `ledger`: The pages on which the transaction is recorded in the ledger.
 #'     The number before the slash is the page on which the debit is recorded.
