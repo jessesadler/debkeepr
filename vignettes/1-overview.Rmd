@@ -1,34 +1,24 @@
 ---
-output: github_document
+title: "1. Overview"
+author: "Jesse Sadler"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{1. Overview}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
-
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
+  comment = "#>"
 )
 ```
-
-# debkeepr: Analysis of Non-Decimal Currencies and Double-Entry Bookkeeping
-
-[![Travis build status](https://travis-ci.org/jessesadler/debkeepr.svg?branch=master)](https://travis-ci.org/jessesadler/debkeepr)
-[![Coverage status](https://codecov.io/gh/jessesadler/debkeepr/branch/master/graph/badge.svg)](https://codecov.io/github/jessesadler/debkeepr?branch=master)
 
 `debkeepr` provides an interface for analyzing non-decimal currencies that use the tripartite system of pounds, shillings, and pence. It includes functions to apply arithmetic and financial operations to single or multiple values and to analyze account books that use either [single-entry bookkeeping](https://en.wikipedia.org/wiki/Single-entry_bookkeeping_system) or [double-entry bookkeeping](https://en.wikipedia.org/wiki/Double-entry_bookkeeping_system) with the latter providing the name for `debkeepr`. The use of non-decimal currencies throughout the medieval and early modern period presents difficulties for the analysis of historical accounts. The pounds, shillings, and pence system complicates even relatively simple arithmetic manipulations, as each unit has to be [normalized](https://en.wikipedia.org/wiki/Arithmetic#Compound_unit_arithmetic) or converted to the correct base. To unite pounds, shillings, and pence units into a single value and associate the shillings and pence units with non-decimal bases `debkeepr` implements a special class of R object. The **lsd** class consists of a list of one or more numeric vectors of length 3 and a `bases` attribute attached to the list. `debkeepr` provides functions to manipulate `lsd` objects on their own or within a data frame as list column.
 
 The `debkeepr` package uses the nomenclature of [l, s, and d](https://en.wikipedia.org/wiki/%C2%A3sd) to represent pounds, shillings, and pence units. The abbreviations derive from the Latin terms [libra](https://en.wikipedia.org/wiki/French_livre), [solidus](https://en.wikipedia.org/wiki/Solidus_(coin)), and [denarius](https://en.wikipedia.org/wiki/Denarius). The libra was a Roman measurement of weight, while the solidus and denarius were both Roman coins. The denarius was a silver coin from the era of the Republic, in contrast to the golden solidus that was issued in the Late Empire. As the production of silver coins overtook that of gold by the 8th century, a solidus came to represent 12 silver denarii coins, and 240 denarii were — for a time — made from one libra or pound of silver. The custom of counting coins in dozens (solidi) and scores of dozens (librae) spread throughout the Carolingian Empire and became engrained in much of Europe. However, a variety of [other bases](https://en.wikipedia.org/wiki/Non-decimal_currency) for the solidi and denarii units were in use in different regions and at different times.
-
-## Installation
-You can install `debkeepr` from GitHub with [devtools](https://github.com/hadley/devtools):
-
-```{r devtools, eval = FALSE}
-# install.packages("devtools")
-devtools::install_github("jessesadler/debkeepr")
-```
 
 ## Overview
 - All of the functions in `debkeepr` begin with the prefix `deb_`, which is short for double-entry bookkeeping.
