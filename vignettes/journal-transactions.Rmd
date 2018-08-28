@@ -1,0 +1,301 @@
+---
+title: "2. Transactions in Richard Dafforne's Journal"
+author: "Jesse Sadler"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{2. Transactions in Richard Dafforne's Journal}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The `debkeepr` package provides an interface for analyzing non-decimal currencies that use the tripartite system of pounds, shillings, and pence. The use of non-decimal currencies in Europe in the medieval and early modern period complicates the calculation and analysis of monetary transactions in the past. This vignette uses examples taken from the practice journal in the third edition of Richard Dafforne’s *The Merchant's Mirrour, Or Directions for the Perfect Ordering and Keeping of His Accounts* (London, 1660) to show how `debkeepr` can help to explicate and simplify monetary transactions that involve a variety of non-decimal currencies.
+
+## Richard Dafforne’s *Merchant’s Mirrour*
+Richard Dafforne’s *Merchant's Mirrour* built upon a tradition that began with Luca Pacioli’s *Summa de arithmetica, geometria. Proportioni et proportionalita* (Venice, 1494), which was the first published text to describe the practices of double-entry bookkeeping. Throughout the sixteenth century manuals on double-entry bookkeeping were published in a variety of languages, though the use of double-entry bookkeeping by merchants varied greatly by region. Dafforne gained his understanding of double-entry bookkeeping while residing in Amsterdam, where he became acquainted with the mathematician Simon Stevin. Many of the practices Dafforne detailed in his manual follow those discussed in Stevin’s essay on *Princely Bookkeeping* (1608). Dafforne returned to London in 1630 and earned his living teaching bookkeeping and Dutch. Upon his return to England he lamented that knowledge of the art of bookkeeping in his native land lagged behind that he experienced in Holland. Dafforne’s manual acted as both a guide to spread knowledge of bookkeeping and as an advertisement for his own bookkeeping school. The popularity of *Merchant’s Mirrour* is clear from its multiple editions, which appeared in 1636, 1651, 1660, and 1684. The text was also included in the popular *Consuetudo Vel Lex Mercatoira* of Gerard Malynes from its 1636 edition.
+
+The third edition of Dafforne’s manual, which is the edition used here, consists of an introductory dialogue between two students of bookkeeping that presents an overview of the practices of double-entry bookkeeping. It is followed by three practice sets of account books and a short treatise on arithmetic necessary for bookkeeping. Though it contains a short section on calculating interest, Dafforne’s manual concentrates on bookkeeping practices rather than on the arithmetic skills used to calculate the values of the transactions. Dafforne followed those such as Pacioli in proclaiming that the minimal set of account books to practice proper bookkeeping consisted in a wastebook, journal, and ledger. The wastebook acted as the first record of transactions. The journal introduced the language of creditor and debtor, ensuring that each transaction was creditor to one account and debtor to another. The ledger provided the final presentation of the accounts. Each transaction was placed in the ledger twice, once under the credit account and once under the debit account. [^1]
+
+## Overview of the example journal
+The data in the `debkeepr` package comes from the first set of account books that presents an example of a merchant’s accounts from 1 January 1633 to 20 July 1634 English style.[^2] The journal and ledger record 191 transactions dealing with 47 accounts.[^3] The example books shows the complete lifespan of a set of account books from the creation of an initial inventory to the balancing of the books to close all of the accounts. The books provide the accounts of a merchant involved in a variety of types of trade spread throughout various regions of Europe. They contain accounts for people and goods in England, Amsterdam, Antwerp, Rouen, Lisbon, and Danzig. Acting on his own, within a company, and as a factor for other merchants, the merchant is involved in trade in textiles, sugar, wheat, pepper, figs, and a handful of other goods. With trade spread over such a wide area, the books deal with six different currencies or monies of account. The account book itself was kept in pounds sterling of 20 shillings and shillings of 12 pence, but most of the other monies of account did not use these standard bases for the shillings and pence units.
+
+- Pound sterling: 1 pound = 20 shillings; 1 shilling = 12 pence
+- Pound Flemish: 1 pound = 20 schellingen; 1 schelling = 12 groten
+- Holland guilders: 1 guilder = 20 stuivers; 1 stuiver = 16 penningen
+- French crowns: 1 crown = 60 sous; 1 sous = 12 deniers
+- Polish florins: 1 florin = 30 gros; 1 gros = 18 denar
+- Portuguese real: 1 milréis = 1000 réis
+
+The value of Holland guilders was tied to that of pounds Flemish at a rate of 6 guilders to £1 Flemish. In addition, Dafforne noted at the beginning of *Merchant’s Mirrour* that the normal exchange rate from pounds sterling to pounds Flemish was £1 sterling to 33s. 4d. Flemish. Otherwise the specific exchange rates are provided within the transactions in the journal. It is also worth noting that the Portuguese real is only given two units, and so it is necessary to give it a placeholder third unit to work with `debkeepr`.
+
+## Examples
+This section provides examples for using `debkeepr` to recreate the values recorded in Dafforne’s example journal. This both shows off the capabilities of `debkeepr` and helps to explicate the calculations that went in to bookkeeping in the early modern period. One note of interest from this activity is that `debkeepr` makes it possible to see when and how Dafforne rounded his arithmetic calculations, as Dafforne only used integers for the pence unit in his journal. The transaction numbers recorded in the journal correspond to the “id” variable in the `dafforne_transactions` data. The accounts and the names attached to them can be seen in `dafforne_accounts`.[^4]
+
+```{r load debkeepr}
+# load debkeepr
+library(debkeepr)
+```
+
+### Multiplication
+One of the more straightforward calculations in bookkeeping is the multiplication of a value to split it among multiple partners or to calculate costs that are charged at a certain percentage of the value of the goods. For instance, in transaction 18 the merchant Randoll Rice purchased 100 pieces of says or woolen serges for £566 13s. 4d. sterling that was sent to Lisbon for a company in which Rice had a three-fifths part. Therefore, transaction 19 calculates the value of Rice’s part in the says.
+
+```{r 19. multiplication}
+# 19. For Rice’s 3/5 part of the 100 says valued at £566.13.4 nr 18
+deb_multiply(lsd = c(566, 13, 4), x = 3 / 5)
+```
+
+In transaction 21 expenses for the says are dealt with, including a brokerage charge of 1/8% and a provision charge of 1/3%. The total value of these expenses can be found by using `deb_multiply()` and `deb_sum()`.
+
+```{r 21. brokerage and provision}
+# 21. For brokerage costs in nr 18 and 20 at 1/8% and provision at 1/3%
+brokerage <- deb_multiply(lsd = c(566, 13, 4), x = 1 / 800)
+provision <- deb_multiply(lsd = c(566, 13, 4), x = 1 / 300)
+
+deb_sum(brokerage, provision)
+```
+
+### Interest
+Another straightforward calculation is that of interest. Dafforne dedicated an entire section of his bookkeeping manual to the calculation of interest, providing his readers with a table to calculate interest at different rates for different periods of time. An example in the journal of Dafforne is transaction 87 that calculates the interest on £96 14s. 9d. sterling over a period of four months. Though the result here would round down to £2 11s. 7d., the journal lists the interest as £2 11s. 8d.
+
+```{r 87. interest}
+# 87. For £96.14.9 detained upon interest at 8% for 4 months
+deb_interest(c(96, 14, 9), interest = 0.08, duration = 4 / 12, with_principal = FALSE)
+```
+
+### Weights and value of sales/purchases
+`debkeepr` functions are meant to work with tripartite currencies, but the ability to change the bases for the shillings and pence units makes the functions quite flexible. The values entered into `debkeepr` functions need not represent pounds, shillings, and pence, but can also be measurements of various sorts that also adopted a tripartite unit system. An example of this is presented in the third transaction in the journal that records the weight and value of five barrels of kettles. The weights are given in terms of hundredweight, quarters, and pounds. A hundredweight was equivalent  4 quarters, and 1 quarter equaled 28 pounds. The measurements also provided a tare value for the weight of the barrels, which was shown in pounds.
+
+| id | hundredweight | quarters | pounds | tare |
+|:-----:|:-----:|:-----:|:------:|:------:|
+|  320  |   2   |   3   |   26   |   23   |
+|  319  |   2   |   2   |   18   |   21   |
+|  318  |   2   |   1   |   21   |   22   |
+|  317  |   2   |   0   |   17   |   19   |
+|  316  |   1   |   3   |    5   |   17   |
+
+To find the total net weight of the kettles we can add the gross weights and tare weights and then subtract the two values. This can be done by transforming the gross and tare values to `lsd` objects with bases of 4 and 28. A shortcut for getting the sum of the tare values is to add them together within `deb_d_lsd()`, because the pounds unit corresponds to the pence unit. The various values are saved as objects and printed to the console to demonstrate their values.
+
+```{r 3. kettles weight}
+# 3. Gross weight
+kettles_gross <- deb_as_lsd(lsd = list(c(2, 3, 26),
+                                       c(2, 2, 18),
+                                       c(2, 1, 21),
+                                       c(2, 0, 17),
+                                       c(1, 3, 5)),
+                            bases = c(4, 28))
+(kettles_gross_sum <- deb_sum(kettles_gross))
+
+# Tare
+(kettles_tare <- deb_d_lsd(d = 23 + 21 + 22 + 19 + 17, bases = c(4, 28)))
+
+# Net weight
+(kettles_net <- deb_subtract(kettles_gross_sum, kettles_tare))
+```
+
+Transaction 3 notes that the kettles are valued at £4 19s. per hundredweight. `debkeepr` does not have a function to multiply two lsd values. However, the total value can be found by multiplying the price by the decimalized units for which the price is given. In this case the price is provided in terms of hundredweight, and so the value should be decimalized with `deb_lsd_l()`.
+
+```{r 3. kettles value}
+# 3. Value = £4.19 per hundredweight: decimalize hundredweight
+(kettles_dec <- deb_lsd_l(lsd = kettles_net))
+
+# Value of the kettles
+deb_multiply(lsd = c(4, 19, 0), x = kettles_dec)
+```
+
+This method of multiplying the price by the decimalized weight of a set of goods can be used in a variety of circumstances. For instance, it is possible to follow the purchase and sale of sugar from Lisbon in the journal through this method. In transaction 54 from 21 March 1633 the bookkeeper recorded an agreement to purchase ten chests of sugar from Lisbon weighing 51 hundredweight 3 quarters 4 pounds at the price of 13d. per pound from James Wilkinson. 
+
+```{r 54. sugar}
+# 54. 51 hundredweight 3 quarters 4 pounds of sugar at 13d. per pound
+pounds <- deb_lsd_d(c(51, 3, 4), bases = c(4, 28))
+deb_d_lsd(d = 13 * pounds)
+
+# which is the same as
+deb_multiply(c(0, 0, 13), x = pounds)
+```
+
+By May, the merchant had found a willing buyer for the sugar at the price of 14d. per pound in the person of George Pinchback. However, when the sugar arrived from Lisbon there was actually 15 chests weighing 77 hundredweight 2 quarters 20 pounds. All of the merchants involved agreed to the same prices. Transactions 102 and 103 record the purchase price of the sugar and the profits resulting from the 1d. price difference.
+
+```{r 102/103. purchase and sale of sugar}
+# 102 and 103. 77 hundredweight 2 quarters 20 pounds of sugar
+pounds <- deb_lsd_d(lsd = c(77, 2, 20), bases = c(4, 28))
+
+# purchase price
+deb_d_lsd(d = 13 * pounds)
+
+# profits
+deb_d_lsd(d = 1 * pounds)
+```
+
+To complete the transaction, Wilkinson needed to be paid for the sugar. Transaction 105 shows that he was paid in the form of 8 silver bars weighing 1733 ounces that were values at 6s. 7.5d. per ounce. However, the bars had a higher value than the sugar, and so transaction 106 shows Wilkinson making a payment to the cash register to even out the payments for the £471 5s. purchase price of the sugar. There is a discrepancy of one-half of a penny, but Dafforne ignored this.
+
+```{r 105/106. silver bars}
+# 105 and 106. Payment for sugar
+# Value of the 8 silver bars
+deb_multiply(lsd = c(0, 6, 7.5), x = 1733)
+
+# value of sugar at 13d. plus payment of cash
+deb_sum(deb_d_lsd(d = 13 * pounds), c(102, 16, 1))
+```
+
+Going through the calculations for this purchase and sale of sugar helps to better understand how Dafforne wanted a merchant to keep his accounts. Though no goods or money had changed hands at the time of transaction 54, Dafforne advised merchants to record any promise of payments in an account that he labeled promise reckoning (account 31 in `dafforne_accounts`). Dafforne shows the same being done for the agreement to sell the sugar. When the goods arrived, the weight of the sugar had increased. Therefore, the merchant had to even out the the promised amounts for the purchase and sale of the sugar at the previous weight, which is done in transactions 107 and 104 respectively, and calculate the new values as shown above.
+
+## Conversion of currencies
+The examples shown thus far all deal with monetary values in terms of pounds sterling, but many and maybe even the majority of transactions in Dafforne’s example journal involve other of currencies. For exchange between currencies that possess the same bases for the shillings and pence units `debkeepr` provides `deb_exchange()`. However, Flemish pounds was the only money of account used in the journal that possessed the same bases. In order to find the exchange between other monies of account it is necessary to convert between different bases for the shillings and pence units with `deb_convert_bases()`. The following examples show a variety of different conversions between monies of account that do not share the same bases.
+
+### Holland guilders and Flemish pounds
+Unsurprisingly much of the trade activity that Dafforne placed in his example journal occurred in or funneled through Amsterdam and thus involved values recorded in guilders, stuivers, and penningen. Guilders possessed a different base from pounds sterling, and to complicate matters further, the exchange rate between guilders and pounds sterling often went through pounds Flemish. Pounds Flemish was tied to guilders at a rate of 6 guilders to £1 Flemish, and Dafforne listed the established exchange rate between pounds sterling and pounds Flemish as £1 sterling to 33s. 4d. Flemish. Though Dafforne provides the exchange rate to pounds Flemish, the transactions in the journal proceed from pounds Flemish to pounds sterling, so the inverse rate has to be calculated.
+
+```{r flemish to sterling}
+# Rate for Flemish to sterling
+deb_invert_rate(exchange_rate = c(0, 33, 4))
+```
+
+Transaction 5 provides a good example of the workflow to transform guilders to pounds sterling. The transaction tells that Jacob Symonson possessed 2,290 guilders of the bookkeeper’s capital deriving from a company that they had together. The transaction specifies that this capital is to be calculated at the general course of 33s. 4d. Flemish. The exchange involves two steps: from guilders to pounds Flemish at the rate of 6 to 1 and then from pounds Flemish to pounds sterling at the listed exchange rate.
+
+```{r 5. guilders to sterling}
+# 5. Guilders to Flemish
+(flemish <- deb_convert_bases(lsd = c(2290, 0, 0),
+							  bases1 = c(20, 16),
+							  bases2 = c(20, 12),
+							  ratio = 1/6))
+
+# Flemish to sterling
+deb_exchange(lsd = flemish, shillings_rate = 12)
+```
+
+The same calculation can be done in one step with the use of the pipe.
+
+```{r 5. with pipe}
+deb_convert_bases(lsd = c(2290, 0, 0),
+                              bases1 = c(20, 16),
+                              bases2 = c(20, 12),
+                              ratio = 1/6) %>% 
+  deb_exchange(shillings_rate = 12)
+```
+
+Transaction 33 presents a slightly more complex example. It involves 1,224 guilders 19s. 8d. that Jacob Symonson received through a bill of exchange at an exchange rate different from the general course. Unlike the inverted rate for 33s. 4d. Flemish, the given rate of 36s. 10d. does not easily reduce itself. Therefore, it makes sense to decimalize the shillings rate and save it as a variable to be used in `deb_exchange()`. It is noteworthy that despite this complexity, Dafforne’s calculation is the same as done here if the pence were rounded in the final call to `deb_exchange()`.
+
+```{r 33. guilders to sterling}
+# 33. 1224 guilders 19s. 8d. through bills of exchange
+# Inverse rate
+deb_invert_rate(c(0, 36, 10))
+
+# Convert rate to decimalized shillings
+rate <- deb_invert_rate(c(0, 36, 10)) %>% 
+  deb_lsd_s()
+deb_convert_bases(c(1224, 19, 8),
+                  bases1 = c(20, 16),
+                  bases2 = c(20, 12),
+                  ratio = 1 / 6) %>% 
+  deb_exchange(shillings_rate = rate)
+```
+
+A final example for the conversion between guilders and pounds sterling is provided by transaction 40, which records the sale of 60 Leeds dozens or broadcloths in Amsterdam by Jacob Symonson. Thirty pieces of cloth were sold at 45 guilders 7s. 8d. per piece, and the remaining thirty were sold at 50 guilders per piece. The total proceeds from the sales had to be calculated and then converted to pounds sterling at the normal rate of 33s. 4d. Flemish.[^5]
+
+```{r 40. sale of 60 Leeds dozens}
+# 40. Proceeds from the two sales
+(leeds1 <- deb_multiply(lsd = c(45, 7, 8), x = 30, bases = c(20, 16)))
+(leeds2 <- deb_multiply(lsd = c(50, 0, 0), x = 30, bases = c(20, 16)))
+
+# Sum of proceeds and conversion from guilders to sterling
+deb_sum(leeds1, leeds2) %>% 
+  deb_convert_bases(bases2 = c(20, 12), ratio = 1 / 6) %>% 
+  deb_exchange(shillings_rate = 12)
+
+```
+
+### French crowns
+Dafforne’s journal contains many transactions with a factor in Rouen named Jean du Boys who used the French crown of 60 sous as his money of account. The exchange rate between French crowns and pounds sterling differed by transaction, but all were listed in terms of deniers per pound sterling. This rate can be translated into the `ratio` argument of `deb_convert_bases()` by placing the rate over 240, or the amount of pence in a pound sterling. Thus, in transaction 20 Jean du Boys was remitted £2,148 50s. 6d. French crowns at the rate of £1 French crown to 63d. sterling.
+
+```{r 20. crowns to sterling}
+# 20. For £2148 50s. 6d. French crowns at 63d. sterling
+deb_convert_bases(lsd = c(2148, 50, 6),
+                  bases1 = c(60, 12),
+                  bases2 = c(20, 12),
+                  ratio = 63 / 240)
+```
+
+A merchant involved in long-distance trade often had to record the value of transactions that occurred two currencies that differed from the money of account used in the account book. Such a situation appeared in transaction 58 in which Jacob Symonson in Amsterdam received a bill of exchange from Jean du Boys in Rouen that consisted of capital for a company involving the bookkeeper and Randoll Rice. Jean du Boys sent Symonson £1,140 17s. 8d. French crowns at the rate of 123d. Flemish, and this transaction was calculated at the rate of 72d. sterling for the purposes of accounting in terms of pounds sterling. In this case, a bookkeeper needed to know the amount of guilders received by Symonson, which was calculated through pounds Flemish, as well as the value in pounds sterling.
+
+```{r 58. crowns, guilders, sterling}
+# 58. Crowns to Flemish to guilders
+deb_convert_bases(lsd = c(1140, 17, 8),
+                  bases1 = c(60, 12),
+                  bases2 = c(20, 12),
+                  ratio = 123 / 240) %>% 
+  deb_convert_bases(bases2 = c(20, 16),
+                    ratio = 6)
+
+# Crowns to sterling
+deb_convert_bases(lsd = c(1140, 17, 8),
+                  bases1 = c(60, 12),
+                  bases2 = c(20, 12),
+                  ratio = 72 / 240)
+```
+
+### Polish florins
+Thus far the examples have all involved single pounds, shillings, and pence values even if multiple values went into the calculation. This is hardly accidental. Dafforne’s advised that every transfer of value between accounts should be listed separately.[^6] However, `debkeepr` and `lsd` objects allow the manipulation of multiple lsd values. Of course, it only makes sense to bring together multiple values into a single `lsd` object if the exact same calculation is to be performed on the two values. Transactions 64 and 65 present such an opportunity. On 7 April 1634 the bookkeeper sent two bills of exchange to Arthur Mumperson in Danzig on behalf of Jacob Symonson. The money of account used by Mumperson in Danzig was the Polish florin of 30 gros and gros of 18 denar, and the exchange rate was again calculated in terms of pounds Flemish. In this case, both bills of exchange were sent at the rate of 232 gros per £1 Flemish. There are a couple of ways to calculate the ratio to be used within `deb_convert_bases()`, but the easiest way is to place the base for the gros unit over the rate.
+
+```{r 64 and 65. florins to sterling}
+# 64 and 65. Create lsd object with florins values and bases
+florins <- deb_as_lsd(list(c(3987, 16, 0), c(1907, 26, 0)), bases = c(30, 18))
+
+# Convert florins to sterling through pounds Flemish
+deb_convert_bases(florins, bases2 = c(20, 12), ratio = 30 / 232) %>% 
+  deb_exchange(shillings_rate = 12)
+```
+
+The two values match those in Dafforne’s journal if the pence unit was rounded to a whole number. An alternative method for calculating the ratio between Polish florins and pounds Flemish is to use `deb_invert_rate()` and convert the inverted rate to decimalized pounds to get a value that could be used in the `ratio` argument.
+
+```{r 64 and 65. invert rate}
+# Compare: the slight difference is due to rounding in deb_invert_rate
+deb_invert_rate(c(0, 232, 0), bases = c(30, 18)) %>% 
+  deb_lsd_l()
+
+# Ratio from above
+30 / 232
+```
+
+### Portuguese real
+The final currency dealt with in Dafforne’s example journal is the Portuguese real, which came about from trade conducted by a Diego del Varino in Lisbon. The Portuguese real as used in the Dafforne journal presents a money of account quite different from all others in the journal. Not only is the base of 1,000 réis to the milréis on a very different magnitude from the pound sterling of 20 shillings, but the real only has two units instead of the three units of the pounds, shillings, and pence monies of account. `debkeepr` can accommodate this type of money of account, but a placeholder value must be provided for the pence unit, because neither of the two values passed to `bases` can be zero or missing.
+
+The other issue with the real is that the exchange rate is given as 400 réis for 5s. sterling, complicating the calculation of the `ratio` argument in `deb_convert_bases()`. One way to find the ratio is to multiply the réis value by four to get réis equivalent to £1 sterling. From this point the same methods as those used for the Polish florin can be adopted of placing the réis base over réis per pound sterling, or by using `deb_invert_rate()` and decimalizing. Another way is to multiply the réis and shillings values by 2.5 to find shillings per 1 milréis in which case the rate does not need to be inverted.
+
+Transaction 51 shows the purchase of 1,576 pieces of figs by Diego del Varino for a company with the bookkeeper and Randoll Rice. The figs were purchased for the price of 681 milréis 960 réis with the exchange rate, as noted above, of 400 réis for 5s. sterling.
+
+```{r 51. purchase of figs}
+# 51. purchase of 1576 pieces of figs for 681 milréis 960 réis
+# Method 1: multiply rate of réis and shillings by 4 and invert rate
+deb_convert_bases(lsd = c(681, 960, 0),
+                  bases1 = c(1000, 12),
+                  bases2 = c(20, 12),
+                  ratio = 1000 / (400 * 4))
+
+# Method 2:  multiply rate of réis and shillings by 2.5 over shillings base
+deb_convert_bases(lsd = c(681, 960, 0),
+				  bases1 = c(1000, 12),
+				  bases2 = c(20, 12),
+				  ratio = (5 * 2.5) / 20) 
+```
+
+## Conclusion
+Breaking down and recreating the individual transactions within a journal such as has been done here helps to illuminate the actual process of accounting. The arithmetic calculations made with the `debkeepr` functions are not particularly complicated, but it certainly would be tedious to do by hand as was necessary in the seventeenth century. `debkeepr` was created in part to simplify the process of doing arithmetic with pounds, shillings, and pence values as they are encountered in the course of historical research. The use of `debkeepr` functions on single or multiple sets of pounds, shillings, and pence values will likely be most useful in dealing with accounts that are more piecemeal where there is clear value to determining sums or finding equivalent values in different sources. Recreating the calculations made by past bookkeepers as is done here will only get the historian so far. Nevertheless, the transactions in the example journal of Dafforne’s *Merchant’s Mirrour* provides a good platform to demonstrate the capabilities of `debkeepr` and to explicate the inner workings of the Dafforne’s account books, which will be further analyzed at a higher level in the next vignette.
+
+[^1]:	John Geijsbeek, *Ancient Double-Entry Bookkeeping: Lucas Pacioli’s Treatise (A.D. 1494, the Earliest Known Writer on Bookkeeping) Reproduced and Translated with Reproductions, Notes, and Abstracts from Manzoni, Pietra, Mainardi, Ympyn, Stevin, and Dafforne* (Denver: John Geijsbeek, 1914).
+
+[^2]:	England used the Julian calendar until 1752, making it ten days behind the Gregorian calendar throughout the 17th century. In addition, the English calendar used 25 March as the start of the new year. Thus, 1 January 1633 was actually 11 January 1634 by the Gregorian calendar.
+
+[^3]:	The data in the `debkeepr` package only includes 177 transactions and 46 accounts, because it does not have the balance account, which can be recreated with the accounting functions in `debkeepr`.
+
+[^4]:	Though the names used in the journal are not meant to refer to real merchants, the names of the individuals involved in the transactions are used for clarity.
+
+[^5]:	Notice that the `bases1` argument does not need to be provided, because `leeds1` and `leeds2` are both `lsd` objects with bases of `c(20, 16)`.
+
+[^6]:	Dafforne did break this rule on one occasion in transaction 119, where sales to three separate merchants were listed in the same transaction. However, this was done mainly to emphasize the rule that each entry in the journal should only record a single transaction.
