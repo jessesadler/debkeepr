@@ -6,8 +6,7 @@ x <- c(5, 84, 53)
 lsd_list <- deb_lsd(l = c(35, 12, 1),
                     s = c(10, 16, 19),
                     d = c(9, 5, 11))
-with_null <- lsd_list
-with_null[3] <- list(NULL)
+with_null <- deb_as_lsd(list(c(5, 3, 4), c(4, 12, 4), NULL))
 
 tbl <- tibble(l = c(35, 12, 1),
               s = c(10, 16, 19),
@@ -30,9 +29,9 @@ transactions <- data.frame(credit = sample(letters[1:5]),
 test_that("null check turns null to NA vector", {
   expect_equal(null_check(x), x)
   expect_equal(null_check(lsd_list), lsd_list)
-  expect_equal(null_check(with_null), deb_lsd(l = c(35, 12, NA),
-                                              s = c(10, 16, NA),
-                                              d = c(9, 5, NA)))
+  expect_equal(null_check(with_null), deb_lsd(l = c(5, 4, NA),
+                                              s = c(3, 12, NA),
+                                              d = c(4, 4, NA)))
 })
 
 ## lsd check ##
@@ -81,6 +80,10 @@ test_that("bases checks work", {
                "The values in bases must both be positive")
   expect_error(deb_normalize(x, bases = c(-20, -12)),
                "The values in bases must both be positive")
+})
+
+test_that("lsd_check allows lists with a NULL element", {
+  expect_silent(lsd_check(with_null))
 })
 
 ## Error messages from round_check ##

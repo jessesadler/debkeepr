@@ -1,4 +1,4 @@
-context("test-lsd-accounts2.R")
+context("test-lsd-accounts.R")
 
 suppressPackageStartupMessages(library(tibble))
 

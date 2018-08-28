@@ -23,6 +23,9 @@ lsd_check <- function(lsd) {
 
   # check lsd list
   if (rlang::is_list(lsd) == TRUE) {
+    if (any(purrr::map_lgl(lsd, rlang::is_null))) {
+      lsd <- purrr::compact(lsd)
+    }
     if (!all(purrr::map_lgl(lsd, is.numeric))) {
       stop(call. = FALSE, "lsd must be a list of numeric vectors")
     }
