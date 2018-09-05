@@ -15,10 +15,13 @@ deb_sum_simple <- function(lsd, round = 5, na.rm = FALSE) {
     lsd <- purrr::modify_if(lsd, ~ any(is.na(.)), as.null) %>%
       purrr::compact()
   }
+  if (length(lsd) == 0) {
+    deb_as_lsd(c(0, 0, 0), bases = bases)
+  } else {
+    lsd <- purrr::reduce(lsd, `+`)
 
-  lsd <- purrr::reduce(lsd, `+`)
-
-  deb_normalize(lsd, bases = bases, round = round)
+    deb_normalize(lsd, bases = bases, round = round)
+  }
 }
 
 #' Sum of pounds, shillings, and pence values

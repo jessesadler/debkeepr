@@ -37,11 +37,8 @@
 #' @param lsd lsd list column: Unquoted name of an lsd list column of pounds,
 #'   shillings, and pence values with a bases attribute.
 #' @param round Round pence to specified number of decimal places. Default
-#'   is 5. Rounding of the pence value takes place throughout the function and
-#'   is not simply done at the end of the function call. This means that the
-#'   credit, debit, and current values will add together correctly. However,
-#'   the rounded values may be different than running the function without
-#'   rounding and rounding pence values at the end.
+#'   is 5. Rounding to whole numbers may give results that do not add together
+#'   due to rounding rules.
 #' @inheritParams deb_sum
 #'
 #' @return Returns a tibble with three rows with the credit, debit, and current
@@ -69,10 +66,10 @@
 #' @export
 
 deb_account <- function(df, account_id,
-                         credit = credit, debit = debit,
-                         lsd = lsd,
-                         round = 5,
-                         na.rm = FALSE) {
+                        credit = credit, debit = debit,
+                        lsd = lsd,
+                        round = 5,
+                        na.rm = FALSE) {
   credit <- rlang::enquo(credit)
   debit <- rlang::enquo(debit)
   lsd <- rlang::enquo(lsd)
@@ -82,38 +79,48 @@ deb_account <- function(df, account_id,
   lsd_list_column_check(df, lsd)
   edge_columns <- c(rlang::quo_name(credit), rlang::quo_name(debit))
   credit_check(df, credit, debit, edge_columns, account_id)
-
   round_check(round)
 
-  temp_credit <- df %>%
-    dplyr::filter((!! credit) == account_id) %>%
-    deb_summarise(!! lsd, round = round, na.rm = na.rm) %>%
-    .[[1]]
-  temp_debit <- df %>%
-    dplyr::filter((!! debit) == account_id) %>%
-    deb_summarise(!! lsd, round = round, na.rm = na.rm) %>%
-    .[[1]]
-  temp_current <- deb_subtract(temp_credit, temp_debit)
+  # Get bases for lsd column to use for deb_d_lsd
+  lsd_bases <- rlang::eval_tidy(lsd, df)
+  bases <- attributes(lsd_bases)$bases
+
+  temp_credit <- dplyr::filter(df, !! credit == account_id)
+  if (nrow(temp_credit) < 1) {
+    credit_lsd <- to_lsd(c(0, 0, 0), bases = bases)
+  } else {
+    credit_lsd <- deb_summarise(temp_credit, !! lsd, round = round, na.rm = na.rm) %>%
+      .[[1]]
+  }
+
+  temp_debit <- dplyr::filter(df, !! debit == account_id)
+  if (nrow(temp_debit) < 1) {
+    debit_lsd <- to_lsd(c(0, 0, 0), bases = bases)
+  } else {
+    debit_lsd <- deb_summarise(temp_debit, !! lsd, round = round, na.rm = na.rm) %>%
+      .[[1]]
+  }
+
+  current_lsd <- deb_subtract(credit_lsd, debit_lsd)
 
   tibble::tibble(relation = c("credit", "debit", "current"),
                  # Create lsd list column with simplified c.lsd
-                 !! column_name := list(temp_credit, temp_debit, temp_current) %>%
+                 !! column_name := list(credit_lsd, debit_lsd, current_lsd) %>%
                    purrr::flatten() %>%
-                   to_lsd(attributes(temp_credit)$bases))
+                   to_lsd(bases = bases))
 }
 
 #' Calculate credit, debit, and current values of accounts
 #'
 #' Calculate the total credit, debit, and the current values for all accounts
 #' in a transaction data frame with an lsd list column. Credits and debits are
-#' both returned as positive numbers. If an account has more credit than debit,
-#' the current value will be returned as positive values. If the debit is
-#' greater, the current value will be returned as negative values.
+#' both returned as lsd list columns with positive values. If an account has
+#' more credit than debit, the current value will be returned as positive
+#' values. If the debit is greater, the current value will be returned as
+#' negative values.
 #'
 #' `deb_account_summary()` is similar to [deb_account()], but it returns the
-#' values for all accounts in a transaction data frame instead of one. If you
-#' only want to see the current values for single accounts, see
-#' [deb_current()].
+#' values for all accounts in a transaction data frame instead of one.
 #'
 #' `deb_account_summary()` is part of a family of functions meant to be used on
 #' data frames that contain transactions between accounts in an account
@@ -130,11 +137,9 @@ deb_account <- function(df, account_id,
 #'
 #' @inheritParams deb_account
 #'
-#' @return Returns a tibble with three rows for each account present in the
-#'   credit and/or debit variables of `df` with the total credit, debit, and
-#'   current values of the accounts in an lsd list column. If an account does
-#'   not have any credit or debit transactions, it will not have a summary row
-#'   for that type of relation.
+#' @return Returns a tibble with one row for each account present in `df` and
+#'   three lsd list columns representing the total credit, debit, and current
+#'   values of the accounts.
 #'
 #' @examples
 #' library(tibble)
@@ -157,56 +162,31 @@ deb_account <- function(df, account_id,
 #' @export
 
 deb_account_summary <- function(df,
-                                 credit = credit, debit = debit,
-                                 lsd = lsd,
-                                 round = 5,
-                                 na.rm = FALSE) {
+                                credit = credit, debit = debit,
+                                lsd = lsd,
+                                round = 5,
+                                na.rm = FALSE) {
   credit <- rlang::enquo(credit)
   debit <- rlang::enquo(debit)
   lsd <- rlang::enquo(lsd)
-  column_name <- rlang::quo_name(lsd)
 
   # checks
+  lsd_list_column_check(df, lsd)
   edge_columns <- c(rlang::quo_name(credit), rlang::quo_name(debit))
   credit_check(df, credit, debit, edge_columns)
   round_check(round)
 
-  # Get bases for lsd column to use for deb_d_lsd
-  lsd_bases <- rlang::eval_tidy(lsd, df)
-  bases <- attributes(lsd_bases)$bases
-  df_d <- dplyr::mutate(df, denarii = deb_lsd_d(!! lsd))
+  temp_credit <- dplyr::group_by(df, !! credit) %>%
+    deb_summarise(!! lsd, round = round, na.rm = na.rm) %>%
+    dplyr::rename(account_id = !! credit, credit = !! lsd)
+  temp_debit <- dplyr::group_by(df, !! debit) %>%
+    deb_summarise(!! lsd, round = round, na.rm = na.rm) %>%
+    dplyr::rename(account_id = !! debit, debit = !! lsd)
 
-  temp_credits <- df_d %>%
-    dplyr::group_by(!! credit) %>%
-    dplyr::summarise(
-      relation = "credit",
-      denarii = sum(denarii, na.rm = na.rm)) %>%
-    dplyr::mutate(denarii = round(denarii, round)) %>%  # to match rounding in deb_account
-    dplyr::rename(account_id = !! credit)
-
-  temp_debits <- df_d %>%
-    dplyr::group_by(!! debit) %>%
-    dplyr::summarise(
-      relation = "debit",
-      denarii = sum(denarii, na.rm = na.rm)) %>%
-    dplyr::mutate(denarii = round(denarii, round)) %>%  # to match rounding in deb_account
-    dplyr::rename(account_id = !! debit)
-
-  accounts_sum <- dplyr::mutate(temp_debits, denarii = -denarii) %>%
-    dplyr::bind_rows(temp_credits)
-
-  temp_current <- accounts_sum %>%
-    dplyr::group_by(.data$account_id) %>%
-    dplyr::summarise(
-      relation = "current",
-      denarii = sum(denarii))
-
-  dplyr::bind_rows(temp_credits, temp_debits, temp_current) %>%
-    dplyr::arrange(.data$account_id) %>%
-    dplyr::mutate(!! column_name := deb_d_lsd(denarii,
-                                              bases = bases,
-                                              round = round)) %>%
-    dplyr::select(-denarii)
+  dplyr::full_join(temp_credit, temp_debit, by = "account_id") %>%
+    dplyr::mutate_at(c("credit", "debit"), deb_replace_null) %>%
+    dplyr::arrange(account_id) %>%
+    dplyr::mutate(current = deb_subtract(lsd1 = credit, lsd2 = debit, round = round))
 }
 
 #' Calculate the total credit of accounts
@@ -215,7 +195,8 @@ deb_account_summary <- function(df,
 #' lsd list column.
 #'
 #' `deb_credit()` is similar to [deb_account_summary()], but it only returns
-#' the credit values for the accounts in `df`. See [deb_debit()] to return
+#' the credit values for the accounts in `df`. Accounts that are not creditor
+#' in any transactions appear with a value of £0. See [deb_debit()] to return
 #' the debit totals for the accounts in `df`.
 #'
 #' `deb_credit()` is part of a family of functions meant to be used on
@@ -257,21 +238,29 @@ deb_account_summary <- function(df,
 #' @export
 
 deb_credit <- function(df,
-                        credit = credit,
-                        lsd = lsd,
-                        round = 5,
-                        na.rm = FALSE) {
+                       credit = credit, debit = debit,
+                       lsd = lsd,
+                       round = 5,
+                       na.rm = FALSE) {
   credit <- rlang::enquo(credit)
+  debit <- rlang::enquo(debit)
   lsd <- rlang::enquo(lsd)
+  column_name <- rlang::quo_name(lsd)
 
   # checks
-  edge_columns <- rlang::quo_name(credit)
-  credit_check(df, credit, debit = NULL, edge_columns)
+  lsd_list_column_check(df, lsd)
+  edge_columns <- c(rlang::quo_name(credit), rlang::quo_name(debit))
+  credit_check(df, credit, debit, edge_columns)
   round_check(round)
 
   dplyr::group_by(df, !! credit) %>%
     deb_summarise(!! lsd, round = round, na.rm = na.rm) %>%
-    dplyr::rename(account_id = !! credit)
+    dplyr::rename(account_id = !! credit) %>%
+    # Add any accounts that do not have a credit
+    dplyr::full_join(dplyr::distinct(df, !! debit),
+                     by = c("account_id" = rlang::quo_name(debit))) %>%
+    dplyr::mutate(!! column_name := deb_replace_null(!! lsd, c(0, 0, 0))) %>%
+    dplyr::arrange(account_id)
 }
 
 #' Calculate the total debit of accounts
@@ -280,8 +269,9 @@ deb_credit <- function(df,
 #' lsd list column.
 #'
 #' `deb_debit()` is similar to [deb_account_summary()], but it only returns
-#' the debit values for the accounts in `df`. See [deb_credit()] to return
-#' the credit totals for the accounts in `df`.
+#' the debit values for the accounts in `df`. Accounts that are not debtor in
+#' any transactions appear with a value of £0. See [deb_credit()] to return the
+#' credit totals for the accounts in `df`.
 #'
 #' `deb_debit()` is part of a family of functions meant to be used on
 #' data frames that contain transactions between accounts in an account
@@ -322,21 +312,29 @@ deb_credit <- function(df,
 #' @export
 
 deb_debit <- function(df,
-                        debit = debit,
-                        lsd = lsd,
-                        round = 5,
-                        na.rm = FALSE) {
+                      credit = credit, debit = debit,
+                      lsd = lsd,
+                      round = 5,
+                      na.rm = FALSE) {
+  credit <- rlang::enquo(credit)
   debit <- rlang::enquo(debit)
   lsd <- rlang::enquo(lsd)
+  column_name <- rlang::quo_name(lsd)
 
   # checks
-  edge_columns <- rlang::quo_name(debit)
-  credit_check(df, credit = NULL, debit = debit, edge_columns)
+  lsd_list_column_check(df, lsd)
+  edge_columns <- c(rlang::quo_name(credit), rlang::quo_name(debit))
+  credit_check(df, credit, debit, edge_columns)
   round_check(round)
 
   dplyr::group_by(df, !! debit) %>%
     deb_summarise(!! lsd, round = round, na.rm = na.rm) %>%
-    dplyr::rename(account_id = !! debit)
+    dplyr::rename(account_id = !! debit) %>%
+    # Add any accounts that do not have a debit
+    dplyr::full_join(dplyr::distinct(df, !! credit),
+                     by = c("account_id" = rlang::quo_name(credit))) %>%
+    dplyr::mutate(!! column_name := deb_replace_null(!! lsd, c(0, 0, 0))) %>%
+    dplyr::arrange(account_id)
 }
 
 #' Calculate the current values of accounts
@@ -390,13 +388,14 @@ deb_debit <- function(df,
 #' @export
 
 deb_current <- function(df,
-                         credit = credit, debit = debit,
-                         lsd = lsd,
-                         round = 5,
-                         na.rm = FALSE) {
+                        credit = credit, debit = debit,
+                        lsd = lsd,
+                        round = 5,
+                        na.rm = FALSE) {
   credit <- rlang::enquo(credit)
   debit <- rlang::enquo(debit)
   lsd <- rlang::enquo(lsd)
+  column_name <- rlang::quo_name(lsd)
 
   deb_account_summary(df,
                        credit = !! credit,
@@ -404,8 +403,7 @@ deb_current <- function(df,
                        lsd = !! lsd,
                        round = round,
                        na.rm = na.rm) %>%
-    dplyr::filter(relation == "current") %>%
-    dplyr::select(-relation)
+    dplyr::select(account_id, !! column_name := current)
 }
 
 #' Calculate the current values of open accounts
@@ -436,7 +434,8 @@ deb_current <- function(df,
 #'
 #' @return Returns a tibble with one row for each account in `df` where the
 #'   current value in an lsd list column does not equal zero or does not have
-#'   a missing value in the current value.
+#'   missing values in the current value. If all accounts are equal to zero or
+#'   possess missing values, a tibble with zero rows will be returned.
 #'
 #' @examples
 #' library(tibble)
@@ -459,10 +458,10 @@ deb_current <- function(df,
 #' @export
 
 deb_open <- function(df,
-                      credit = credit, debit = debit,
-                      lsd = lsd,
-                      round = 5,
-                      na.rm = FALSE) {
+                     credit = credit, debit = debit,
+                     lsd = lsd,
+                     round = 5,
+                     na.rm = FALSE) {
   credit <- rlang::enquo(credit)
   debit <- rlang::enquo(debit)
   lsd <- rlang::enquo(lsd)
@@ -486,7 +485,9 @@ deb_open <- function(df,
 #' and debits of the accounts that remain open to calculate the capital
 #' remaining in the transactions data frame. The values for credit and debit
 #' should be the same, as each credit also has a corresponding debit. The
-#' exception is if there are missing values in `df` and `na.rm = FALSE`.
+#' exceptions are if there are missing values in `df` and `na.rm = FALSE`, or
+#' if the `round` argument is set to a low value, leading rounding rules to
+#' alter the returned values.
 #'
 #' `deb_balance()` is part of a family of functions meant to be used on
 #' data frames that contain transactions between accounts in an account
@@ -529,10 +530,10 @@ deb_open <- function(df,
 #' @export
 
 deb_balance <- function(df,
-                         credit = credit, debit = debit,
-                         lsd = lsd,
-                         round = 5,
-                         na.rm = FALSE) {
+                        credit = credit, debit = debit,
+                        lsd = lsd,
+                        round = 5,
+                        na.rm = FALSE) {
   credit <- rlang::enquo(credit)
   debit <- rlang::enquo(debit)
   lsd <- rlang::enquo(lsd)
@@ -541,37 +542,47 @@ deb_balance <- function(df,
   lsd_bases <- rlang::eval_tidy(lsd, df)
   bases <- attributes(lsd_bases)$bases
 
-  open <- deb_open(df,
-                       credit = !! credit,
-                       debit = !! debit,
-                       lsd = !! lsd,
-                       round = round,
-                       na.rm = na.rm)
-
-  temp_credit <- open %>%
-    dplyr::filter(deb_lsd_d(!! lsd) > 0)
-  if (nrow(temp_credit) < 1) {
-    temp_credit <- to_lsd(as.numeric(c(NA, NA, NA)), bases)
+  current <- deb_current(df,
+                        credit = !! credit,
+                        debit = !! debit,
+                        lsd = !! lsd,
+                        round = round,
+                        na.rm = na.rm)
+  # if all accounts are balanced
+  zeros <- deb_lsd(l = rep(0, nrow(current)),
+                   s = rep(0, nrow(current)),
+                   d = rep(0, nrow(current)),
+                   bases = bases)
+  if (identical(current[[2]], zeros)) {
+    tibble(relation = c("credit", "debit"),
+           !! column_name := deb_as_lsd(list(c(0, 0, 0), c(0, 0, 0))))
   } else {
-    temp_credit <- temp_credit %>%
-      deb_summarise(!! lsd, round = round, na.rm = na.rm) %>%
-      .[[1]]
-  }
+    # sum of credits or NA
+    temp_credit <- current %>%
+      dplyr::filter(deb_lsd_d(!! lsd) > 0)
+    if (nrow(temp_credit) < 1) {
+      temp_credit <- to_lsd(as.numeric(c(NA, NA, NA)), bases)
+    } else {
+      temp_credit <- temp_credit %>%
+        deb_summarise(!! lsd, round = round, na.rm = na.rm) %>%
+        .[[1]]
+    }
+    # sum of debits or NA
+    temp_debit <- current %>%
+      dplyr::filter(deb_lsd_d(!! lsd) < 0)
+    if (nrow(temp_debit) < 1) {
+      temp_debit <- to_lsd(as.numeric(c(NA, NA, NA)), bases)
+    } else {
+      temp_debit <- temp_debit %>%
+        deb_summarise(!! lsd, round = round, na.rm = na.rm) %>%
+        .[[1]] %>%
+        purrr::map(`-`) # turn positive
+    }
 
-  temp_debit <- open %>%
-    dplyr::filter(deb_lsd_d(!! lsd) < 0)
-  if (nrow(temp_debit) < 1) {
-    temp_debit <- to_lsd(as.numeric(c(NA, NA, NA)), bases)
-  } else {
-    temp_debit <- temp_debit %>%
-      deb_summarise(!! lsd, round = round, na.rm = na.rm) %>%
-      .[[1]] %>%
-      purrr::map(`-`) # turn positive
+    tibble::tibble(relation = c("credit", "debit"),
+                   # Create lsd list column with simplified c.lsd
+                   !! column_name := list(temp_credit, temp_debit) %>%
+                     purrr::flatten() %>%
+                     to_lsd(attributes(temp_credit)$bases))
   }
-
-  tibble::tibble(relation = c("credit", "debit"),
-                 # Create lsd list column with simplified c.lsd
-                 !! column_name := list(temp_credit, temp_debit) %>%
-                   purrr::flatten() %>%
-                   to_lsd(attributes(temp_credit)$bases))
 }

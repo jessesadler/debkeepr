@@ -4,46 +4,76 @@ suppressPackageStartupMessages(library(tibble))
 
 b1 <- c(20, 12)
 b2 <- c(8, 16)
-tbl_b1 <- tibble(credit = c("a", "b", "a", "c"),
-                 debit = c("b", "a", "c", "a"),
-                 lsd = deb_lsd(l = c(10, 10, 7, 9),
-                               s = c(15, 15, 11, 2),
-                               d = c(6, 6, 8.25, 11.5)))
-tbl_b2 <- tibble(from = c("a", "b", "a", "c"),
-                 to = c("b", "a", "c", "a"),
-                 data = deb_lsd(l = c(10, 10, 7, 9),
-                                s = c(15, 15, 11, 2),
-                                d = c(6, 6, 8.25, 11.5),
+tbl_b1 <- tibble(credit = c("a", "b", "a", "c", "d", "c"),
+                 debit = c("b", "a", "c", "a", "a", "e"),
+                 lsd = deb_lsd(l = c(10, 10, 7, 9, 15, 12),
+                               s = c(15, 15, 11, 2, 0, 10),
+                               d = c(6, 6, 8.25, 11.5, 9, 4)))
+tbl_b2 <- tibble(from = c("a", "b", "a", "c", "d", "c"),
+                 to = c("b", "a", "c", "a", "a", "e"),
+                 data = deb_lsd(l = c(10, 10, 7, 9, 15, 12),
+                                s = c(15, 15, 11, 2, 0, 10),
+                                d = c(6, 6, 8.25, 11.5, 9, 4),
                                 bases = b2))
-tbl_na <- tibble(credit = c("a", "b", "a", "c", "a"),
-                 debit = c("b", "a", "c", "a", "b"),
+# NA, and account "e's" only credit is NA
+tbl_na <- tibble(credit = c("a", "b", "a", "c", "d", "c", "e", "a"),
+                 debit = c("b", "a", "c", "a", "a", "e", "b", "b"),
+                 lsd = deb_lsd(l = c(10, 10, 7, 9, 15, 12, NA, NA),
+                               s = c(15, 15, 11, 2, 0, 10, 8, NA),
+                               d = c(6, 6, 8.25, 11.5, 9, 4, 6, NA)))
+# balance is NA, NA
+tbl_na2 <- tibble(credit = c("a", "b", "a", "c", "c"),
+                 debit = c("b", "a", "c", "a", "a"),
                  lsd = deb_lsd(l = c(10, 10, 7, 9, NA),
                                s = c(15, 15, 11, 2, 4),
                                d = c(6, 6, 8.25, 11.5, 6)))
-tbl_na2 <- tibble(credit = c("a", "b", "a", "c", "c"),
+# balance is value, NA
+tbl_na3 <- tibble(credit = c("a", "b", "a", "c", "c"),
                   debit = c("b", "a", "c", "a", "a"),
-                  lsd = deb_lsd(l = c(10, 10, 7, 9, NA),
-                                s = c(15, 15, 11, 2, 4),
-                                d = c(6, 6, 8.25, 11.5, 6)))
-set.seed(240)
-big_tbl <- tibble(credit = sample(letters[1:4], 15, replace = TRUE),
-                  debit = sample(letters[1:4], 15, replace = TRUE),
-                  lsd = deb_lsd(l = sample(1:30, 15, replace = TRUE),
-                                s = sample(1:19, 15, replace = TRUE),
-                                d = sample(1:11, 15, replace = TRUE)))
+                  lsd = deb_lsd(l = c(10, 15, 7, 9, NA),
+                                s = c(15, 117, 11, 2, 4),
+                                d = c(6, 8, 8.25, 11.5, 6)))
+# totally balanced if na.rm = TRUE
+tbl_balanced <- tibble(credit = c("a", "b", "a", "c", "b"),
+                       debit = c("b", "a", "c", "a", "a"),
+                       lsd = deb_lsd(l = c(10, 10, 7, 7, NA),
+                                     s = c(15, 15, 11, 11, NA),
+                                     d = c(6, 6, 8, 8, NA)))
 relation_v <- c("credit", "debit", "current")
 
-summary_b1 <- tibble(account_id = rep(c("a", "b", "c"), each = 3),
-                     relation = rep(relation_v, 3),
-                     lsd = deb_lsd(l = c(18, 19, -1, 10, 10, 0, 9, 7, 1),
-                                   s = c(7, 18, -11, 15, 15, 0, 2, 11, 11),
-                                   d = c(2.25, 5.5, -3.25, 6, 6, 0, 11.5, 8.25, 3.25)))
-summary_b2 <- tibble(account_id = rep(c("a", "b", "c"), each = 3),
-                     relation = rep(relation_v, 3),
-                     data = deb_lsd(l = c(20, 21, 0, 11, 11, 0, 9, 8, 0),
-                                    s = c(2, 2, -7, 7, 7, 0, 2, 3, 7),
-                                    d = c(14.25, 1.5, -3.25, 6, 6, 0, 11.5, 8.25, 3.25),
-                                    bases = b2))
+summary_b1 <- tibble(account_id = letters[1:5],
+                     credit = deb_lsd(l = c(18, 10, 21, 15, 0),
+                                   s = c(7, 15, 13, 0, 0),
+                                   d = c(2.25, 6, 3.5, 9, 0)),
+                     debit = deb_lsd(l = c(34, 10, 7, 0, 12),
+                                     s = c(19, 15, 11, 0, 10),
+                                     d = c(2.5, 6, 8.25, 0, 4)),
+                     current = deb_lsd(l = c(-16, 0, 14, 15, -12),
+                                       s = c(-12, 0, 1, 0, -10),
+                                       d = c(-0.25, 0, 7.25, 9, -4)))
+summary_b2 <- tibble(account_id = letters[1:5],
+                     credit = deb_lsd(l = c(20, 11, 22, 15, 0),
+                                      s = c(2, 7, 4, 0, 0),
+                                      d = c(14.25, 6, 15.5, 9, 0),
+                                      bases = b2),
+                     debit = deb_lsd(l = c(36, 11, 8, 0, 13),
+                                     s = c(2, 7, 3, 0, 2),
+                                     d = c(10.5, 6, 8.25, 0, 4),
+                                     bases = b2),
+                     current = deb_lsd(l = c(-15, 0, 14, 15, -13),
+                                       s = c(-7, 0, 1, 0, -2),
+                                       d = c(-12.25, 0, 7.25, 9, -4),
+                                       bases = b2))
+summary_round <- tibble(account_id = c("a", "c"),
+                        credit = deb_lsd(l = c(18, 21),
+                                         s = c(7, 13),
+                                         d = c(2, 4)),
+                        debit = deb_lsd(l = c(34, 7),
+                                        s = c(19, 11),
+                                        d = c(2, 8)),
+                        current = deb_lsd(l = c(-16, 14),
+                                          s = c(-12, 1),
+                                          d = c(0, 8)))
 
 # credit_check makes checks for all lsd-account functions
 test_that("credit_check works", {
@@ -51,7 +81,7 @@ test_that("credit_check works", {
                "df must be a data frame")
   expect_error(deb_account(tbl_b1),
                "argument \"account_id\" is missing, with no default")
-  expect_error(deb_account(tbl_b1, account_id = "d"),
+  expect_error(deb_account(tbl_b1, account_id = "x"),
                "account_id must be a value present in the credit and/or debit variables")
   expect_error(deb_account(tbl_b1, "a", credit = credit, debit = lsd),
                "credit and debit variables must be of the same class")
@@ -71,53 +101,57 @@ test_that("credit_check works", {
 test_that("deb_account works", {
   expect_identical(deb_account(tbl_b1, "a"),
                    tibble(relation = relation_v,
-                          lsd = deb_lsd(l = c(18, 19, -1),
-                                        s = c(7, 18, -11),
-                                        d = c(2.25, 5.5, -3.25))))
+                          lsd = deb_lsd(l = c(18, 34, -16),
+                                        s = c(7, 19, -12),
+                                        d = c(2.25, 2.5, -0.25))))
   expect_identical(deb_account(tbl_b1, "a", round = 0),
                    tibble(relation = relation_v,
-                          lsd = deb_lsd(l = c(18, 19, -1),
-                                        s = c(7, 18, -11),
-                                        d = c(2, 6, -4))))
-  expect_identical(deb_account(big_tbl, "a"),
+                          lsd = deb_lsd(l = c(18, 34, -16),
+                                        s = c(7, 19, -12),
+                                        d = c(2, 2, 0))))
+  # only one type of transaction
+  expect_identical(deb_account(tbl_b1, "d"),
                    tibble(relation = relation_v,
-                          lsd = deb_lsd(l = c(23, 22, 1),
-                                        s = c(4, 3, 0),
-                                        d = c(2, 8, 6))))
+                          lsd = deb_lsd(l = c(15, 0, 15),
+                                        s = c(0, 0, 0),
+                                        d = c(9, 0, 9))))
+  expect_identical(deb_account(tbl_b1, "e"),
+                   tibble(relation = relation_v,
+                          lsd = deb_lsd(l = c(0, 12, -12),
+                                        s = c(0, 10, -10),
+                                        d = c(0, 4, -4))))
+  # different bases
   expect_identical(deb_account(tbl_b2, "a", from, to, data),
                    tibble(relation = relation_v,
-                          data = deb_lsd(l = c(20, 21, 0),
+                          data = deb_lsd(l = c(20, 36, -15),
                                          s = c(2, 2, -7),
-                                         d = c(14.25, 1.5, -3.25),
+                                         d = c(14.25, 10.5, -12.25),
                                          bases = b2)))
+  # NA
   expect_identical(deb_account(tbl_na, "a", na.rm = TRUE),
                    deb_account(tbl_b1, "a"))
   expect_identical(deb_account(tbl_na, "a", na.rm = FALSE),
                    tibble(relation = relation_v,
                           lsd = deb_as_lsd(list(as.numeric(c(NA, NA, NA)),
-                                                c(19, 18, 5.5),
+                                                c(34, 19, 2.5),
                                                 as.numeric(c(NA, NA, NA))))))
 })
 
 test_that("deb_account_summary works", {
-  expect_equal(nrow(deb_account_summary(tbl_b1)), 9)
+  expect_equal(nrow(deb_account_summary(tbl_b1)), 5)
   expect_identical(deb_account_summary(tbl_b1), summary_b1)
   expect_identical(deb_account_summary(tbl_b2, from, to, data), summary_b2)
 
-  # One set of deb_account_summary is equal to deb_account for that account
-  expect_identical(deb_account_summary(tbl_b1)[7:9, 2:3],
-                   deb_account(tbl_b1, "c"))
-  expect_identical(deb_account_summary(tbl_b2, from, to, data)[7:9, 2:3],
-                   deb_account(tbl_b2, "c", from, to, data))
   # Round
-  expect_identical(deb_account_summary(tbl_b1, round = 0)[7:9, 2:3],
-                   deb_account(tbl_b1, "c", round = 0))
+  expect_identical(deb_account_summary(tbl_b1, round = 0)[c(1, 3), ],
+                   summary_round)
   # Deal with NA values
   expect_identical(deb_account_summary(tbl_b1),
                    deb_account_summary(tbl_na, na.rm = TRUE))
-  expect_false(identical(deb_account_summary(tbl_b1), deb_account_summary(tbl_na)))
-  expect_identical(deb_account_summary(tbl_na)[4:6, 2:3],
-                   deb_account(tbl_na, "b"))
+  expect_identical(deb_account_summary(tbl_na)[ , 4],
+                   tibble(current = deb_lsd(l = c(NA, NA, 14, 15, -12),
+                                            s = c(NA, NA, 1, 0, -10),
+                                            d = c(NA, NA, 7.25, 9, -4))))
 })
 
 test_that("deb_credit works", {
@@ -155,7 +189,6 @@ test_that("deb_debit works", {
 test_that("deb_current works", {
   # Values come from deb_account_summary.
   expect_equal(nrow(deb_current(tbl_b1)), 3)
-  expect_equal(nrow(deb_current(big_tbl)), 4)
   expect_identical(deb_current(tbl_b1),
                    summary_b1[c(3, 6, 9), c(1, 3)])
   expect_identical(deb_current(tbl_b2, from, to, data),
@@ -171,7 +204,6 @@ test_that("deb_current works", {
 test_that("deb_open works", {
   # Values come from deb_account_summary.
   expect_equal(nrow(deb_open(tbl_b1)), 2)
-  expect_equal(nrow(deb_open(big_tbl)), 4)
   expect_identical(deb_open(tbl_b1),
                    summary_b1[c(3, 9), c(1, 3)])
   expect_identical(deb_open(tbl_b2, from, to, data),
@@ -196,11 +228,6 @@ test_that("deb_balance works", {
                                         s = c(7, 7),
                                         d = c(3.25, 3.25),
                                         bases = b2)))
-  expect_identical(deb_balance(big_tbl),
-                   tibble(relation = c("credit", "debit"),
-                          lsd = deb_lsd(l = c(54, 54),
-                                        s = c(8, 8),
-                                        d = c(9, 9))))
   # Deal with NA values
   expect_identical(deb_balance(tbl_na, na.rm = TRUE),
                    deb_balance(tbl_b1))

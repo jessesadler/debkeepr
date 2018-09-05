@@ -25,11 +25,8 @@ column.}
 shillings, and pence values with a bases attribute.}
 
 \item{round}{Round pence to specified number of decimal places. Default
-is 5. Rounding of the pence value takes place throughout the function and
-is not simply done at the end of the function call. This means that the
-credit, debit, and current values will add together correctly. However,
-the rounded values may be different than running the function without
-rounding and rounding pence values at the end.}
+is 5. Rounding to whole numbers may give results that do not add together
+due to rounding rules.}
 
 \item{na.rm}{Logical. Passed on to \code{na.rm} argument in \code{\link[=sum]{sum()}}. Whether
 missing values (NA) should be removed. Default is \code{FALSE}.}
@@ -48,7 +45,9 @@ in an lsd list column.
 and debits of the accounts that remain open to calculate the capital
 remaining in the transactions data frame. The values for credit and debit
 should be the same, as each credit also has a corresponding debit. The
-exception is if there are missing values in \code{df} and \code{na.rm = FALSE}.
+exceptions are if there are missing values in \code{df} and \code{na.rm = FALSE}, or
+if the \code{round} argument is set to a low value, leading rounding rules to
+alter the returned values.
 
 \code{deb_balance()} is part of a family of functions meant to be used on
 data frames that contain transactions between accounts in an account

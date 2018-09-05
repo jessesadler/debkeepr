@@ -29,11 +29,8 @@ column.}
 shillings, and pence values with a bases attribute.}
 
 \item{round}{Round pence to specified number of decimal places. Default
-is 5. Rounding of the pence value takes place throughout the function and
-is not simply done at the end of the function call. This means that the
-credit, debit, and current values will add together correctly. However,
-the rounded values may be different than running the function without
-rounding and rounding pence values at the end.}
+is 5. Rounding to whole numbers may give results that do not add together
+due to rounding rules.}
 
 \item{na.rm}{Logical. Passed on to \code{na.rm} argument in \code{\link[=sum]{sum()}}. Whether
 missing values (NA) should be removed. Default is \code{FALSE}.}

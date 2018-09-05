@@ -25,34 +25,28 @@ column.}
 shillings, and pence values with a bases attribute.}
 
 \item{round}{Round pence to specified number of decimal places. Default
-is 5. Rounding of the pence value takes place throughout the function and
-is not simply done at the end of the function call. This means that the
-credit, debit, and current values will add together correctly. However,
-the rounded values may be different than running the function without
-rounding and rounding pence values at the end.}
+is 5. Rounding to whole numbers may give results that do not add together
+due to rounding rules.}
 
 \item{na.rm}{Logical. Passed on to \code{na.rm} argument in \code{\link[=sum]{sum()}}. Whether
 missing values (NA) should be removed. Default is \code{FALSE}.}
 }
 \value{
-Returns a tibble with three rows for each account present in the
-credit and/or debit variables of \code{df} with the total credit, debit, and
-current values of the accounts in an lsd list column. If an account does
-not have any credit or debit transactions, it will not have a summary row
-for that type of relation.
+Returns a tibble with one row for each account present in \code{df} and
+three lsd list columns representing the total credit, debit, and current
+values of the accounts.
 }
 \description{
 Calculate the total credit, debit, and the current values for all accounts
 in a transaction data frame with an lsd list column. Credits and debits are
-both returned as positive numbers. If an account has more credit than debit,
-the current value will be returned as positive values. If the debit is
-greater, the current value will be returned as negative values.
+both returned as lsd list columns with positive values. If an account has
+more credit than debit, the current value will be returned as positive
+values. If the debit is greater, the current value will be returned as
+negative values.
 }
 \details{
 \code{deb_account_summary()} is similar to \code{\link[=deb_account]{deb_account()}}, but it returns the
-values for all accounts in a transaction data frame instead of one. If you
-only want to see the current values for single accounts, see
-\code{\link[=deb_current]{deb_current()}}.
+values for all accounts in a transaction data frame instead of one.
 
 \code{deb_account_summary()} is part of a family of functions meant to be used on
 data frames that contain transactions between accounts in an account

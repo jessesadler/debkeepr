@@ -4,8 +4,8 @@
 \alias{deb_credit}
 \title{Calculate the total credit of accounts}
 \usage{
-deb_credit(df, credit = credit, lsd = lsd, round = 5,
-  na.rm = FALSE)
+deb_credit(df, credit = credit, debit = debit, lsd = lsd,
+  round = 5, na.rm = FALSE)
 }
 \arguments{
 \item{df}{A data frame containing transactions between accounts and values
@@ -16,15 +16,17 @@ represents the accounts that discharge the transactional values or from
 which the values derive. Default is credit. The \code{credit} column must be
 of the same class as the \code{debit} column.}
 
+\item{debit}{Debit column: Unquoted name of the debit variable. This
+represents the accounts that receive the transactional values. Default is
+debit. The \code{debit} column must be of the same class as the \code{credit}
+column.}
+
 \item{lsd}{lsd list column: Unquoted name of an lsd list column of pounds,
 shillings, and pence values with a bases attribute.}
 
 \item{round}{Round pence to specified number of decimal places. Default
-is 5. Rounding of the pence value takes place throughout the function and
-is not simply done at the end of the function call. This means that the
-credit, debit, and current values will add together correctly. However,
-the rounded values may be different than running the function without
-rounding and rounding pence values at the end.}
+is 5. Rounding to whole numbers may give results that do not add together
+due to rounding rules.}
 
 \item{na.rm}{Logical. Passed on to \code{na.rm} argument in \code{\link[=sum]{sum()}}. Whether
 missing values (NA) should be removed. Default is \code{FALSE}.}
@@ -40,7 +42,8 @@ lsd list column.
 }
 \details{
 \code{deb_credit()} is similar to \code{\link[=deb_account_summary]{deb_account_summary()}}, but it only returns
-the credit values for the accounts in \code{df}. See \code{\link[=deb_debit]{deb_debit()}} to return
+the credit values for the accounts in \code{df}. Accounts that are not creditor
+in any transactions appear with a value of £0. See \code{\link[=deb_debit]{deb_debit()}} to return
 the debit totals for the accounts in \code{df}.
 
 \code{deb_credit()} is part of a family of functions meant to be used on
