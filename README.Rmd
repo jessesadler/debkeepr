@@ -405,7 +405,7 @@ transactions_tbl <- tibble(credit = sample(accounts, 15, replace = TRUE),
                                          d = sample(1:11, 15, replace = TRUE)))
 ```
 
-`debkeepr` possesses an account family of functions that are designed to analyze a transaction data frame such as `transactions_tbl`. `deb_account()` provides information about the total credit and debit and the current balance of a single account. `deb_account_summary()` gives the same type of information but includes all accounts in the transactions data frame.
+`debkeepr` possesses an account family of functions that are designed to analyze a transaction data frame such as `transactions_tbl`. `deb_account()` provides information about the total credit and debit and the current balance of a single account. `deb_account_summary()` gives the same type of information but includes all accounts in the transactions data frame. It creates separate `lsd` list columns for the total credit, debit, and current value for each account.
 
 ```{r deb_account}
 # Credit, debit, and current values for the "cash" account
@@ -419,7 +419,7 @@ deb_account(df = transactions_tbl,
 deb_account_summary(df = transactions_tbl)
 ```
 
-The remaining functions build on `deb_account_summary()`. Three functions simplify the information produced by `deb_account_summary`: `deb_credit()` shows the total credit for each account, `deb_debit()` does the same for the debits, and `deb_current()` shows on the current value for  each account.
+The remaining functions build on `deb_account_summary()`. Three functions simplify the information produced by `deb_account_summary`: `deb_credit()` shows the total credit for each account, `deb_debit()` does the same for the debits, and `deb_current()` shows the current value for each account.
 
 ```{r account functions}
 # Total credit for each account
@@ -433,7 +433,7 @@ deb_debit(df = transactions_tbl) %>%
 deb_current(df = transactions_tbl)
 ```
 
-`deb_open()` is similar to `deb_current()`, but it removes any accounts that have been closed by being zeroed out. This is useful if there are many accounts in the transactions data frame that have been closed. In the example of `transactions_tbl` all accounts are open, and so `deb_open()` has the same result as `deb_current()`. `deb_balance()` shows the total credit and debit remaining in the transactions data frame. The values for credit and debit will always be the same in `deb_balance()`, as there should always be the same amount of credit as debit in an account book.
+`deb_open()` is similar to `deb_current()`, but it removes any accounts that have been closed by being zeroed out. This is useful if there are many accounts in the transactions data frame that have been closed. In the example of `transactions_tbl` all accounts are open, and so `deb_open()` has the same result as `deb_current()`. `deb_balance()` shows the total credit and debit remaining in the transactions data frame. The values for credit and debit should always be the same in `deb_balance()`, as there should always be the same amount of credit as debit in an account book.
 
 ```{r balance}
 # Balance remaining on transactions_df

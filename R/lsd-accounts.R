@@ -185,7 +185,7 @@ deb_account_summary <- function(df,
 
   dplyr::full_join(temp_credit, temp_debit, by = "account_id") %>%
     dplyr::mutate_at(c("credit", "debit"), deb_replace_null) %>%
-    dplyr::arrange(account_id) %>%
+    dplyr::arrange(.data$account_id) %>%
     dplyr::mutate(current = deb_subtract(lsd1 = credit, lsd2 = debit, round = round))
 }
 
@@ -260,7 +260,7 @@ deb_credit <- function(df,
     dplyr::full_join(dplyr::distinct(df, !! debit),
                      by = c("account_id" = rlang::quo_name(debit))) %>%
     dplyr::mutate(!! column_name := deb_replace_null(!! lsd, c(0, 0, 0))) %>%
-    dplyr::arrange(account_id)
+    dplyr::arrange(.data$account_id)
 }
 
 #' Calculate the total debit of accounts
@@ -334,7 +334,7 @@ deb_debit <- function(df,
     dplyr::full_join(dplyr::distinct(df, !! credit),
                      by = c("account_id" = rlang::quo_name(credit))) %>%
     dplyr::mutate(!! column_name := deb_replace_null(!! lsd, c(0, 0, 0))) %>%
-    dplyr::arrange(account_id)
+    dplyr::arrange(.data$account_id)
 }
 
 #' Calculate the current values of accounts
@@ -403,7 +403,7 @@ deb_current <- function(df,
                        lsd = !! lsd,
                        round = round,
                        na.rm = na.rm) %>%
-    dplyr::select(account_id, !! column_name := current)
+    dplyr::select(.data$account_id, !! column_name := "current")
 }
 
 #' Calculate the current values of open accounts
@@ -554,8 +554,8 @@ deb_balance <- function(df,
                    d = rep(0, nrow(current)),
                    bases = bases)
   if (identical(current[[2]], zeros)) {
-    tibble(relation = c("credit", "debit"),
-           !! column_name := deb_as_lsd(list(c(0, 0, 0), c(0, 0, 0))))
+    tibble::tibble(relation = c("credit", "debit"),
+                   !! column_name := deb_as_lsd(list(c(0, 0, 0), c(0, 0, 0))))
   } else {
     # sum of credits or NA
     temp_credit <- current %>%
