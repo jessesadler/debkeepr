@@ -2,7 +2,7 @@
 % Please edit documentation in R/lsd-sum.R
 \name{deb_summarise}
 \alias{deb_summarise}
-\title{Sum of pounds, shillings, and pence in a list column of a data frame}
+\title{Sum of pounds, shillings, and pence in an lsd list column}
 \usage{
 deb_summarise(df, ..., round = 5, na.rm = FALSE)
 }

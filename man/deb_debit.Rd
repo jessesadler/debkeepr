@@ -71,6 +71,7 @@ trans <- tibble(credit = c("a", "b", "b", "a", "c"),
 
 # Total debit of accounts present in trans
 deb_debit(df = trans,
+          credit = credit,
           debit = debit,
           lsd = lsd)
 

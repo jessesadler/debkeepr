@@ -189,10 +189,10 @@ deb_exchange_rate <- function(lsd1, lsd2,
   }
 }
 
-#' Calculation of the inverse of an exchange rate
+#' Calculate the inverse of an exchange rate
 #'
-#' Given an exchange rate between two currencies, calculate the inverse rate,
-#' or the rate in the opposite direction.
+#' Given an exchange rate between two lsd currencies, calculate the inverse
+#' rate, or the rate in the opposite direction.
 #'
 #' @inheritParams deb_normalize
 #' @inheritParams deb_exchange_rate

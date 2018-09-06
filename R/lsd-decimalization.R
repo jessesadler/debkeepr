@@ -190,7 +190,7 @@ deb_s_lsd <- function(s, bases = c(20, 12), round = 5) {
 
 ### denarii ###
 
-#' Conversion from pounds, shillings, and pence to pence
+#' Conversion of pounds, shillings, and pence to pence
 #'
 #' Convert pounds, shillings, and pence to decimalized pence.
 #'
@@ -239,7 +239,7 @@ deb_lsd_d <- function(lsd, bases = c(20, 12)) {
   }
 }
 
-#' Conversion of pence to pounds, shillings, and pence
+#' Conversion of decimalized pence to pounds, shillings, and pence
 #'
 #' Convert decimalized pence to the lsd system of pounds, shillings, and pence.
 #'

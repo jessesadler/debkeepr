@@ -2,7 +2,7 @@
 % Please edit documentation in R/lsd-arithmetic.R
 \name{deb_add}
 \alias{deb_add}
-\title{Addition of two values of pounds, shillings, and pence}
+\title{Addition of two pounds, shillings, and pence values}
 \usage{
 deb_add(lsd1, lsd2, bases = c(20, 12), round = 5)
 }

@@ -1,0 +1,59 @@
+authors:
+  Jesse Sadler:
+    href: https://www.jessesadler.com
+
+development:
+  mode: unreleased
+
+reference:
+  - title: lsd objects
+    contents:
+    - deb_lsd
+    - deb_as_lsd
+    - deb_is_lsd
+    - deb_bases
+    - deb_replace_null
+    - debkeepr
+  - title: Normalization
+    contents:
+    - deb_normalize
+  - title: Arithmetic
+    contents:
+    - deb_multiply
+    - deb_divide
+    - deb_sum
+    - deb_add
+    - deb_subtract
+  - title: Decimalization
+    contents:
+    - deb_lsd_l
+    - deb_l_lsd
+    - deb_lsd_s
+    - deb_s_lsd
+    - deb_lsd_d
+    - deb_d_lsd
+  - title: Financial
+    contents:
+    - deb_interest
+    - deb_exchange
+    - deb_exchange_rate
+    - deb_invert_rate
+    - deb_convert_bases
+  - title: lsd list column
+    contents:
+    - deb_lsd_gather
+    - deb_lsd_spread
+    - deb_summarise
+  - title: Transaction data frames
+    contents:
+    - deb_account
+    - deb_account_summary
+    - deb_credit
+    - deb_debit
+    - deb_current
+    - deb_open
+    - deb_balance
+  - title: Data
+    contents:
+    - dafforne_accounts
+    - dafforne_transactions

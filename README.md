@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-debkeepr: Analysis of Non-Decimal Currencies and Double-Entry Bookkeeping
-=========================================================================
+debkeepr: Analysis of Non-Decimal Currencies
+============================================
 
 [![Travis build status](https://travis-ci.org/jessesadler/debkeepr.svg?branch=master)](https://travis-ci.org/jessesadler/debkeepr) [![Coverage status](https://codecov.io/gh/jessesadler/debkeepr/branch/master/graph/badge.svg)](https://codecov.io/github/jessesadler/debkeepr?branch=master)
 

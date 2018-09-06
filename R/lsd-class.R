@@ -187,7 +187,7 @@ deb_as_lsd.list <- function(lsd, bases = c(20, 12), ...) {
 
 #' @rdname lsd
 #' @export
-deb_as_lsd.lsd <- function(lsd, bases, ...) lsd
+deb_as_lsd.lsd <- function(lsd, ...) lsd
 
 ## about lsd ------------------------------------------------------------------
 

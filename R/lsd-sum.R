@@ -97,7 +97,7 @@ deb_sum <- function(..., bases = c(20, 12), round = 5, na.rm = FALSE) {
 }
 
 
-#' Sum of pounds, shillings, and pence in a list column of a data frame
+#' Sum of pounds, shillings, and pence in an lsd list column
 #'
 #' Uses [dplyr::summarise_at()] to add pounds, shillings, and pence in one or
 #' more lsd list columns in a data frame.

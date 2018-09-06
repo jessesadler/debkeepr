@@ -2,7 +2,7 @@
 % Please edit documentation in R/lsd-decimalization.R
 \name{deb_d_lsd}
 \alias{deb_d_lsd}
-\title{Conversion of pence to pounds, shillings, and pence}
+\title{Conversion of decimalized pence to pounds, shillings, and pence}
 \usage{
 deb_d_lsd(d, bases = c(20, 12), round = 5)
 }

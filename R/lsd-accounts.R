@@ -233,6 +233,7 @@ deb_account_summary <- function(df,
 #' # Total credit of accounts present in trans
 #' deb_credit(df = trans,
 #'            credit = credit,
+#'            debit = debit,
 #'            lsd = lsd)
 #'
 #' @export
@@ -306,6 +307,7 @@ deb_credit <- function(df,
 #'
 #' # Total debit of accounts present in trans
 #' deb_debit(df = trans,
+#'           credit = credit,
 #'           debit = debit,
 #'           lsd = lsd)
 #'

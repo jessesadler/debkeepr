@@ -1,10 +1,8 @@
 ---
-title: "1. Overview of debkeepr"
-author: "Jesse Sadler"
-date: "`r Sys.Date()`"
+title: "Getting Started with debkeepr"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{1. Overview of debkeepr}
+  %\VignetteIndexEntry{Getting Started with debkeepr}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

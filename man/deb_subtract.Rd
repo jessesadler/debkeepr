@@ -2,7 +2,7 @@
 % Please edit documentation in R/lsd-arithmetic.R
 \name{deb_subtract}
 \alias{deb_subtract}
-\title{Subtraction of two values of pounds, shillings, and pence}
+\title{Subtraction of two pounds, shillings, and pence values}
 \usage{
 deb_subtract(lsd1, lsd2, bases = c(20, 12), round = 5)
 }

@@ -1,6 +1,6 @@
 ## lsd interest calculations ##
 
-#' Calculation of the interest of pounds, shillings, and pence
+#' Interest of pounds, shillings, and pence values
 #'
 #' Calculate the interest of pounds, shillings, and pence given an interest
 #' rate and a duration. The function does not calculate compound interest.

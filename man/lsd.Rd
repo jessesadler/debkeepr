@@ -21,7 +21,7 @@ deb_as_lsd(lsd, bases = c(20, 12), ...)
 
 \method{deb_as_lsd}{list}(lsd, bases = c(20, 12), ...)
 
-\method{deb_as_lsd}{lsd}(lsd, bases, ...)
+\method{deb_as_lsd}{lsd}(lsd, ...)
 
 \method{print}{lsd}(x, ...)
 }

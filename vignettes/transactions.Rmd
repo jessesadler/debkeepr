@@ -1,7 +1,5 @@
 ---
-title: "2. Transactions in Richard Dafforne's Journal"
-author: "Jesse Sadler"
-date: "`r Sys.Date()`"
+title: "1. Transactions in Richard Dafforne's Journal"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{2. Transactions in Richard Dafforne's Journal}

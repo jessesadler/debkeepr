@@ -2,7 +2,7 @@
 % Please edit documentation in R/lsd-exchange.R
 \name{deb_invert_rate}
 \alias{deb_invert_rate}
-\title{Calculation of the inverse of an exchange rate}
+\title{Calculate the inverse of an exchange rate}
 \usage{
 deb_invert_rate(exchange_rate, output = c("shillings", "pence",
   "pounds"), bases = c(20, 12), round = 5)
@@ -33,8 +33,8 @@ of the returned value is determined by the \code{output} argument, either
 pounds, shillings, and pence; shillings and pence; or just pence.
 }
 \description{
-Given an exchange rate between two currencies, calculate the inverse rate,
-or the rate in the opposite direction.
+Given an exchange rate between two lsd currencies, calculate the inverse
+rate, or the rate in the opposite direction.
 }
 \examples{
 # Find the inverse exchange rate of 33s. 4d.

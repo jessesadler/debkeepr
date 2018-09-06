@@ -2,7 +2,7 @@
 % Please edit documentation in R/lsd-interest.R
 \name{deb_interest}
 \alias{deb_interest}
-\title{Calculation of the interest of pounds, shillings, and pence}
+\title{Interest of pounds, shillings, and pence values}
 \usage{
 deb_interest(lsd, interest = 0.0625, duration = 1,
   with_principal = TRUE, bases = c(20, 12), round = 5)

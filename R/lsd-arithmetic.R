@@ -129,7 +129,7 @@ deb_divide <- function(lsd, x, bases = c(20, 12), round = 5) {
 }
 
 
-#' Addition of two values of pounds, shillings, and pence
+#' Addition of two pounds, shillings, and pence values
 #'
 #' Add two pounds, shillings, and pence values that are in the form of lsd
 #' objects, numeric vectors, or lists of numeric vectors. If one of `lsd1`
@@ -220,7 +220,7 @@ deb_add <- function(lsd1, lsd2, bases = c(20, 12), round = 5) {
 }
 
 
-#' Subtraction of two values of pounds, shillings, and pence
+#' Subtraction of two pounds, shillings, and pence values
 #'
 #' Subtract two pounds, shillings, and pence values that are in the form of lsd
 #' objects, numeric vectors, or lists of numeric vectors. If one of `lsd1`
