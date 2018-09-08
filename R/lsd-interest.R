@@ -7,8 +7,6 @@
 #'
 #' @inheritParams deb_normalize
 #' @param interest Interest rate in decimal form. A numeric vector of length 1.
-#'   Default is 0.0625, or 6.25 percent, which was default interest rate in the
-#'   Low Countries at the end of the sixteenth century.
 #' @param duration Duration over which the interest is calculated, or the
 #'   number of times that the interest should be added. A numeric vector of
 #'   length 1. Default is 1.
@@ -21,20 +19,26 @@
 #' @examples
 #' # Calculate the interest with the principal over a certain duration
 #' # If £10.14.5 were lent over a period of 5 years at 6.25%
-#' deb_interest(lsd = c(10, 14, 5), duration = 5)
+#' deb_interest(lsd = c(10, 14, 5), interest = 0.0625, duration = 5)
 #'
 #' # If £10.14.5 were lent over a period of 5 years at 8%
 #' deb_interest(lsd = c(10, 14, 5), interest = 0.08, duration = 5)
 #'
 #' # Or you can calculate only the interest
-#' deb_interest(lsd = c(10, 14, 5), duration = 5, with_principal = FALSE)
+#' deb_interest(lsd = c(10, 14, 5),
+#'              interest = 0.0625,
+#'              duration = 5,
+#'              with_principal = FALSE)
 #'
 #' # Interest for an lsd value with alternative bases
-#' deb_interest(lsd = c(10, 14, 5), duration = 5, bases = c(20, 16))
+#' deb_interest(lsd = c(10, 14, 5),
+#'              interest = 0.0625,
+#'              duration = 5,
+#'              bases = c(20, 16))
 #'
 #' # Interest of an object of class lsd will use the bases attribute
 #' lsd <- deb_as_lsd(lsd = c(10, 14, 5), bases = c(20, 16))
-#' deb_interest(lsd = lsd, duration = 5)
+#' deb_interest(lsd = lsd, interest = 0.0625, duration = 5)
 #'
 #' # Interest of a list of lsd values at a single rate
 #' lsd_list <- list(c(40, 5, 9), c(29, 7, 1), c(35, 6, 5))
@@ -47,7 +51,7 @@
 #' @export
 
 deb_interest <- function(lsd,
-                         interest = 0.0625,
+                         interest,
                          duration = 1,
                          with_principal = TRUE,
                          bases = c(20, 12),
