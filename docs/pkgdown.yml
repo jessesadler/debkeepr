@@ -4,4 +4,7 @@ pkgdown_sha: ~
 articles:
   debkeepr: debkeepr.html
   transactions: transactions.html
+urls:
+  reference: https://jessesadler.github.io/debkeepr//reference
+  article: https://jessesadler.github.io/debkeepr//articles
 

@@ -370,14 +370,14 @@ lsd_tbl %>%
 
 Decimalization can also be used to visualize the values in an `lsd` list column. For instance, a simple bar chart of the total value held in each account in the “id” column by creating a decimalized pounds variable.
 
-```{r plot-lsd}
+```{r plot-lsd, fig.height = 4, fig.width = 4}
 # Use decimalized pounds variable to plot value of each account
 library(ggplot2)
 lsd_tbl %>% 
   mutate(pounds = deb_lsd_l(lsd = lsd)) %>% 
   ggplot() + 
-  geom_bar(aes(x = id, y = pounds), stat = "identity") + 
-  theme_light()
+    geom_bar(aes(x = id, y = pounds), stat = "identity") + 
+    theme_light()
 ```
 
 The biggest exception to the use of `debkeepr` functions within the normal `dplyr` workflow is `deb_sum()`, which does not work in the context of `dplyr::summarise()` as might be expected.[^4] However, `deb_summarise()` provides some of the functionality of `summarise()` in giving a method to find the sum of an `lsd` list column and can be used it its place. To find other summarizing values it is always possible to decimalize an `lsd` list column and perform `summarise()` functions on this variable, returning to an `lsd` list column when necessary. 
@@ -429,7 +429,7 @@ deb_account_summary(df = transactions_tbl)
 
 `deb_account_summary()` provides a good basis for a visual overview of the accounts in a transactions data frame, though some alterations do have to be made. Firstly, the `lsd` list columns have to be decimalized. Secondly, though it is not strictly true to think of debits as negative values, it makes sense to transform the debit of accounts to negative values for the purposes of visualization.
 
-```{r transactions}
+```{r transactions, fig.height = 4, fig.width = 6}
 # Decimalize and plot account summary
 deb_account_summary(transactions_tbl) %>% 
   mutate_if(deb_is_lsd, deb_lsd_l) %>% 

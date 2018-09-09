@@ -99,14 +99,35 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#debkeepr-analysis-of-non-decimal-currencies" class="anchor"></a>debkeepr: Analysis of Non-Decimal Currencies</h1></div>
 
-<p><code>debkeepr</code> provides an interface for analyzing non-decimal currencies that use the tripartite system of pounds, shillings, and pence. It includes functions to apply arithmetic and financial operations to single or multiple values and to analyze account books that use either <a href="https://en.wikipedia.org/wiki/Single-entry_bookkeeping_system">single-entry bookkeeping</a> or <a href="https://en.wikipedia.org/wiki/Double-entry_bookkeeping_system">double-entry bookkeeping</a> with the latter providing the name for <code>debkeepr</code>. The use of non-decimal currencies throughout the medieval and early modern period presents difficulties for the analysis of historical accounts. The pounds, shillings, and pence system complicates even relatively simple arithmetic manipulations, as each unit has to be <a href="https://en.wikipedia.org/wiki/Arithmetic#Compound_unit_arithmetic">normalized</a> or converted to the correct base. To unite pounds, shillings, and pence units into a single value and associate the shillings and pence units with non-decimal bases <code>debkeepr</code> implements a special class of R object. The <strong>lsd</strong> class consists of a list of one or more numeric vectors of length 3 and a <code>bases</code> attribute attached to the list. <code>debkeepr</code> provides functions to manipulate <code>lsd</code> objects on their own or within a data frame as list column.</p>
-<p>The <code>debkeepr</code> package uses the nomenclature of <a href="https://en.wikipedia.org/wiki/%C2%A3sd">l, s, and d</a> to represent pounds, shillings, and pence units. The abbreviations derive from the Latin terms <a href="https://en.wikipedia.org/wiki/French_livre">libra</a>, <a href="https://en.wikipedia.org/wiki/Solidus_(coin)">solidus</a>, and <a href="https://en.wikipedia.org/wiki/Denarius">denarius</a>. The libra was a Roman measurement of weight, while the solidus and denarius were both Roman coins. The denarius was a silver coin from the era of the Republic, in contrast to the golden solidus that was issued in the Late Empire. As the production of silver coins overtook that of gold by the 8th century, a solidus came to represent 12 silver denarii coins, and 240 denarii were — for a time — made from one libra or pound of silver. The custom of counting coins in dozens (solidi) and scores of dozens (librae) spread throughout the Carolingian Empire and became engrained in much of Europe. However, a variety of <a href="https://en.wikipedia.org/wiki/Non-decimal_currency">other bases</a> for the solidi and denarii units were in use in different regions and at different times.</p>
+<p><code>debkeepr</code> provides an interface for working with non-decimal currencies that use the tripartite system of pounds, shillings, and pence. The package includes functions to apply arithmetic and financial operations to single or multiple values and to analyze account books that use either <a href="https://en.wikipedia.org/wiki/Single-entry_bookkeeping_system">single-entry bookkeeping</a> or <a href="https://en.wikipedia.org/wiki/Double-entry_bookkeeping_system">double-entry bookkeeping</a> with the latter providing the name for <code>debkeepr</code>.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install <code>debkeepr</code> from GitHub with <a href="https://github.com/hadley/devtools">devtools</a>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("devtools")</span>
 devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"jessesadler/debkeepr"</span>)</code></pre></div>
+</div>
+<div id="lsd-class" class="section level2">
+<h2 class="hasAnchor">
+<a href="#lsd-class" class="anchor"></a>lsd Class</h2>
+<p>The pounds, shillings, and pence monetary system complicates even relatively simple arithmetic manipulations, as each unit has to be <a href="https://en.wikipedia.org/wiki/Arithmetic#Compound_unit_arithmetic">normalized</a> or converted to the correct base. To unite pounds, shillings, and pence units into a single value and associate the shillings and pence units with non-decimal bases <code>debkeepr</code> implements a special class of R object. The <strong>lsd</strong> class consists of a list of one or more numeric vectors of length 3 and a <code>bases</code> attribute attached to the list. <code>debkeepr</code> provides functions to manipulate <code>lsd</code> objects on their own or within a data frame as a list column.</p>
+</div>
+<div id="historical-background" class="section level2">
+<h2 class="hasAnchor">
+<a href="#historical-background" class="anchor"></a>Historical Background</h2>
+<p>The <code>debkeepr</code> package uses the nomenclature of <a href="https://en.wikipedia.org/wiki/%C2%A3sd">l, s, and d</a> to represent pounds, shillings, and pence units. The abbreviations derive from the Latin terms <a href="https://en.wikipedia.org/wiki/French_livre">libra</a>, <a href="https://en.wikipedia.org/wiki/Solidus_(coin)">solidus</a>, and <a href="https://en.wikipedia.org/wiki/Denarius">denarius</a>. The libra was a Roman measurement of weight, while the solidus and denarius were both Roman coins. The denarius was a silver coin from the era of the Republic, in contrast to the golden solidus that was issued in the Late Empire. As the production of silver coins overtook that of gold by the 8th century, a solidus came to represent 12 silver denarii coins, and 240 denarii were — for a time — made from one libra or pound of silver. The custom of counting coins in dozens (solidi) and scores of dozens (librae) spread throughout the Carolingian Empire and became engrained in much of Europe. However, a variety of <a href="https://en.wikipedia.org/wiki/Non-decimal_currency">other bases</a> for the solidi and denarii units were in use in different regions and at different times. <code>debkeepr</code> provides a consistent manner for dealing with any set of bases within a tripartite system through the <code>bases</code> attribute of an <code>lsd</code> object.</p>
+</div>
+<div id="resources" class="section level2">
+<h2 class="hasAnchor">
+<a href="#resources" class="anchor"></a>Resources</h2>
+<ul>
+<li>
+<a href="https://jessesadler.github.io/debkeepr/articles/debkeepr.html">Getting Started with debkeepr vignette</a>: An overview of <code>debkeepr</code>’s functions and their use in various contexts.</li>
+<li>
+<a href="https://jessesadler.github.io/debkeepr/articles/transactions.html">Transactions in Richard Dafforne’s Journal vignette</a>: Examples of financial and arithmetic calculations dealing with various currencies taken from the example journal in Richard Dafforne’s <em>Merchant’s Mirrour</em> (1660).</li>
+<li>Analysis of Richard Dafforne’s Journal and Ledger vignette (coming soon): An analysis of the example journal and ledger in Dafforne’s <em>Merchant’s Mirrour</em> using the <code>dafforne_transactions</code> and <code>dafforne_accounts</code> data provided in <code>debkeepr</code>.</li>
+<li>A <a href="https://github.com/jessesadler/debkeepr/blob/master/data-raw/dafforne-journal.pdf">PDF copy of Dafforne’s example journal</a> can be consulted to further investigate the practices of early modern double-entry bookkeeping.</li>
+</ul>
 </div>
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
@@ -131,541 +152,130 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <li>Data
 <ul>
 <li>
-<code>debkeepr</code> contains two data sets from the example journal and ledger in Richard Dafforne’s <em>Merchant’s Mirrour</em> from 1660. <code>dafforne_transactions</code> is a transactions data frame with 177 transactions. <code>dafforne_accounts</code> possesses information about the 46 accounts in the journal and ledger.</li>
+<code>debkeepr</code> contains two data sets from the example journal and ledger in the third edition of Richard Dafforne’s <em>Merchant’s Mirrour</em> from 1660. Dafforne’s text taught the practices of double-entry bookkeeping and provided a full set of account books to be used for educational purposes.</li>
+<li>
+<code>dafforne_transactions</code> is a transactions data frame with 177 transactions.</li>
+<li>
+<code>dafforne_accounts</code> possesses information about the 46 accounts in the journal and ledger.</li>
 </ul>
 </li>
 </ul>
 </div>
-<div id="lsd-objects" class="section level2">
+<div id="examples" class="section level2">
 <h2 class="hasAnchor">
-<a href="#lsd-objects" class="anchor"></a>lsd objects</h2>
-<p>The <code>lsd</code> class is implemented to deal with two interrelated problems in manipulating pounds, shillings, and pence (lsd) values in a programming environment such as R. In the first place, a single lsd value possesses three separate units. Making matters more difficult, the shillings and pence units are non-decimal, and the bases for the the units differed by region, coinage used as the <a href="https://en.wikipedia.org/wiki/Unit_of_account">money of account</a>, and era. The latter issue means that the actual value represented by three numbers standing in for pounds, shillings, and pence cannot be known outside of the context of the bases for the shillings and pence units.</p>
-<p>The <code>lsd</code> class provides solutions to these issues by unifying pounds, shillings, and pence values into a numeric vector of length three and the creation of a <code>bases</code> attribute to track and implement the specified bases for the shillings and pence units. The first position of each vector represents the pounds unit, the second the shillings unit, and the third the pence unit. The <code>bases</code> attribute consists of a numeric vector of length 2. The first position records the base for the shillings unit, and the second position provides the base for the pence unit. The <code>bases</code> attribute ensures that pounds, shillings, and pence values are always associated with their correct bases and that values with different bases are never unknowingly brought together. <code>lsd</code> objects are stored as <a href="http://r4ds.had.co.nz/vectors.html#lists">lists</a>, making it possible to have multiple lsd values in a single <code>lsd</code> object and to implement <code>lsd</code> objects as list columns in a data frame or <a href="https://tibble.tidyverse.org">tibble</a>. The <code>lsd</code> class uses its own printing method to reduce the space taken up by each lsd value compared to the default list print method. The print method borrows from that of data frame, since the structures of the objects are similar.</p>
-<div id="creating-lsd-objects" class="section level3">
-<h3 class="hasAnchor">
-<a href="#creating-lsd-objects" class="anchor"></a>Creating lsd objects</h3>
-<p>Objects of class <code>lsd</code> can be created either explicitly or implicitly. <code>debkeepr</code> provides two methods for the explicit creation of <code>lsd</code> objects.</p>
-<ol style="list-style-type: decimal">
-<li>
-<code><a href="reference/lsd.html">deb_lsd()</a></code> uses separate pounds (<code>l</code>), shillings (<code>s</code>), and pence (<code>d</code>) vectors, alongside a bases vector, to create an <code>lsd</code> object. <code>l</code>, <code>s</code>, and <code>d</code> must all be the same length, and the length of the <code>lsd</code> object will be the same as the input vectors.</li>
-<li>
-<code><a href="reference/lsd.html">deb_as_lsd()</a></code> converts a numeric vector of length three or a list of such vectors into an <code>lsd</code> object.</li>
-</ol>
-<p>In addition, all <code>debkeepr</code> functions that produce a pounds, shillings, and pence value return an object of class <code>lsd</code>. Whether the input to the <code>lsd</code> argument of a <code>debkeepr</code> function is an <code>lsd</code> object, a numeric vector of length 3, or a list of such numeric vectors, the returned value will be of class <code>lsd</code>.</p>
+<a href="#examples" class="anchor"></a>Examples</h2>
+<p>At the heart of <code>debkeepr</code> is the need to normalize pounds, shillings, and pence values to specified non-decimal unit bases in the process or making various calculations. Even in the simplest case of addition, <code>debkeepr</code> makes the process easier and less error prone. A historian working with economic data will often come across sets of monetary values that need to be added together. <code>debkeepr</code> provides multiple means to accomplish this frequent task.</p>
+<ul>
+<li>Add the separate units by hand and then normalize.</li>
+<li>Do the addition with <code>debkeepr</code> by supplying numeric vectors of length three.</li>
+<li>Create an object of class <code>lsd</code> and proceed with the addition.</li>
+</ul>
+<p>For example, adding together a set of values by hand might result in the non-standard form of £131 62s. 41d. in a currency with the standard bases of 20 shillings per £1 and 12 pence per shilling.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(debkeepr)
 
-<span class="co"># Explicitly create an lsd object from separate l, s, and d vectors</span>
-
-<span class="co"># single lsd value</span>
-<span class="kw"><a href="reference/lsd.html">deb_lsd</a></span>(<span class="dt">l =</span> <span class="dv">10</span>, <span class="dt">s =</span> <span class="dv">8</span>, <span class="dt">d =</span> <span class="dv">11</span>)
-<span class="co">#&gt;      l s  d</span>
-<span class="co">#&gt; [1] 10 8 11</span>
-
-<span class="co"># multiple lsd values</span>
-<span class="kw"><a href="reference/lsd.html">deb_lsd</a></span>(<span class="dt">l =</span> <span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">12</span>, <span class="dv">5</span>), <span class="dt">s =</span> <span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">16</span>, <span class="dv">3</span>), <span class="dt">d =</span> <span class="kw">c</span>(<span class="dv">11</span>, <span class="dv">2</span>, <span class="dv">8</span>))
-<span class="co">#&gt;      l  s  d</span>
-<span class="co">#&gt; [1] 10  8 11</span>
-<span class="co">#&gt; [2] 12 16  2</span>
-<span class="co">#&gt; [3]  5  3  8</span>
-
-<span class="co"># Explicitly create an lsd object from lsd vectors</span>
-
-<span class="co"># single lsd value</span>
-<span class="kw"><a href="reference/lsd.html">deb_as_lsd</a></span>(<span class="dt">lsd =</span> <span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">8</span>, <span class="dv">11</span>))
-<span class="co">#&gt;      l s  d</span>
-<span class="co">#&gt; [1] 10 8 11</span>
-
-<span class="co"># multiple lsd values</span>
-<span class="kw"><a href="reference/lsd.html">deb_as_lsd</a></span>(<span class="dt">lsd =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">8</span>, <span class="dv">11</span>), <span class="kw">c</span>(<span class="dv">12</span>, <span class="dv">16</span>, <span class="dv">2</span>), <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">8</span>)))
-<span class="co">#&gt;      l  s  d</span>
-<span class="co">#&gt; [1] 10  8 11</span>
-<span class="co">#&gt; [2] 12 16  2</span>
-<span class="co">#&gt; [3]  5  3  8</span></code></pre></div>
-<p>An <code>lsd</code> list column in a data frame can be constructed at the time of making the data frame or from separate pounds, shillings, and pence variables. The former method necessitates the use of the <a href="https://tibble.tidyverse.org">tibble package</a>, as a list column cannot be added to a data frame with the base <code>data.frame()</code> function. Creating a list column of class <code>lsd</code> with <code><a href="http://dplyr.tidyverse.org/reference/reexports.html">tibble()</a></code> can be done with either <code><a href="reference/lsd.html">deb_lsd()</a></code> or <code><a href="reference/lsd.html">deb_as_lsd()</a></code>. Another method, which can be used in both tibbles and base data frames, is to convert separate pounds, shillings, and pence variables to an <code>lsd</code> list column with <code><a href="reference/deb_lsd_gather.html">deb_lsd_gather()</a></code>. The function possesses an optional <code>replace</code> argument to remove the original pounds, shillings, and pence variables. The inverse operation of converting an <code>lsd</code> list column to separate pounds, shillings, and pence variables can be done with <code><a href="reference/deb_lsd_spread.html">deb_lsd_spread()</a></code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tibble)
-
-<span class="co"># lsd list column from scratch with tibble</span>
-<span class="kw"><a href="http://www.rdocumentation.org/packages/tibble/topics/tibble">tibble</a></span>(<span class="dt">lsd =</span> <span class="kw"><a href="reference/lsd.html">deb_lsd</a></span>(<span class="dt">l =</span> <span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">12</span>, <span class="dv">5</span>), <span class="dt">s =</span> <span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">16</span>, <span class="dv">3</span>), <span class="dt">d =</span> <span class="kw">c</span>(<span class="dv">11</span>, <span class="dv">2</span>, <span class="dv">8</span>)))
-<span class="co">#&gt; # A tibble: 3 x 1</span>
-<span class="co">#&gt;   lsd      </span>
-<span class="co">#&gt;   &lt;S3: lsd&gt;</span>
-<span class="co">#&gt; 1 10, 8, 11</span>
-<span class="co">#&gt; 2 12, 16, 2</span>
-<span class="co">#&gt; 3 5, 3, 8</span>
-
-<span class="co"># lsd list column from separate l, s, and d variables</span>
-lsd_df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">l =</span> <span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">12</span>, <span class="dv">5</span>), <span class="dt">s =</span> <span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">16</span>, <span class="dv">3</span>), <span class="dt">d =</span> <span class="kw">c</span>(<span class="dv">11</span>, <span class="dv">2</span>, <span class="dv">8</span>))
-<span class="kw"><a href="reference/deb_lsd_gather.html">deb_lsd_gather</a></span>(<span class="dt">df =</span> lsd_df, <span class="dt">replace =</span> <span class="ot">TRUE</span>)
-<span class="co">#&gt;         lsd</span>
-<span class="co">#&gt; 1 10, 8, 11</span>
-<span class="co">#&gt; 2 12, 16, 2</span>
-<span class="co">#&gt; 3   5, 3, 8</span></code></pre></div>
-<p>With few exceptions all of the functions in <code>debkeepr</code> possess a <code>bases</code> argument that provides the values to be stored as the <code>bases</code> attribute of an <code>lsd</code> object. The values for the <code>bases</code> argument must be positive and cannot be missing or zero. The default is <code>c(20, 12)</code>, which conforms to the most widely used system of 1 pound = 20 shillings and 1 shilling = 12 pence. Unless an alternative set of bases is provided, the default value will be applied. However, if the input to a <code>debkeepr</code> function is an object of class <code>lsd</code>, the <code>bases</code> attribute will be used and override any values passed to the <code>bases</code> argument. This means that the use of <code>debkeepr</code> functions on an <code>lsd</code> list column do not apply the <code>bases</code> argument. The only way to alter the <code>bases</code> attribute of an <code>lsd</code> object is to do so explicitly with <code><a href="reference/deb_convert_bases.html">deb_convert_bases()</a></code>. An easy way to access the <code>bases</code> attribute of an <code>lsd</code> object is with <code><a href="reference/deb_bases.html">deb_bases()</a></code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># lsd object with default bases</span>
-<span class="kw"><a href="reference/lsd.html">deb_lsd</a></span>(<span class="dt">l =</span> <span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">12</span>, <span class="dv">5</span>), <span class="dt">s =</span> <span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">16</span>, <span class="dv">3</span>), <span class="dt">d =</span> <span class="kw">c</span>(<span class="dv">11</span>, <span class="dv">2</span>, <span class="dv">8</span>))
-<span class="co">#&gt;      l  s  d</span>
-<span class="co">#&gt; [1] 10  8 11</span>
-<span class="co">#&gt; [2] 12 16  2</span>
-<span class="co">#&gt; [3]  5  3  8</span>
-
-<span class="co"># lsd object with alternative bases of Holland guilders</span>
-<span class="kw"><a href="reference/lsd.html">deb_lsd</a></span>(<span class="dt">l =</span> <span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">12</span>, <span class="dv">5</span>), <span class="dt">s =</span> <span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">16</span>, <span class="dv">3</span>), <span class="dt">d =</span> <span class="kw">c</span>(<span class="dv">11</span>, <span class="dv">2</span>, <span class="dv">8</span>), <span class="dt">bases =</span> <span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">16</span>))
-<span class="co">#&gt;      l  s  d</span>
-<span class="co">#&gt; [1] 10  8 11</span>
-<span class="co">#&gt; [2] 12 16  2</span>
-<span class="co">#&gt; [3]  5  3  8</span>
-
-<span class="co"># confirm the bases</span>
-<span class="kw"><a href="reference/lsd.html">deb_lsd</a></span>(<span class="dt">l =</span> <span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">12</span>, <span class="dv">5</span>), <span class="dt">s =</span> <span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">16</span>, <span class="dv">3</span>), <span class="dt">d =</span> <span class="kw">c</span>(<span class="dv">11</span>, <span class="dv">2</span>, <span class="dv">8</span>), <span class="dt">bases =</span> <span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">16</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="reference/deb_bases.html">deb_bases</a></span>()
-<span class="co">#&gt;  s  d </span>
-<span class="co">#&gt; 20 16</span></code></pre></div>
-</div>
-</div>
-<div id="context-1-lsd-objects" class="section level2">
-<h2 class="hasAnchor">
-<a href="#context-1-lsd-objects" class="anchor"></a>Context 1: lsd objects</h2>
-<p>The creation and use of <code>lsd</code> objects by themselves are most likely to be useful for doing quick calculations on values in historical sources since they cannot be directly attached to information about dates, accounts involved, or other attribute data as is possible in a data frame with an <code>lsd</code> list column. However, the dispersed nature of accounting practices and mediums in which historians will encounter pounds, shillings, and pence values makes these quick calculations quite useful.</p>
-<p>The pounds, shillings, and pence values used as inputs to <code>debkeepr</code> functions can be of three types:</p>
-<ol style="list-style-type: decimal">
-<li>An object of class <code>lsd</code>
-</li>
-<li>A numeric vector of length 3 for a single lsd value</li>
-<li>A list of numeric vectors of length 3 for multiple lsd values</li>
-</ol>
-<p>The examples below will show the various types of possible inputs.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create lsd objects with default bases to be used in examples</span>
-single_lsd &lt;-<span class="st"> </span><span class="kw"><a href="reference/lsd.html">deb_as_lsd</a></span>(<span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">13</span>, <span class="dv">8</span>))
-mult_lsd &lt;-<span class="st"> </span><span class="kw"><a href="reference/lsd.html">deb_lsd</a></span>(<span class="dt">l =</span> <span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">12</span>, <span class="dv">5</span>), <span class="dt">s =</span> <span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">16</span>, <span class="dv">3</span>), <span class="dt">d =</span> <span class="kw">c</span>(<span class="dv">11</span>, <span class="dv">2</span>, <span class="dv">8</span>))</code></pre></div>
-<div id="normalization" class="section level3">
-<h3 class="hasAnchor">
-<a href="#normalization" class="anchor"></a>Normalization</h3>
-<p>A particularly useful function for one-off uses is <code><a href="reference/deb_normalize.html">deb_normalize()</a></code>, which normalizes an lsd value to the bases provided in the <code>bases</code> argument or in the <code>bases</code> attribute. For instance, adding together a set of values by hand might result in the non-standard form of £10 64s. 71d.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Normalize a non-standard lsd value</span>
-<span class="kw"><a href="reference/deb_normalize.html">deb_normalize</a></span>(<span class="dt">lsd =</span> <span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">64</span>, <span class="dv">71</span>))
-<span class="co">#&gt;      l s  d</span>
-<span class="co">#&gt; [1] 13 9 11</span></code></pre></div>
-<p>The bases for the shillings and pence units can be changed with the bases argument.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Normalize a non-standard lsd value with alternative bases</span>
-<span class="kw"><a href="reference/deb_normalize.html">deb_normalize</a></span>(<span class="dt">lsd =</span> <span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">64</span>, <span class="dv">71</span>), <span class="dt">bases =</span> <span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">16</span>))
-<span class="co">#&gt;      l s d</span>
-<span class="co">#&gt; [1] 13 8 7</span></code></pre></div>
-<p>Multiple lsd values can be normalized by placing numeric vectors into a list. The below example demonstrates some of the types of values that can be properly normalized by <code><a href="reference/deb_normalize.html">deb_normalize()</a></code>. The function accepts negative values or even a mix of positive and negative values within a numeric vector. Any of the units can also possess decimalized values.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># To normalize multiple lsd values use a list of lsd vectors</span>
-<span class="kw"><a href="reference/deb_normalize.html">deb_normalize</a></span>(<span class="dt">lsd =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">34</span>, <span class="dv">89</span>), <span class="kw">c</span>(<span class="op">-</span><span class="dv">9</span>, <span class="op">-</span><span class="dv">75</span>, <span class="op">-</span><span class="dv">19</span>), <span class="kw">c</span>(<span class="fl">15.85</span>, <span class="fl">36.15</span>, <span class="dv">56</span>)))
-<span class="co">#&gt;       l   s    d</span>
-<span class="co">#&gt; [1]   6   1  5.0</span>
-<span class="co">#&gt; [2] -12 -16 -7.0</span>
-<span class="co">#&gt; [3]  17  17  9.8</span></code></pre></div>
-<p>Another option available in all of the functions that deal with lsd values is to round the pence unit to a specified decimal place. The <code>round</code> argument helps to simplify the output and avoids the issue of rounding lsd values to a non-normalized value. The default is to round to the 5th decimal place.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Using round outside of debkeepr functions can lead to non-normalized value</span>
-<span class="kw">round</span>(<span class="kw">c</span>(<span class="dv">9</span>, <span class="dv">19</span>, <span class="fl">11.999999</span>), <span class="dt">digits =</span> <span class="dv">5</span>)
-<span class="co">#&gt; [1]  9 19 12</span>
-
-<span class="co"># Normalization applied within rounding</span>
-<span class="kw"><a href="reference/deb_normalize.html">deb_normalize</a></span>(<span class="dt">lsd =</span> <span class="kw">c</span>(<span class="dv">9</span>, <span class="dv">19</span>, <span class="fl">11.999999</span>), <span class="dt">round =</span> <span class="dv">5</span>)
-<span class="co">#&gt;      l s d</span>
-<span class="co">#&gt; [1] 10 0 0</span>
-
-<span class="co"># Rounding is useful to return all pence values as whole numbers</span>
-<span class="kw"><a href="reference/deb_normalize.html">deb_normalize</a></span>(<span class="dt">lsd =</span> <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">11</span>, <span class="fl">8.95</span>), <span class="dt">round =</span> <span class="dv">0</span>)
-<span class="co">#&gt;     l  s d</span>
-<span class="co">#&gt; [1] 5 11 9</span></code></pre></div>
-</div>
-<div id="arithmetic-functions" class="section level3">
-<h3 class="hasAnchor">
-<a href="#arithmetic-functions" class="anchor"></a>Arithmetic functions</h3>
-<p><code>debkeepr</code> contains functions to perform arithmetic operations such as addition, subtraction, multiplication, and division on lsd values.</p>
-<p>There are two different ways to add lsd values. <code><a href="reference/deb_sum.html">deb_sum()</a></code> takes any number of <code>lsd</code> objects or objects that can be coerced to class <code>lsd</code> and returns an <code>lsd</code> object of length one that is the sum of the input values. As with all functions that contain more than one lsd value, all inputs must have the same bases, and any non-<code>lsd</code> objects will be coerced to the bases of the <code>lsd</code> object(s).</p>
-<p><code><a href="reference/deb_add.html">deb_add()</a></code> has a different use case. It only accepts two sets of lsd values: <code>lsd1</code> and <code>lsd2</code>. If <code>lsd1</code> and <code>lsd2</code> are both single lsd values, the output will be equivalent to <code><a href="reference/deb_sum.html">deb_sum()</a></code>. However, if one or both of the inputs contain multiple values, the output will be the length of the longer list and each element of the list is added to the equivalent element of the other input. The lists of lsd values must either be the same length or one must be length one. <code><a href="reference/deb_subtract.html">deb_subtract()</a></code> is equivalent to <code><a href="reference/deb_add.html">deb_add()</a></code> with <code>lsd2</code> subtracted from <code>lsd1</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Use deb_sum to reduce multiple lsd values to a single value</span>
-<span class="kw"><a href="reference/deb_sum.html">deb_sum</a></span>(single_lsd, <span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">14</span>, <span class="dv">11</span>))
-<span class="co">#&gt;      l s d</span>
-<span class="co">#&gt; [1] 14 8 7</span>
-<span class="kw"><a href="reference/deb_sum.html">deb_sum</a></span>(mult_lsd, single_lsd)
-<span class="co">#&gt;      l s d</span>
-<span class="co">#&gt; [1] 34 2 5</span>
-
-<span class="co"># deb_add is the same as deb_sum if inputs are single lsd values</span>
-<span class="kw"><a href="reference/deb_add.html">deb_add</a></span>(<span class="dt">lsd1 =</span> single_lsd, <span class="dt">lsd2 =</span> <span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">14</span>, <span class="dv">11</span>))
-<span class="co">#&gt;      l s d</span>
-<span class="co">#&gt; [1] 14 8 7</span>
-
-<span class="co"># If one input has multiple lsd values, the output will have the same number of lsd values.</span>
-<span class="co"># Here, £5 13s. 8d. is added to each lsd value in mult_lsd.</span>
-<span class="kw"><a href="reference/deb_add.html">deb_add</a></span>(<span class="dt">lsd1 =</span> mult_lsd, <span class="dt">lsd2 =</span> single_lsd)
-<span class="co">#&gt;      l  s  d</span>
-<span class="co">#&gt; [1] 16  2  7</span>
-<span class="co">#&gt; [2] 18  9 10</span>
-<span class="co">#&gt; [3] 10 17  4</span>
-
-<span class="co"># deb_subtract has the same use case as deb_add</span>
-<span class="kw"><a href="reference/deb_subtract.html">deb_subtract</a></span>(<span class="dt">lsd1 =</span> <span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">14</span>, <span class="dv">11</span>), <span class="dt">lsd2 =</span> single_lsd)
-<span class="co">#&gt;     l s d</span>
-<span class="co">#&gt; [1] 3 1 3</span>
-
-<span class="co"># Subtract lsd value from multiple lsd values</span>
-<span class="kw"><a href="reference/deb_subtract.html">deb_subtract</a></span>(<span class="dt">lsd1 =</span> mult_lsd, <span class="dt">lsd2 =</span> single_lsd)
-<span class="co">#&gt;     l   s d</span>
-<span class="co">#&gt; [1] 4  15 3</span>
-<span class="co">#&gt; [2] 7   2 6</span>
-<span class="co">#&gt; [3] 0 -10 0</span></code></pre></div>
-<p>Multiplication and division work similarly to <code><a href="reference/deb_add.html">deb_add()</a></code> and <code><a href="reference/deb_subtract.html">deb_subtract()</a></code>, but instead of using a second lsd value, <code><a href="reference/deb_multiply.html">deb_multiply()</a></code> and <code><a href="reference/deb_divide.html">deb_divide()</a></code> multiply and divide a lsd values by a single value: <code>x</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Multiplcation</span>
-<span class="kw"><a href="reference/deb_multiply.html">deb_multiply</a></span>(<span class="dt">lsd =</span> single_lsd, <span class="dt">x =</span> <span class="dv">5</span>)
-<span class="co">#&gt;      l s d</span>
-<span class="co">#&gt; [1] 28 8 4</span>
-
-<span class="co"># Multiplication of multiple lsd values</span>
-<span class="kw"><a href="reference/deb_multiply.html">deb_multiply</a></span>(<span class="dt">lsd =</span> mult_lsd, <span class="dt">x =</span> <span class="dv">5</span>)
-<span class="co">#&gt;      l  s  d</span>
-<span class="co">#&gt; [1] 52  4  7</span>
-<span class="co">#&gt; [2] 64  0 10</span>
-<span class="co">#&gt; [3] 25 18  4</span>
-
-<span class="co"># Division</span>
-<span class="kw"><a href="reference/deb_divide.html">deb_divide</a></span>(<span class="dt">lsd =</span> <span class="kw">c</span>(<span class="dv">136</span>, <span class="dv">17</span>, <span class="dv">9</span>), <span class="dt">x =</span> <span class="dv">5</span>)
-<span class="co">#&gt;      l s   d</span>
-<span class="co">#&gt; [1] 27 7 6.6</span>
-
-<span class="co"># Division of multiple lsd values</span>
-<span class="kw"><a href="reference/deb_divide.html">deb_divide</a></span>(<span class="dt">lsd =</span> mult_lsd, <span class="dt">x =</span> <span class="dv">3</span>)
-<span class="co">#&gt;     l  s       d</span>
-<span class="co">#&gt; [1] 3  9 7.66667</span>
-<span class="co">#&gt; [2] 4  5 4.66667</span>
-<span class="co">#&gt; [3] 1 14 6.66667</span></code></pre></div>
-<p>Because <code>lsd</code> is always the first argument in <code>debkeepr</code> functions that deal with lsd vectors, <code>debkeepr</code> functions can be chained together with the pipe (<code>%&gt;%</code>). For instance, you can find the revenue gained by each of two partners who worked on a commission of 3% for the sum of four separate sales.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 3% commision between two partners</span>
-<span class="kw"><a href="reference/deb_sum.html">deb_sum</a></span>(<span class="kw">c</span>(<span class="dv">245</span>, <span class="dv">14</span>, <span class="dv">10</span>), <span class="kw">c</span>(<span class="dv">379</span>, <span class="dv">16</span>, <span class="dv">0</span>), <span class="kw">c</span>(<span class="dv">764</span>, <span class="dv">9</span>, <span class="dv">11</span>), <span class="kw">c</span>(<span class="dv">302</span>, <span class="dv">4</span>, <span class="dv">8</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="reference/deb_multiply.html">deb_multiply</a></span>(<span class="dt">x =</span> <span class="fl">0.03</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="reference/deb_divide.html">deb_divide</a></span>(<span class="dt">x =</span> <span class="dv">2</span>)
-<span class="co">#&gt;      l s     d</span>
-<span class="co">#&gt; [1] 25 7 8.175</span></code></pre></div>
-<p>Modifying the <code>round</code> argument may be especially useful when dealing with multiplication and division. For example, an lsd value divided by a number and then the result multiplied by the same number may not be equivalent because of the default rounding.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Not equivalent due to default rounding</span>
-<span class="kw"><a href="reference/deb_divide.html">deb_divide</a></span>(<span class="kw">c</span>(<span class="dv">6</span>, <span class="dv">8</span>, <span class="dv">1</span>), <span class="dt">x =</span> <span class="dv">3</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="reference/deb_multiply.html">deb_multiply</a></span>(<span class="dt">x =</span> <span class="dv">3</span>)
-<span class="co">#&gt;     l s       d</span>
-<span class="co">#&gt; [1] 6 8 0.99999</span>
-
-<span class="co"># Can be solved by reducing the rounding argument</span>
-<span class="kw"><a href="reference/deb_divide.html">deb_divide</a></span>(<span class="kw">c</span>(<span class="dv">6</span>, <span class="dv">8</span>, <span class="dv">1</span>), <span class="dt">x =</span> <span class="dv">3</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="reference/deb_multiply.html">deb_multiply</a></span>(<span class="dt">x =</span> <span class="dv">3</span>, <span class="dt">round =</span> <span class="dv">4</span>)
-<span class="co">#&gt;     l s d</span>
-<span class="co">#&gt; [1] 6 8 1</span></code></pre></div>
-</div>
-<div id="financial-functions" class="section level3">
-<h3 class="hasAnchor">
-<a href="#financial-functions" class="anchor"></a>Financial functions</h3>
-<p>Alongside arithmetic operations, <code>debkeepr</code> possesses functions to do common financial operations such as calculate interest and the exchange between different currencies. <code><a href="reference/deb_interest.html">deb_interest()</a></code> contains arguments for the interest rate, the duration over which the interest should be calculated, and whether the principal should be included in the returned value. The default interest rate is 6.25%, which was the standard interest rate in the Low Countries at the end of the 16th century.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Interest rate at 6.25% over a 5 year period with principal</span>
-<span class="kw"><a href="reference/deb_interest.html">deb_interest</a></span>(<span class="dt">lsd =</span> <span class="kw">c</span>(<span class="dv">100</span>, <span class="dv">0</span>, <span class="dv">0</span>), <span class="dt">interest =</span> <span class="fl">0.0625</span>, <span class="dt">duration =</span> <span class="dv">5</span>)
-<span class="co">#&gt;       l s d</span>
-<span class="co">#&gt; [1] 131 5 0</span>
-
-<span class="co"># Calculate only the accrued interest</span>
-<span class="kw"><a href="reference/deb_interest.html">deb_interest</a></span>(<span class="dt">lsd =</span> <span class="kw">c</span>(<span class="dv">100</span>, <span class="dv">0</span>, <span class="dv">0</span>), <span class="dt">interest =</span> <span class="fl">0.0625</span>, <span class="dt">duration =</span> <span class="dv">5</span>, <span class="dt">with_principal =</span> <span class="ot">FALSE</span>)
-<span class="co">#&gt;      l s d</span>
-<span class="co">#&gt; [1] 31 5 0</span></code></pre></div>
-<p>Exchange between different currencies creates a number of potential problems, but <code>debkeepr</code> provides multiple ways to handle currency exchanges. The most straightforward method for calculating the exchange between two currencies is to use <code><a href="reference/deb_exchange.html">deb_exchange()</a></code>, which uses the shillings unit to compare the currencies. If the exchange rate includes a pence value, you can either convert to a decimalized shillings or add the pence over the base of the pence as shown below. However, the exchange rate between currencies may not always be given in terms of shillings. For instance, a rate might be provided as 90d. This could be normalized to shillings, but in this case it may be easier to use <code><a href="reference/deb_multiply.html">deb_multiply()</a></code> and compare 90d. to 240d. in a pound.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Exchange between currencies at rate of 31 shillings or 1 to 1.55</span>
-<span class="kw"><a href="reference/deb_exchange.html">deb_exchange</a></span>(<span class="dt">lsd =</span> <span class="kw">c</span>(<span class="dv">100</span>, <span class="dv">0</span>, <span class="dv">0</span>), <span class="dt">shillings_rate =</span> <span class="dv">31</span>)
-<span class="co">#&gt;       l s d</span>
-<span class="co">#&gt; [1] 155 0 0</span>
-
-<span class="co"># Exchange rate of 31s. 4d.</span>
-<span class="kw"><a href="reference/deb_exchange.html">deb_exchange</a></span>(<span class="dt">lsd =</span> <span class="kw">c</span>(<span class="dv">100</span>, <span class="dv">0</span>, <span class="dv">0</span>), <span class="dt">shillings_rate =</span> <span class="dv">31</span> <span class="op">+</span><span class="st"> </span><span class="dv">4</span><span class="op">/</span><span class="dv">12</span>)
+<span class="co"># Normalize £131 62s. 41.</span>
+<span class="kw"><a href="reference/deb_normalize.html">deb_normalize</a></span>(<span class="kw">c</span>(<span class="dv">131</span>, <span class="dv">67</span>, <span class="dv">42</span>), <span class="dt">bases =</span> <span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">12</span>))
 <span class="co">#&gt;       l  s d</span>
-<span class="co">#&gt; [1] 156 13 4</span>
+<span class="co">#&gt; [1] 134 10 6</span>
 
-<span class="co"># Exchange rate of 90d. using deb_multiply</span>
-<span class="kw"><a href="reference/deb_multiply.html">deb_multiply</a></span>(<span class="dt">lsd =</span> <span class="kw">c</span>(<span class="dv">100</span>, <span class="dv">0</span>, <span class="dv">0</span>), <span class="dt">x =</span> <span class="dv">90</span> <span class="op">/</span><span class="st"> </span><span class="dv">240</span>)
-<span class="co">#&gt;      l  s d</span>
-<span class="co">#&gt; [1] 37 10 0</span></code></pre></div>
-<p><code>debkeepr</code> also provides two functions that can help in dealing with exchange rates between currencies. <code><a href="reference/deb_exchange_rate.html">deb_exchange_rate()</a></code> accepts two lsd values to find the exchange rate between the values. The first argument, <code>lsd1</code>, is the fixed currency that is reduced to £1 and <code>lsd2</code> is the variable currency. Because it may not always make sense to return the exchange rate in a single format, this function has an option to return the exchange rate as a normalized lsd value, in terms of shillings and pence as used by <code><a href="reference/deb_exchange.html">deb_exchange()</a></code>, or just in terms of pence. Though the latter two formats are not normalized, all options return an <code>lsd</code> object.</p>
-<p>The second helper function is <code><a href="reference/deb_invert_rate.html">deb_invert_rate()</a></code>. Given an exchange rate, <code><a href="reference/deb_invert_rate.html">deb_invert_rate()</a></code> finds the exchange rate in the opposite direction. Like <code><a href="reference/deb_exchange_rate.html">deb_exchange_rate()</a></code>, it has options to return the exchange rate as a normalized lsd value, in terms of shillings and pence, or just in terms of pence. The default output for both <code><a href="reference/deb_exchange_rate.html">deb_exchange_rate()</a></code> and <code><a href="reference/deb_invert_rate.html">deb_invert_rate()</a></code> is shillings and pence.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Find the exchange rate between two values</span>
-<span class="kw"><a href="reference/deb_exchange_rate.html">deb_exchange_rate</a></span>(<span class="dt">lsd1 =</span> <span class="kw">c</span>(<span class="dv">100</span>, <span class="dv">0</span>, <span class="dv">0</span>), <span class="dt">lsd2 =</span> <span class="kw">c</span>(<span class="dv">166</span>, <span class="dv">13</span>, <span class="dv">4</span>))
-<span class="co">#&gt;     l  s d</span>
-<span class="co">#&gt; [1] 0 33 4</span>
+<span class="co"># Addition of values with debkeepr</span>
+<span class="kw"><a href="reference/deb_sum.html">deb_sum</a></span>(<span class="kw">c</span>(<span class="dv">15</span>, <span class="dv">9</span>, <span class="dv">11</span>),
+        <span class="kw">c</span>(<span class="dv">32</span>, <span class="dv">17</span>, <span class="dv">8</span>),
+        <span class="kw">c</span>(<span class="dv">18</span>, <span class="dv">8</span>, <span class="dv">9</span>),
+        <span class="kw">c</span>(<span class="dv">54</span>, <span class="dv">15</span>, <span class="dv">4</span>),
+        <span class="kw">c</span>(<span class="dv">12</span>, <span class="dv">18</span>, <span class="dv">10</span>))
+<span class="co">#&gt;       l  s d</span>
+<span class="co">#&gt; [1] 134 10 6</span>
 
-<span class="co"># Find the same rate in terms of pence</span>
-<span class="kw"><a href="reference/deb_exchange_rate.html">deb_exchange_rate</a></span>(<span class="dt">lsd1 =</span> <span class="kw">c</span>(<span class="dv">100</span>, <span class="dv">0</span>, <span class="dv">0</span>), <span class="dt">lsd2 =</span> <span class="kw">c</span>(<span class="dv">166</span>, <span class="dv">13</span>, <span class="dv">4</span>), <span class="dt">output =</span> <span class="st">"pence"</span>)
-<span class="co">#&gt;     l s   d</span>
-<span class="co">#&gt; [1] 0 0 400</span>
+<span class="co"># Create lsd object from list of vectors, then do addition</span>
+lsd_values &lt;-<span class="st"> </span><span class="kw"><a href="reference/lsd.html">deb_as_lsd</a></span>(<span class="kw">list</span>(<span class="kw">c</span>(<span class="dv">15</span>, <span class="dv">9</span>, <span class="dv">11</span>),
+                              <span class="kw">c</span>(<span class="dv">32</span>, <span class="dv">17</span>, <span class="dv">8</span>),
+                              <span class="kw">c</span>(<span class="dv">18</span>, <span class="dv">8</span>, <span class="dv">9</span>),
+                              <span class="kw">c</span>(<span class="dv">54</span>, <span class="dv">15</span>, <span class="dv">4</span>),
+                              <span class="kw">c</span>(<span class="dv">12</span>, <span class="dv">18</span>, <span class="dv">10</span>)),
+                         <span class="dt">bases =</span> <span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">12</span>))
+<span class="kw"><a href="reference/deb_sum.html">deb_sum</a></span>(lsd_values)
+<span class="co">#&gt;       l  s d</span>
+<span class="co">#&gt; [1] 134 10 6</span></code></pre></div>
+<p>Objects of class <code>lsd</code> can also be used within data frames as a list column. The values can be manipulated through <code>debkeepr</code> functions in concert with <code><a href="http://dplyr.tidyverse.org/reference/mutate.html">dplyr::mutate()</a></code>. The <a href="https://tibble.tidyverse.org">tibble package</a> provides native support for list columns, so that an <code>lsd</code> object can be linked to attribute data such as the person, object, or date associated with the monetary value. Here, a tibble is created with an <code>lsd</code> list column and a column listing three people — a, b, and c — who could be said to have purchased goods. It is then possible to manipulate the values, showing, in this example, interest over a two year period at 8% and the new value due.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tibble)
+<span class="kw">library</span>(dplyr)
 
-<span class="co"># Can find the exchange in the opposite direction by switching lsd1 and lsd2</span>
-<span class="kw"><a href="reference/deb_exchange_rate.html">deb_exchange_rate</a></span>(<span class="dt">lsd1 =</span> <span class="kw">c</span>(<span class="dv">166</span>, <span class="dv">13</span>, <span class="dv">4</span>), <span class="dt">lsd2 =</span> <span class="kw">c</span>(<span class="dv">100</span>, <span class="dv">0</span>, <span class="dv">0</span>))
-<span class="co">#&gt;     l  s d</span>
-<span class="co">#&gt; [1] 0 12 0</span>
+<span class="co"># Create a tibble with an lsd list column</span>
+(lsd_tbl &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tibble/topics/tibble">tibble</a></span>(<span class="dt">person =</span> <span class="kw">c</span>(<span class="st">"a"</span>, <span class="st">"c"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"b"</span>),
+                   <span class="dt">lsd =</span> lsd_values))
+<span class="co">#&gt; # A tibble: 5 x 2</span>
+<span class="co">#&gt;   person lsd       </span>
+<span class="co">#&gt;   &lt;chr&gt;  &lt;S3: lsd&gt; </span>
+<span class="co">#&gt; 1 a      15, 9, 11 </span>
+<span class="co">#&gt; 2 c      32, 17, 8 </span>
+<span class="co">#&gt; 3 b      18, 8, 9  </span>
+<span class="co">#&gt; 4 c      54, 15, 4 </span>
+<span class="co">#&gt; 5 b      12, 18, 10</span>
 
-<span class="co"># Or you can use deb_invert_rate</span>
-<span class="kw"><a href="reference/deb_invert_rate.html">deb_invert_rate</a></span>(<span class="dt">exchange_rate =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">33</span>, <span class="dv">4</span>))
-<span class="co">#&gt;     l  s d</span>
-<span class="co">#&gt; [1] 0 12 0</span>
-
-<span class="co"># This can also be expressed in terms of pence</span>
-<span class="kw"><a href="reference/deb_invert_rate.html">deb_invert_rate</a></span>(<span class="dt">exchange_rate =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">33</span>, <span class="dv">4</span>), <span class="dt">output =</span> <span class="st">"pence"</span>)
-<span class="co">#&gt;     l s   d</span>
-<span class="co">#&gt; [1] 0 0 144</span></code></pre></div>
-<p>The most challenging exchange between currencies takes place when the bases for the shillings and pence units differ between the two currencies. Though the system of 20-base shilling and 12-base penny was widespread, various currencies used other bases. <code><a href="reference/deb_convert_bases.html">deb_convert_bases()</a></code> provides a way to convert from one base system to another. It also has a <code>ratio</code> argument that can be used similarly to <code><a href="reference/deb_multiply.html">deb_multiply()</a></code> to include an exchange rate between currencies in addition to the base conversion. A good example is the conversion between the guilders monetary system from Holland and Flemish pounds, which were both in use in the seventeenth century. Flemish pounds used the 20 and 12 base system, but guilders consisted of 20 stuivers of 16 penningen. In addition, the guilders and Flemish pounds currencies were tied together at a rate of 6 guilders to £1 Flemish. <code><a href="reference/deb_convert_bases.html">deb_convert_bases()</a></code> can perform this and various other conversions between forms of measurement that use the tripartite based system of lsd.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Convert Flemish pounds to guilders</span>
-<span class="kw"><a href="reference/deb_convert_bases.html">deb_convert_bases</a></span>(<span class="dt">lsd =</span> <span class="kw">c</span>(<span class="dv">104</span>, <span class="dv">8</span>, <span class="dv">3</span>),
-                  <span class="dt">bases1 =</span> <span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">12</span>),
-                  <span class="dt">bases2 =</span> <span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">16</span>),
-                  <span class="dt">ratio =</span> <span class="dv">6</span>)
-<span class="co">#&gt;       l s d</span>
-<span class="co">#&gt; [1] 626 9 8</span>
-
-<span class="co"># bases1 argument is not necessary with an lsd object</span>
-<span class="co"># Convert guilders to Flemish pounds</span>
-guilders &lt;-<span class="st"> </span><span class="kw"><a href="reference/lsd.html">deb_as_lsd</a></span>(<span class="dt">lsd =</span> <span class="kw">c</span>(<span class="dv">1224</span>, <span class="dv">19</span>, <span class="dv">8</span>), <span class="dt">bases =</span> <span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">16</span>))
-
-<span class="kw"><a href="reference/deb_convert_bases.html">deb_convert_bases</a></span>(<span class="dt">lsd =</span> guilders,
-                  <span class="dt">bases2 =</span> <span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">12</span>),
-                  <span class="dt">ratio =</span> <span class="dv">1</span> <span class="op">/</span><span class="st"> </span><span class="dv">6</span>)
-<span class="co">#&gt;       l s d</span>
-<span class="co">#&gt; [1] 204 3 3</span>
-
-<span class="co"># Convert French crowns of 60 sous and 12 deniers to pound sterling</span>
-<span class="co"># at the rate of 72d. French crowns equals £1 sterling or 240d. sterling</span>
-<span class="kw"><a href="reference/deb_convert_bases.html">deb_convert_bases</a></span>(<span class="dt">lsd =</span> <span class="kw">c</span>(<span class="dv">214</span>, <span class="dv">50</span>, <span class="dv">10</span>),
-                  <span class="dt">bases1 =</span> <span class="kw">c</span>(<span class="dv">60</span>, <span class="dv">12</span>),
-                  <span class="dt">bases2 =</span> <span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">12</span>),
-                  <span class="dt">ratio =</span> <span class="dv">72</span> <span class="op">/</span><span class="st"> </span><span class="dv">240</span>)
-<span class="co">#&gt;      l s d</span>
-<span class="co">#&gt; [1] 64 9 1</span>
-
-<span class="co"># Base conversion can also be done in concert with deb_exchange()</span>
-<span class="co"># Convert from guilders to pounds sterling at the rate of 12s. Flemish</span>
-<span class="kw"><a href="reference/deb_convert_bases.html">deb_convert_bases</a></span>(<span class="dt">lsd =</span> guilders,
-                  <span class="dt">bases2 =</span> <span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">12</span>),
-                  <span class="dt">ratio =</span> <span class="dv">1</span> <span class="op">/</span><span class="st"> </span><span class="dv">6</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="reference/deb_exchange.html">deb_exchange</a></span>(<span class="dt">shillings_rate =</span> <span class="dv">12</span>)
-<span class="co">#&gt;       l s    d</span>
-<span class="co">#&gt; [1] 122 9 11.4</span></code></pre></div>
-</div>
-<div id="decimalization" class="section level3">
-<h3 class="hasAnchor">
-<a href="#decimalization" class="anchor"></a>Decimalization</h3>
-<p>Sometimes it is useful to decimalize lsd values, reducing the values to a single unit with a base of 10. Alternatively, you may come across decimalized values that you want to expand to lsd values. <code>debkeepr</code> provides functions to convert between decimalized and non-decimalized values. One detail to keep in mind is that decimalization outputs a normal numeric vector, and so the <code>bases</code> attribute is dropped.</p>
-<p>All of the decimalization functions follow the naming convention of <code>input_output</code>. For instance, <code><a href="reference/deb_lsd_l.html">deb_lsd_l()</a></code> converts an lsd value to decimalized pounds, while conversion between decimalized pounds to an <code>lsd</code> object is done with <code><a href="reference/deb_l_lsd.html">deb_l_lsd()</a></code>. There are functions to do the same process with both shillings and pence.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># decimalize pounds</span>
-<span class="kw"><a href="reference/deb_lsd_l.html">deb_lsd_l</a></span>(<span class="dt">lsd =</span> mult_lsd)
-<span class="co">#&gt; [1] 10.445833 12.808333  5.183333</span>
-<span class="kw"><a href="reference/deb_l_lsd.html">deb_l_lsd</a></span>(<span class="dt">l =</span> <span class="kw">c</span>(<span class="fl">5.825</span>, <span class="fl">10.666666666</span>, <span class="fl">9.5</span>))
-<span class="co">#&gt;      l  s d</span>
-<span class="co">#&gt; [1]  5 16 6</span>
-<span class="co">#&gt; [2] 10 13 4</span>
-<span class="co">#&gt; [3]  9 10 0</span>
-
-<span class="co"># guilders to stuivers and back</span>
-<span class="kw"><a href="reference/deb_lsd_s.html">deb_lsd_s</a></span>(<span class="dt">lsd =</span> <span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">12</span>, <span class="dv">7</span>), <span class="dt">bases =</span> <span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">16</span>))
-<span class="co">#&gt; [1] 212.4375</span>
-<span class="kw"><a href="reference/deb_s_lsd.html">deb_s_lsd</a></span>(<span class="dt">s =</span> <span class="fl">212.4375</span>, <span class="dt">bases =</span> <span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">16</span>))
-<span class="co">#&gt;      l  s d</span>
-<span class="co">#&gt; [1] 10 12 7</span>
-
-<span class="co"># decimalize pence</span>
-<span class="kw"><a href="reference/deb_lsd_d.html">deb_lsd_d</a></span>(<span class="dt">lsd =</span> <span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">12</span>, <span class="dv">7</span>))
-<span class="co">#&gt; [1] 2551</span>
-<span class="kw"><a href="reference/deb_d_lsd.html">deb_d_lsd</a></span>(<span class="dt">d =</span> <span class="dv">2551</span>)
-<span class="co">#&gt;      l  s d</span>
-<span class="co">#&gt; [1] 10 12 7</span></code></pre></div>
-</div>
-</div>
-<div id="context-2-lsd-list-columns" class="section level2">
-<h2 class="hasAnchor">
-<a href="#context-2-lsd-list-columns" class="anchor"></a>Context 2: lsd list columns</h2>
-<p>Almost all of the functions that can be applied in the context of <code>lsd</code> objects can also be used in the context of an <code>lsd</code> list column in a data frame, even if the use of some functions make less sense than others. For instance, there is little cause to use <code><a href="reference/deb_exchange_rate.html">deb_exchange_rate()</a></code> on an <code>lsd</code> list column. The one major exception to this is <code><a href="reference/deb_sum.html">deb_sum()</a></code>, which does not work in the context of a data frame. However, there is a substitute that performs the same task in <code><a href="reference/deb_summarise.html">deb_summarise()</a></code>. As the name for the latter function implies, <code>debkeepr</code> functions are designed to work within the <a href="https://www.tidyverse.org">tidyverse</a> workflow and particularly with <code><a href="http://dplyr.tidyverse.org/reference/mutate.html">dplyr::mutate()</a></code>, while <code><a href="reference/deb_summarise.html">deb_summarise()</a></code> provides some of the functionality of <code><a href="http://dplyr.tidyverse.org/reference/summarise.html">dplyr::summarise()</a></code> for an <code>lsd</code> list column. This section provides examples of manipulating <code>lsd</code> list columns with the help of <a href="https://dplyr.tidyverse.org">dplyr</a>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># loan dplyr and create tibble with lsd list column</span>
-<span class="kw">suppressPackageStartupMessages</span>(<span class="kw">library</span>(dplyr))
-lsd_tbl &lt;-<span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/reexports.html">tibble</a></span>(<span class="dt">id =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>),
-                  <span class="dt">lsd =</span> <span class="kw"><a href="reference/lsd.html">deb_lsd</a></span>(<span class="dt">l =</span> <span class="kw">c</span>(<span class="dv">102</span>, <span class="dv">215</span>, <span class="dv">98</span>, <span class="dv">251</span>, <span class="dv">98</span>),
-                                <span class="dt">s =</span> <span class="kw">c</span>(<span class="dv">18</span>, <span class="dv">0</span>, <span class="dv">9</span>, <span class="dv">12</span>, <span class="dv">4</span>),
-                                <span class="dt">d =</span> <span class="kw">c</span>(<span class="dv">9</span>, <span class="dv">11</span>, <span class="dv">7</span>, <span class="dv">5</span>, <span class="dv">0</span>)))</code></pre></div>
-<p>The “lsd” variable in <code>lsd_tbl</code> was created with <code><a href="reference/lsd.html">deb_lsd()</a></code> using the default bases of <code>c(20, 12)</code>, and so all functions will automatically use these bases unless they are explicitly converted. It is always possible to check the bases of an <code>lsd</code> list column with <code><a href="reference/deb_bases.html">deb_bases()</a></code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/deb_bases.html">deb_bases</a></span>(lsd_tbl<span class="op">$</span>lsd)
-<span class="co">#&gt;  s  d </span>
-<span class="co">#&gt; 20 12</span></code></pre></div>
-<p>Most of the typical single-table verbs from <code>dplyr</code> work with an <code>lsd</code> list column as expected, though it is not possible to <code><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code> a data frame by an <code>lsd</code> list column. As noted above, the most useful workflow is to use <code><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> or <code><a href="http://dplyr.tidyverse.org/reference/mutate.html">transmute()</a></code> with <code>debkeepr</code> functions to create new variables. Thus, it is possible to multiply an <code>lsd</code> list column or calculate the accrued interest over a certain period of time.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># multiplication of an lsd list column</span>
+<span class="co"># Interest of 8% over a two year period</span>
 lsd_tbl <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">lsd_x5 =</span> <span class="kw"><a href="reference/deb_multiply.html">deb_multiply</a></span>(<span class="dt">lsd =</span> lsd, <span class="dt">x =</span> <span class="dv">5</span>))
-<span class="co">#&gt; # A tibble: 5 x 3</span>
-<span class="co">#&gt;      id lsd        lsd_x5    </span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;S3: lsd&gt;  &lt;S3: lsd&gt; </span>
-<span class="co">#&gt; 1     1 102, 18, 9 514, 13, 9</span>
-<span class="co">#&gt; 2     3 215, 0, 11 1075, 4, 7</span>
-<span class="co">#&gt; 3     2 98, 9, 7   492, 7, 11</span>
-<span class="co">#&gt; 4     1 251, 12, 5 1258, 2, 1</span>
-<span class="co">#&gt; 5     2 98, 4, 0   491, 0, 0</span>
-
-<span class="co"># Interest at 8% after a 5 year period</span>
-lsd_tbl <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">total =</span> <span class="kw"><a href="reference/deb_interest.html">deb_interest</a></span>(<span class="dt">lsd =</span> lsd, <span class="dt">interest =</span> <span class="fl">0.08</span>, <span class="dt">duration =</span> <span class="dv">5</span>))
-<span class="co">#&gt; # A tibble: 5 x 3</span>
-<span class="co">#&gt;      id lsd        total          </span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;S3: lsd&gt;  &lt;S3: lsd&gt;      </span>
-<span class="co">#&gt; 1     1 102, 18, 9 144, 2, 3      </span>
-<span class="co">#&gt; 2     3 215, 0, 11 301.0, 1.0, 3.4</span>
-<span class="co">#&gt; 3     2 98, 9, 7   137, 17, 5     </span>
-<span class="co">#&gt; 4     1 251, 12, 5 352.0, 5.0, 4.6</span>
-<span class="co">#&gt; 5     2 98, 4, 0   137.0, 9.0, 7.2</span>
-
-<span class="co"># Make multiple new variables to find total due and interest charged</span>
-lsd_tbl <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">total =</span> <span class="kw"><a href="reference/deb_interest.html">deb_interest</a></span>(<span class="dt">lsd =</span> lsd, <span class="dt">interest =</span> <span class="fl">0.08</span>, <span class="dt">duration =</span> <span class="dv">5</span>),
-         <span class="dt">interest =</span> <span class="kw"><a href="reference/deb_subtract.html">deb_subtract</a></span>(<span class="dt">lsd1 =</span> total, <span class="dt">lsd2 =</span> lsd))
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">interest =</span> <span class="kw"><a href="reference/deb_interest.html">deb_interest</a></span>(<span class="dt">lsd =</span> lsd,
+                                 <span class="dt">interest =</span> <span class="fl">0.08</span>,
+                                 <span class="dt">duration =</span> <span class="dv">2</span>,
+                                 <span class="dt">with_principal =</span> <span class="ot">FALSE</span>),
+         <span class="dt">due =</span> <span class="kw"><a href="reference/deb_add.html">deb_add</a></span>(<span class="dt">lsd1 =</span> lsd,
+                       <span class="dt">lsd2 =</span> interest))
 <span class="co">#&gt; # A tibble: 5 x 4</span>
-<span class="co">#&gt;      id lsd        total           interest         </span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;S3: lsd&gt;  &lt;S3: lsd&gt;       &lt;S3: lsd&gt;        </span>
-<span class="co">#&gt; 1     1 102, 18, 9 144, 2, 3       41, 3, 6         </span>
-<span class="co">#&gt; 2     3 215, 0, 11 301.0, 1.0, 3.4 86.0, 0.0, 4.4   </span>
-<span class="co">#&gt; 3     2 98, 9, 7   137, 17, 5      39, 7, 10        </span>
-<span class="co">#&gt; 4     1 251, 12, 5 352.0, 5.0, 4.6 100.0, 12.0, 11.6</span>
-<span class="co">#&gt; 5     2 98, 4, 0   137.0, 9.0, 7.2 39.0, 5.0, 7.2</span></code></pre></div>
-<p>It is also possible to create a new <code>lsd</code> list column with different bases. For instance, the <code>lsd</code> list column in <code>lsd_tbl</code> can be treated as containing Flemish pounds, which can be converted to guilders.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create guilders lsd column from flemish pounds</span>
+<span class="co">#&gt;   person lsd        interest          due               </span>
+<span class="co">#&gt;   &lt;chr&gt;  &lt;S3: lsd&gt;  &lt;S3: lsd&gt;         &lt;S3: lsd&gt;         </span>
+<span class="co">#&gt; 1 a      15, 9, 11  2.00, 9.00, 7.04  17.00, 19.00, 6.04</span>
+<span class="co">#&gt; 2 c      32, 17, 8  5.00, 5.00, 2.72  38.00, 2.00, 10.72</span>
+<span class="co">#&gt; 3 b      18, 8, 9   2, 19, 0          21, 7, 9          </span>
+<span class="co">#&gt; 4 c      54, 15, 4  8.00, 15.00, 3.04 63.00, 10.00, 7.04</span>
+<span class="co">#&gt; 5 b      12, 18, 10 2.00, 1.00, 4.96  15.00, 0.00, 2.96</span></code></pre></div>
+<p>Once created <code>lsd</code> objects maintain the <code>bases</code> attribute provided to them. However, it is often necessary to convert between currencies with different bases for the shillings and pence units. This is possible with the <code><a href="reference/deb_convert_bases.html">deb_convert_bases()</a></code> function. For example, taking the monetary values in <code>lsd_tbl</code> as representing pounds Flemish, we can find the equivalent guilders if the sales occurred in Holland. Guilders were of 20 stuivers but a stuiver was equal to 16 penningen. In addition, guilders were tied to the pound Flemish at the rate of 6 guilder to £1 Flemish.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Convert from Flemish pounds to guilders</span>
 lsd_tbl <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">guilders =</span> <span class="kw"><a href="reference/deb_convert_bases.html">deb_convert_bases</a></span>(<span class="dt">lsd =</span> lsd, <span class="dt">bases2 =</span> <span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">16</span>), <span class="dt">ratio =</span> <span class="dv">6</span>))
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">guilders =</span> <span class="kw"><a href="reference/deb_convert_bases.html">deb_convert_bases</a></span>(<span class="dt">lsd =</span> lsd,
+                                      <span class="dt">bases2 =</span> <span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">16</span>),
+                                      <span class="dt">ratio =</span> <span class="dv">6</span>))
 <span class="co">#&gt; # A tibble: 5 x 3</span>
-<span class="co">#&gt;      id lsd        guilders   </span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;S3: lsd&gt;  &lt;S3: lsd&gt;  </span>
-<span class="co">#&gt; 1     1 102, 18, 9 617, 12, 8 </span>
-<span class="co">#&gt; 2     3 215, 0, 11 1290, 5, 8 </span>
-<span class="co">#&gt; 3     2 98, 9, 7   590, 17, 8 </span>
-<span class="co">#&gt; 4     1 251, 12, 5 1509, 14, 8</span>
-<span class="co">#&gt; 5     2 98, 4, 0   589, 4, 0</span>
-
-<span class="co"># save the tbl for use below</span>
-lsd_tbl2 &lt;-<span class="st"> </span>lsd_tbl <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">guilders =</span> <span class="kw"><a href="reference/deb_convert_bases.html">deb_convert_bases</a></span>(<span class="dt">lsd =</span> lsd, <span class="dt">bases2 =</span> <span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">16</span>), <span class="dt">ratio =</span> <span class="dv">6</span>))</code></pre></div>
-<p>Decimalization of lsd values is particularly useful in the context of <code>lsd</code> list columns, because there may be times when it is easier to work with a normal numeric variable instead of a list column. In addition, the ability to return decimalized values to an <code>lsd</code> list column means that there is little trouble in going between the two, though it should be remembered that the <code>bases</code> attribute is lost in the process of decimalization.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># decimalize lsd values and back</span>
+<span class="co">#&gt;   person lsd        guilders  </span>
+<span class="co">#&gt;   &lt;chr&gt;  &lt;S3: lsd&gt;  &lt;S3: lsd&gt; </span>
+<span class="co">#&gt; 1 a      15, 9, 11  92, 19, 8 </span>
+<span class="co">#&gt; 2 c      32, 17, 8  197, 6, 0 </span>
+<span class="co">#&gt; 3 b      18, 8, 9   110, 12, 8</span>
+<span class="co">#&gt; 4 c      54, 15, 4  328, 12, 0</span>
+<span class="co">#&gt; 5 b      12, 18, 10 77, 13, 0</span></code></pre></div>
+<p>A common action for such a collection of values would be to add together the purchases by the “person” column. This can be done in the normal <a href="https://tidyverse.org">tidyverse</a> manner, but with a special <code><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarise()</a></code> function for an <code>lsd</code> list column, <code><a href="reference/deb_summarise.html">deb_summarise()</a></code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Sum of purchases by person</span>
 lsd_tbl <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">denarii =</span> <span class="kw"><a href="reference/deb_lsd_d.html">deb_lsd_d</a></span>(lsd),
-         <span class="dt">lsd2 =</span> <span class="kw"><a href="reference/deb_d_lsd.html">deb_d_lsd</a></span>(denarii, <span class="dt">bases =</span> <span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">12</span>)))
-<span class="co">#&gt; # A tibble: 5 x 4</span>
-<span class="co">#&gt;      id lsd        denarii lsd2      </span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;S3: lsd&gt;    &lt;dbl&gt; &lt;S3: lsd&gt; </span>
-<span class="co">#&gt; 1     1 102, 18, 9   24705 102, 18, 9</span>
-<span class="co">#&gt; 2     3 215, 0, 11   51611 215, 0, 11</span>
-<span class="co">#&gt; 3     2 98, 9, 7     23635 98, 9, 7  </span>
-<span class="co">#&gt; 4     1 251, 12, 5   60389 251, 12, 5</span>
-<span class="co">#&gt; 5     2 98, 4, 0     23568 98, 4, 0</span></code></pre></div>
-<p>The exception to the normal function of <code>dplyr</code> single-table functions is <code><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarise()</a></code>, which is not meant to be used on list columns. <code><a href="reference/deb_summarise.html">deb_summarise()</a></code> provides some of the functionality of <code><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarise()</a></code> in giving a method to find the sum of an <code>lsd</code> list column and can be used it its place. To find other summarizing values it is always possible to decimalize an <code>lsd</code> list column and perform <code><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarise()</a></code> functions on this variable, returning to an <code>lsd</code> list column when necessary. <code><a href="reference/deb_summarise.html">deb_summarise()</a></code> can find the sum of an <code>lsd</code> list column or can work on a grouped data frame. It can also be used on multiple <code>lsd</code> list columns at a time, because the function is based on <code><a href="http://dplyr.tidyverse.org/reference/summarise_all.html">summarise_at()</a></code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># sum of lsd list column</span>
-lsd_tbl <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="reference/deb_summarise.html">deb_summarise</a></span>(lsd)
-<span class="co">#&gt; # A tibble: 1 x 1</span>
-<span class="co">#&gt;   lsd      </span>
-<span class="co">#&gt;   &lt;S3: lsd&gt;</span>
-<span class="co">#&gt; 1 766, 5, 8</span>
-
-<span class="co"># sum on a grouped data frame</span>
-lsd_tbl <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(id) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(person) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="reference/deb_summarise.html">deb_summarise</a></span>(lsd)
 <span class="co">#&gt; # A tibble: 3 x 2</span>
-<span class="co">#&gt;      id lsd       </span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;S3: lsd&gt; </span>
-<span class="co">#&gt; 1     1 354, 11, 2</span>
-<span class="co">#&gt; 2     2 196, 13, 7</span>
-<span class="co">#&gt; 3     3 215, 0, 11</span>
+<span class="co">#&gt;   person lsd      </span>
+<span class="co">#&gt;   &lt;chr&gt;  &lt;S3: lsd&gt;</span>
+<span class="co">#&gt; 1 a      15, 9, 11</span>
+<span class="co">#&gt; 2 b      31, 7, 7 </span>
+<span class="co">#&gt; 3 c      87, 13, 0</span></code></pre></div>
+<p>An issue with the implementation of a list column to hold monetary values is that such a column cannot be plotted. Because of this and other issues inherent in list columns, <code>debkeepr</code> has robust support for decimalization. There are functions to decimalize pounds, shillings, and pence values to any of the three units and to go in the opposite direction from any decimalized unit to lsd values. For plotting purposes the most useful workflow is to go from pounds, shillings, and pence to decimalized pounds.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create decimalized pounds variable</span>
+lsd_tbl <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">pounds =</span> <span class="kw"><a href="reference/deb_lsd_l.html">deb_lsd_l</a></span>(<span class="dt">lsd =</span> lsd))
+<span class="co">#&gt; # A tibble: 5 x 3</span>
+<span class="co">#&gt;   person lsd        pounds</span>
+<span class="co">#&gt;   &lt;chr&gt;  &lt;S3: lsd&gt;   &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 a      15, 9, 11    15.5</span>
+<span class="co">#&gt; 2 c      32, 17, 8    32.9</span>
+<span class="co">#&gt; 3 b      18, 8, 9     18.4</span>
+<span class="co">#&gt; 4 c      54, 15, 4    54.8</span>
+<span class="co">#&gt; 5 b      12, 18, 10   12.9</span>
 
-<span class="co"># sum of multiple lsd list columns</span>
-lsd_tbl2 <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(id) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="reference/deb_summarise.html">deb_summarise</a></span>(lsd, guilders)
-<span class="co">#&gt; # A tibble: 3 x 3</span>
-<span class="co">#&gt;      id lsd        guilders  </span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;S3: lsd&gt;  &lt;S3: lsd&gt; </span>
-<span class="co">#&gt; 1     1 354, 11, 2 2127, 7, 0</span>
-<span class="co">#&gt; 2     2 196, 13, 7 1180, 1, 8</span>
-<span class="co">#&gt; 3     3 215, 0, 11 1290, 5, 8</span></code></pre></div>
-</div>
-<div id="context-3-transactions-data-frame" class="section level2">
-<h2 class="hasAnchor">
-<a href="#context-3-transactions-data-frame" class="anchor"></a>Context 3: transactions data frame</h2>
-<p>Transaction data frames present a way to record data from an account book as a native R object. A transactions data frame consist of three necessary variables: credit and debit variables to record the creditor and debtor accounts of each transaction and an <code>lsd</code> list column for the value of the transactions. Following the principles of double-entry bookkeeping, the credit account is the account that gives or sends the value, and the debit account receives the value. The <code>debkeepr</code> functions that work specifically on transaction data frames use “credit” and “debit” as the default names for these variables, though one could follow the convention of <a href="http://kateto.net/network-visualization">network analysis</a> and name the variables “from” and “to”.</p>
-<p>Here is an example transactions data frame with four accounts named “wheat”, “silk”, “linen”, and “cash” and 15 transactions with values randomly created:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">accounts &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"wheat"</span>, <span class="st">"silk"</span>, <span class="st">"linen"</span>, <span class="st">"cash"</span>)
-<span class="kw">set.seed</span>(<span class="dv">240</span>)
-transactions_tbl &lt;-<span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/reexports.html">tibble</a></span>(<span class="dt">credit =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/sample.html">sample</a></span>(accounts, <span class="dv">15</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>),
-                           <span class="dt">debit =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/sample.html">sample</a></span>(accounts, <span class="dv">15</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>),
-                           <span class="dt">lsd =</span> <span class="kw"><a href="reference/lsd.html">deb_lsd</a></span>(<span class="dt">l =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/sample.html">sample</a></span>(<span class="dv">20</span><span class="op">:</span><span class="dv">100</span>, <span class="dv">15</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>),
-                                         <span class="dt">s =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/sample.html">sample</a></span>(<span class="dv">1</span><span class="op">:</span><span class="dv">19</span>, <span class="dv">15</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>),
-                                         <span class="dt">d =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/sample.html">sample</a></span>(<span class="dv">1</span><span class="op">:</span><span class="dv">11</span>, <span class="dv">15</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>)))</code></pre></div>
-<p><code>debkeepr</code> possesses an account family of functions that are designed to analyze a transaction data frame such as <code>transactions_tbl</code>. <code><a href="reference/deb_account.html">deb_account()</a></code> provides information about the total credit and debit and the current balance of a single account. <code><a href="reference/deb_account_summary.html">deb_account_summary()</a></code> gives the same type of information but includes all accounts in the transactions data frame. It creates separate <code>lsd</code> list columns for the total credit, debit, and current value for each account.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Credit, debit, and current values for the "cash" account</span>
-<span class="kw"><a href="reference/deb_account.html">deb_account</a></span>(<span class="dt">df =</span> transactions_tbl,
-            <span class="dt">account_id =</span> <span class="st">"cash"</span>,
-            <span class="dt">credit =</span> credit,
-            <span class="dt">debit =</span> debit,
-            <span class="dt">lsd =</span> lsd)
-<span class="co">#&gt; # A tibble: 3 x 2</span>
-<span class="co">#&gt;   relation lsd         </span>
-<span class="co">#&gt;   &lt;chr&gt;    &lt;S3: lsd&gt;   </span>
-<span class="co">#&gt; 1 credit   194, 14, 3  </span>
-<span class="co">#&gt; 2 debit    375, 3, 0   </span>
-<span class="co">#&gt; 3 current  -180, -8, -9</span>
-
-<span class="co"># Credit, debit, and current values for all accounts</span>
-<span class="kw"><a href="reference/deb_account_summary.html">deb_account_summary</a></span>(<span class="dt">df =</span> transactions_tbl)
-<span class="co">#&gt; # A tibble: 4 x 4</span>
-<span class="co">#&gt;   account_id credit     debit     current     </span>
-<span class="co">#&gt;   &lt;chr&gt;      &lt;S3: lsd&gt;  &lt;S3: lsd&gt; &lt;S3: lsd&gt;   </span>
-<span class="co">#&gt; 1 cash       194, 14, 3 375, 3, 0 -180, -8, -9</span>
-<span class="co">#&gt; 2 linen      292, 16, 8 261, 5, 5 31, 11, 3   </span>
-<span class="co">#&gt; 3 silk       413, 4, 3  286, 7, 3 126, 17, 0  </span>
-<span class="co">#&gt; 4 wheat      99, 4, 2   77, 3, 8  22, 0, 6</span></code></pre></div>
-<p>The remaining functions build on <code><a href="reference/deb_account_summary.html">deb_account_summary()</a></code>. Three functions simplify the information produced by <code>deb_account_summary</code>: <code><a href="reference/deb_credit.html">deb_credit()</a></code> shows the total credit for each account, <code><a href="reference/deb_debit.html">deb_debit()</a></code> does the same for the debits, and <code><a href="reference/deb_current.html">deb_current()</a></code> shows the current value for each account.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Total credit for each account</span>
-<span class="kw"><a href="reference/deb_credit.html">deb_credit</a></span>(<span class="dt">df =</span> transactions_tbl)
-<span class="co">#&gt; # A tibble: 4 x 2</span>
-<span class="co">#&gt;   account_id lsd       </span>
-<span class="co">#&gt;   &lt;chr&gt;      &lt;S3: lsd&gt; </span>
-<span class="co">#&gt; 1 cash       194, 14, 3</span>
-<span class="co">#&gt; 2 linen      292, 16, 8</span>
-<span class="co">#&gt; 3 silk       413, 4, 3 </span>
-<span class="co">#&gt; 4 wheat      99, 4, 2</span>
-
-<span class="co"># Total debit for all accounts by getting sum of deb_debit</span>
-<span class="kw"><a href="reference/deb_debit.html">deb_debit</a></span>(<span class="dt">df =</span> transactions_tbl) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="reference/deb_summarise.html">deb_summarise</a></span>(<span class="dt">lsd =</span> lsd)
-<span class="co">#&gt; # A tibble: 1 x 1</span>
-<span class="co">#&gt;   lsd       </span>
-<span class="co">#&gt;   &lt;S3: lsd&gt; </span>
-<span class="co">#&gt; 1 999, 19, 4</span>
-
-<span class="co"># Current value of each account</span>
-<span class="kw"><a href="reference/deb_current.html">deb_current</a></span>(<span class="dt">df =</span> transactions_tbl)
-<span class="co">#&gt; # A tibble: 4 x 2</span>
-<span class="co">#&gt;   account_id lsd         </span>
-<span class="co">#&gt;   &lt;chr&gt;      &lt;S3: lsd&gt;   </span>
-<span class="co">#&gt; 1 cash       -180, -8, -9</span>
-<span class="co">#&gt; 2 linen      31, 11, 3   </span>
-<span class="co">#&gt; 3 silk       126, 17, 0  </span>
-<span class="co">#&gt; 4 wheat      22, 0, 6</span></code></pre></div>
-<p><code><a href="reference/deb_open.html">deb_open()</a></code> is similar to <code><a href="reference/deb_current.html">deb_current()</a></code>, but it removes any accounts that have been closed by being zeroed out. This is useful if there are many accounts in the transactions data frame that have been closed. In the example of <code>transactions_tbl</code> all accounts are open, and so <code><a href="reference/deb_open.html">deb_open()</a></code> has the same result as <code><a href="reference/deb_current.html">deb_current()</a></code>. <code><a href="reference/deb_balance.html">deb_balance()</a></code> shows the total credit and debit remaining in the transactions data frame. The values for credit and debit should always be the same in <code><a href="reference/deb_balance.html">deb_balance()</a></code>, as there should always be the same amount of credit as debit in an account book.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Balance remaining on transactions_df</span>
-<span class="kw"><a href="reference/deb_balance.html">deb_balance</a></span>(transactions_tbl)
-<span class="co">#&gt; # A tibble: 2 x 2</span>
-<span class="co">#&gt;   relation lsd      </span>
-<span class="co">#&gt;   &lt;chr&gt;    &lt;S3: lsd&gt;</span>
-<span class="co">#&gt; 1 credit   180, 8, 9</span>
-<span class="co">#&gt; 2 debit    180, 8, 9</span></code></pre></div>
-</div>
-<div id="useful-works-on-monetary-systems-and-the-history-of-accounting" class="section level2">
-<h2 class="hasAnchor">
-<a href="#useful-works-on-monetary-systems-and-the-history-of-accounting" class="anchor"></a>Useful works on monetary systems and the history of accounting</h2>
-<ul>
-<li>Peter Spufford, <em>Money and its Use in Medieval Europe</em> (Cambridge: Cambridge University Press, 1988), especially pages 411–414, for a discussion of money of account in medieval Europe.</li>
-<li>John Richard Edwards and Stephen P. Walker, eds. <em>The Routledge Companion to Accounting History</em> (New York: Routledge Taylor &amp; Francis Group, 2009).</li>
-<li>Jacob Soll, <em>The Reckoning: Financial Accountability and the Rise and Fall of Nations</em> (New York: Basic Books, 2014).</li>
-<li>John Geijsbeek, <em>Ancient Double-Entry Bookkeeping: Lucas Pacioli’s Treatise (A.D. 1494, the Earliest Known Writer on Bookkeeping) Reproduced and Translated with Reproductions, Notes, and Abstracts from Manzoni, Pietra, Mainardi, Ympyn, Stevin, and Dafforne</em> (Denver: John Geijsbeek, 1914).</li>
-</ul>
+<span class="co"># Use decimalized pounds variable to plot value owed by each person</span>
+<span class="kw">library</span>(ggplot2)
+lsd_tbl <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">pounds =</span> <span class="kw"><a href="reference/deb_lsd_l.html">deb_lsd_l</a></span>(<span class="dt">lsd =</span> lsd)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_bar">geom_bar</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> person, <span class="dt">y =</span> pounds), <span class="dt">stat =</span> <span class="st">"identity"</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggtheme">theme_light</a></span>()</code></pre></div>
+<p><img src="reference/figures/README-decimalization-1.png" width="384"></p>
+<p>For further introduction to the functions and uses of <code>debkeepr</code>, including accounting functions with transaction data frames not discussed here, see <a href="https://jessesadler.github.io/debkeepr/articles/debkeepr.html">Getting Started with debkeepr</a>. Two other vignettes show the use of <code>debkeepr</code> to analyze <a href="https://jessesadler.github.io/debkeepr/articles/transactions.html">individual transactions</a> and a whole set of account books using the example journal and ledger from Richard Dafforne’s <em>Merchant’s Mirrour</em>.</p>
 </div>
 </div>
   </div>

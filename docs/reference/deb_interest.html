@@ -128,8 +128,8 @@ rate and a duration. The function does not calculate compound interest.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>deb_interest</span>(<span class='no'>lsd</span>, <span class='kw'>interest</span> <span class='kw'>=</span> <span class='fl'>0.0625</span>, <span class='kw'>duration</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>with_principal</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>bases</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>20</span>, <span class='fl'>12</span>), <span class='kw'>round</span> <span class='kw'>=</span> <span class='fl'>5</span>)</pre>
+    <pre class="usage"><span class='fu'>deb_interest</span>(<span class='no'>lsd</span>, <span class='no'>interest</span>, <span class='kw'>duration</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>with_principal</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>bases</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>20</span>, <span class='fl'>12</span>), <span class='kw'>round</span> <span class='kw'>=</span> <span class='fl'>5</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -142,9 +142,7 @@ vectors.</p></td>
     </tr>
     <tr>
       <th>interest</th>
-      <td><p>Interest rate in decimal form. A numeric vector of length 1.
-Default is 0.0625, or 6.25 percent, which was default interest rate in the
-Low Countries at the end of the sixteenth century.</p></td>
+      <td><p>Interest rate in decimal form. A numeric vector of length 1.</p></td>
     </tr>
     <tr>
       <th>duration</th>
@@ -181,20 +179,26 @@ Default is 5. Set to 0 to return pence as whole number.</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Calculate the interest with the principal over a certain duration</span>
 <span class='co'># If £10.14.5 were lent over a period of 5 years at 6.25%</span>
-<span class='fu'>deb_interest</span>(<span class='kw'>lsd</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>10</span>, <span class='fl'>14</span>, <span class='fl'>5</span>), <span class='kw'>duration</span> <span class='kw'>=</span> <span class='fl'>5</span>)</div><div class='output co'>#&gt;      l s      d
+<span class='fu'>deb_interest</span>(<span class='kw'>lsd</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>10</span>, <span class='fl'>14</span>, <span class='fl'>5</span>), <span class='kw'>interest</span> <span class='kw'>=</span> <span class='fl'>0.0625</span>, <span class='kw'>duration</span> <span class='kw'>=</span> <span class='fl'>5</span>)</div><div class='output co'>#&gt;      l s      d
 #&gt; [1] 14 1 5.0625</div><div class='input'>
 <span class='co'># If £10.14.5 were lent over a period of 5 years at 8%</span>
 <span class='fu'>deb_interest</span>(<span class='kw'>lsd</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>10</span>, <span class='fl'>14</span>, <span class='fl'>5</span>), <span class='kw'>interest</span> <span class='kw'>=</span> <span class='fl'>0.08</span>, <span class='kw'>duration</span> <span class='kw'>=</span> <span class='fl'>5</span>)</div><div class='output co'>#&gt;      l s   d
 #&gt; [1] 15 0 2.2</div><div class='input'>
 <span class='co'># Or you can calculate only the interest</span>
-<span class='fu'>deb_interest</span>(<span class='kw'>lsd</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>10</span>, <span class='fl'>14</span>, <span class='fl'>5</span>), <span class='kw'>duration</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>with_principal</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt;     l s      d
+<span class='fu'>deb_interest</span>(<span class='kw'>lsd</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>10</span>, <span class='fl'>14</span>, <span class='fl'>5</span>),
+             <span class='kw'>interest</span> <span class='kw'>=</span> <span class='fl'>0.0625</span>,
+             <span class='kw'>duration</span> <span class='kw'>=</span> <span class='fl'>5</span>,
+             <span class='kw'>with_principal</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt;     l s      d
 #&gt; [1] 3 7 0.0625</div><div class='input'>
 <span class='co'># Interest for an lsd value with alternative bases</span>
-<span class='fu'>deb_interest</span>(<span class='kw'>lsd</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>10</span>, <span class='fl'>14</span>, <span class='fl'>5</span>), <span class='kw'>duration</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>bases</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>20</span>, <span class='fl'>16</span>))</div><div class='output co'>#&gt;      l s      d
+<span class='fu'>deb_interest</span>(<span class='kw'>lsd</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>10</span>, <span class='fl'>14</span>, <span class='fl'>5</span>),
+             <span class='kw'>interest</span> <span class='kw'>=</span> <span class='fl'>0.0625</span>,
+             <span class='kw'>duration</span> <span class='kw'>=</span> <span class='fl'>5</span>,
+             <span class='kw'>bases</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>20</span>, <span class='fl'>16</span>))</div><div class='output co'>#&gt;      l s      d
 #&gt; [1] 14 1 4.5625</div><div class='input'>
 <span class='co'># Interest of an object of class lsd will use the bases attribute</span>
 <span class='no'>lsd</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='lsd.html'>deb_as_lsd</a></span>(<span class='kw'>lsd</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>10</span>, <span class='fl'>14</span>, <span class='fl'>5</span>), <span class='kw'>bases</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>20</span>, <span class='fl'>16</span>))
-<span class='fu'>deb_interest</span>(<span class='kw'>lsd</span> <span class='kw'>=</span> <span class='no'>lsd</span>, <span class='kw'>duration</span> <span class='kw'>=</span> <span class='fl'>5</span>)</div><div class='output co'>#&gt;      l s      d
+<span class='fu'>deb_interest</span>(<span class='kw'>lsd</span> <span class='kw'>=</span> <span class='no'>lsd</span>, <span class='kw'>interest</span> <span class='kw'>=</span> <span class='fl'>0.0625</span>, <span class='kw'>duration</span> <span class='kw'>=</span> <span class='fl'>5</span>)</div><div class='output co'>#&gt;      l s      d
 #&gt; [1] 14 1 4.5625</div><div class='input'>
 <span class='co'># Interest of a list of lsd values at a single rate</span>
 <span class='no'>lsd_list</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='fu'>c</span>(<span class='fl'>40</span>, <span class='fl'>5</span>, <span class='fl'>9</span>), <span class='fu'>c</span>(<span class='fl'>29</span>, <span class='fl'>7</span>, <span class='fl'>1</span>), <span class='fu'>c</span>(<span class='fl'>35</span>, <span class='fl'>6</span>, <span class='fl'>5</span>))

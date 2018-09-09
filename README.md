@@ -186,6 +186,6 @@ lsd_tbl %>%
   theme_light()
 ```
 
-<img src="man/figures/README-decimalization-1.png" width="100%" />
+![](man/figures/README-decimalization-1.png)
 
 For further introduction to the functions and uses of `debkeepr`, including accounting functions with transaction data frames not discussed here, see [Getting Started with debkeepr](https://jessesadler.github.io/debkeepr/articles/debkeepr.html). Two other vignettes show the use of `debkeepr` to analyze [individual transactions](https://jessesadler.github.io/debkeepr/articles/transactions.html) and a whole set of account books using the example journal and ledger from Richard Dafforne’s *Merchant’s Mirrour*.

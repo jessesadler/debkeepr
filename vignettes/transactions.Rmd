@@ -14,10 +14,10 @@ knitr::opts_chunk$set(
 )
 ```
 
-The `debkeepr` package provides an interface for analyzing non-decimal currencies that use the tripartite system of pounds, shillings, and pence. The use of non-decimal currencies in Europe in the medieval and early modern period complicates the calculation and analysis of monetary transactions in the past. This vignette uses examples taken from the practice journal in the third edition of Richard Dafforne’s *The Merchant's Mirrour, Or Directions for the Perfect Ordering and Keeping of His Accounts* (London, 1660) to show how `debkeepr` can help to explicate and simplify monetary transactions that involve a variety of non-decimal currencies.
+The use of non-decimal currencies in the form of pounds, shillings, and pence in medieval and early modern Europe complicates the calculation and analysis of monetary transactions in the past. There might be some benefit to experiencing the pain of the early modern bookkeeper who had to make complex bookkeeping calculations by hand, but the suffering, time, and worry about mistakes quickly outweighs the benefits. `debkeepr` was developed in part to simplify calculations involving pounds, shillings, and pence values. This vignette uses examples taken from the practice journal in the third edition of Richard Dafforne’s *The Merchant's Mirrour, Or Directions for the Perfect Ordering and Keeping of His Accounts* (London, 1660) to show how `debkeepr` can help to explicate and simplify monetary transactions that involve a variety of non-decimal currencies. A PDF copy of the example journal can be downloaded from [GitHub](https://github.com/jessesadler/debkeepr/blob/master/data-raw/dafforne-journal.pdf). For a further analysis of the set of account books as a whole, see the Analysis of Richard Dafforne’s Journal and Ledger vignette.
 
 ## Richard Dafforne’s *Merchant’s Mirrour*
-Richard Dafforne’s *Merchant's Mirrour* built upon a tradition that began with Luca Pacioli’s *Summa de arithmetica, geometria. Proportioni et proportionalita* (Venice, 1494), which was the first published text to describe the practices of double-entry bookkeeping. Throughout the sixteenth century manuals on double-entry bookkeeping were published in a variety of languages, though the use of double-entry bookkeeping by merchants varied greatly by region. Dafforne gained his understanding of double-entry bookkeeping while residing in Amsterdam, where he became acquainted with the mathematician Simon Stevin. Many of the practices Dafforne detailed in his manual follow those discussed in Stevin’s essay on *Princely Bookkeeping* (1608). Dafforne returned to London in 1630 and earned his living teaching bookkeeping and Dutch. Upon his return to England he lamented that knowledge of the art of bookkeeping in his native land lagged behind that he experienced in Holland. Dafforne’s manual acted as both a guide to spread knowledge of bookkeeping and as an advertisement for his own bookkeeping school. The popularity of *Merchant’s Mirrour* is clear from its multiple editions, which appeared in 1636, 1651, 1660, and 1684. The text was also included in the popular *Consuetudo Vel Lex Mercatoira* of Gerard Malynes from its 1636 edition.
+Richard Dafforne’s *Merchant's Mirrour* built upon a tradition that began with [Luca Pacioli’s](https://en.wikipedia.org/wiki/Luca_Pacioli) *Summa de arithmetica, geometria: Proportioni et proportionalita* (Venice, 1494), which was the first published text to describe the practices of double-entry bookkeeping. Throughout the sixteenth century manuals on double-entry bookkeeping were published in a variety of languages, though the use of double-entry bookkeeping by merchants varied greatly by region. Dafforne gained his understanding of double-entry bookkeeping while residing in Amsterdam, where he became acquainted with the mathematician [Simon Stevin](https://en.wikipedia.org/wiki/Simon_Stevin). Many of the practices Dafforne detailed in his manual follow those discussed in Stevin’s essay on *Princely Bookkeeping* (1608). Dafforne returned to London in 1630 and earned his living teaching bookkeeping and Dutch. Upon his return to England he lamented that knowledge of the art of bookkeeping in his native land lagged behind that he experienced in Holland. Dafforne’s manual acted as both a guide to spread knowledge of bookkeeping and as an advertisement for his own bookkeeping school. The popularity of *Merchant’s Mirrour* is clear from its multiple editions, which appeared in 1636, 1651, 1660, and 1684. The text was also included in the popular *Consuetudo Vel Lex Mercatoira* of [Gerard Malynes](https://en.wikipedia.org/wiki/Gerard_de_Malynes) from its 1636 edition.
 
 The third edition of Dafforne’s manual, which is the edition used here, consists of an introductory dialogue between two students of bookkeeping that presents an overview of the practices of double-entry bookkeeping. It is followed by three practice sets of account books and a short treatise on arithmetic necessary for bookkeeping. Though it contains a short section on calculating interest, Dafforne’s manual concentrates on bookkeeping practices rather than on the arithmetic skills used to calculate the values of the transactions. Dafforne followed those such as Pacioli in proclaiming that the minimal set of account books to practice proper bookkeeping consisted in a wastebook, journal, and ledger. The wastebook acted as the first record of transactions. The journal introduced the language of creditor and debtor, ensuring that each transaction was creditor to one account and debtor to another. The ledger provided the final presentation of the accounts. Each transaction was placed in the ledger twice, once under the credit account and once under the debit account. [^1]
 
@@ -82,12 +82,11 @@ To find the total net weight of the kettles we can add the gross weights and tar
 
 ```{r 3. kettles weight}
 # 3. Gross weight
-kettles_gross <- deb_as_lsd(lsd = list(c(2, 3, 26),
-                                       c(2, 2, 18),
-                                       c(2, 1, 21),
-                                       c(2, 0, 17),
-                                       c(1, 3, 5)),
-                            bases = c(4, 28))
+(kettles_gross <- deb_lsd(l = c(2, 2, 2, 2, 1),
+						 s = c(3, 2, 1, 0, 3),
+						 d = c(26, 18, 21, 17, 5),
+						 bases = c(4, 28)))
+
 (kettles_gross_sum <- deb_sum(kettles_gross))
 
 # Tare
@@ -288,7 +287,7 @@ Breaking down and recreating the individual transactions within a journal such a
 
 [^1]:	John Geijsbeek, *Ancient Double-Entry Bookkeeping: Lucas Pacioli’s Treatise (A.D. 1494, the Earliest Known Writer on Bookkeeping) Reproduced and Translated with Reproductions, Notes, and Abstracts from Manzoni, Pietra, Mainardi, Ympyn, Stevin, and Dafforne* (Denver: John Geijsbeek, 1914).
 
-[^2]:	England used the Julian calendar until 1752, making it ten days behind the Gregorian calendar throughout the 17th century. In addition, the English calendar used 25 March as the start of the new year. Thus, 1 January 1633 was actually 11 January 1634 by the Gregorian calendar.
+[^2]:	England used the Julian calendar until 1752, making it ten days behind the Gregorian calendar throughout the 17th century. In addition, the English calendar used 25 March as the start of the new year. Thus, 1 January 1633 was actually 11 January 1634 by the Gregorian calendar, and the transactions listed in the journal only represent a period of seven months not one year and seven months.
 
 [^3]:	The data in the `debkeepr` package only includes 177 transactions and 46 accounts, because it does not have the balance account, which can be recreated with the accounting functions in `debkeepr`.
 

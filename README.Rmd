@@ -8,8 +8,7 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
+  fig.path = "man/figures/README-"
 )
 ```
 
@@ -129,7 +128,7 @@ lsd_tbl %>%
 
 An issue with the implementation of a list column to hold monetary values is that such a column cannot be plotted. Because of this and other issues inherent in list columns, `debkeepr` has robust support for decimalization. There are functions to decimalize pounds, shillings, and pence values to any of the three units and to go in the opposite direction from any decimalized unit to lsd values. For plotting purposes the most useful workflow is to go from pounds, shillings, and pence to decimalized pounds.
 
-```{r decimalization}
+```{r decimalization, fig.height = 4, fig.width = 4}
 # Create decimalized pounds variable
 lsd_tbl %>% 
   mutate(pounds = deb_lsd_l(lsd = lsd))
