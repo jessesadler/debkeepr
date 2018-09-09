@@ -14,11 +14,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-`debkeepr` provides an interface for analyzing non-decimal currencies that use the tripartite system of pounds, shillings, and pence. It includes functions to apply arithmetic and financial operations to single or multiple values and to analyze account books that use either [single-entry bookkeeping](https://en.wikipedia.org/wiki/Single-entry_bookkeeping_system) or [double-entry bookkeeping](https://en.wikipedia.org/wiki/Double-entry_bookkeeping_system) with the latter providing the name for `debkeepr`. The use of non-decimal currencies throughout the medieval and early modern period presents difficulties for the analysis of historical accounts. The pounds, shillings, and pence system complicates even relatively simple arithmetic manipulations, as each unit has to be [normalized](https://en.wikipedia.org/wiki/Arithmetic#Compound_unit_arithmetic) or converted to the correct base. To unite pounds, shillings, and pence units into a single value and associate the shillings and pence units with non-decimal bases `debkeepr` implements a special class of R object. The **lsd** class consists of a list of one or more numeric vectors of length 3 and a `bases` attribute attached to the list. `debkeepr` provides functions to manipulate `lsd` objects on their own or within a data frame as list column.
-
-The `debkeepr` package uses the nomenclature of [l, s, and d](https://en.wikipedia.org/wiki/%C2%A3sd) to represent pounds, shillings, and pence units. The abbreviations derive from the Latin terms [libra](https://en.wikipedia.org/wiki/French_livre), [solidus](https://en.wikipedia.org/wiki/Solidus_(coin)), and [denarius](https://en.wikipedia.org/wiki/Denarius). The libra was a Roman measurement of weight, while the solidus and denarius were both Roman coins. The denarius was a silver coin from the era of the Republic, in contrast to the golden solidus that was issued in the Late Empire. As the production of silver coins overtook that of gold by the 8th century, a solidus came to represent 12 silver denarii coins, and 240 denarii were — for a time — made from one libra or pound of silver. The custom of counting coins in dozens (solidi) and scores of dozens (librae) spread throughout the Carolingian Empire and became engrained in much of Europe. However, a variety of [other bases](https://en.wikipedia.org/wiki/Non-decimal_currency) for the solidi and denarii units were in use in different regions and at different times.
+This vignette introduces the `debkeepr` package. The package provides an interface for working with non-decimal currencies that use the tripartite system of pounds, shillings, and pence. This vignette gives an overview of the functions in `debkeepr` and the implementation of the `lsd` class used to represent pounds, shillings, and pence values in R. Further demonstration of the benefits of `debkeepr` for making calculations with monetary values found in historical sources can be seen in the [Transactions in Richard Dafforne's Journal vignette](https://jessesadler.github.io/debkeepr/articles/transactions.html), while an example analysis of a set of account books is shown in the Analysis of Richard Dafforne’s Journal and Ledger vignette.
 
 ## Overview
+`debkeepr` attempts to solve two problems in analyzing monetary values that are in the non-decimal form of pounds, shillings, and pence. Firstly, it provides a means to more easily and more accurately make arithmetic calculations on sets monetary values encountered in the course of research. Secondly, `debkeepr` facilitates the analysis and visualization of larger sets of monetary values found in historical account books.
+
 - All of the functions in `debkeepr` begin with the prefix `deb_`, which is short for double-entry bookkeeping.
 - The nomenclature used throughout the package follows the [original Latin terms](https://en.wikipedia.org/wiki/%C2%A3sd) in using l, s, and d to represent librae, solidi, and denarii respectively and to refer to such values as lsd values. These terms were translated into the various European languages.
 	- English: pounds, shillings, pence
@@ -30,12 +30,23 @@ The `debkeepr` package uses the nomenclature of [l, s, and d](https://en.wikiped
 	2. A data frame with one or more list columns of class `lsd`.
 	3. A data frame that mimics the structure of an account book and can be thought of as a transactions data frame. In addition to an `lsd` list column that denotes the value of each transaction, a transactions data frame contains variables recording the [credit and debit account](https://en.wikipedia.org/wiki/Debits_and_credits) for each transaction.
 - Data
-	- `debkeepr` contains two data sets from the example journal and ledger in Richard Dafforne's *Merchant's Mirrour* from 1660. `dafforne_transactions` is a transactions data frame with 177 transactions. `dafforne_accounts` possesses information about the 46 accounts in the journal and ledger.
+	- `debkeepr` contains two data sets from the example journal and ledger in the third edition of Richard Dafforne's *Merchant's Mirrour* from 1660. Dafforne’s text taught the practices of double-entry bookkeeping and provided a full set of account books to be used for educational purposes.
+	- `dafforne_transactions` is a transactions data frame with 177 transactions.
+	- `dafforne_accounts` possesses information about the 46 accounts in the journal and ledger.
+
+## Historical Background
+To understand the monetary system of pounds, shillings, and pence it is necessary to distinguish between money of account, or the measure of values, and coins, or the medium of exchange, though the two were tied together. Until the modern period, pounds, shillings, and pence were rarely actual coins, and the ratios of the value of coins fluctuated frequently. Thus, the pounds, shillings, and pence system refers to [money of account](https://en.wikipedia.org/wiki/Unit_of_account) and not to actual coins, even if coins with those names existed at different times.
+
+The pounds, shillings, and pence system dates back to the Carolingian Empire. The main coin used in the Late Roman Empire had been the golden [solidus](https://en.wikipedia.org/wiki/Solidus_(coin)), introduced by Constantine in 309. However, the shrinking of the economy and political splintering that occurred after the fall of the Roman Empire diminished the need for gold coins. In the 6th century, the Frankish rulers who took over the Roman mints reacted by creating [ triens or tremissis](https://en.wikipedia.org/wiki/Tremissis), smaller gold coins worth one-third of a solidus. From this point, the solidus was no longer produced as a physical coin used for exchange in the western kingdoms, but it continued as a [unit of account](https://en.wikipedia.org/wiki/Unit_of_account) equivalent to three trientes. In the 7th century even devalued golden trientes proved to be too valuable for economic needs, and Frankish rulers began to produce silver coins based on the size and weight of the triens. The new silver penny was called a [denarius](https://en.wikipedia.org/wiki/Denarius), linking it to the old silver coin used in the Roman Republic. The silver penny provided the basis for the monetary system of Western Europe until the move to gold coins in the 14th century.
+
+As the silver denarius overtook the golden triens, the triens became a unit of account equivalent to four denarii. In this way the solidus transformed into a unit of account representing 12 denarii even if 12 silver denarii of the 8th century would never have been equivalent to the pure gold solidus of the Late Roman Empire. The use of the [libra](https://en.wikipedia.org/wiki/Ancient_Roman_units_of_measurement#Weight) as a third unit of account derived from the number of silver denarii struck from a pound or libra of silver. Though the actual number of coins struck from a pound of silver differed over time, the rate of 240 coins from a libra lasted long enough to become fossilized in much of Europe.[^1] The custom of counting coins in dozens (solidi) and scores of dozens (librae) spread throughout the Carolingian Empire and became engrained in much of Europe. By the early modern period a huge variety of monies of accounts had developed across Europe and beyond, and though many used the 1:20:240 ratios, others used a diversity of bases to represent the shillings and pence units.[^2]
 
 ## lsd objects
-The `lsd` class is implemented to deal with two interrelated problems in manipulating pounds, shillings, and pence (lsd) values in a programming environment such as R. In the first place, a single lsd value possesses three separate units. Making matters more difficult, the shillings and pence units are non-decimal, and the bases for the the units differed by region, coinage used as the [money of account](https://en.wikipedia.org/wiki/Unit_of_account), and era. The latter issue means that the actual value represented by three numbers standing in for pounds, shillings, and pence cannot be known outside of the context of the bases for the shillings and pence units.  
+`debkeepr` implements the `lsd` class to deal with two interrelated problems in manipulating pounds, shillings, and pence (lsd) values in a programming environment such as R. In the first place, a single lsd value possesses three separate units. Making matters more difficult, the shillings and pence units are non-decimal, and the bases for the units differed by region, coinage used as the money of account, and era. The latter issue means that the actual value represented by three numbers standing in for pounds, shillings, and pence cannot be known outside of the context of the bases for the shillings and pence units.  
 
-The `lsd` class provides solutions to these issues by unifying pounds, shillings, and pence values into a numeric vector of length three and the creation of a `bases` attribute to track and implement the specified bases for the shillings and pence units. The first position of each vector represents the pounds unit, the second the shillings unit, and the third the pence unit. The `bases` attribute consists of a numeric vector of length 2. The first position records the base for the shillings unit, and the second position provides the base for the pence unit. The `bases` attribute ensures that pounds, shillings, and pence values are always associated with their correct bases and that values with different bases are never unknowingly brought together.  `lsd` objects are stored as [lists](http://r4ds.had.co.nz/vectors.html#lists), making it possible to have multiple lsd values in a single `lsd` object and to implement `lsd` objects as list columns in a data frame or [tibble](https://tibble.tidyverse.org). The `lsd` class uses its own printing method to reduce the space taken up by each lsd value compared to the default list print method. The print method borrows from that of data frame, since the structures of the objects are similar.
+The `lsd` class provides solutions to these issues by unifying pounds, shillings, and pence values into a numeric vector of length three and the creation of a `bases` attribute to track and implement the specified bases for the shillings and pence units. The first position of each vector represents the pounds unit, the second the shillings unit, and the third the pence unit. The `bases` attribute consists of a numeric vector of length 2. The first position records the base for the shillings unit, and the second position provides the base for the pence unit. The `bases` attribute ensures that pounds, shillings, and pence values are always associated with their correct bases and that values with different bases are never unknowingly brought together. 
+
+`lsd` objects are stored as [lists](http://r4ds.had.co.nz/vectors.html#lists), making it possible to have multiple lsd values in a single `lsd` object and to implement `lsd` objects as list columns in a data frame or [tibble](https://tibble.tidyverse.org). The `lsd` class uses its own printing method to reduce the space taken up by each lsd value compared to the default list print method. The print method borrows from that of data frame, since the structures of the objects are similar.
 
 ### Creating lsd objects
 Objects of class `lsd` can be created either explicitly or implicitly. `debkeepr` provides two methods for the explicit creation of `lsd` objects.
@@ -65,7 +76,7 @@ deb_as_lsd(lsd = c(10, 8, 11))
 deb_as_lsd(lsd = list(c(10, 8, 11), c(12, 16, 2), c(5, 3, 8)))
 ```
 
-An `lsd` list column in a data frame can be constructed at the time of making the data frame or from separate pounds, shillings, and pence variables. The former method necessitates the use of the [tibble package](https://tibble.tidyverse.org), as a list column cannot be added to a data frame with the base `data.frame()` function. Creating a list column of class `lsd` with `tibble()` can be done with either `deb_lsd()` or `deb_as_lsd()`. Another method, which can be used in both tibbles and base data frames, is to convert separate pounds, shillings, and pence variables to an `lsd` list column with `deb_lsd_gather()`. The function possesses an optional `replace` argument to remove the original pounds, shillings, and pence variables. The inverse operation of converting an `lsd` list column to separate pounds, shillings, and pence variables can be done with `deb_lsd_spread()`.
+An `lsd` list column in a data frame can be constructed at the time of making the data frame or from separate pounds, shillings, and pence variables. The former method necessitates the use of the [tibble package](https://tibble.tidyverse.org), as a list column cannot be added to a data frame with the base `data.frame()` function. Creating a list column of class `lsd` with `tibble()` can be done with either `deb_lsd()` or `deb_as_lsd()`. Another method, which can be used in both tibbles and base data frames, is to convert separate pounds, shillings, and pence variables to an `lsd` list column with `deb_lsd_gather()`.[^3] The function possesses an optional `replace` argument to remove the original pounds, shillings, and pence variables. The inverse operation of converting an `lsd` list column to separate pounds, shillings, and pence variables can be done with `deb_lsd_spread()`. One drawback to the use of a list column, is that writing a data frame with an `lsd` list column to a csv file will not maintain the attributes of the `lsd` column. Alternatives are to save the file as an rds file or to use `deb_lsd_spread()` and save as a csv.
 
 ```{r lsd list column}
 library(tibble)
@@ -170,7 +181,7 @@ deb_subtract(lsd1 = c(8, 14, 11), lsd2 = single_lsd)
 deb_subtract(lsd1 = mult_lsd, lsd2 = single_lsd)
 ```
 
-Multiplication and division work similarly to `deb_add()` and `deb_subtract()`, but instead of using a second lsd value, `deb_multiply()` and `deb_divide()` multiply and divide a lsd values by a single value: `x`.
+Multiplication and division work similarly to `deb_add()` and `deb_subtract()`, but instead of using a second lsd value, `deb_multiply()` and `deb_divide()` multiply and divide an lsd values by a single value: `x`.
 
 ```{r multiplication and division}
 # Multiplcation
@@ -186,7 +197,7 @@ deb_divide(lsd = c(136, 17, 9), x = 5)
 deb_divide(lsd = mult_lsd, x = 3)
 ```
 
-Because `lsd` is always the first argument in `debkeepr` functions that deal with lsd vectors, `debkeepr` functions can be chained together with the pipe (`%>%`). For instance, you can find the revenue gained by each of two partners who worked on a commission of 3% for the sum of four separate sales.
+Because `lsd` is always the first argument in `debkeepr` functions that deal with lsd vectors, `debkeepr` functions can be chained together with the pipe (`%>%`). For instance, you can find the revenue gained by each of two partners who worked on a commission of 3% for the sum of four separate sales in a single pipeline.
 
 ```{r the pipe}
 # 3% commision between two partners
@@ -209,7 +220,7 @@ deb_divide(c(6, 8, 1), x = 3) %>%
 
 
 ### Financial functions
-Alongside arithmetic operations, `debkeepr` possesses functions to do common financial operations such as calculate interest and the exchange between different currencies. `deb_interest()` contains arguments for the interest rate, the duration over which the interest should be calculated, and whether the principal should be included in the returned value. The default interest rate is 6.25%, which was the standard interest rate in the Low Countries at the end of the 16th century.
+Alongside arithmetic operations, `debkeepr` possesses functions to do common financial operations such as calculate interest and the exchange between different currencies. `deb_interest()` contains arguments for the interest rate, the duration over which the interest should be calculated, and whether the principal should be included in the returned value.
 
 ```{r interest}
 # Interest rate at 6.25% over a 5 year period with principal
@@ -219,7 +230,7 @@ deb_interest(lsd = c(100, 0, 0), interest = 0.0625, duration = 5)
 deb_interest(lsd = c(100, 0, 0), interest = 0.0625, duration = 5, with_principal = FALSE)
 ```
 
-Exchange between different currencies creates a number of potential problems, but `debkeepr` provides multiple ways to handle currency exchanges. The most straightforward method for calculating the exchange between two currencies is to use `deb_exchange()`, which uses the shillings unit to compare the currencies. If the exchange rate includes a pence value, you can either convert to a decimalized shillings or add the pence over the base of the pence as shown below. However, the exchange rate between currencies may not always be given in terms of shillings. For instance, a rate might be provided as 90d. This could be normalized to shillings, but in this case it may be easier to use `deb_multiply()` and compare 90d. to 240d. in a pound.
+Exchange between different currencies creates a number of potential problems, but `debkeepr` provides multiple ways to handle currency exchanges. The most straightforward method for calculating the exchange between two currencies is to use `deb_exchange()`, which uses the shillings unit to compare the currencies. If the exchange rate includes a pence value, you can either convert to decimalized shillings or add the pence over the base of the pence as shown below. However, the exchange rate between currencies may not always be given in terms of shillings. For instance, a rate might be provided as 90d. This could be normalized to shillings, but in this case it may be easier to use `deb_multiply()` and compare 90d. to 240d. in a pound.
 
 ```{r exchange}
 # Exchange between currencies at rate of 31 shillings or 1 to 1.55
@@ -253,7 +264,7 @@ deb_invert_rate(exchange_rate = c(0, 33, 4))
 deb_invert_rate(exchange_rate = c(0, 33, 4), output = "pence")
 ```
 
-The most challenging exchange between currencies takes place when the bases for the shillings and pence units differ between the two currencies. Though the system of 20-base shilling and 12-base penny was widespread, various currencies used other bases. `deb_convert_bases()` provides a way to convert from one base system to another. It also has a `ratio` argument that can be used similarly to `deb_multiply()` to include an exchange rate between currencies in addition to the base conversion. A good example is the conversion between the guilders monetary system from Holland and Flemish pounds, which were both in use in the seventeenth century. Flemish pounds used the 20 and 12 base system, but guilders consisted of 20 stuivers of 16 penningen. In addition, the guilders and Flemish pounds currencies were tied together at a rate of 6 guilders to £1 Flemish. `deb_convert_bases()` can perform this and various other conversions between forms of measurement that use the tripartite based system of lsd.
+The most challenging exchange between currencies takes place when the bases for the shillings and pence units differ between the two currencies. Though the system of 20-base shilling and 12-base penny was widespread, various monies of account used alternative bases. `deb_convert_bases()` provides a way to convert from one base system to another. It also has a `ratio` argument that can be used similarly to `deb_multiply()` to include an exchange rate between currencies in addition to the base conversion. A good example is the conversion between the Flemish pound and guilders in Holland, which were both in use in the seventeenth-century Low Countries. Flemish pounds used the 20s. and 12d. base system, but guilders consisted of 20 stuivers of 16 penningen. In addition, guilders and Flemish pounds were tied together at a rate of 6 guilders to £1 Flemish. `deb_convert_bases()` can perform this and various other base conversions.
 
 ```{r base conversion}
 # Convert Flemish pounds to guilders
@@ -286,7 +297,7 @@ deb_convert_bases(lsd = guilders,
 ```
 
 ### Decimalization
-Sometimes it is useful to decimalize lsd values, reducing the values to a single unit with a base of 10. Alternatively, you may come across decimalized values that you want to expand to lsd values. `debkeepr` provides functions to convert between decimalized and non-decimalized values. One detail to keep in mind is that decimalization outputs a normal numeric vector, and so the `bases` attribute is dropped.
+While the goal of `debkeepr`is to enable the calculation of lsd values and maintain their natural non-decimal form, sometimes it is useful to decimalize lsd values, reducing the values to a single unit with a base of 10. Alternatively, you may come across decimalized values that you want to expand to lsd values. `debkeepr` provides functions to convert between decimalized and non-decimalized values for each of the three units in lsd values. One detail to keep in mind is that decimalization outputs a normal numeric vector, and so the `bases` attribute is dropped.
 
 All of the decimalization functions follow the naming convention of `input_output`. For instance, `deb_lsd_l()` converts an lsd value to decimalized pounds, while conversion between decimalized pounds to an `lsd` object is done with `deb_l_lsd()`. There are functions to do the same process with both shillings and pence.
 
@@ -305,15 +316,15 @@ deb_d_lsd(d = 2551)
 ```
 
 ## Context 2: lsd list columns
-Almost all of the functions that can be applied in the context of `lsd` objects can also be used in the context of an `lsd` list column in a data frame, even if the use of some functions make less sense than others. For instance, there is little cause to use `deb_exchange_rate()` on an `lsd` list column. The one major exception to this is `deb_sum()`, which does not work in the context of a data frame. However, there is a substitute that performs the same task in `deb_summarise()`. As the name for the latter function implies, `debkeepr` functions are designed to work within the [tidyverse](https://www.tidyverse.org) workflow and particularly with `dplyr::mutate()`, while `deb_summarise()` provides some of the functionality of `dplyr::summarise()` for an `lsd` list column. This section provides examples of manipulating `lsd` list columns with the help of [dplyr](https://dplyr.tidyverse.org).
+Almost all of the functions that can be applied in the context of `lsd` objects can also be used in the context of an `lsd` list column in a data frame. `debkeepr` functions are designed to work within the [tidyverse](https://www.tidyverse.org) workflow and particularly with `dplyr::mutate()`. This section provides examples of manipulating `lsd` list columns with the help of [dplyr](https://dplyr.tidyverse.org).
 
-```{r lsd_tbl}
-# loan dplyr and create tibble with lsd list column
-suppressPackageStartupMessages(library(dplyr))
-lsd_tbl <- tibble(id = c(1, 3, 2, 1, 2),
-                  lsd = deb_lsd(l = c(102, 215, 98, 251, 98),
-                                s = c(18, 0, 9, 12, 4),
-                                d = c(9, 11, 7, 5, 0)))
+```{r lsd_tbl, message = FALSE}
+# load dplyr and create tibble with lsd list column
+library(dplyr)
+(lsd_tbl <- tibble(id = c(1, 3, 2, 1, 2),
+                  lsd = deb_lsd(l = c(102, 215, 98, 251, 156),
+                                s = c(18, 0, 9, 13, 6),
+                                d = c(9, 11, 7, 4, 8))))
 ```
 
 The “lsd” variable in `lsd_tbl` was created with `deb_lsd()` using the default bases of `c(20, 12)`, and so all functions will automatically use these bases unless they are explicitly converted. It is always possible to check the bases of an `lsd` list column with `deb_bases()`.
@@ -331,24 +342,21 @@ lsd_tbl %>%
 
 # Interest at 8% after a 5 year period
 lsd_tbl %>% 
-  mutate(total = deb_interest(lsd = lsd, interest = 0.08, duration = 5))
+  mutate(due = deb_interest(lsd = lsd, interest = 0.08, duration = 5))
 
 # Make multiple new variables to find total due and interest charged
 lsd_tbl %>% 
-  mutate(total = deb_interest(lsd = lsd, interest = 0.08, duration = 5),
-         interest = deb_subtract(lsd1 = total, lsd2 = lsd))
+  mutate(due = deb_interest(lsd = lsd, interest = 0.08, duration = 5),
+         interest = deb_subtract(lsd1 = due, lsd2 = lsd))
 ```
 
 It is also possible to create a new `lsd` list column with different bases. For instance, the `lsd` list column in `lsd_tbl` can be treated as containing Flemish pounds, which can be converted to guilders.
 
 ```{r convert bases tbl}
 # Create guilders lsd column from flemish pounds
-lsd_tbl %>% 
-  mutate(guilders = deb_convert_bases(lsd = lsd, bases2 = c(20, 16), ratio = 6))
-
 # save the tbl for use below
-lsd_tbl2 <- lsd_tbl %>% 
-  mutate(guilders = deb_convert_bases(lsd = lsd, bases2 = c(20, 16), ratio = 6))
+(lsd_tbl2 <- lsd_tbl %>% 
+  mutate(guilders = deb_convert_bases(lsd = lsd, bases2 = c(20, 16), ratio = 6)))
 ```
 
 Decimalization of lsd values is particularly useful in the context of `lsd` list columns, because there may be times when it is easier to work with a normal numeric variable instead of a list column. In addition, the ability to return decimalized values to an `lsd` list column means that there is little trouble in going between the two, though it should be remembered that the `bases` attribute is lost in the process of decimalization.
@@ -360,7 +368,19 @@ lsd_tbl %>%
          lsd2 = deb_d_lsd(denarii, bases = c(20, 12)))
 ```
 
-The exception to the normal function of `dplyr` single-table functions is `summarise()`, which is not meant to be used on list columns. `deb_summarise()` provides some of the functionality of `summarise()` in giving a method to find the sum of an `lsd` list column and can be used it its place. To find other summarizing values it is always possible to decimalize an `lsd` list column and perform `summarise()` functions on this variable, returning to an `lsd` list column when necessary. `deb_summarise()` can find the sum of an `lsd` list column or can work on a grouped data frame. It can also be used on multiple `lsd` list columns at a time, because the function is based on `summarise_at()`.
+Decimalization can also be used to visualize the values in an `lsd` list column. For instance, a simple bar chart of the total value held in each account in the “id” column by creating a decimalized pounds variable.
+
+```{r plot-lsd}
+# Use decimalized pounds variable to plot value of each account
+library(ggplot2)
+lsd_tbl %>% 
+  mutate(pounds = deb_lsd_l(lsd = lsd)) %>% 
+  ggplot() + 
+  geom_bar(aes(x = id, y = pounds), stat = "identity") + 
+  theme_light()
+```
+
+The biggest exception to the use of `debkeepr` functions within the normal `dplyr` workflow is `deb_sum()`, which does not work in the context of `dplyr::summarise()` as might be expected.[^4] However, `deb_summarise()` provides some of the functionality of `summarise()` in giving a method to find the sum of an `lsd` list column and can be used it its place. To find other summarizing values it is always possible to decimalize an `lsd` list column and perform `summarise()` functions on this variable, returning to an `lsd` list column when necessary. 
 
 ```{r summarise}
 # sum of lsd list column
@@ -379,9 +399,9 @@ lsd_tbl2 %>%
 ```
 
 ## Context 3: transactions data frame
-Transaction data frames present a way to record data from an account book as a native R object. A transactions data frame consist of three necessary variables: credit and debit variables to record the creditor and debtor accounts of each transaction and an `lsd` list column for the value of the transactions. Following the principles of double-entry bookkeeping, the credit account is the account that gives or sends the value, and the debit account receives the value. The `debkeepr` functions that work specifically on transaction data frames use "credit" and "debit" as the default names for these variables, though one could follow the convention of [network analysis](http://kateto.net/network-visualization) and name the variables "from" and "to".
+Transaction data frames present a way to record data from an account book as a native R object. A transactions data frame consists of three necessary variables: credit and debit variables to record the creditor and debtor accounts of each transaction and an `lsd` list column for the value of the transactions. Following the principles of double-entry bookkeeping, the credit account is the account that gives the value and the debit account receives the value. The `debkeepr` functions that work specifically on transaction data frames use "credit" and "debit" as the default names for these variables, though one could follow the convention of [network analysis](http://kateto.net/network-visualization) and name the variables "from" and "to".
 
-Here is an example transactions data frame with four accounts named “wheat”, “silk”, “linen”, and “cash” and 15 transactions with values randomly created:
+Here is an example transactions data frame with four accounts named “wheat”, “silk”, “linen”, and “cash” and 15 transactions with randomly created values:[^5]
 
 ```{r transactions_df}
 accounts <- c("wheat", "silk", "linen", "cash")
@@ -393,7 +413,7 @@ transactions_tbl <- tibble(credit = sample(accounts, 15, replace = TRUE),
                                          d = sample(1:11, 15, replace = TRUE)))
 ```
 
-`debkeepr` possesses an account family of functions that are designed to analyze a transaction data frame such as `transactions_tbl`. `deb_account()` provides information about the total credit and debit and the current balance of a single account. `deb_account_summary()` gives the same type of information but includes all accounts in the transactions data frame.
+`debkeepr` possesses an account family of functions that are designed to analyze a transaction data frame such as `transactions_tbl`. `deb_account()` provides information about the total credit and debit and the current balance of a single account. `deb_account_summary()` gives the same type of information but includes all accounts in the transactions data frame, creating separate `lsd` list columns for the total credit, debit, and current value for each account.
 
 ```{r deb_account}
 # Credit, debit, and current values for the "cash" account
@@ -407,7 +427,21 @@ deb_account(df = transactions_tbl,
 deb_account_summary(df = transactions_tbl)
 ```
 
-The remaining functions build on `deb_account_summary()`. Three functions simplify the information produced by `deb_account_summary`: `deb_credit()` shows the total credit for each account, `deb_debit()` does the same for the debits, and `deb_current()` shows on the current value for  each account.
+`deb_account_summary()` provides a good basis for a visual overview of the accounts in a transactions data frame, though some alterations do have to be made. Firstly, the `lsd` list columns have to be decimalized. Secondly, though it is not strictly true to think of debits as negative values, it makes sense to transform the debit of accounts to negative values for the purposes of visualization.
+
+```{r transactions}
+# Decimalize and plot account summary
+deb_account_summary(transactions_tbl) %>% 
+  mutate_if(deb_is_lsd, deb_lsd_l) %>% 
+  mutate(debit = -debit) %>% 
+  ggplot() + 
+    geom_linerange(aes(x = account_id, ymin = debit, ymax = credit)) + 
+    geom_point(aes(x = account_id, y = current)) +
+    labs(x = NULL, y = NULL, title = "Summary of a transactions data frame") + 
+    theme_light()
+```
+
+The remaining accounts functions build on `deb_account_summary()`. Three functions simplify the information produced by `deb_account_summary`: `deb_credit()` shows the total credit for each account, `deb_debit()` does the same for the debits, and `deb_current()` shows the current value for each account.
 
 ```{r account functions}
 # Total credit for each account
@@ -421,7 +455,7 @@ deb_debit(df = transactions_tbl) %>%
 deb_current(df = transactions_tbl)
 ```
 
-`deb_open()` is similar to `deb_current()`, but it removes any accounts that have been closed by being zeroed out. This is useful if there are many accounts in the transactions data frame that have been closed. In the example of `transactions_tbl` all accounts are open, and so `deb_open()` has the same result as `deb_current()`. `deb_balance()` shows the total credit and debit remaining in the transactions data frame. The values for credit and debit will always be the same in `deb_balance()`, as there should always be the same amount of credit as debit in an account book.
+`deb_open()` is similar to `deb_current()`, but it removes any accounts that have been closed by being zeroed out. This is useful if there are many accounts in a transactions data frame that have been closed. In the example of `transactions_tbl` all accounts are open, and so `deb_open()` has the same result as `deb_current()`. `deb_balance()` shows the total credit and debit remaining in the transactions data frame. The values for credit and debit should always be the same in `deb_balance()`, as there should always be the same amount of credit as debit in an account book.
 
 ```{r balance}
 # Balance remaining on transactions_df
@@ -433,3 +467,13 @@ deb_balance(transactions_tbl)
 - John Richard Edwards and Stephen P. Walker, eds. *The Routledge Companion to Accounting History* (New York: Routledge Taylor & Francis Group, 2009).
 - Jacob Soll, *The Reckoning: Financial Accountability and the Rise and Fall of Nations* (New York: Basic Books, 2014).
 - John Geijsbeek, *Ancient Double-Entry Bookkeeping: Lucas Pacioli’s Treatise (A.D. 1494, the Earliest Known Writer on Bookkeeping) Reproduced and Translated with Reproductions, Notes, and Abstracts from Manzoni, Pietra, Mainardi, Ympyn, Stevin, and Dafforne* (Denver: John Geijsbeek, 1914).
+
+[^1]:	Using the bases of 20 and 12 also had certain [arithmetic advantages](https://en.wikipedia.org/wiki/Duodecimal).
+
+[^2]:	For more information about the development of the system of pounds, shillings, and pence and medieval monetary systems more generally see Peter Spufford, *Money and its Use in Medieval Europe* (Cambridge: Cambridge University Press, 1988).
+
+[^3]:	This method is most likely to be used when importing data with pounds, shillings, and pence values from a csv file.
+
+[^4]:	`deb_sum()` can be used with the [scoped versions](https://dplyr.tidyverse.org/reference/summarise_all.html) of `dplyr::summarise()`.
+
+[^5]:	See `dafforne_transactions` for an example of a larger set of transactions.
