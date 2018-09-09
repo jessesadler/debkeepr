@@ -1,3 +1,5 @@
+url: https://jessesadler.github.io/debkeepr/
+
 authors:
   Jesse Sadler:
     href: https://www.jessesadler.com
@@ -24,6 +26,13 @@ reference:
     - deb_sum
     - deb_add
     - deb_subtract
+  - title: Financial
+    contents:
+    - deb_interest
+    - deb_exchange
+    - deb_exchange_rate
+    - deb_invert_rate
+    - deb_convert_bases
   - title: Decimalization
     contents:
     - deb_lsd_l
@@ -32,13 +41,6 @@ reference:
     - deb_s_lsd
     - deb_lsd_d
     - deb_d_lsd
-  - title: Financial
-    contents:
-    - deb_interest
-    - deb_exchange
-    - deb_exchange_rate
-    - deb_invert_rate
-    - deb_convert_bases
   - title: lsd list column
     contents:
     - deb_lsd_gather
