@@ -36,7 +36,9 @@ the lsd account functions in \code{debkeepr}.
 \code{credit} and \code{debit} variables in \code{dafforne_transactions}.
 \item \code{account}: Name of the account.
 \item \code{ledger}: Page on which the account appears in the ledger.
-\item \code{person}: Main person with whom the account deals.
+\item \code{investor}: The investor or the person’s whose capital is involved in
+the account. Accounts that only deal with the bookkeeper's capital are
+listed as "ego".
 \item \code{description}: Short description of each account.
 }
 }

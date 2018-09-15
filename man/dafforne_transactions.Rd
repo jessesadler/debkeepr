@@ -44,7 +44,7 @@ correspond to the \code{id} variable in \code{dafforne_accounts}.
 conforms to the Anglican calendar that used the old Julian calendar with
 the new year on 25 March. Encoded as a date object.
 \item \code{lsd}: List column of class lsd with pounds, shillings, and pence
-values. Bases for shillings and pence is 20 and 12 respectively.
+values. Bases for shillings and pence are 20 and 12 respectively.
 \item \code{journal}: Page on which the transaction is recorded in the journal.
 \item \code{ledger}: The pages on which the transaction is recorded in the ledger.
 The number before the slash is the page on which the debit is recorded.
