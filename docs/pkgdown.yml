@@ -1,6 +1,6 @@
 pandoc: 1.19.2.1
-pkgdown: 1.1.0.9000
-pkgdown_sha: 07e5735b224cd54f61eb8fcac15b7cd6213a7552
+pkgdown: 1.1.0
+pkgdown_sha: ~
 articles:
   debkeepr: debkeepr.html
   ledger: ledger.html
