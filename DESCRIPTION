@@ -1,21 +1,18 @@
 Package: debkeepr
 Type: Package
 Title: Analysis of Non-Decimal Currencies and Double-Entry Bookkeeping
-Version: 0.0.2.9000
+Version: 0.0.3.9000
 Authors@R: person("Jesse", "Sadler",
     email = "jsadler@ucla.edu",
     role = c("aut", "cre"),
     comment = c(ORCID = "0000-0001-6081-9681"))
 Description: `debkeepr` provides an interface for analyzing non-decimal
-    currencies that use the tripartite system of pounds, shillings, and pence.
-    It includes functions to apply arithmetic and financial operations to
-    single or multiple values and to analyze account books that use either
+    currencies that use the tripartite system of pounds, shillings, and pence
+    through the implementation of the `lsd` class. `debkeepr` includes
+    functions to apply arithmetic and financial operations to single or
+    multiple values and to analyze account books that use either
     single-entry bookkeeping or double-entry bookkeeping with the latter
-    providing the name for `debkeepr`. The pounds, shillings, and pence system
-    complicates even relatively simple arithmetic manipulations, as each unit
-    has to be normalized or converted to the correct base. `debkeepr` does the
-    work of applying arithmetic operations and normalizing the units to the
-    correct bases.
+    providing the name for `debkeepr`.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -34,7 +31,10 @@ Suggests:
     knitr,
     testthat,
     rmarkdown,
-    ggplot2
+    ggplot2,
+    scales,
+    igraph,
+    ggraph
 URL: https://github.com/jessesadler/debkeepr, https://jessesadler.github.io/debkeepr/
 BugReports: https://github.com/jessesadler/debkeepr/issues
 VignetteBuilder: knitr

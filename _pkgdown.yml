@@ -1,5 +1,7 @@
 url: https://jessesadler.github.io/debkeepr/
-
+template:
+  params:
+    ganalytics: UA-126059158-1
 authors:
   Jesse Sadler:
     href: https://www.jessesadler.com
@@ -59,3 +61,25 @@ reference:
     contents:
     - dafforne_accounts
     - dafforne_transactions
+
+navbar:
+  title: debkeepr
+  type: default
+  left:
+    - icon: fa-home fa-lg
+      href: index.html
+    - text: Reference
+      href: reference/index.html
+    - text: Get started
+      href: articles/debkeepr.html
+    - text: Articles
+      menu:
+      - text: 1. Transactions in Richard Dafforne's Journal
+        href: articles/transactions.html
+      - text: 2. Analysis of Richard Dafforne’s Journal and Ledger
+        href: articles/ledger.html
+    - text: News
+      href: news/index.html
+  right:
+    - icon: fa-github fa-lg
+      href: https://github.com/jessesadler/debkeepr

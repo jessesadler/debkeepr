@@ -20,7 +20,7 @@ devtools::install_github("jessesadler/debkeepr")
 lsd Class
 ---------
 
-The pounds, shillings, and pence monetary system complicates even relatively simple arithmetic manipulations, as each unit has to be [normalized](https://en.wikipedia.org/wiki/Arithmetic#Compound_unit_arithmetic) or converted to the correct base. To unite pounds, shillings, and pence units into a single value and associate the shillings and pence units with non-decimal bases `debkeepr` implements a special class of R object. The **lsd** class consists of a list of one or more numeric vectors of length 3 and a `bases` attribute attached to the list. `debkeepr` provides functions to manipulate `lsd` objects on their own or within a data frame as a list column.
+The pounds, shillings, and pence monetary system complicates even relatively simple arithmetic manipulations, as each unit has to be [normalized](https://en.wikipedia.org/wiki/Arithmetic#Compound_unit_arithmetic) or converted to the correct base. To unite pounds, shillings, and pence units into a single value and associate the shillings and pence units with non-decimal bases `debkeepr` implements a special class of R object. The **lsd** class consists of a list of one or more numeric vectors of length 3 and a `bases` attribute attached to the list. `debkeepr` provides functions to manipulate objects that can be coerced to class `lsd`, `lsd` objects on their own, or `lsd` list columns in a data frame.
 
 Historical Background
 ---------------------
@@ -30,9 +30,9 @@ The `debkeepr` package uses the nomenclature of [l, s, and d](https://en.wikiped
 Resources
 ---------
 
--   [Getting Started with debkeepr vignette](https://jessesadler.github.io/debkeepr/articles/debkeepr.html): An overview of `debkeepr`’s functions and their use in various contexts.
+-   [Getting Started with debkeepr vignette](https://jessesadler.github.io/debkeepr/articles/debkeepr.html): A more in depth overview of `debkeepr`’s functions and their use in various contexts.
 -   [Transactions in Richard Dafforne's Journal vignette](https://jessesadler.github.io/debkeepr/articles/transactions.html): Examples of financial and arithmetic calculations dealing with various currencies taken from the example journal in Richard Dafforne’s *Merchant’s Mirrour* (1660).
--   Analysis of Richard Dafforne’s Journal and Ledger vignette (coming soon): An analysis of the example journal and ledger in Dafforne’s *Merchant’s Mirrour* using the `dafforne_transactions` and `dafforne_accounts` data provided in `debkeepr`.
+-   [Analysis of Richard Dafforne’s Journal and Ledger vignette](https://jessesadler.github.io/debkeepr/articles/ledger.html): An analysis of the example journal and ledger in Dafforne’s *Merchant’s Mirrour* using the `dafforne_transactions` and `dafforne_accounts` data provided in `debkeepr`.
 -   A [PDF copy of Dafforne’s example journal](https://github.com/jessesadler/debkeepr/blob/master/data-raw/dafforne-journal.pdf) can be consulted to further investigate the practices of early modern double-entry bookkeeping.
 
 Overview
@@ -46,7 +46,7 @@ Overview
     -   Dutch: ponden, schellingen, groten or penningen
 -   The functions are designed to be used in three types of contexts:
     1.  Manipulation of single or multiple lsd values represented as an object of class `lsd` or an object that can be coerced to class `lsd`: a numeric vector of length 3 or a list of such vectors.
-    2.  A data frame with one or more list columns of class `lsd`.
+    2.  A data frame with one or more list column of class `lsd`.
     3.  A data frame that mimics the structure of an account book and can be thought of as a transactions data frame. In addition to an `lsd` list column that denotes the value of each transaction, a transactions data frame contains variables recording the [credit and debit account](https://en.wikipedia.org/wiki/Debits_and_credits) for each transaction.
 -   Data
     -   `debkeepr` contains two data sets from the example journal and ledger in the third edition of Richard Dafforne's *Merchant's Mirrour* from 1660. Dafforne’s text taught the practices of double-entry bookkeeping and provided a full set of account books to be used for educational purposes.
@@ -67,7 +67,7 @@ For example, adding together a set of values by hand might result in the non-sta
 ``` r
 library(debkeepr)
 
-# Normalize £131 62s. 41.
+# Normalize £131 62s. 41d.
 deb_normalize(c(131, 67, 42), bases = c(20, 12))
 #>       l  s d
 #> [1] 134 10 6
@@ -93,7 +93,7 @@ deb_sum(lsd_values)
 #> [1] 134 10 6
 ```
 
-Objects of class `lsd` can also be used within data frames as a list column. The values can be manipulated through `debkeepr` functions in concert with `dplyr::mutate()`. The [tibble package](https://tibble.tidyverse.org) provides native support for list columns, so that an `lsd` object can be linked to attribute data such as the person, object, or date associated with the monetary value. Here, a tibble is created with an `lsd` list column and a column listing three people — a, b, and c — who could be said to have purchased goods. It is then possible to manipulate the values, showing, in this example, interest over a two year period at 8% and the new value due.
+Objects of class `lsd` can also be used within data frames as a list column. The values can be manipulated through `debkeepr` functions in concert with `dplyr::mutate()`. The [tibble package](https://tibble.tidyverse.org) provides native support for list columns, enabling an `lsd` object to be linked to attribute data such as the person, object, or date associated with the monetary values. Here, a tibble is created with an `lsd` list column and a column listing three people — a, b, and c — who could be said to have purchased goods. It is then possible to manipulate the values, showing, in this example, interest over a two year period at 8% and the new value due.
 
 ``` r
 library(tibble)
@@ -162,7 +162,7 @@ lsd_tbl %>%
 #> 3 c      87, 13, 0
 ```
 
-An issue with the implementation of a list column to hold monetary values is that such a column cannot be plotted. Because of this and other issues inherent in list columns, `debkeepr` has robust support for decimalization. There are functions to decimalize pounds, shillings, and pence values to any of the three units and to go in the opposite direction from any decimalized unit to lsd values. For plotting purposes the most useful workflow is to go from pounds, shillings, and pence to decimalized pounds.
+An issue with the implementation of a list column to hold monetary values is that such a column cannot be plotted. Because of this and other issues inherent in list columns, `debkeepr` has robust support for [decimalization](https://jessesadler.github.io/debkeepr/reference/index.html#section-decimalization). There are functions to decimalize pounds, shillings, and pence values to any of the three units and to go in the opposite direction from any decimalized unit to lsd values. For plotting purposes the most useful workflow is to go from pounds, shillings, and pence to decimalized pounds.
 
 ``` r
 # Create decimalized pounds variable
@@ -188,4 +188,4 @@ lsd_tbl %>%
 
 ![](man/figures/README-decimalization-1.png)
 
-For further introduction to the functions and uses of `debkeepr`, including accounting functions with transaction data frames not discussed here, see [Getting Started with debkeepr](https://jessesadler.github.io/debkeepr/articles/debkeepr.html). Two other vignettes show the use of `debkeepr` to analyze [individual transactions](https://jessesadler.github.io/debkeepr/articles/transactions.html) and a whole set of account books using the example journal and ledger from Richard Dafforne’s *Merchant’s Mirrour*.
+For further introduction to the functions and uses of `debkeepr`, including accounting functions with transaction data frames not discussed here, see [Getting Started with debkeepr](https://jessesadler.github.io/debkeepr/articles/debkeepr.html). Two other vignettes show the use of `debkeepr` to analyze [individual transactions](https://jessesadler.github.io/debkeepr/articles/transactions.html) and a [whole set of account books](https://jessesadler.github.io/debkeepr/articles/ledger.html) using the example journal and ledger from Richard Dafforne’s *Merchant’s Mirrour*.
