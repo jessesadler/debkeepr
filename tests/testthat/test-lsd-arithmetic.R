@@ -218,7 +218,7 @@ test_that("deb_add works with lsd objects", {
 test_that("deb_add works with lsd column", {
   # errors work
   expect_error(mutate(tbl_b1, lsd = deb_add(lsd, x_b2)),
-               "bases for lsd1 and lsd2 must be equivalent if both are of class lsd.")
+               "bases for lsd1 and lsd2 must be equivalent if both are of class lsd")
 
   # mutated column is lsd
   expect_s3_class(mutate(tbl_b1, lsd = deb_add(lsd, x))$lsd, "lsd")
@@ -274,7 +274,7 @@ test_that("deb_subtract works with lsd objects", {
 test_that("deb_subtract works with lsd column", {
   # errors work
   expect_error(mutate(tbl_b1, lsd = deb_subtract(lsd, x_b2)),
-               "bases for lsd1 and lsd2 must be equivalent if both are of class lsd.")
+               "bases for lsd1 and lsd2 must be equivalent if both are of class lsd")
 
   # mutated column is lsd
   expect_s3_class(mutate(tbl_b1, lsd = deb_subtract(lsd, x))$lsd, "lsd")

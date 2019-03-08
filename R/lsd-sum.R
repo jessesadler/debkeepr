@@ -1,5 +1,14 @@
 ## Sum of lsd objects ##
 
+## Remove NA
+deb_remove_na <- function(lsd) {
+  if (any(purrr::map_lgl(lsd, ~ any(purrr::map_lgl(., rlang::is_na))))) {
+    with_na <- purrr::map(lsd, ~ any(purrr::map_lgl(., rlang::is_na)))
+    lsd[which(with_na == TRUE)] <- NULL
+  }
+  lsd
+}
+
 ## Simplify deb_sum for single lsd object ##
 deb_sum_simple <- function(lsd, round = 5, na.rm = FALSE) {
   # Error message for deb_summarise
@@ -12,8 +21,7 @@ deb_sum_simple <- function(lsd, round = 5, na.rm = FALSE) {
 
   # Remove lsd vectors that have NA if na.rm = TRUE
   if (na.rm == TRUE) {
-    lsd <- purrr::modify_if(lsd, ~ any(is.na(.)), as.null) %>%
-      purrr::compact()
+    lsd <- deb_remove_na(lsd)
   }
   if (length(lsd) == 0) {
     deb_as_lsd(c(0, 0, 0), bases = bases)
