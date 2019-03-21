@@ -1,5 +1,23 @@
 ## Checks ##
 
+
+# bases_check -------------------------------------------------------------
+
+# From integer docs and SO: https://stackoverflow.com/a/4562291
+is_natural <- function(x, tol = .Machine$double.eps^0.5) {
+  x > tol & abs(x - round(x)) < tol
+}
+
+bases_check <- function(bases) {
+  if (any(rlang::are_na(bases))) {
+    stop(call. = FALSE, "Bases cannot be NA.")
+  }
+  if (!all(is_natural(bases))) {
+    stop(call. = FALSE, "Bases must be natural numbers greater than zero.")
+  }
+}
+
+
 # Check that lsd is numeric vector of length 3 or
 # list of numeric vectors of length 3
 lsd_check <- function(lsd) {
@@ -57,49 +75,7 @@ separate_lsd_check <- function(lsd) {
   }
 }
 
-# Check bases
-bases_check <- function(bases) {
-  # check bases
-  if (!is.numeric(bases)) {
-    stop(call. = FALSE, "bases must be a numeric vector")
-  }
-  if (length(bases) != 2) {
-    stop(call. = FALSE, "bases must be a numeric vector of length of 2")
-  }
-  if (any(is.na(bases))) {
-    stop(call. = FALSE, "Neither of the values in bases can be NA")
-  }
-  if (any(bases == 0)) {
-    stop(call. = FALSE, "Neither of the values in bases can be 0")
-  }
-  if (any(bases < 0)) {
-    stop(call. = FALSE, "The values in bases must both be positive")
-  }
-}
 
-# Check round
-round_check <- function(round) {
-  if (!is.numeric(round)) {
-    stop(call. = FALSE, "round must be numeric")
-  }
-  if (length(round) > 1) {
-    stop(call. = FALSE, "round must be a numeric vector of length 1")
-  }
-}
-
-lsd_list_column_check <- function(df, lsd) {
-  if (!is.data.frame(df)) {
-    stop(call. = FALSE, "df must be a data frame")
-  }
-  if (!rlang::quo_name(lsd) %in% names(df)) {
-    stop(call. = FALSE, paste("Column name for lsd list column must be provided,",
-                              "if the default name of lsd is not present in df.",
-                              sep = " "))
-  }
-  if (!inherits(rlang::eval_tidy(lsd, df), "lsd")) {
-    stop(call. = FALSE, "lsd must be an lsd list column")
-  }
-}
 
 # Check l, s, and d values and column names
 lsd_column_check <- function(df, l, s, d) {

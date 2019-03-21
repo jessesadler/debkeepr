@@ -1,69 +1,18 @@
 ## Define lsd class ##
 
 ## Construction ---------------------------------------------------------------
-new_lsd <- function(x, bases) {
-  stopifnot(is.list(x))
-  stopifnot(is.numeric(bases), length(bases) == 2)
+new_lsd <- function(l = double(),
+                    s = double(),
+                    d = double(),
+                    bases = integer()) {
 
-  structure(x,
-            class = "lsd",
-            bases = bases)
-}
+  vctrs::vec_assert(l, ptype = double())
+  vctrs::vec_assert(s, ptype = double())
+  vctrs::vec_assert(d, ptype = double())
+  vctrs::vec_assert(bases, ptype = integer(), size = 2)
 
-to_lsd <- function(lsd, bases) {
-  # vectors
-  if (rlang::is_list(lsd) == FALSE & rlang::is_vector(lsd) == TRUE) {
-    lsd <- list(lsd)
-  }
-  new_lsd(lsd, bases)
-}
-
-## Validate bases -------------------------------------------------------------
-
-# Extract bases attribute if it exists, otherwise uses bases
-validate_bases <- function(lsd, bases) {
-  if (inherits(lsd, "lsd")) {
-    attributes(lsd)$bases
-  } else {
-      bases
-  }
-}
-
-validate_bases2 <- function(lsd1, lsd2, bases) {
-  # Two lsd objects with different bases
-  if (deb_is_lsd(lsd1) == TRUE & deb_is_lsd(lsd2) == TRUE) {
-    if (identical(attributes(lsd1)$bases, attributes(lsd2)$bases) == FALSE) {
-      stop(call. = FALSE, "bases for lsd1 and lsd2 must be equivalent if both are of class lsd")
-    }
-  }
-  # Options for lsd vs not lsd for determining bases
-  if (deb_is_lsd(lsd1) == TRUE & deb_is_lsd(lsd2) == TRUE) {
-    attributes(lsd1)$bases
-  } else if (deb_is_lsd(lsd1) == TRUE & deb_is_lsd(lsd2) == FALSE) {
-    attributes(lsd1)$bases
-  } else if (deb_is_lsd(lsd1) == FALSE & deb_is_lsd(lsd2) == TRUE) {
-    attributes(lsd2)$bases
-  } else {
-    bases
-  }
-}
-
-validate_bases_p <- function(lsd, bases) {
-  # If no lsd objects or lists with lsd objects
-  if (any(purrr::map_lgl(lsd, deb_is_lsd)) == FALSE) {
-    bases
-  } else {
-    lsd_class <- purrr::map_lgl(lsd, deb_is_lsd)
-    lsd_class <- lsd[which(lsd_class == TRUE)]
-
-    lsd_bases <- purrr::map(lsd_class, ~ attributes(.)$bases)
-
-    if (length(unique(lsd_bases)) != 1) {
-      stop(call. = FALSE, "All objects of class lsd must have the same bases")
-    } else {
-      purrr::flatten_dbl(unique(lsd_bases))
-    }
-  }
+  vctrs::new_rcrd(list(l = l, s = s, d = d),
+                  bases = bases, class = "deb_lsd")
 }
 
 ## Coercion -------------------------------------------------------------------
@@ -143,53 +92,16 @@ NULL
 #' @rdname lsd
 #' @export
 deb_lsd <- function(l, s, d, bases = c(20, 12)) {
+  c(l, s, d) %<-% vctrs::vec_cast_common(l, s, d, .to = double())
+  c(l, s, d) %<-% vctrs::vec_recycle_common(l, s, d)
 
-  lsd <- list(l, s, d)
-  # checks
   bases_check(bases)
-  separate_lsd_check(lsd)
+  bases <- vctrs::vec_cast(bases, integer())
 
-  purrr::transpose(lsd) %>%
-    purrr::simplify_all() %>%
-    to_lsd(bases = bases)
+  new_lsd(l = l, s = s, d = d, bases = bases)
 }
 
-#' @rdname lsd
-#' @export
-deb_as_lsd <- function(lsd, bases = c(20, 12), ...) {
-  UseMethod("deb_as_lsd")
-}
-
-#' @rdname lsd
-#' @export
-deb_as_lsd.default <- function(lsd, bases = c(20, 12), ...) {
-  stop(call. = FALSE, "Cannot coerce an object of class ",
-       paste(class(lsd), collapse = "/"), " into an lsd object.")
-}
-
-#' @rdname lsd
-#' @export
-deb_as_lsd.numeric <- function(lsd, bases = c(20, 12), ...) {
-  lsd_check(lsd)
-  bases_check(bases)
-
-  to_lsd(lsd, bases)
-}
-
-#' @rdname lsd
-#' @export
-deb_as_lsd.list <- function(lsd, bases = c(20, 12), ...) {
-  lsd_check(lsd)
-  bases_check(bases)
-
-  to_lsd(lsd, bases)
-}
-
-#' @rdname lsd
-#' @export
-deb_as_lsd.lsd <- function(lsd, ...) lsd
-
-## about lsd ------------------------------------------------------------------
+## About lsd ------------------------------------------------------------------
 
 #' Test if an object is of class lsd
 #'
@@ -208,8 +120,8 @@ deb_as_lsd.lsd <- function(lsd, ...) lsd
 #'
 #' @export
 
-deb_is_lsd <- function(lsd) {
-  inherits(lsd, "lsd")
+deb_is_lsd <- function(x) {
+  inherits(x, "deb_lsd")
 }
 
 #' Find the bases of lsd objects
@@ -230,60 +142,36 @@ deb_is_lsd <- function(lsd) {
 #'
 #' @export
 
-deb_bases <- function(...) {
-  lsd_list <- list(...)
-  if (all(purrr::map_lgl(lsd_list, deb_is_lsd)) == FALSE) {
-    stop(call. = FALSE, "Objects must be of class lsd")
-  }
-  if (length(lsd_list) == 1) {
-    purrr::map(lsd_list,
-               ~ rlang::set_names(attributes(.)$bases, c("s", "d"))) %>%
-      purrr::as_vector()
-  } else {
-    purrr::map(lsd_list,
-               ~ rlang::set_names(attributes(.)$bases, c("s", "d")))
-  }
+deb_bases <- function(lsd) {
+  bases <- attr(lsd, "bases")
+  names(bases) <- c("s", "d")
+  bases
 }
 
-## internal generics ----------------------------------------------------------
 
-## Subset lsd ##
-#' @export
-`[.lsd` <- function(x, ...) {
-  to_lsd(NextMethod(), bases = attr(x, "bases"))
-}
-
-## Combine ##
-#' @export
-`c.lsd` <- function(...) {
-  lsd_list <- list(...)
-  purrr::map(lsd_list, lsd_check)
-  bases <- validate_bases_p(lsd_list, bases)
-  bases_check(bases)
-
-  lsd <- purrr::modify_if(lsd_list, is.numeric, list) %>%
-    purrr::flatten()
-  to_lsd(lsd, bases)
-}
-
-## print ##
+## Format ------------------------------------------------------------------
 
 #' @rdname lsd
 #' @export
-print.lsd <- function(x, ...) {
-  # Turn NA and NULL to NA vector to enable change to df
-  if (any(purrr::map_lgl(x, ~ length(.) != 3))) {
-    missing <- purrr::map_lgl(x, ~ length(.) != 3)
-    x[which(missing == TRUE)] <- list(c(as.numeric(NA), as.numeric(NA), as.numeric(NA)))
-  }
+format.deb_lsd <- function(x, ...) {
+  l <- vctrs::field(x, "l")
+  s <- vctrs::field(x, "s")
+  d <- vctrs::field(x, "d")
 
-  lsd <-  x %>%
-    purrr::map(~ rlang::set_names(., c("l", "s", "d"))) %>%
-    purrr::transpose() %>%
-    purrr::simplify_all() %>%
-    as.data.frame()
+  out <- paste0(l, ":", s, "s:", d, "d")
+  out[is.na(l) | is.na(s) | is.na(d)] <- NA
 
-  row.names(lsd) <- paste0("[", 1:length(x), "]")
+  out
+}
 
-  print.data.frame(lsd, row.names = TRUE, ...)
+obj_print_footer.deb_lsd <- function(x, ...) {
+  s <- format(attr(x, "bases")[1])
+  d <- format(attr(x, "bases")[2])
+  cat("# Bases: ", s, "s ", d, "d", "\n", sep = "")
+}
+
+
+# Abbreviated name type
+vec_ptype_abbr.deb_lsd <- function(x) {
+  paste0("lsd[", deb_bases(x)[1], "s:", deb_bases(x)[2], "d]")
 }

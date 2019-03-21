@@ -23,7 +23,8 @@ Imports:
     magrittr,
     purrr,
     rlang (>= 0.1.2),
-    tibble
+    tibble,
+    vctrs
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
 Suggests: 
