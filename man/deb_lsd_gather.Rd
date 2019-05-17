@@ -19,11 +19,6 @@ to the shillings or solidi unit. Default is s.}
 \item{d}{Pence column: Unquoted name of numeric variable corresponding to
 the pence or denarii unit. Default is d.}
 
-\item{bases}{Numeric vector of length 2 used to specify the bases for the
-shillings or s and pence or d units. Default is \code{c(20, 12)}, which
-conforms to the most widely used system of 1 pound = 20 shillings and
-1 shilling = 12 pence.}
-
 \item{lsd_column}{Unquoted name of the lsd list column to be created.
 Default is lsd.}
 

@@ -4,7 +4,7 @@
 \alias{deb_is_lsd}
 \title{Test if an object is of class lsd}
 \usage{
-deb_is_lsd(lsd)
+deb_is_lsd(x)
 }
 \arguments{
 \item{lsd}{An object.}
@@ -17,9 +17,7 @@ Test if an object is of class lsd.
 }
 \examples{
 x <- c(5, 3, 8)
-y <- deb_as_lsd(x)
 
 deb_is_lsd(x)
-deb_is_lsd(y)
 
 }

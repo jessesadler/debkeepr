@@ -24,7 +24,8 @@ Imports:
     purrr,
     rlang (>= 0.1.2),
     tibble,
-    vctrs
+    vctrs,
+    zeallot
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
 Suggests: 

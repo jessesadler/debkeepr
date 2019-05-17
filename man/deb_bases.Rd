@@ -4,7 +4,7 @@
 \alias{deb_bases}
 \title{Find the bases of lsd objects}
 \usage{
-deb_bases(...)
+deb_bases(lsd)
 }
 \arguments{
 \item{...}{Objects of class lsd.}
@@ -15,12 +15,4 @@ to the shillings (s) and pence (d) units of each lsd object.
 }
 \description{
 Find the bases for the shillings (s) and pence (d) units of lsd objects.
-}
-\examples{
-x <- deb_as_lsd(lsd = c(5, 3, 8), bases = c(20, 12))
-y <- deb_as_lsd(lsd = c(5, 3, 8), bases = c(20, 16))
-
-deb_bases(x)
-deb_bases(x, y)
-
 }

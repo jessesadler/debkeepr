@@ -73,18 +73,6 @@ new_lsd <- function(l = double(),
 #'         d = c(8, 4, 10),
 #'         bases = c(20, 12))
 #'
-#' ## Create lsd objects from numeric vectors of length 3 ##
-#'
-#' # lsd object for £10 6s. 8d.
-#' deb_as_lsd(lsd = c(10, 6, 8), bases = c(20, 12))
-#'
-#' # lsd object for the Dutch system of guilders, stuivers, and penningen
-#' deb_as_lsd(lsd = c(10, 8, 14), bases = c(20, 16))
-#'
-#' # lsd object from a list of vectors
-#' deb_as_lsd(lsd = list(c(10, 6, 8),
-#'                       c(8, 13, 4),
-#'                       c(5, 8, 10)))
 #'
 #' @name lsd
 NULL
@@ -92,10 +80,13 @@ NULL
 #' @rdname lsd
 #' @export
 deb_lsd <- function(l, s, d, bases = c(20, 12)) {
+  # checks
+  lsd_check(l, s, d)
+  bases_check(bases)
+
   c(l, s, d) %<-% vctrs::vec_cast_common(l, s, d, .to = double())
   c(l, s, d) %<-% vctrs::vec_recycle_common(l, s, d)
 
-  bases_check(bases)
   bases <- vctrs::vec_cast(bases, integer())
 
   new_lsd(l = l, s = s, d = d, bases = bases)
@@ -113,10 +104,8 @@ deb_lsd <- function(l, s, d, bases = c(20, 12)) {
 #'
 #' @examples
 #' x <- c(5, 3, 8)
-#' y <- deb_as_lsd(x)
 #'
 #' deb_is_lsd(x)
-#' deb_is_lsd(y)
 #'
 #' @export
 
@@ -132,13 +121,6 @@ deb_is_lsd <- function(x) {
 #'
 #' @return Returns list with a named numeric vector of length 2 corresponding
 #'   to the shillings (s) and pence (d) units of each lsd object.
-#'
-#' @examples
-#' x <- deb_as_lsd(lsd = c(5, 3, 8), bases = c(20, 12))
-#' y <- deb_as_lsd(lsd = c(5, 3, 8), bases = c(20, 16))
-#'
-#' deb_bases(x)
-#' deb_bases(x, y)
 #'
 #' @export
 
