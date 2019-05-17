@@ -1,7 +1,32 @@
 ## Checks ##
 
 
-# bases_check -------------------------------------------------------------
+# checks for lsd and bases ---------------------------------------------------
+
+## lsd check ##
+
+lsd_check <- function(l, s, d) {
+  # Check that l, s, and d are numeric
+  if (!is.numeric(l)) {
+    stop(call. = FALSE, "`l` must be a numeric vector")
+  }
+  if (!is.numeric(s)) {
+    stop(call. = FALSE, "`s` must be a numeric vector")
+  }
+  if (!is.numeric(d)) {
+    stop(call. = FALSE, "`d` must be a numeric vector")
+  }
+
+  # Check that l, s, and d are same length, length 1, or length 0
+  # Including length zero to correspond with what vctrs does
+  lengths <- purrr::map_int(list(l, s, d), length)
+  non_scalar <- lengths[lengths != 1 & lengths != 0]
+  if (length(unique(non_scalar)) > 1L) {
+    stop(call. = FALSE, "`l`, `s`, and `d` must be vectors of equal length or length 1")
+  }
+}
+
+## Bases check ##
 
 # From integer docs and SO: https://stackoverflow.com/a/4562291
 is_natural <- function(x, tol = .Machine$double.eps^0.5) {
@@ -9,49 +34,14 @@ is_natural <- function(x, tol = .Machine$double.eps^0.5) {
 }
 
 bases_check <- function(bases) {
+  if (!is.numeric(bases) | vctrs::vec_size(bases) != 2L | is.null(bases)) {
+    stop(call. = FALSE, "`bases` must be a numeric vector of length 2.")
+  }
   if (any(rlang::are_na(bases))) {
-    stop(call. = FALSE, "Bases cannot be NA.")
+    stop(call. = FALSE, "`bases` cannot be `NA`.")
   }
   if (!all(is_natural(bases))) {
-    stop(call. = FALSE, "Bases must be natural numbers greater than zero.")
-  }
-}
-
-
-# Check that lsd is numeric vector of length 3 or
-# list of numeric vectors of length 3
-lsd_check <- function(lsd) {
-  if (rlang::is_bare_vector(lsd) == FALSE && deb_is_lsd(lsd) == FALSE) {
-    stop(call. = FALSE, paste("lsd must be a list of class lsd, or an object that can be coerced to this class,",
-                              "       namely a numeric vector of length 3 or a list of such vectors.",
-                              sep = "\n"))
-  }
-
-  # check lsd vector
-  if (rlang::is_list(lsd) == FALSE & rlang::is_vector(lsd) == TRUE) {
-    if (!is.numeric(lsd)) {
-      stop(call. = FALSE, "lsd must be a numeric vector")
-    }
-    if (length(lsd) != 3) {
-      stop(call. = FALSE, paste("lsd must be a vector of length of 3.",
-                                "There must be a value for pounds, shillings, and pence.",
-                                sep = "\n"))
-    }
-  }
-
-  # check lsd list
-  if (rlang::is_list(lsd) == TRUE) {
-    if (any(purrr::map_lgl(lsd, rlang::is_null))) {
-      lsd <- purrr::compact(lsd)
-    }
-    if (!all(purrr::map_lgl(lsd, is.numeric))) {
-      stop(call. = FALSE, "lsd must be a list of numeric vectors")
-    }
-    if (identical(purrr::map_dbl(unname(lsd), length), rep(3, length(lsd))) == FALSE) {
-      stop(call. = FALSE, paste("lsd must be a list of numeric vectors of length 3.",
-                                "There must be a value for pounds, shillings, and pence.",
-                                sep = "\n"))
-    }
+    stop(call. = FALSE, "`bases` must be natural numbers greater than zero.")
   }
 }
 
@@ -62,19 +52,6 @@ null_check <- function(lsd) {
   }
   lsd
 }
-
-separate_lsd_check <- function(lsd) {
-  # numeric
-  if (!all(purrr::map_lgl(lsd, is.numeric))) {
-    stop(call. = FALSE, "l, s, and d must be numeric")
-  }
-  # length
-  lengths <- purrr::map_int(lsd, length)
-  if (length(unique(lengths)) > 1L) {
-    stop(call. = FALSE, "l, s, and d must be vectors of equal length")
-  }
-}
-
 
 
 # Check l, s, and d values and column names
