@@ -7,23 +7,10 @@
 deb_exchange(lsd, shillings_rate, bases = c(20, 12), round = 5)
 }
 \arguments{
-\item{lsd}{An lsd value. An object of class lsd or an object that can be
-coerced to class lsd: a numeric vector of length 3 or a list of such
-vectors.}
-
 \item{shillings_rate}{The exchange rate. This follows the common practice
 of calculating the exchange rate between different currencies in terms
 of shillings. Thus, in terms of a given number over the base of shillings
 provided in the \code{bases} argument. A numeric vector of length 1.}
-
-\item{bases}{Numeric vector of length 2 used to specify the bases for the
-shillings or s and pence or d units. Default is \code{c(20, 12)}, which
-conforms to the most widely used system of 1 pound = 20 shillings and
-1 shilling = 12 pence. If \code{lsd} is of class lsd, the bases attribute will
-be used in the place of this argument.}
-
-\item{round}{Round pence unit to specified number of decimal places.
-Default is 5. Set to 0 to return pence as whole number.}
 }
 \value{
 Returns an object of class lsd with a bases attribute.

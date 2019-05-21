@@ -31,9 +31,6 @@ shillings, and pence values with a bases attribute.}
 \item{round}{Round pence to specified number of decimal places. Default
 is 5. Rounding to whole numbers may give results that do not add together
 due to rounding rules.}
-
-\item{na.rm}{Logical. Passed on to \code{na.rm} argument in \code{\link[=sum]{sum()}}. Whether
-missing values (NA) should be removed. Default is \code{FALSE}.}
 }
 \value{
 Returns a tibble with three rows with the credit, debit, and current

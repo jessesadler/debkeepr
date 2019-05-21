@@ -8,10 +8,6 @@ deb_interest(lsd, interest, duration = 1, with_principal = TRUE,
   bases = c(20, 12), round = 5)
 }
 \arguments{
-\item{lsd}{An lsd value. An object of class lsd or an object that can be
-coerced to class lsd: a numeric vector of length 3 or a list of such
-vectors.}
-
 \item{interest}{Interest rate in decimal form. A numeric vector of length 1.}
 
 \item{duration}{Duration over which the interest is calculated, or the
@@ -21,15 +17,6 @@ length 1. Default is 1.}
 \item{with_principal}{Logical (default \code{TRUE}): when \code{TRUE} the resulting
 pounds, shillings and pence value(s) will include the principal as well as
 the interest. When \code{FALSE} only the interest will be returned.}
-
-\item{bases}{Numeric vector of length 2 used to specify the bases for the
-shillings or s and pence or d units. Default is \code{c(20, 12)}, which
-conforms to the most widely used system of 1 pound = 20 shillings and
-1 shilling = 12 pence. If \code{lsd} is of class lsd, the bases attribute will
-be used in the place of this argument.}
-
-\item{round}{Round pence unit to specified number of decimal places.
-Default is 5. Set to 0 to return pence as whole number.}
 }
 \value{
 Returns an object of class lsd with a bases attribute.

@@ -19,16 +19,6 @@ the format in which the exchange rate will be returned. \code{"shillings"},
 the default, returns the exchange rate in terms of shillings and pence.
 \code{"pence"} returns the exchange rate in terms of pence. \code{"pounds"} returns
 the exchange rate in terms of pounds, shillings, and pence.}
-
-\item{bases}{Numeric vector of length 2 used to specify the bases for the
-shillings or s and pence or d units. Default is \code{c(20, 12)}, which
-conforms to the most widely used system of 1 pound = 20 shillings and
-1 shilling = 12 pence. If \code{lsd1} and/or \code{lsd2} is of class lsd, the bases
-attribute will be used in the place of this argument. If the bases
-attributes of \code{lsd1} and \code{lsd2} are different, an error will be thrown.}
-
-\item{round}{Round pence unit to specified number of decimal places.
-Default is 5. Set to 0 to return pence as whole number.}
 }
 \value{
 Returns an object of class lsd with a bases attribute. The format

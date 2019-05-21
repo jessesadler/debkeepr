@@ -7,10 +7,6 @@
 deb_convert_bases(lsd, bases1 = NULL, bases2, ratio = 1, round = 5)
 }
 \arguments{
-\item{lsd}{An lsd value. An object of class lsd or an object that can be
-coerced to class lsd: a numeric vector of length 3 or a list of such
-vectors.}
-
 \item{bases1}{Numeric vector of length 2 used to specify the bases for the
 shillings or s and pence or d values of \code{lsd}. If \code{lsd} is of class lsd,
 the bases attribute will be used in the place of this argument.}
@@ -21,9 +17,6 @@ the shillings or s and pence or d values to which \code{lsd} will be converted.}
 \item{ratio}{The ratio between the two currencies that possess different
 bases. This is the value by which \code{lsd} is multiplied. Numeric vector of
 length 1 with the default of \code{1}.}
-
-\item{round}{Round pence unit to specified number of decimal places.
-Default is 5. Set to 0 to return pence as whole number.}
 }
 \value{
 Returns an object of class lsd with a bases attribute conforming
