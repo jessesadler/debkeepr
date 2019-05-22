@@ -34,3 +34,10 @@ vec_type2.deb_decimal.deb_decimal <- function(x, y) {
 # deb_decimal and double
 vec_type2.deb_decimal.double <- function(x, y) x
 vec_type2.double.deb_decimal <- function(x, y) y
+
+
+# deb_lsd and deb_decimal -------------------------------------------------
+
+# deb_lsd and double
+vec_type2.deb_lsd.deb_decimal <- function(x, y) x
+vec_type2.deb_decimal.deb_lsd <- function(x, y) y
