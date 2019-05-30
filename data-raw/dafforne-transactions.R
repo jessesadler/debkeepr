@@ -1,8 +1,8 @@
-## Clean and import dafforne transactions to data/ ##
+## Clean and import dafforne transactions to data ##
 
 library(readr)
 library(dplyr)
-library(debkeepr)
+
 
 dafforne_transactions <- readr::read_csv("data-raw/dafforne-transactions.csv",
                                 col_types =  list(
@@ -12,9 +12,11 @@ dafforne_transactions <- readr::read_csv("data-raw/dafforne-transactions.csv",
                                   d = col_double())) %>%
   dplyr::filter(id <= 175)
 
-dafforne_transactions <- deb_lsd_gather(dafforne_transactions,
-                                        lsd_column = lsd,
-                                        replace = TRUE) %>%
-  dplyr::select(id, credit, debit, date, lsd, journal, ledger, description)
+# Temporary change to create new lsd class when mutate does not work with vctrs
+dafforne_transactions[["lsd"]] <- debkeepr::deb_lsd(dafforne_transactions$l,
+                                                    dafforne_transactions$s,
+                                                    dafforne_transactions$d)
+dafforne_transactions <- select(dafforne_transactions,
+                                id, credit, debit, date, lsd, journal, ledger, description)
 
 usethis::use_data(dafforne_transactions, overwrite = TRUE)
