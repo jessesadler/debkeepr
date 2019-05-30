@@ -23,7 +23,6 @@ Imports:
     magrittr,
     purrr,
     rlang (>= 0.1.2),
-    tibble,
     vctrs,
     zeallot
 Roxygen: list(markdown = TRUE)
@@ -32,11 +31,7 @@ Suggests:
     covr,
     knitr,
     testthat (>= 2.1.0),
-    rmarkdown,
-    ggplot2,
-    scales,
-    igraph,
-    ggraph
+    rmarkdown
 URL: https://github.com/jessesadler/debkeepr, https://jessesadler.github.io/debkeepr/
 BugReports: https://github.com/jessesadler/debkeepr/issues
 VignetteBuilder: knitr
