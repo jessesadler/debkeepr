@@ -7,11 +7,11 @@
 \alias{deb_convert_bases.deb_decimal}
 \title{Convert bases of pounds, shillings, and pence values}
 \usage{
-deb_convert_bases(lsd, bases1 = NULL, bases2, ratio = 1, round = 5)
+deb_convert_bases(x, to)
 
-deb_convert_bases.deb_lsd(x, to)
+\method{deb_convert_bases}{deb_lsd}(x, to)
 
-deb_convert_bases.deb_decimal(x, to)
+\method{deb_convert_bases}{deb_decimal}(x, to)
 }
 \arguments{
 \item{x}{An object of class \code{deb_lsd} or \code{deb_decimal}.}
