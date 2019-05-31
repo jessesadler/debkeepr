@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Test if an object is of class <code>deb_lsd</code> — deb_is_lsd • debkeepr</title>
+<title>A decimalized class for pounds, shillings, and pence values — deb_decimal • debkeepr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,10 @@
 
 
 
-<meta property="og:title" content="Test if an object is of class <code>deb_lsd</code> — deb_is_lsd" />
+<meta property="og:title" content="A decimalized class for pounds, shillings, and pence values — deb_decimal" />
 
-<meta property="og:description" content="Test if an object is of class deb_lsd." />
+<meta property="og:description" content="Create an object of class deb_decimal to integrate non-decimal currencies
+into standardized forms of analysis provided by R." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -124,38 +125,76 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Test if an object is of class <code>deb_lsd</code></h1>
-    <small class="dont-index">Source: <a href='https://github.com/jessesadler/debkeepr/blob/master/R/lsd-class.R'><code>R/lsd-class.R</code></a></small>
-    <div class="hidden name"><code>deb_is_lsd.Rd</code></div>
+    <h1>A decimalized class for pounds, shillings, and pence values</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jessesadler/debkeepr/blob/master/R/decimal-class.R'><code>R/decimal-class.R</code></a></small>
+    <div class="hidden name"><code>deb_decimal.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Test if an object is of class <code>deb_lsd</code>.</p>
+    <p>Create an object of class <code>deb_decimal</code> to integrate non-decimal currencies
+into standardized forms of analysis provided by R.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>deb_is_lsd</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>deb_decimal</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/double'>double</a></span>(), <span class='kw'>unit</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"l"</span>, <span class='st'>"s"</span>, <span class='st'>"d"</span>), <span class='kw'>bases</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>20</span>, <span class='fl'>12</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>An object.</p></td>
+      <td><p>A numeric vector representing the decimalized values of a
+non-decimal currency.</p></td>
+    </tr>
+    <tr>
+      <th>unit</th>
+      <td><p>A character vector of length one indicating the unit for the
+decimalized values, either <code>"l"</code> (libra, the default), <code>"s"</code> (solidus),
+or <code>"d"</code> (denarius).</p></td>
+    </tr>
+    <tr>
+      <th>bases</th>
+      <td><p>Numeric vector of length 2 used to specify the bases for the
+solidus or s and denarius or d units. Default is <code><a href='https://www.rdocumentation.org/packages/base/topics/c'>c(20, 12)</a></code>, which
+conforms to the most widely used system of 1 pound = 20 shillings and
+1 shilling = 12 pence.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>TRUE</code> if object is of class <code>deb_lsd</code> and <code>FALSE</code> if it is not.</p>
+    <p>Returns an object of class <code>deb_decimal</code>.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The <code>deb_decimal</code> class works in concert with the <code>deb_lsd</code> class, which
+maintains the tripartite unit structure of most non-decimal currencies.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='deb_lsd.html'>deb_lsd</a></span>(<span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>8</span>)
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>8</span>)
-
-<span class='fu'>deb_is_lsd</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>deb_is_lsd</span>(<span class='no'>y</span>)</div><div class='output co'>#&gt; [1] FALSE</div></pre>
+    <pre class="examples"><div class='input'>
+<span class='fu'>deb_decimal</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>5.25</span>, <span class='fl'>3.825</span>, <span class='fl'>8.5</span>))</div><div class='output co'>#&gt; &lt;deb_decimal[3]&gt;
+#&gt; [1] 5.250 3.825 8.500
+#&gt; # Unit: libra
+#&gt; # Bases: 20s 12d</div><div class='input'>
+<span class='co'># Set the `unit` of the object</span>
+<span class='fu'>deb_decimal</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>105</span>, <span class='fl'>76.5</span>, <span class='fl'>170</span>), <span class='kw'>unit</span> <span class='kw'>=</span> <span class='st'>"s"</span>)</div><div class='output co'>#&gt; &lt;deb_decimal[3]&gt;
+#&gt; [1] 105.0  76.5 170.0
+#&gt; # Unit: solidus
+#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'>deb_decimal</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1260</span>, <span class='fl'>918</span>, <span class='fl'>240</span>), <span class='kw'>unit</span> <span class='kw'>=</span> <span class='st'>"d"</span>)</div><div class='output co'>#&gt; &lt;deb_decimal[3]&gt;
+#&gt; [1] 1260  918  240
+#&gt; # Unit: denarius
+#&gt; # Bases: 20s 12d</div><div class='input'>
+<span class='co'># Set the `bases` of the object</span>
+<span class='fu'>deb_decimal</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>5.25</span>, <span class='fl'>3.825</span>, <span class='fl'>8.5</span>), <span class='kw'>bases</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>60</span>, <span class='fl'>16</span>))</div><div class='output co'>#&gt; &lt;deb_decimal[3]&gt;
+#&gt; [1] 5.250 3.825 8.500
+#&gt; # Unit: libra
+#&gt; # Bases: 60s 16d</div><div class='input'>
+<span class='co'># Create a prototype or object of length 0</span>
+<span class='fu'>deb_decimal</span>()</div><div class='output co'>#&gt; &lt;deb_decimal[0]&gt;
+#&gt; # Unit: libra
+#&gt; # Bases: 20s 12d</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -163,6 +202,8 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

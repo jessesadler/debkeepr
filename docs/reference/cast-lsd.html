@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Test if an object is of class <code>deb_lsd</code> — deb_is_lsd • debkeepr</title>
+<title>Cast to deb_lsd — deb_as_lsd • debkeepr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Test if an object is of class <code>deb_lsd</code> — deb_is_lsd" />
+<meta property="og:title" content="Cast to deb_lsd — deb_as_lsd" />
 
-<meta property="og:description" content="Test if an object is of class deb_lsd." />
+<meta property="og:description" content="Cast x to a deb_lsd vector." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -124,38 +124,81 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Test if an object is of class <code>deb_lsd</code></h1>
-    <small class="dont-index">Source: <a href='https://github.com/jessesadler/debkeepr/blob/master/R/lsd-class.R'><code>R/lsd-class.R</code></a></small>
-    <div class="hidden name"><code>deb_is_lsd.Rd</code></div>
+    <h1>Cast to deb_lsd</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jessesadler/debkeepr/blob/master/R/casting.R'><code>R/casting.R</code></a></small>
+    <div class="hidden name"><code>cast-lsd.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Test if an object is of class <code>deb_lsd</code>.</p>
+    <p>Cast <code>x</code> to a <code>deb_lsd</code> vector.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>deb_is_lsd</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>deb_as_lsd</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for default</span>
+<span class='fu'>deb_as_lsd</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for deb_lsd</span>
+<span class='fu'>deb_as_lsd</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for deb_decimal</span>
+<span class='fu'>deb_as_lsd</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for numeric</span>
+<span class='fu'>deb_as_lsd</span>(<span class='no'>x</span>, <span class='kw'>bases</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>20</span>, <span class='fl'>12</span>), <span class='no'>...</span>)
+
+<span class='co'># S3 method for logical</span>
+<span class='fu'>deb_as_lsd</span>(<span class='no'>x</span>, <span class='kw'>bases</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>20</span>, <span class='fl'>12</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>An object.</p></td>
+      <td><p>An object to coerce to <code>deb_lsd</code>.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Arguments passed on to further methods.</p></td>
+    </tr>
+    <tr>
+      <th>bases</th>
+      <td><p>Numeric vector of length 2 used to specify the bases for the
+solidus or s and denarius or d units. Default is <code><a href='https://www.rdocumentation.org/packages/base/topics/c'>c(20, 12)</a></code>, which
+conforms to the most widely used system of 1 pound = 20 shillings and
+1 shilling = 12 pence.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>TRUE</code> if object is of class <code>deb_lsd</code> and <code>FALSE</code> if it is not.</p>
+    <p>A <code>deb_lsd</code> object.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='deb_lsd.html'>deb_lsd</a></span>(<span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>8</span>)
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>8</span>)
-
-<span class='fu'>deb_is_lsd</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>deb_is_lsd</span>(<span class='no'>y</span>)</div><div class='output co'>#&gt; [1] FALSE</div></pre>
+    <pre class="examples"><div class='input'>
+<span class='co'># Cast a deb_decimal object to deb_lsd</span>
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>5.825</span>, <span class='fl'>3.25</span>, <span class='fl'>22</span>/<span class='fl'>3</span>)
+<span class='no'>d1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='deb_decimal.html'>deb_decimal</a></span>(<span class='no'>x</span>)
+<span class='fu'>deb_as_lsd</span>(<span class='no'>d1</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[3]&gt;
+#&gt; [1] 5:16s:6d 3:5s:0d  7:6s:8d 
+#&gt; # Bases: 20s 12d</div><div class='input'>
+<span class='co'># Bases are automatically applied when</span>
+<span class='co'># casting from deb_decimal to deb_lsd</span>
+<span class='no'>d2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='deb_decimal.html'>deb_decimal</a></span>(<span class='no'>x</span>, <span class='kw'>bases</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>60</span>, <span class='fl'>16</span>))
+<span class='fu'>deb_as_lsd</span>(<span class='no'>d2</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[3]&gt;
+#&gt; [1] 5:49s:8d 3:15s:0d 7:20s:0d
+#&gt; # Bases: 60s 16d</div><div class='input'>
+<span class='co'># Cast a numeric vector to deb_lsd</span>
+<span class='fu'>deb_as_lsd</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[3]&gt;
+#&gt; [1] 5:16s:6d 3:5s:0d  7:6s:8d 
+#&gt; # Bases: 20s 12d</div><div class='input'>
+<span class='co'># Use the bases argument to apply non-default bases</span>
+<span class='fu'>deb_as_lsd</span>(<span class='no'>x</span>, <span class='kw'>bases</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>60</span>, <span class='fl'>16</span>))</div><div class='output co'>#&gt; &lt;deb_lsd[3]&gt;
+#&gt; [1] 5:49s:8d 3:15s:0d 7:20s:0d
+#&gt; # Bases: 60s 16d</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
