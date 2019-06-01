@@ -95,35 +95,106 @@
 
     
     
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 <div id="debkeepr-analysis-of-non-decimal-currencies" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#debkeepr-analysis-of-non-decimal-currencies" class="anchor"></a>debkeepr: Analysis of Non-Decimal Currencies</h1></div>
 
-<p><code>debkeepr</code> provides an interface for working with non-decimal currencies that use the tripartite system of pounds, shillings, and pence. The package includes functions to apply arithmetic and financial operations to single or multiple values and to analyze account books that use either <a href="https://en.wikipedia.org/wiki/Single-entry_bookkeeping_system">single-entry bookkeeping</a> or <a href="https://en.wikipedia.org/wiki/Double-entry_bookkeeping_system">double-entry bookkeeping</a> with the latter providing the name for <code>debkeepr</code>.</p>
+<p><code>debkeepr</code> provides an interface for working with non-decimal currencies that use the tripartite system of pounds, shillings, and pence. The package makes it possible for historical non-decimal currencies to behave like decimalized numeric values in many circumstances, while also providing support for values with multiple units whose bases can differ. This is accomplished through the creation of the <code>deb_lsd</code> and <code>deb_decimal</code> classes, which are based on the infrastructure provided by the <a href="https://vctrs.r-lib.org/">vctrs package</a>.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install <code>debkeepr</code> from GitHub with <a href="https://github.com/hadley/devtools">devtools</a>:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># install.packages("devtools")</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"jessesadler/debkeepr"</span>)</a></code></pre></div>
+<p>You can install <code>debkeepr</code> from GitHub with <a href="https://remotes.r-lib.org">remotes</a>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># install.packages("remotes")</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">remotes<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"jessesadler/debkeepr"</span>)</a></code></pre></div>
 </div>
-<div id="lsd-class" class="section level2">
+<div id="lifecycle" class="section level2">
 <h2 class="hasAnchor">
-<a href="#lsd-class" class="anchor"></a>lsd Class</h2>
-<p>The pounds, shillings, and pence monetary system complicates even relatively simple arithmetic manipulations, as each unit has to be <a href="https://en.wikipedia.org/wiki/Arithmetic#Compound_unit_arithmetic">normalized</a> or converted to the correct base. <code>debkeepr</code> uses the <a href="https://vctrs.r-lib.org">vctrs package</a> to integrate non-decimal currencies into standard R practices. <code>debkeepr</code> introduces two classes: <code>deb_lsd</code> and <code>deb_decimal</code>. The <code>deb_lsd</code> maintains the tripartite structure of most non-decimal currencies and provides a <code>bases</code> attribute to define the bases of the solidus or shillings unit and denarius or pence unit. The <code>deb_decimal</code> class represents the same values as <code>deb_lsd</code> in decimal form. It too provides a <code>bases</code> attribute, as well as a <code>unit</code> attribute so that values can be represented in either libra (pounds), solidus, or denarius units.</p>
+<a href="#lifecycle" class="anchor"></a>Lifecycle</h2>
+<p><code>debkeepr</code> is under active development and is at an experimental stage in its lifecycle. <code>debkeepr</code> is dependent upon <code>vctrs</code>, which is also at an experimental stage. The retired <a href="https://github.com/jessesadler/debkeepr/tree/list-class">lsd list-class branch</a> uses the previous API, which currently provides more capabilities. In particular, <code>vctrs</code> has yet to be integrated into <code>tibble</code> and <code>dplyr</code>, so the use of <code>deb_lsd</code> and <code>deb_decimal</code> vectors in data frames is limited. These capabilities will be added when possible. Please open an <a href="https://github.com/jessesadler/debkeepr/issues">issue</a> if you have any questions, comments, or requests.</p>
+</div>
+<div id="usage" class="section level2">
+<h2 class="hasAnchor">
+<a href="#usage" class="anchor"></a>Usage</h2>
+<p><code>debkeepr</code> allows non-decimal currency values to be used as normal numeric values as much as possible.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(debkeepr)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co"># Create deb_lsd vectors with standard bases of 20s. 12d.</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">x &lt;-<span class="st"> </span><span class="kw"><a href="reference/deb_lsd.html">deb_lsd</a></span>(<span class="dv">15</span>, <span class="dv">13</span>, <span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">y &lt;-<span class="st"> </span><span class="kw"><a href="reference/deb_lsd.html">deb_lsd</a></span>(<span class="dv">8</span>, <span class="dv">15</span>, <span class="dv">9</span>)</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co"># Perform arithmetic as usual</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">x <span class="op">+</span><span class="st"> </span>y</a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; &lt;deb_lsd[1]&gt;</span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; [1] 24:9s:1d</span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; # Bases: 20s 12d</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12">x <span class="op">-</span><span class="st"> </span>y</a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt; &lt;deb_lsd[1]&gt;</span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt; [1] 6:17s:7d</span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt; # Bases: 20s 12d</span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16">y <span class="op">*</span><span class="st"> </span><span class="dv">2</span> <span class="op">-</span><span class="st"> </span>x</a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt; &lt;deb_lsd[1]&gt;</span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt; [1] 1:18s:2d</span></a>
+<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt; # Bases: 20s 12d</span></a>
+<a class="sourceLine" id="cb2-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="co"># Combine multiple values together</span></a>
+<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(x, y)</a>
+<a class="sourceLine" id="cb2-23" data-line-number="23"><span class="co">#&gt; &lt;deb_lsd[2]&gt;</span></a>
+<a class="sourceLine" id="cb2-24" data-line-number="24"><span class="co">#&gt; [1] 15:13s:4d 8:15s:9d </span></a>
+<a class="sourceLine" id="cb2-25" data-line-number="25"><span class="co">#&gt; # Bases: 20s 12d</span></a></code></pre></div>
+</div>
+<div id="classes-deb_lsd-and-deb_decimal" class="section level2">
+<h2 class="hasAnchor">
+<a href="#classes-deb_lsd-and-deb_decimal" class="anchor"></a>Classes: deb_lsd and deb_decimal</h2>
+<p><code>debkeepr</code> introduces two classes that both deal with two interrelated problems associated with historical currencies. Firstly, historical currencies consisted of three separate non-decimal units: pounds, shillings, and pence. Secondly, the bases of the units <a href="https://en.wikipedia.org/wiki/Non-decimal_currency">differed</a> by region, coinage, and era. The <code>deb_lsd</code> class maintains the tripartite structure of non-decimal currencies and provides a <code>bases</code> attribute to record the bases for the shillings and pence units. The <code>deb_decimal</code> class represents the values in decimalized form, while also keeping track of the shillings and pence bases and the unit represented by the decimalized values through <code>bases</code> and <code>unit</code> attributes. When working with decimalized data is preferable, the <code>deb_decimal</code> class make casting from and to <code>deb_lsd</code> possible without losing any metadata about the bases used.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Create deb_decimal from numeric values</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">(z &lt;-<span class="st"> </span><span class="kw"><a href="reference/deb_decimal.html">deb_decimal</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">5.525</span>, <span class="fl">8.45</span>, <span class="fl">12.235</span>)))</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; &lt;deb_decimal[3]&gt;</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; [1]  5.525  8.450 12.235</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; # Unit: libra</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; # Bases: 20s 12d</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co"># Combining deb_lsd and deb_decimal gives a deb_lsd vector</span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(x, y, z)</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; &lt;deb_lsd[5]&gt;</span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; [1] 15:13s:4d  8:15s:9d   5:10s:6d   8:9s:0d    12:4s:8.4d</span></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt; # Bases: 20s 12d</span></a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co"># Transform deb_lsd vector to deb_decimal</span></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="kw"><a href="reference/cast-decimal.html">deb_as_decimal</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(x, y))</a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt; &lt;deb_decimal[2]&gt;</span></a>
+<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">#&gt; [1] 15.66667  8.78750</span></a>
+<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co">#&gt; # Unit: libra</span></a>
+<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="co">#&gt; # Bases: 20s 12d</span></a>
+<a class="sourceLine" id="cb3-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb3-21" data-line-number="21"><span class="co"># Represented by solidus/shillings unit</span></a>
+<a class="sourceLine" id="cb3-22" data-line-number="22"><span class="kw"><a href="reference/cast-decimal.html">deb_as_decimal</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(x, y), <span class="dt">unit =</span> <span class="st">"s"</span>)</a>
+<a class="sourceLine" id="cb3-23" data-line-number="23"><span class="co">#&gt; &lt;deb_decimal[2]&gt;</span></a>
+<a class="sourceLine" id="cb3-24" data-line-number="24"><span class="co">#&gt; [1] 313.3333 175.7500</span></a>
+<a class="sourceLine" id="cb3-25" data-line-number="25"><span class="co">#&gt; # Unit: solidus</span></a>
+<a class="sourceLine" id="cb3-26" data-line-number="26"><span class="co">#&gt; # Bases: 20s 12d</span></a>
+<a class="sourceLine" id="cb3-27" data-line-number="27"></a>
+<a class="sourceLine" id="cb3-28" data-line-number="28"><span class="co"># Represented by denarius/pence unit</span></a>
+<a class="sourceLine" id="cb3-29" data-line-number="29"><span class="kw"><a href="reference/cast-decimal.html">deb_as_decimal</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(x, y), <span class="dt">unit =</span> <span class="st">"d"</span>)</a>
+<a class="sourceLine" id="cb3-30" data-line-number="30"><span class="co">#&gt; &lt;deb_decimal[2]&gt;</span></a>
+<a class="sourceLine" id="cb3-31" data-line-number="31"><span class="co">#&gt; [1] 3760 2109</span></a>
+<a class="sourceLine" id="cb3-32" data-line-number="32"><span class="co">#&gt; # Unit: denarius</span></a>
+<a class="sourceLine" id="cb3-33" data-line-number="33"><span class="co">#&gt; # Bases: 20s 12d</span></a>
+<a class="sourceLine" id="cb3-34" data-line-number="34"></a>
+<a class="sourceLine" id="cb3-35" data-line-number="35"><span class="co"># Either class can also be transformed to base numeric</span></a>
+<a class="sourceLine" id="cb3-36" data-line-number="36"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(x, y))</a>
+<a class="sourceLine" id="cb3-37" data-line-number="37"><span class="co">#&gt; [1] 15.66667  8.78750</span></a></code></pre></div>
 </div>
 <div id="historical-background" class="section level2">
 <h2 class="hasAnchor">
 <a href="#historical-background" class="anchor"></a>Historical Background</h2>
-<p>The <code>debkeepr</code> package uses the nomenclature of <a href="https://en.wikipedia.org/wiki/%C2%A3sd">l, s, and d</a> to represent pounds, shillings, and pence units. The abbreviations derive from the Latin terms <a href="https://en.wikipedia.org/wiki/French_livre">libra</a>, <a href="https://en.wikipedia.org/wiki/Solidus_(coin)">solidus</a>, and <a href="https://en.wikipedia.org/wiki/Denarius">denarius</a>. The libra was a Roman measurement of weight, while the solidus and denarius were both Roman coins. The denarius was a silver coin from the era of the Republic, in contrast to the golden solidus that was issued in the Late Empire. As the production of silver coins overtook that of gold by the 8th century, a solidus came to represent 12 silver denarii coins, and 240 denarii were — for a time — made from one libra or pound of silver. The custom of counting coins in dozens (solidi) and scores of dozens (librae) spread throughout the Carolingian Empire and became engrained in much of Europe. However, a variety of <a href="https://en.wikipedia.org/wiki/Non-decimal_currency">other bases</a> for the solidi and denarii units were in use in different regions and at different times. <code>debkeepr</code> provides a consistent manner for dealing with any set of bases within a tripartite system through the <code>bases</code> attribute of an <code>lsd</code> object.</p>
+<p>The <code>debkeepr</code> package uses the nomenclature of <a href="https://en.wikipedia.org/wiki/%C2%A3sd">l, s, and d</a> to represent pounds, shillings, and pence units. The abbreviations derive from the Latin terms <a href="https://en.wikipedia.org/wiki/French_livre">libra</a>, <a href="https://en.wikipedia.org/wiki/Solidus_(coin)">solidus</a>, and <a href="https://en.wikipedia.org/wiki/Denarius">denarius</a>. The libra was a Roman measurement of weight, while the solidus and denarius were both Roman coins. The denarius was a silver coin from the era of the Republic, in contrast to the golden solidus that was issued in the Late Empire. As the production of silver coins overtook that of gold by the 8th century, a solidus came to represent 12 silver denarii coins, and 240 denarii were — for a time — made from one libra or pound of silver. The custom of counting coins in dozens (solidi) and scores of dozens (librae) spread throughout the Carolingian Empire and became engrained in much of Europe. However, a variety of <a href="https://en.wikipedia.org/wiki/Non-decimal_currency">other bases</a> for the solidi and denarii units were in use in different regions and at different times. <code>debkeepr</code> provides a consistent manner for dealing with any set of bases within a tripartite system through the <code>bases</code> attribute of <code>deb_lsd</code> and <code>deb_decimal</code> vectors and the <code>unit</code> attribute of <code>deb_decimal</code> vectors.</p>
 </div>
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
 <ul>
 <li>All of the functions in <code>debkeepr</code> begin with the prefix <code>deb_</code>, which is short for double-entry bookkeeping.</li>
-<li>The nomenclature used throughout the package follows the <a href="https://en.wikipedia.org/wiki/%C2%A3sd">original Latin terms</a> in using l, s, and d to represent librae, solidi, and denarii respectively and to refer to such values as lsd values. These terms were translated into the various European languages.
+<li>The nomenclature used throughout the package follows the <a href="https://en.wikipedia.org/wiki/%C2%A3sd">original Latin terms</a> in using “l”, “s”, and “d” to represent librae, solidi, and denarii respectively. These terms were translated into the various European languages.
 <ul>
 <li>English: pounds, shillings, pence</li>
 <li>French: livres, sols or sous, deniers</li>
@@ -131,63 +202,44 @@
 <li>Dutch: ponden, schellingen, groten or penningen</li>
 </ul>
 </li>
+<li>
+<a href="https://jessesadler.github.io/debkeepr/articles/transactions.html">The Transactions in Richard Dafforne’s Journal vignette</a> provides examples of performing arithmetic operations used by historical accountants.</li>
 </ul>
 </div>
 <div id="examples" class="section level2">
 <h2 class="hasAnchor">
 <a href="#examples" class="anchor"></a>Examples</h2>
-<p>At the heart of <code>debkeepr</code> is the need to normalize pounds, shillings, and pence values to specified non-decimal unit bases in the process or making various calculations. Even in the simplest arithmetic operations can be tricky with non-decimal currencies. <code>debkeepr</code> extracts away much of the difficulties and in many cases makes it possible to procede as if you are working with normal decimalized data. When working with decimalized data is preferable, the <code>deb_decimal</code> class make casting from and to <code>deb_lsd</code> easy.</p>
+<p>At the heart of <code>debkeepr</code> is the need to normalize pounds, shillings, and pence values to specified non-decimal unit bases in the process of making various calculations. Even in the simplest arithmetic operations can be tricky with non-decimal currencies. <code>debkeepr</code> simplifies this process, while also making it safer to work with values that use different bases. The <code>bases</code> of <code>deb_lsd</code> and <code>deb_decimal</code> vectors can only be modified explicitly.</p>
 <p>For example, adding together a set of values by hand might result in the non-standard form of £131 62s. 41d. in a currency with the standard bases of 20 shillings per £1 and 12 pence per shilling.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(debkeepr)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co"># Normalize £131 62s. 41d.</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">x &lt;-<span class="st"> </span><span class="kw"><a href="reference/deb_lsd.html">deb_lsd</a></span>(<span class="dv">131</span>, <span class="dv">67</span>, <span class="dv">42</span>)</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="kw"><a href="reference/normalize.html">deb_normalize</a></span>(x)</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; &lt;deb_lsd[1]&gt;</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; [1] 134:10s:6d</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; # Bases: 20s 12d</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co"># Or create a deb_lsd vector and add</span></a>
-<a class="sourceLine" id="cb2-11" data-line-number="11">(y &lt;-<span class="st"> </span><span class="kw"><a href="reference/deb_lsd.html">deb_lsd</a></span>(<span class="dt">l =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">15</span>, <span class="dv">32</span>, <span class="dv">18</span>, <span class="dv">54</span>, <span class="dv">12</span>),</a>
-<a class="sourceLine" id="cb2-12" data-line-number="12">             <span class="dt">s =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">9</span>, <span class="dv">17</span>, <span class="dv">8</span>, <span class="dv">15</span>, <span class="dv">18</span>),</a>
-<a class="sourceLine" id="cb2-13" data-line-number="13">             <span class="dt">d =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">11</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">4</span>, <span class="dv">10</span>)))</a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt; &lt;deb_lsd[5]&gt;</span></a>
-<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt; [1] 15:9s:11d  32:17s:8d  18:8s:9d   54:15s:4d  12:18s:10d</span></a>
-<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt; # Bases: 20s 12d</span></a>
-<a class="sourceLine" id="cb2-17" data-line-number="17"></a>
-<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co"># Do the addition</span></a>
-<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(y)</a>
-<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="co">#&gt; &lt;deb_lsd[1]&gt;</span></a>
-<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="co">#&gt; [1] 134:10s:6d</span></a>
-<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="co">#&gt; # Bases: 20s 12d</span></a></code></pre></div>
-<p>Other arithmetic operations are also made available by <code>debkeepr</code>. If you think of <code>y</code> as profits to be divided evenly among three parterns, the calculations can be made quickly.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co"># Profits for each partner</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(y) <span class="op">/</span><span class="st"> </span><span class="dv">3</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; &lt;deb_lsd[1]&gt;</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; [1] 44:16s:10d</span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; # Bases: 20s 12d</span></a></code></pre></div>
-<p><code>y</code> could also be transformed into its decimalized form in any of the three units.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Decimalized libra</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="reference/cast-decimal.html">deb_as_decimal</a></span>(y)</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; &lt;deb_decimal[5]&gt;</span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; [1] 15.49583 32.88333 18.43750 54.76667 12.94167</span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; # Unit: libra</span></a>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Normalize £131 62s. 41d.</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">x &lt;-<span class="st"> </span><span class="kw"><a href="reference/deb_lsd.html">deb_lsd</a></span>(<span class="dv">131</span>, <span class="dv">67</span>, <span class="dv">42</span>)</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="reference/normalize.html">deb_normalize</a></span>(x)</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; &lt;deb_lsd[1]&gt;</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; [1] 134:10s:6d</span></a>
 <a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; # Bases: 20s 12d</span></a>
 <a class="sourceLine" id="cb4-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co"># Decimalized solidus</span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="kw"><a href="reference/cast-decimal.html">deb_as_decimal</a></span>(y, <span class="dt">unit =</span> <span class="st">"s"</span>)</a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt; &lt;deb_decimal[5]&gt;</span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; [1]  309.9167  657.6667  368.7500 1095.3333  258.8333</span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; # Unit: solidus</span></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt; # Bases: 20s 12d</span></a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co"># Decimalized denarius</span></a>
-<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="kw"><a href="reference/cast-decimal.html">deb_as_decimal</a></span>(y, <span class="dt">unit =</span> <span class="st">"d"</span>)</a>
-<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt; &lt;deb_decimal[5]&gt;</span></a>
-<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt; [1]  3719  7892  4425 13144  3106</span></a>
-<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt; # Unit: denarius</span></a>
-<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt; # Bases: 20s 12d</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co"># Or create a deb_lsd vector and add</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9">(y &lt;-<span class="st"> </span><span class="kw"><a href="reference/deb_lsd.html">deb_lsd</a></span>(<span class="dt">l =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">15</span>, <span class="dv">32</span>, <span class="dv">18</span>, <span class="dv">54</span>, <span class="dv">12</span>),</a>
+<a class="sourceLine" id="cb4-10" data-line-number="10">             <span class="dt">s =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">9</span>, <span class="dv">17</span>, <span class="dv">8</span>, <span class="dv">15</span>, <span class="dv">18</span>),</a>
+<a class="sourceLine" id="cb4-11" data-line-number="11">             <span class="dt">d =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">11</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">4</span>, <span class="dv">10</span>)))</a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; &lt;deb_lsd[5]&gt;</span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt; [1] 15:9s:11d  32:17s:8d  18:8s:9d   54:15s:4d  12:18s:10d</span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt; # Bases: 20s 12d</span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co"># Do the addition</span></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(y)</a>
+<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt; &lt;deb_lsd[1]&gt;</span></a>
+<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt; [1] 134:10s:6d</span></a>
+<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt; # Bases: 20s 12d</span></a>
+<a class="sourceLine" id="cb4-21" data-line-number="21"></a>
+<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co"># The process can be redone with non-standard bases</span></a>
+<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="co"># Compare this to deb_normalize(x)</span></a>
+<a class="sourceLine" id="cb4-24" data-line-number="24"><span class="kw"><a href="reference/deb_lsd.html">deb_lsd</a></span>(<span class="dv">131</span>, <span class="dv">67</span>, <span class="dv">42</span>, <span class="dt">bases =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">60</span>, <span class="dv">16</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-25" data-line-number="25"><span class="st">  </span><span class="kw"><a href="reference/normalize.html">deb_normalize</a></span>()</a>
+<a class="sourceLine" id="cb4-26" data-line-number="26"><span class="co">#&gt; &lt;deb_lsd[1]&gt;</span></a>
+<a class="sourceLine" id="cb4-27" data-line-number="27"><span class="co">#&gt; [1] 132:9s:10d</span></a>
+<a class="sourceLine" id="cb4-28" data-line-number="28"><span class="co">#&gt; # Bases: 60s 16d</span></a></code></pre></div>
+<p><code>debkeepr</code> ensures that <code>deb_lsd</code> and <code>deb_decimal</code> vectors with different <code>bases</code> and <code>deb_decimal</code> vectors with a different <code>unit</code> cannot be combined: <code><a href="https://www.rdocumentation.org/packages/base/topics/c">c(x, deb_lsd(131, 67, 42, bases = c(60, 16)))</a></code> throws an error. For many more examples, including how to do exchanges between currencies with different bases, see the <a href="https://jessesadler.github.io/debkeepr/articles/transactions.html">Transactions in Richard Dafforne’s Journal vignette</a>.</p>
 </div>
 </div>
   </div>
@@ -222,6 +274,7 @@
 <ul class="list-unstyled">
 <li><a href="https://travis-ci.org/jessesadler/debkeepr"><img src="https://travis-ci.org/jessesadler/debkeepr.svg?branch=master" alt="Travis build status"></a></li>
 <li><a href="https://codecov.io/github/jessesadler/debkeepr?branch=master"><img src="https://codecov.io/gh/jessesadler/debkeepr/branch/master/graph/badge.svg" alt="Coverage status"></a></li>
+<li><a href="https://www.tidyverse.org/lifecycle/#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="lifecycle"></a></li>
 </ul>
 </div>
 </div>

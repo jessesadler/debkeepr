@@ -27,5 +27,3 @@
 
 - Implementation of `lsd` class and `lsd` list columns.
 - Add vignette: Getting started with debkeepr
-
-
