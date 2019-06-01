@@ -2,8 +2,6 @@
 output: github_document
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -16,15 +14,21 @@ knitr::opts_chunk$set(
 
 [![Travis build status](https://travis-ci.org/jessesadler/debkeepr.svg?branch=master)](https://travis-ci.org/jessesadler/debkeepr)
 [![Coverage status](https://codecov.io/gh/jessesadler/debkeepr/branch/master/graph/badge.svg)](https://codecov.io/github/jessesadler/debkeepr?branch=master)
+[![lifecycle](https://img.shields.io/badge/lifecycle-retired-orange.svg)](https://www.tidyverse.org/lifecycle/#retired)
 
 `debkeepr` provides an interface for working with non-decimal currencies that use the tripartite system of pounds, shillings, and pence. The package includes functions to apply arithmetic and financial operations to single or multiple values and to analyze account books that use either [single-entry bookkeeping](https://en.wikipedia.org/wiki/Single-entry_bookkeeping_system) or [double-entry bookkeeping](https://en.wikipedia.org/wiki/Double-entry_bookkeeping_system) with the latter providing the name for `debkeepr`.
 
-## Installation
-You can install `debkeepr` from GitHub with [devtools](https://github.com/hadley/devtools):
+## Lifecycle
+This branch of `debkeepr` has been retired in favor of a new API backed by the [vctrs package](https://vctrs.r-lib.org/) that more fully integrates non-decimal currencies into R. A fairly stable implementation of the new API using the CRAN version of `vctrs` is on the [master branch](https://github.com/jessesadler/debkeepr). Current development to keep up with the changes to `vctrs` is on the [vctrs branch](https://github.com/jessesadler/debkeepr/tree/vctrs).
 
-```{r devtools, eval = FALSE}
-# install.packages("devtools")
-devtools::install_github("jessesadler/debkeepr")
+Note that this retired branch currently has more capabilities than the new API, particularly in working with non-decimal currencies in data frames. The new API has to wait for `vctrs` to be better integrated into the `tibble` and `dplyr` packages. These capabilities will be added to the new API as soon as possible.
+
+## Installation
+You can install `debkeepr` from GitHub with [remotes](https://remotes.r-lib.org):
+
+```{r remotes, eval = FALSE}
+# install.packages("remotes")
+remotes::install_github("jessesadler/debkeepr", ref = "list-class")
 ```
 
 ## lsd Class
@@ -34,9 +38,9 @@ The pounds, shillings, and pence monetary system complicates even relatively sim
 The `debkeepr` package uses the nomenclature of [l, s, and d](https://en.wikipedia.org/wiki/%C2%A3sd) to represent pounds, shillings, and pence units. The abbreviations derive from the Latin terms [libra](https://en.wikipedia.org/wiki/French_livre), [solidus](https://en.wikipedia.org/wiki/Solidus_(coin)), and [denarius](https://en.wikipedia.org/wiki/Denarius). The libra was a Roman measurement of weight, while the solidus and denarius were both Roman coins. The denarius was a silver coin from the era of the Republic, in contrast to the golden solidus that was issued in the Late Empire. As the production of silver coins overtook that of gold by the 8th century, a solidus came to represent 12 silver denarii coins, and 240 denarii were — for a time — made from one libra or pound of silver. The custom of counting coins in dozens (solidi) and scores of dozens (librae) spread throughout the Carolingian Empire and became engrained in much of Europe. However, a variety of [other bases](https://en.wikipedia.org/wiki/Non-decimal_currency) for the solidi and denarii units were in use in different regions and at different times. `debkeepr` provides a consistent manner for dealing with any set of bases within a tripartite system through the `bases` attribute of an `lsd` object.
 
 ## Resources
-- [Getting Started with debkeepr vignette](https://jessesadler.github.io/debkeepr/articles/debkeepr.html): A more in depth overview of `debkeepr`’s functions and their use in various contexts.
-- [Transactions in Richard Dafforne's Journal vignette](https://jessesadler.github.io/debkeepr/articles/transactions.html): Examples of financial and arithmetic calculations dealing with various currencies taken from the example journal in Richard Dafforne’s *Merchant’s Mirrour* (1660).
-- [Analysis of Richard Dafforne’s Journal and Ledger vignette](https://jessesadler.github.io/debkeepr/articles/ledger.html): An analysis of the example journal and ledger in Dafforne’s *Merchant’s Mirrour* using the `dafforne_transactions` and `dafforne_accounts` data provided in `debkeepr`.
+- Getting Started with debkeepr vignette: A more in depth overview of `debkeepr`’s functions and their use in various contexts.
+- Transactions in Richard Dafforne's Journal vignette: Examples of financial and arithmetic calculations dealing with various currencies taken from the example journal in Richard Dafforne’s *Merchant’s Mirrour* (1660).
+- Analysis of Richard Dafforne’s Journal and Ledger vignette: An analysis of the example journal and ledger in Dafforne’s *Merchant’s Mirrour* using the `dafforne_transactions` and `dafforne_accounts` data provided in `debkeepr`.
 - A [PDF copy of Dafforne’s example journal](https://github.com/jessesadler/debkeepr/blob/master/data-raw/dafforne-journal.pdf) can be consulted to further investigate the practices of early modern double-entry bookkeeping.
 
 ## Overview
