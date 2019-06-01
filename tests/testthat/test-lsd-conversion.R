@@ -1,4 +1,4 @@
-context("test-lsd-conversion.R")
+## Test bases conversions ##
 
 suppressPackageStartupMessages(library(tibble))
 suppressPackageStartupMessages(library(dplyr))

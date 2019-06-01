@@ -1,4 +1,4 @@
-context("test-lsd-decimalization.R")
+## Test decimalization ##
 
 x <- c(10, 3, 2)
 y <- c(20, 5, 8)

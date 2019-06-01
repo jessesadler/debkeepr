@@ -1,4 +1,4 @@
-context("test-lsd-class.R")
+## Test lsd class ##
 
 x <- c(5, 8, 6)
 y <- c(12, 5, 3)

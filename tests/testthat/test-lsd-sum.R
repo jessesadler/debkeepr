@@ -1,4 +1,4 @@
-context("test-lsd-sum.R")
+## Test lsd_sum ##
 
 suppressPackageStartupMessages(library(tibble))
 suppressPackageStartupMessages(library(dplyr))

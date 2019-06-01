@@ -1,4 +1,4 @@
-context("test-checks.R")
+## Test checks ##
 
 suppressPackageStartupMessages(library(tibble))
 

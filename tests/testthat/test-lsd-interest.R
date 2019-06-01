@@ -1,4 +1,4 @@
-context("test-lsd-interest.R")
+## Test lsd interest ##
 
 suppressPackageStartupMessages(library(tibble))
 suppressPackageStartupMessages(library(dplyr))

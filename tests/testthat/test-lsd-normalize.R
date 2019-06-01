@@ -1,4 +1,4 @@
-context("test-lsd-normalize.R")
+## Test normalization ##
 
 suppressPackageStartupMessages(library(tibble))
 suppressPackageStartupMessages(library(dplyr))

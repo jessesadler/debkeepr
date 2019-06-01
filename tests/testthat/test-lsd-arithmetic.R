@@ -1,4 +1,4 @@
-context("test-lsd-arithmetic.R")
+## Test lsd arithmetic ##
 
 suppressPackageStartupMessages(library(tibble))
 suppressPackageStartupMessages(library(dplyr))

@@ -1,4 +1,4 @@
-context("test-lsd-exchange.R")
+## Test lsd exchange ##
 
 suppressPackageStartupMessages(library(tibble))
 suppressPackageStartupMessages(library(dplyr))

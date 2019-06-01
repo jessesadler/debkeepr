@@ -1,4 +1,4 @@
-context("test-lsd-utils")
+## Test utilities for lsd list class ##
 
 with_null <- deb_as_lsd(list(c(5, 3, 4), NULL, c(4, 12, 4), NULL))
 with_zero <- deb_as_lsd(list(c(5, 3, 4), c(0, 0, 0), c(4, 12, 4), c(0, 0, 0)))

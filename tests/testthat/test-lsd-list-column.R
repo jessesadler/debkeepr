@@ -1,4 +1,4 @@
-context("test-lsd-list-column.R")
+## Test list column ##
 
 suppressPackageStartupMessages(library(tibble))
 
