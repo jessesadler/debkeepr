@@ -4,118 +4,67 @@
     <loc>https://jessesadler.github.io/debkeepr//index.html</loc>
   </url>
   <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/arithmetic.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/cast-decimal.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/cast-lsd.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/convert-bases.html</loc>
+  </url>
+  <url>
     <loc>https://jessesadler.github.io/debkeepr//reference/dafforne_accounts.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr//reference/dafforne_transactions.html</loc>
   </url>
   <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/deb_account.html</loc>
-  </url>
-  <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/deb_account_summary.html</loc>
-  </url>
-  <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/deb_add.html</loc>
-  </url>
-  <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/deb_balance.html</loc>
-  </url>
-  <url>
     <loc>https://jessesadler.github.io/debkeepr//reference/deb_bases.html</loc>
   </url>
   <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/deb_convert_bases.html</loc>
+    <loc>https://jessesadler.github.io/debkeepr//reference/deb_convert_unit.html</loc>
   </url>
   <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/deb_credit.html</loc>
+    <loc>https://jessesadler.github.io/debkeepr//reference/deb_decimal.html</loc>
   </url>
   <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/deb_current.html</loc>
-  </url>
-  <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/deb_d_lsd.html</loc>
-  </url>
-  <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/deb_debit.html</loc>
-  </url>
-  <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/deb_divide.html</loc>
-  </url>
-  <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/deb_exchange.html</loc>
-  </url>
-  <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/deb_exchange_rate.html</loc>
-  </url>
-  <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/deb_interest.html</loc>
-  </url>
-  <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/deb_invert_rate.html</loc>
+    <loc>https://jessesadler.github.io/debkeepr//reference/deb_is_decimal.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr//reference/deb_is_lsd.html</loc>
   </url>
   <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/deb_l_lsd.html</loc>
+    <loc>https://jessesadler.github.io/debkeepr//reference/deb_lsd.html</loc>
   </url>
   <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/deb_lsd_d.html</loc>
+    <loc>https://jessesadler.github.io/debkeepr//reference/deb_unit.html</loc>
   </url>
   <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/deb_lsd_gather.html</loc>
+    <loc>https://jessesadler.github.io/debkeepr//reference/debkeepr-package.html</loc>
   </url>
   <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/deb_lsd_l.html</loc>
+    <loc>https://jessesadler.github.io/debkeepr//reference/mathematics.html</loc>
   </url>
   <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/deb_lsd_s.html</loc>
+    <loc>https://jessesadler.github.io/debkeepr//reference/multi-assign.html</loc>
   </url>
   <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/deb_lsd_spread.html</loc>
+    <loc>https://jessesadler.github.io/debkeepr//reference/new_decimal.html</loc>
   </url>
   <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/deb_multiply.html</loc>
+    <loc>https://jessesadler.github.io/debkeepr//reference/new_lsd.html</loc>
   </url>
   <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/deb_normalize.html</loc>
-  </url>
-  <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/deb_open.html</loc>
-  </url>
-  <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/deb_replace_null.html</loc>
-  </url>
-  <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/deb_s_lsd.html</loc>
-  </url>
-  <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/deb_subtract.html</loc>
-  </url>
-  <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/deb_sum.html</loc>
-  </url>
-  <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/deb_summarise.html</loc>
-  </url>
-  <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/debkeepr.html</loc>
-  </url>
-  <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/lsd.html</loc>
+    <loc>https://jessesadler.github.io/debkeepr//reference/normalize.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr//reference/pipe.html</loc>
   </url>
   <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/tidyeval.html</loc>
-  </url>
-  <url>
-    <loc>https://jessesadler.github.io/debkeepr//articles/debkeepr.html</loc>
-  </url>
-  <url>
-    <loc>https://jessesadler.github.io/debkeepr//articles/ledger.html</loc>
+    <loc>https://jessesadler.github.io/debkeepr//reference/vctrs-compat.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr//articles/transactions.html</loc>

@@ -1,7 +1,7 @@
 Package: debkeepr
 Type: Package
 Title: Analysis of Non-Decimal Currencies and Double-Entry Bookkeeping
-Version: 0.0.3.9000
+Version: 0.0.4.9000
 Authors@R: person("Jesse", "Sadler",
     email = "jsadler@ucla.edu",
     role = c("aut", "cre"),
@@ -23,18 +23,15 @@ Imports:
     magrittr,
     purrr,
     rlang (>= 0.1.2),
-    tibble
+    vctrs,
+    zeallot
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
 Suggests: 
     covr,
     knitr,
-    testthat,
-    rmarkdown,
-    ggplot2,
-    scales,
-    igraph,
-    ggraph
+    testthat (>= 2.1.0),
+    rmarkdown
 URL: https://github.com/jessesadler/debkeepr, https://jessesadler.github.io/debkeepr/
 BugReports: https://github.com/jessesadler/debkeepr/issues
 VignetteBuilder: knitr

@@ -10,53 +10,22 @@ development:
   mode: unreleased
 
 reference:
-  - title: lsd objects
+  - title: debkeepr classes
     contents:
     - deb_lsd
-    - deb_as_lsd
     - deb_is_lsd
-    - deb_bases
-    - deb_replace_null
+    - deb_as_lsd
+    - deb_decimal
+    - deb_is_decimal
+    - deb_as_decimal
     - debkeepr
   - title: Normalization
     contents:
     - deb_normalize
-  - title: Arithmetic
+  - title: Conversion
     contents:
-    - deb_multiply
-    - deb_divide
-    - deb_sum
-    - deb_add
-    - deb_subtract
-  - title: Financial
-    contents:
-    - deb_interest
-    - deb_exchange
-    - deb_exchange_rate
-    - deb_invert_rate
     - deb_convert_bases
-  - title: Decimalization
-    contents:
-    - deb_lsd_l
-    - deb_l_lsd
-    - deb_lsd_s
-    - deb_s_lsd
-    - deb_lsd_d
-    - deb_d_lsd
-  - title: lsd list column
-    contents:
-    - deb_lsd_gather
-    - deb_lsd_spread
-    - deb_summarise
-  - title: Transaction data frames
-    contents:
-    - deb_account
-    - deb_account_summary
-    - deb_credit
-    - deb_debit
-    - deb_current
-    - deb_open
-    - deb_balance
+    - deb_convert_unit
   - title: Data
     contents:
     - dafforne_accounts
@@ -70,14 +39,10 @@ navbar:
       href: index.html
     - text: Reference
       href: reference/index.html
-    - text: Get started
-      href: articles/debkeepr.html
     - text: Articles
       menu:
       - text: 1. Transactions in Richard Dafforne's Journal
         href: articles/transactions.html
-      - text: 2. Analysis of Richard Dafforne’s Journal and Ledger
-        href: articles/ledger.html
     - text: News
       href: news/index.html
   right:

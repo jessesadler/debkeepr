@@ -1,85 +1,40 @@
-## Define lsd class ##
+## Define deb_lsd class ##
 
-## Construction ---------------------------------------------------------------
-new_lsd <- function(x, bases) {
-  stopifnot(is.list(x))
-  stopifnot(is.numeric(bases), length(bases) == 2)
+# Constructor -------------------------------------------------------------
 
-  structure(x,
-            class = "lsd",
-            bases = bases)
+#' Internal constructor to create deb_lsd type
+#'
+#' Asserts that `l`, `s` and `d` are of type `double()` and that `bases` is an
+#' `integer()` of length 2. Creates the object through `vctrs::new_rcrd()`.
+#'
+#' @return An object of class `deb_lsd`.
+#' @keywords internal
+
+new_lsd <- function(l = double(),
+                    s = double(),
+                    d = double(),
+                    bases = c(20L, 12L)) {
+
+  vctrs::vec_assert(l, ptype = double())
+  vctrs::vec_assert(s, ptype = double())
+  vctrs::vec_assert(d, ptype = double())
+
+  bases <- bases_assert(bases)
+
+  vctrs::new_rcrd(list(l = l, s = s, d = d),
+                  bases = bases,
+                  class = "deb_lsd")
 }
 
-to_lsd <- function(lsd, bases) {
-  # vectors
-  if (rlang::is_list(lsd) == FALSE & rlang::is_vector(lsd) == TRUE) {
-    lsd <- list(lsd)
-  }
-  new_lsd(lsd, bases)
-}
 
-## Validate bases -------------------------------------------------------------
-
-# Extract bases attribute if it exists, otherwise uses bases
-validate_bases <- function(lsd, bases) {
-  if (inherits(lsd, "lsd")) {
-    attributes(lsd)$bases
-  } else {
-      bases
-  }
-}
-
-validate_bases2 <- function(lsd1, lsd2, bases) {
-  # Two lsd objects with different bases
-  if (deb_is_lsd(lsd1) == TRUE & deb_is_lsd(lsd2) == TRUE) {
-    if (identical(attributes(lsd1)$bases, attributes(lsd2)$bases) == FALSE) {
-      stop(call. = FALSE, "bases for lsd1 and lsd2 must be equivalent if both are of class lsd")
-    }
-  }
-  # Options for lsd vs not lsd for determining bases
-  if (deb_is_lsd(lsd1) == TRUE & deb_is_lsd(lsd2) == TRUE) {
-    attributes(lsd1)$bases
-  } else if (deb_is_lsd(lsd1) == TRUE & deb_is_lsd(lsd2) == FALSE) {
-    attributes(lsd1)$bases
-  } else if (deb_is_lsd(lsd1) == FALSE & deb_is_lsd(lsd2) == TRUE) {
-    attributes(lsd2)$bases
-  } else {
-    bases
-  }
-}
-
-validate_bases_p <- function(lsd, bases) {
-  # If no lsd objects or lists with lsd objects
-  if (any(purrr::map_lgl(lsd, deb_is_lsd)) == FALSE) {
-    bases
-  } else {
-    lsd_class <- purrr::map_lgl(lsd, deb_is_lsd)
-    lsd_class <- lsd[which(lsd_class == TRUE)]
-
-    lsd_bases <- purrr::map(lsd_class, ~ attributes(.)$bases)
-
-    if (length(unique(lsd_bases)) != 1) {
-      stop(call. = FALSE, "All objects of class lsd must have the same bases")
-    } else {
-      purrr::flatten_dbl(unique(lsd_bases))
-    }
-  }
-}
-
-## Coercion -------------------------------------------------------------------
+# Helper ------------------------------------------------------------------
 
 #' A class for pounds, shillings and pence values
 #'
-#' Pounds, shillings, and pence values are stored as a list of numeric vectors
-#' of length 3 that possesses a bases attribute to record the non-decimal bases
-#' for the shillings and pence units of the values. The first position of each
-#' vector represents the pounds value or l. The second position represents the
-#' shillings value or s. And the third position represents the pence value or
-#' d. The bases attribute is stored as a numeric vector of length 2 with the
-#' first value recording the shillings base and the second value the base of
-#' the pence units. lsd objects can be used as list columns in a data frame.
+#' Create an object of class `deb_lsd` to integrate non-decimal currencies
+#' into standardized forms of analysis provided by R.
 #'
-#' The lsd class and the `debkeepr` package use the nomenclature of
+#' The `deb_lsd` class and the `debkeepr` package use the nomenclature of
 #' [l, s, and d](https://en.wikipedia.org/wiki/£sd) to represent pounds,
 #' shillings, and pence units. The abbreviations derive from the Latin terms
 #' [libra](https://en.wikipedia.org/wiki/French_livre),
@@ -93,197 +48,118 @@ validate_bases_p <- function(lsd, bases) {
 #' solidus and denarius units were also in use. The `bases` attribute makes
 #' it possible to specify alternative bases for the solidus and denarius units.
 #'
+#' The length of `l`, `s`, and `d` must either be all equal or a vector of
+#' length 1 can be recycled to the length of the other argument(s). See
+#' the [vctrs package](https://vctrs.r-lib.org/articles/type-size.html)
+#' for further details on recycling vectors. In addition, `l`, `s`, and `d`
+#' must either all have no values—resulting in a vector of length 0—or all
+#' possess numeric vectors.
+#'
+#' The `deb_lsd` class works in concert with the `deb_decimal` class, which
+#' represents non-decimal currencies as decimalized values.
+#'
 #' @param l Numeric vector representing the pounds unit.
 #' @param s Numeric vector representing the shillings unit.
 #' @param d Numeric vector representing the pence unit.
-#' @param lsd Numeric vector of length 3 or list of numeric vectors of length
-#'   3. The first position of the vector represents the pounds value or l. The
-#'   second position represents the shillings value or s. And the third
-#'   position represents the pence value or d.
-#' @param x An object.
 #' @param bases Numeric vector of length 2 used to specify the bases for the
-#'   shillings or s and pence or d units. Default is `c(20, 12)`, which
+#'   solidus or s and denarius or d units. Default is `c(20, 12)`, which
 #'   conforms to the most widely used system of 1 pound = 20 shillings and
 #'   1 shilling = 12 pence.
-#' @param ... Arguments passed on to further methods.
 #'
-#' @return Returns an object of class lsd with a bases attribute.
-#'
+#' @return Returns an object of class `deb_lsd`.
+#' @export
 #' @examples
-#' ## Create lsd objects from separate l, s, and d vectors ##
 #'
-#' # lsd object for £10 6s. 8d.
-#' deb_lsd(l = 10, s = 6, d = 8, bases = c(20, 12))
-#'
-#' # lsd object for the Dutch system of guilders, stuivers, and penningen
-#' deb_lsd(l = 10, s = 6, d = 8, bases = c(20, 16))
-#'
-#' # lsd object from vectors of length > 1: all must be the same length
+#' deb_lsd(5, 3, 8)
 #' deb_lsd(l = c(10, 8, 5),
 #'         s = c(6, 13, 8),
-#'         d = c(8, 4, 10),
-#'         bases = c(20, 12))
+#'         d = c(8, 4, 10))
 #'
-#' ## Create lsd objects from numeric vectors of length 3 ##
+#' # Recycle length 1 vector
+#' deb_lsd(l = c(10, 8, 5),
+#'         s = c(6, 13, 8),
+#'         d = 0)
 #'
-#' # lsd object for £10 6s. 8d.
-#' deb_as_lsd(lsd = c(10, 6, 8), bases = c(20, 12))
+#' # Set the `bases` of the object
+#' deb_lsd(5, 3, 8, bases = c(60, 16))
+#' deb_lsd(l = c(10, 28, 5),
+#'         s = c(6, 33, 13),
+#'         d = c(8, 42, 10),
+#'         bases = c(60, 16))
 #'
-#' # lsd object for the Dutch system of guilders, stuivers, and penningen
-#' deb_as_lsd(lsd = c(10, 8, 14), bases = c(20, 16))
-#'
-#' # lsd object from a list of vectors
-#' deb_as_lsd(lsd = list(c(10, 6, 8),
-#'                       c(8, 13, 4),
-#'                       c(5, 8, 10)))
-#'
-#' @name lsd
-NULL
+#' # Create a prototype or object of length 0
+#' deb_lsd()
 
-#' @rdname lsd
-#' @export
-deb_lsd <- function(l, s, d, bases = c(20, 12)) {
-
-  lsd <- list(l, s, d)
+deb_lsd <- function(l = double(),
+                    s = double(),
+                    d = double(),
+                    bases = c(20, 12)) {
   # checks
-  bases_check(bases)
-  separate_lsd_check(lsd)
-
-  purrr::transpose(lsd) %>%
-    purrr::simplify_all() %>%
-    to_lsd(bases = bases)
-}
-
-#' @rdname lsd
-#' @export
-deb_as_lsd <- function(lsd, bases = c(20, 12), ...) {
-  UseMethod("deb_as_lsd")
-}
-
-#' @rdname lsd
-#' @export
-deb_as_lsd.default <- function(lsd, bases = c(20, 12), ...) {
-  stop(call. = FALSE, "Cannot coerce an object of class ",
-       paste(class(lsd), collapse = "/"), " into an lsd object.")
-}
-
-#' @rdname lsd
-#' @export
-deb_as_lsd.numeric <- function(lsd, bases = c(20, 12), ...) {
-  lsd_check(lsd)
+  lsd_check(l, s, d)
   bases_check(bases)
 
-  to_lsd(lsd, bases)
+  c(l, s, d) %<-% vctrs::vec_cast_common(l, s, d, .to = double())
+  c(l, s, d) %<-% vctrs::vec_recycle_common(l, s, d)
+
+  bases <- vctrs::vec_cast(bases, to = integer())
+
+  new_lsd(l = l, s = s, d = d, bases = bases)
 }
 
-#' @rdname lsd
+
+# Attribute access --------------------------------------------------------
+
+#' Access the `bases` attribute of a `deb_lsd` object.
+#'
+#' @keywords internal
+
+deb_bases <- function(x) attr(x, "bases")
+
+
+# Class check -------------------------------------------------------------
+
+#' Test if an object is of class `deb_lsd`
+#'
+#' Test if an object is of class `deb_lsd`.
+#'
+#' @param x An object.
+#'
+#' @return `TRUE` if object is of class `deb_lsd` and `FALSE` if it is not.
 #' @export
-deb_as_lsd.list <- function(lsd, bases = c(20, 12), ...) {
-  lsd_check(lsd)
-  bases_check(bases)
-
-  to_lsd(lsd, bases)
-}
-
-#' @rdname lsd
-#' @export
-deb_as_lsd.lsd <- function(lsd, ...) lsd
-
-## about lsd ------------------------------------------------------------------
-
-#' Test if an object is of class lsd
-#'
-#' Test if an object is of class lsd.
-#'
-#' @param lsd An object.
-#'
-#' @return `TRUE` if object is of class lsd and `FALSE` if it is not.
-#'
 #' @examples
-#' x <- c(5, 3, 8)
-#' y <- deb_as_lsd(x)
+#' x <- deb_lsd(5, 3, 8)
+#' y <- c(5, 3, 8)
 #'
 #' deb_is_lsd(x)
 #' deb_is_lsd(y)
-#'
-#' @export
 
-deb_is_lsd <- function(lsd) {
-  inherits(lsd, "lsd")
+deb_is_lsd <- function(x) inherits(x, "deb_lsd")
+
+
+# Format method -----------------------------------------------------------
+
+#' @export
+format.deb_lsd <- function(x, ...) {
+  l <- round(vctrs::field(x, "l"), 3) # only print 3 decimals
+  s <- round(vctrs::field(x, "s"), 3)
+  d <- round(vctrs::field(x, "d"), 3)
+
+  out <- paste0(l, ":", s, "s:", d, "d")
+  out[is.na(l) | is.na(s) | is.na(d)] <- NA
+  out
 }
 
-#' Find the bases of lsd objects
-#'
-#' Find the bases for the shillings (s) and pence (d) units of lsd objects.
-#'
-#' @param ... Objects of class lsd.
-#'
-#' @return Returns list with a named numeric vector of length 2 corresponding
-#'   to the shillings (s) and pence (d) units of each lsd object.
-#'
-#' @examples
-#' x <- deb_as_lsd(lsd = c(5, 3, 8), bases = c(20, 12))
-#' y <- deb_as_lsd(lsd = c(5, 3, 8), bases = c(20, 16))
-#'
-#' deb_bases(x)
-#' deb_bases(x, y)
-#'
 #' @export
-
-deb_bases <- function(...) {
-  lsd_list <- list(...)
-  if (all(purrr::map_lgl(lsd_list, deb_is_lsd)) == FALSE) {
-    stop(call. = FALSE, "Objects must be of class lsd")
-  }
-  if (length(lsd_list) == 1) {
-    purrr::map(lsd_list,
-               ~ rlang::set_names(attributes(.)$bases, c("s", "d"))) %>%
-      purrr::as_vector()
-  } else {
-    purrr::map(lsd_list,
-               ~ rlang::set_names(attributes(.)$bases, c("s", "d")))
-  }
+obj_print_footer.deb_lsd <- function(x, ...) {
+  s <- format(attr(x, "bases")[[1]])
+  d <- format(attr(x, "bases")[[2]])
+  cat("# Bases: ", s, "s ", d, "d", "\n", sep = "")
 }
 
-## internal generics ----------------------------------------------------------
 
-## Subset lsd ##
+# Abbreviated name type ---------------------------------------------------
+
 #' @export
-`[.lsd` <- function(x, ...) {
-  to_lsd(NextMethod(), bases = attr(x, "bases"))
-}
-
-## Combine ##
-#' @export
-`c.lsd` <- function(...) {
-  lsd_list <- list(...)
-  purrr::map(lsd_list, lsd_check)
-  bases <- validate_bases_p(lsd_list, bases)
-  bases_check(bases)
-
-  lsd <- purrr::modify_if(lsd_list, is.numeric, list) %>%
-    purrr::flatten()
-  to_lsd(lsd, bases)
-}
-
-## print ##
-
-#' @rdname lsd
-#' @export
-print.lsd <- function(x, ...) {
-  # Turn NA and NULL to NA vector to enable change to df
-  if (any(purrr::map_lgl(x, ~ length(.) != 3))) {
-    missing <- purrr::map_lgl(x, ~ length(.) != 3)
-    x[which(missing == TRUE)] <- list(c(as.numeric(NA), as.numeric(NA), as.numeric(NA)))
-  }
-
-  lsd <-  x %>%
-    purrr::map(~ rlang::set_names(., c("l", "s", "d"))) %>%
-    purrr::transpose() %>%
-    purrr::simplify_all() %>%
-    as.data.frame()
-
-  row.names(lsd) <- paste0("[", 1:length(x), "]")
-
-  print.data.frame(lsd, row.names = TRUE, ...)
+vec_ptype_abbr.deb_lsd <- function(x) {
+  paste0("lsd[", attr(x, "bases")[[1]], "s:", attr(x, "bases")[[2]], "d]")
 }

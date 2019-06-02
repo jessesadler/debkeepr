@@ -1,191 +1,225 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-debkeepr: Analysis of Non-Decimal Currencies
-============================================
+# debkeepr: Analysis of Non-Decimal Currencies
 
-[![Travis build status](https://travis-ci.org/jessesadler/debkeepr.svg?branch=master)](https://travis-ci.org/jessesadler/debkeepr) [![Coverage status](https://codecov.io/gh/jessesadler/debkeepr/branch/master/graph/badge.svg)](https://codecov.io/github/jessesadler/debkeepr?branch=master)
+[![Travis build
+status](https://travis-ci.org/jessesadler/debkeepr.svg?branch=master)](https://travis-ci.org/jessesadler/debkeepr)
+[![Coverage
+status](https://codecov.io/gh/jessesadler/debkeepr/branch/master/graph/badge.svg)](https://codecov.io/github/jessesadler/debkeepr?branch=master)
+[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
-`debkeepr` provides an interface for working with non-decimal currencies that use the tripartite system of pounds, shillings, and pence. The package includes functions to apply arithmetic and financial operations to single or multiple values and to analyze account books that use either [single-entry bookkeeping](https://en.wikipedia.org/wiki/Single-entry_bookkeeping_system) or [double-entry bookkeeping](https://en.wikipedia.org/wiki/Double-entry_bookkeeping_system) with the latter providing the name for `debkeepr`.
+`debkeepr` provides an interface for working with non-decimal currencies
+that use the tripartite system of pounds, shillings, and pence. The
+package makes it possible for historical non-decimal currencies to
+behave like decimalized numeric values in many circumstances, while also
+providing support for values with multiple units whose bases can differ.
+This is accomplished through the creation of the `deb_lsd` and
+`deb_decimal` classes, which are based on the infrastructure provided by
+the [vctrs package](https://vctrs.r-lib.org/).
 
-Installation
-------------
+## Installation
 
-You can install `debkeepr` from GitHub with [devtools](https://github.com/hadley/devtools):
+You can install `debkeepr` from GitHub with
+[remotes](https://remotes.r-lib.org):
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("jessesadler/debkeepr")
+# install.packages("remotes")
+remotes::install_github("jessesadler/debkeepr")
 ```
 
-lsd Class
----------
+## Lifecycle
 
-The pounds, shillings, and pence monetary system complicates even relatively simple arithmetic manipulations, as each unit has to be [normalized](https://en.wikipedia.org/wiki/Arithmetic#Compound_unit_arithmetic) or converted to the correct base. To unite pounds, shillings, and pence units into a single value and associate the shillings and pence units with non-decimal bases `debkeepr` implements a special class of R object. The **lsd** class consists of a list of one or more numeric vectors of length 3 and a `bases` attribute attached to the list. `debkeepr` provides functions to manipulate objects that can be coerced to class `lsd`, `lsd` objects on their own, or `lsd` list columns in a data frame.
+`debkeepr` is under active development and is at an experimental stage
+in its lifecycle. `debkeepr` is dependent upon `vctrs`, which is also at
+an experimental stage. The retired [lsd list-class
+branch](https://github.com/jessesadler/debkeepr/tree/list-class) uses
+the previous API, which currently provides more capabilities. In
+particular, `vctrs` has yet to be integrated into `tibble` and `dplyr`,
+so the use of `deb_lsd` and `deb_decimal` vectors in data frames is
+limited. These capabilities will be added when possible. Please open an
+[issue](https://github.com/jessesadler/debkeepr/issues) if you have any
+questions, comments, or requests.
 
-Historical Background
----------------------
+## Usage
 
-The `debkeepr` package uses the nomenclature of [l, s, and d](https://en.wikipedia.org/wiki/%C2%A3sd) to represent pounds, shillings, and pence units. The abbreviations derive from the Latin terms [libra](https://en.wikipedia.org/wiki/French_livre), [solidus](https://en.wikipedia.org/wiki/Solidus_(coin)), and [denarius](https://en.wikipedia.org/wiki/Denarius). The libra was a Roman measurement of weight, while the solidus and denarius were both Roman coins. The denarius was a silver coin from the era of the Republic, in contrast to the golden solidus that was issued in the Late Empire. As the production of silver coins overtook that of gold by the 8th century, a solidus came to represent 12 silver denarii coins, and 240 denarii were — for a time — made from one libra or pound of silver. The custom of counting coins in dozens (solidi) and scores of dozens (librae) spread throughout the Carolingian Empire and became engrained in much of Europe. However, a variety of [other bases](https://en.wikipedia.org/wiki/Non-decimal_currency) for the solidi and denarii units were in use in different regions and at different times. `debkeepr` provides a consistent manner for dealing with any set of bases within a tripartite system through the `bases` attribute of an `lsd` object.
-
-Resources
----------
-
--   [Getting Started with debkeepr vignette](https://jessesadler.github.io/debkeepr/articles/debkeepr.html): A more in depth overview of `debkeepr`’s functions and their use in various contexts.
--   [Transactions in Richard Dafforne's Journal vignette](https://jessesadler.github.io/debkeepr/articles/transactions.html): Examples of financial and arithmetic calculations dealing with various currencies taken from the example journal in Richard Dafforne’s *Merchant’s Mirrour* (1660).
--   [Analysis of Richard Dafforne’s Journal and Ledger vignette](https://jessesadler.github.io/debkeepr/articles/ledger.html): An analysis of the example journal and ledger in Dafforne’s *Merchant’s Mirrour* using the `dafforne_transactions` and `dafforne_accounts` data provided in `debkeepr`.
--   A [PDF copy of Dafforne’s example journal](https://github.com/jessesadler/debkeepr/blob/master/data-raw/dafforne-journal.pdf) can be consulted to further investigate the practices of early modern double-entry bookkeeping.
-
-Overview
---------
-
--   All of the functions in `debkeepr` begin with the prefix `deb_`, which is short for double-entry bookkeeping.
--   The nomenclature used throughout the package follows the [original Latin terms](https://en.wikipedia.org/wiki/%C2%A3sd) in using l, s, and d to represent librae, solidi, and denarii respectively and to refer to such values as lsd values. These terms were translated into the various European languages.
-    -   English: pounds, shillings, pence
-    -   French: livres, sols or sous, deniers
-    -   Italian: lire, soldi, denari
-    -   Dutch: ponden, schellingen, groten or penningen
--   The functions are designed to be used in three types of contexts:
-    1.  Manipulation of single or multiple lsd values represented as an object of class `lsd` or an object that can be coerced to class `lsd`: a numeric vector of length 3 or a list of such vectors.
-    2.  A data frame with one or more list column of class `lsd`.
-    3.  A data frame that mimics the structure of an account book and can be thought of as a transactions data frame. In addition to an `lsd` list column that denotes the value of each transaction, a transactions data frame contains variables recording the [credit and debit account](https://en.wikipedia.org/wiki/Debits_and_credits) for each transaction.
--   Data
-    -   `debkeepr` contains two data sets from the example journal and ledger in the third edition of Richard Dafforne's *Merchant's Mirrour* from 1660. Dafforne’s text taught the practices of double-entry bookkeeping and provided a full set of account books to be used for educational purposes.
-    -   `dafforne_transactions` is a transactions data frame with 177 transactions.
-    -   `dafforne_accounts` possesses information about the 46 accounts in the journal and ledger.
-
-Examples
---------
-
-At the heart of `debkeepr` is the need to normalize pounds, shillings, and pence values to specified non-decimal unit bases in the process or making various calculations. Even in the simplest case of addition, `debkeepr` makes the process easier and less error prone. A historian working with economic data will often come across sets of monetary values that need to be added together. `debkeepr` provides multiple means to accomplish this frequent task.
-
--   Add the separate units by hand and then normalize.
--   Do the addition with `debkeepr` by supplying numeric vectors of length three.
--   Create an object of class `lsd` and proceed with the addition.
-
-For example, adding together a set of values by hand might result in the non-standard form of £131 62s. 41d. in a currency with the standard bases of 20 shillings per £1 and 12 pence per shilling.
+`debkeepr` allows non-decimal currency values to be used as normal
+numeric values as much as possible.
 
 ``` r
 library(debkeepr)
 
+# Create deb_lsd vectors with standard bases of 20s. 12d.
+x <- deb_lsd(15, 13, 4)
+y <- deb_lsd(8, 15, 9)
+
+# Perform arithmetic as usual
+x + y
+#> <deb_lsd[1]>
+#> [1] 24:9s:1d
+#> # Bases: 20s 12d
+x - y
+#> <deb_lsd[1]>
+#> [1] 6:17s:7d
+#> # Bases: 20s 12d
+y * 2 - x
+#> <deb_lsd[1]>
+#> [1] 1:18s:2d
+#> # Bases: 20s 12d
+
+# Combine multiple values together
+c(x, y)
+#> <deb_lsd[2]>
+#> [1] 15:13s:4d 8:15s:9d 
+#> # Bases: 20s 12d
+```
+
+## Classes: deb\_lsd and deb\_decimal
+
+`debkeepr` introduces two classes that both deal with two interrelated
+problems associated with historical currencies. Firstly, historical
+currencies consisted of three separate non-decimal units: pounds,
+shillings, and pence. Secondly, the bases of the units
+[differed](https://en.wikipedia.org/wiki/Non-decimal_currency) by
+region, coinage, and era. The `deb_lsd` class maintains the tripartite
+structure of non-decimal currencies and provides a `bases` attribute to
+record the bases for the shillings and pence units. The `deb_decimal`
+class represents the values in decimalized form, while also keeping
+track of the shillings and pence bases and the unit represented by the
+decimalized values through `bases` and `unit` attributes. When working
+with decimalized data is preferable, the `deb_decimal` class make
+casting from and to `deb_lsd` possible without losing any metadata about
+the bases used.
+
+``` r
+# Create deb_decimal from numeric values
+(z <- deb_decimal(c(5.525, 8.45, 12.235)))
+#> <deb_decimal[3]>
+#> [1]  5.525  8.450 12.235
+#> # Unit: libra
+#> # Bases: 20s 12d
+
+# Combining deb_lsd and deb_decimal gives a deb_lsd vector
+c(x, y, z)
+#> <deb_lsd[5]>
+#> [1] 15:13s:4d  8:15s:9d   5:10s:6d   8:9s:0d    12:4s:8.4d
+#> # Bases: 20s 12d
+
+# Transform deb_lsd vector to deb_decimal
+deb_as_decimal(c(x, y))
+#> <deb_decimal[2]>
+#> [1] 15.66667  8.78750
+#> # Unit: libra
+#> # Bases: 20s 12d
+
+# Represented by solidus/shillings unit
+deb_as_decimal(c(x, y), unit = "s")
+#> <deb_decimal[2]>
+#> [1] 313.3333 175.7500
+#> # Unit: solidus
+#> # Bases: 20s 12d
+
+# Represented by denarius/pence unit
+deb_as_decimal(c(x, y), unit = "d")
+#> <deb_decimal[2]>
+#> [1] 3760 2109
+#> # Unit: denarius
+#> # Bases: 20s 12d
+
+# Either class can also be transformed to base numeric
+as.numeric(c(x, y))
+#> [1] 15.66667  8.78750
+```
+
+## Historical Background
+
+The `debkeepr` package uses the nomenclature of [l, s, and
+d](https://en.wikipedia.org/wiki/%C2%A3sd) to represent pounds,
+shillings, and pence units. The abbreviations derive from the Latin
+terms [libra](https://en.wikipedia.org/wiki/French_livre),
+[solidus](https://en.wikipedia.org/wiki/Solidus_\(coin\)), and
+[denarius](https://en.wikipedia.org/wiki/Denarius). The libra was a
+Roman measurement of weight, while the solidus and denarius were both
+Roman coins. The denarius was a silver coin from the era of the
+Republic, in contrast to the golden solidus that was issued in the Late
+Empire. As the production of silver coins overtook that of gold by the
+8th century, a solidus came to represent 12 silver denarii coins, and
+240 denarii were — for a time — made from one libra or pound of silver.
+The custom of counting coins in dozens (solidi) and scores of dozens
+(librae) spread throughout the Carolingian Empire and became engrained
+in much of Europe. However, a variety of [other
+bases](https://en.wikipedia.org/wiki/Non-decimal_currency) for the
+solidi and denarii units were in use in different regions and at
+different times. `debkeepr` provides a consistent manner for dealing
+with any set of bases within a tripartite system through the `bases`
+attribute of `deb_lsd` and `deb_decimal` vectors and the `unit`
+attribute of `deb_decimal` vectors.
+
+## Overview
+
+  - All of the functions in `debkeepr` begin with the prefix `deb_`,
+    which is short for double-entry bookkeeping.
+  - The nomenclature used throughout the package follows the [original
+    Latin terms](https://en.wikipedia.org/wiki/%C2%A3sd) in using “l”,
+    “s”, and “d” to represent librae, solidi, and denarii
+    respectively. These terms were translated into the various European
+    languages.
+      - English: pounds, shillings, pence
+      - French: livres, sols or sous, deniers
+      - Italian: lire, soldi, denari
+      - Dutch: ponden, schellingen, groten or penningen
+  - [The Transactions in Richard Dafforne’s Journal
+    vignette](https://jessesadler.github.io/debkeepr/articles/transactions.html)
+    provides examples of performing arithmetic operations used by
+    historical accountants.
+
+## Examples
+
+At the heart of `debkeepr` is the need to normalize pounds, shillings,
+and pence values to specified non-decimal unit bases in the process of
+making various calculations. Even in the simplest arithmetic operations
+can be tricky with non-decimal currencies. `debkeepr` simplifies this
+process, while also making it safer to work with values that use
+different bases. The `bases` of `deb_lsd` and `deb_decimal` vectors can
+only be modified explicitly.
+
+For example, adding together a set of values by hand might result in the
+non-standard form of £131 62s. 41d. in a currency with the standard
+bases of 20 shillings per £1 and 12 pence per shilling.
+
+``` r
 # Normalize £131 62s. 41d.
-deb_normalize(c(131, 67, 42), bases = c(20, 12))
-#>       l  s d
-#> [1] 134 10 6
+x <- deb_lsd(131, 67, 42)
+deb_normalize(x)
+#> <deb_lsd[1]>
+#> [1] 134:10s:6d
+#> # Bases: 20s 12d
 
-# Addition of values with debkeepr
-deb_sum(c(15, 9, 11),
-        c(32, 17, 8),
-        c(18, 8, 9),
-        c(54, 15, 4),
-        c(12, 18, 10))
-#>       l  s d
-#> [1] 134 10 6
+# Or create a deb_lsd vector and add
+(y <- deb_lsd(l = c(15, 32, 18, 54, 12),
+             s = c(9, 17, 8, 15, 18),
+             d = c(11, 8, 9, 4, 10)))
+#> <deb_lsd[5]>
+#> [1] 15:9s:11d  32:17s:8d  18:8s:9d   54:15s:4d  12:18s:10d
+#> # Bases: 20s 12d
 
-# Create lsd object from list of vectors, then do addition
-lsd_values <- deb_as_lsd(list(c(15, 9, 11),
-                              c(32, 17, 8),
-                              c(18, 8, 9),
-                              c(54, 15, 4),
-                              c(12, 18, 10)),
-                         bases = c(20, 12))
-deb_sum(lsd_values)
-#>       l  s d
-#> [1] 134 10 6
+# Do the addition
+sum(y)
+#> <deb_lsd[1]>
+#> [1] 134:10s:6d
+#> # Bases: 20s 12d
+
+# The process can be redone with non-standard bases
+# Compare this to deb_normalize(x)
+deb_lsd(131, 67, 42, bases = c(60, 16)) %>% 
+  deb_normalize()
+#> <deb_lsd[1]>
+#> [1] 132:9s:10d
+#> # Bases: 60s 16d
 ```
 
-Objects of class `lsd` can also be used within data frames as a list column. The values can be manipulated through `debkeepr` functions in concert with `dplyr::mutate()`. The [tibble package](https://tibble.tidyverse.org) provides native support for list columns, enabling an `lsd` object to be linked to attribute data such as the person, object, or date associated with the monetary values. Here, a tibble is created with an `lsd` list column and a column listing three people — a, b, and c — who could be said to have purchased goods. It is then possible to manipulate the values, showing, in this example, interest over a two year period at 8% and the new value due.
-
-``` r
-library(tibble)
-library(dplyr)
-
-# Create a tibble with an lsd list column
-(lsd_tbl <- tibble(person = c("a", "c", "b", "c", "b"),
-                   lsd = lsd_values))
-#> # A tibble: 5 x 2
-#>   person lsd       
-#>   <chr>  <S3: lsd> 
-#> 1 a      15, 9, 11 
-#> 2 c      32, 17, 8 
-#> 3 b      18, 8, 9  
-#> 4 c      54, 15, 4 
-#> 5 b      12, 18, 10
-
-# Interest of 8% over a two year period
-lsd_tbl %>% 
-  mutate(interest = deb_interest(lsd = lsd,
-                                 interest = 0.08,
-                                 duration = 2,
-                                 with_principal = FALSE),
-         due = deb_add(lsd1 = lsd,
-                       lsd2 = interest))
-#> # A tibble: 5 x 4
-#>   person lsd        interest          due               
-#>   <chr>  <S3: lsd>  <S3: lsd>         <S3: lsd>         
-#> 1 a      15, 9, 11  2.00, 9.00, 7.04  17.00, 19.00, 6.04
-#> 2 c      32, 17, 8  5.00, 5.00, 2.72  38.00, 2.00, 10.72
-#> 3 b      18, 8, 9   2, 19, 0          21, 7, 9          
-#> 4 c      54, 15, 4  8.00, 15.00, 3.04 63.00, 10.00, 7.04
-#> 5 b      12, 18, 10 2.00, 1.00, 4.96  15.00, 0.00, 2.96
-```
-
-Once created `lsd` objects maintain the `bases` attribute provided to them. However, it is often necessary to convert between currencies with different bases for the shillings and pence units. This is possible with the `deb_convert_bases()` function. For example, taking the monetary values in `lsd_tbl` as representing pounds Flemish, we can find the equivalent guilders if the sales occurred in Holland. Guilders were of 20 stuivers but a stuiver was equal to 16 penningen. In addition, guilders were tied to the pound Flemish at the rate of 6 guilder to £1 Flemish.
-
-``` r
-# Convert from Flemish pounds to guilders
-lsd_tbl %>% 
-  mutate(guilders = deb_convert_bases(lsd = lsd,
-                                      bases2 = c(20, 16),
-                                      ratio = 6))
-#> # A tibble: 5 x 3
-#>   person lsd        guilders  
-#>   <chr>  <S3: lsd>  <S3: lsd> 
-#> 1 a      15, 9, 11  92, 19, 8 
-#> 2 c      32, 17, 8  197, 6, 0 
-#> 3 b      18, 8, 9   110, 12, 8
-#> 4 c      54, 15, 4  328, 12, 0
-#> 5 b      12, 18, 10 77, 13, 0
-```
-
-A common action for such a collection of values would be to add together the purchases by the “person” column. This can be done in the normal [tidyverse](https://tidyverse.org) manner, but with a special `summarise()` function for an `lsd` list column, `deb_summarise()`.
-
-``` r
-# Sum of purchases by person
-lsd_tbl %>% 
-  group_by(person) %>% 
-  deb_summarise(lsd)
-#> # A tibble: 3 x 2
-#>   person lsd      
-#>   <chr>  <S3: lsd>
-#> 1 a      15, 9, 11
-#> 2 b      31, 7, 7 
-#> 3 c      87, 13, 0
-```
-
-An issue with the implementation of a list column to hold monetary values is that such a column cannot be plotted. Because of this and other issues inherent in list columns, `debkeepr` has robust support for [decimalization](https://jessesadler.github.io/debkeepr/reference/index.html#section-decimalization). There are functions to decimalize pounds, shillings, and pence values to any of the three units and to go in the opposite direction from any decimalized unit to lsd values. For plotting purposes the most useful workflow is to go from pounds, shillings, and pence to decimalized pounds.
-
-``` r
-# Create decimalized pounds variable
-lsd_tbl %>% 
-  mutate(pounds = deb_lsd_l(lsd = lsd))
-#> # A tibble: 5 x 3
-#>   person lsd        pounds
-#>   <chr>  <S3: lsd>   <dbl>
-#> 1 a      15, 9, 11    15.5
-#> 2 c      32, 17, 8    32.9
-#> 3 b      18, 8, 9     18.4
-#> 4 c      54, 15, 4    54.8
-#> 5 b      12, 18, 10   12.9
-
-# Use decimalized pounds variable to plot value owed by each person
-library(ggplot2)
-lsd_tbl %>% 
-  mutate(pounds = deb_lsd_l(lsd = lsd)) %>% 
-  ggplot() + 
-  geom_bar(aes(x = person, y = pounds), stat = "identity") + 
-  theme_light()
-```
-
-![](man/figures/README-decimalization-1.png)
-
-For further introduction to the functions and uses of `debkeepr`, including accounting functions with transaction data frames not discussed here, see [Getting Started with debkeepr](https://jessesadler.github.io/debkeepr/articles/debkeepr.html). Two other vignettes show the use of `debkeepr` to analyze [individual transactions](https://jessesadler.github.io/debkeepr/articles/transactions.html) and a [whole set of account books](https://jessesadler.github.io/debkeepr/articles/ledger.html) using the example journal and ledger from Richard Dafforne’s *Merchant’s Mirrour*.
+`debkeepr` ensures that `deb_lsd` and `deb_decimal` vectors with
+different `bases` and `deb_decimal` vectors with a different `unit`
+cannot be combined: `c(x, deb_lsd(131, 67, 42, bases = c(60, 16)))`
+throws an error. For many more examples, including how to do exchanges
+between currencies with different bases, see the [Transactions in
+Richard Dafforne’s Journal
+vignette](https://jessesadler.github.io/debkeepr/articles/transactions.html).

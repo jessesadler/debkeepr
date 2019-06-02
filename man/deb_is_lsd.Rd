@@ -2,24 +2,23 @@
 % Please edit documentation in R/lsd-class.R
 \name{deb_is_lsd}
 \alias{deb_is_lsd}
-\title{Test if an object is of class lsd}
+\title{Test if an object is of class \code{deb_lsd}}
 \usage{
-deb_is_lsd(lsd)
+deb_is_lsd(x)
 }
 \arguments{
-\item{lsd}{An object.}
+\item{x}{An object.}
 }
 \value{
-\code{TRUE} if object is of class lsd and \code{FALSE} if it is not.
+\code{TRUE} if object is of class \code{deb_lsd} and \code{FALSE} if it is not.
 }
 \description{
-Test if an object is of class lsd.
+Test if an object is of class \code{deb_lsd}.
 }
 \examples{
-x <- c(5, 3, 8)
-y <- deb_as_lsd(x)
+x <- deb_lsd(5, 3, 8)
+y <- c(5, 3, 8)
 
 deb_is_lsd(x)
 deb_is_lsd(y)
-
 }

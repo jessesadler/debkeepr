@@ -2,25 +2,11 @@
 % Please edit documentation in R/lsd-class.R
 \name{deb_bases}
 \alias{deb_bases}
-\title{Find the bases of lsd objects}
+\title{Access the \code{bases} attribute of a \code{deb_lsd} object.}
 \usage{
-deb_bases(...)
-}
-\arguments{
-\item{...}{Objects of class lsd.}
-}
-\value{
-Returns list with a named numeric vector of length 2 corresponding
-to the shillings (s) and pence (d) units of each lsd object.
+deb_bases(x)
 }
 \description{
-Find the bases for the shillings (s) and pence (d) units of lsd objects.
+Access the \code{bases} attribute of a \code{deb_lsd} object.
 }
-\examples{
-x <- deb_as_lsd(lsd = c(5, 3, 8), bases = c(20, 12))
-y <- deb_as_lsd(lsd = c(5, 3, 8), bases = c(20, 16))
-
-deb_bases(x)
-deb_bases(x, y)
-
-}
+\keyword{internal}
