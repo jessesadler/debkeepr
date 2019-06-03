@@ -47,7 +47,7 @@ test_that("length of l, s, and d are same length, length 1, or length 0", {
 test_that("bases is numeric vector of length 2", {
   # Successful
   expect_invisible(bases_check(c(20, 12)))
-  expect_error(bases_check(NULL),
+  expect_error(bases_check(TRUE),
                "`bases` must be a numeric vector of length 2.")
   expect_error(bases_check(c("hello", "goodbye")),
                "`bases` must be a numeric vector of length 2.")

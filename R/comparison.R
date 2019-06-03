@@ -5,14 +5,15 @@
 # vec_proxy_equal is just vec_proxy in GitHub version of vctrs
 
 #' @rdname vctrs-compat
-#' @method vec_proxy_equal deb_lsd
+#' @method vec_proxy deb_lsd
 #' @export
-#' @export vec_proxy_equal.deb_lsd
-vec_proxy_equal.deb_lsd <- function(x) {
-  x <- deb_normalize(x)
-  data.frame(l = vctrs::field(x, "l"),
-             s = vctrs::field(x, "s"),
-             d = vctrs::field(x, "d"))
+#' @export vec_proxy.deb_lsd
+vec_proxy.deb_lsd <- function(x) {
+  decimals <- decimal_check(x)
+  ret <- lsd_normalize(decimals)
+  data.frame(l = vctrs::field(ret, "l"),
+             s = vctrs::field(ret, "s"),
+             d = vctrs::field(ret, "d"))
 }
 
 
