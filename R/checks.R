@@ -66,7 +66,7 @@ bases_assert <- function(bases) {
 
 # Bases equivalent --------------------------------------------------------
 
-# Check that bases are equal for two lsd objects
+# Check that bases are equal for two deb-style objects
 bases_equal <- function(x, y) {
   if (!identical(deb_bases(x), deb_bases(y))) {
     stop(call. = FALSE,

@@ -17,14 +17,14 @@ decimal3 <- deb_decimal(c(1.8375, NA, 5.225, 3.2875, 1.1125))
 # Sum and mean ------------------------------------------------------------
 
 test_that("sum and mean with deb_lsd work", {
-  # na.rm argument not working
+  # na.rm argument not working in sum or mean
   expect_equal(sum(lsd3), deb_lsd(18, 11, 5))
   expect_equal(sum(lsd1, lsd2), deb_lsd(7, 3, 5))
   expect_equal(sum(lsd_bases), deb_lsd(6, 23, 1, bases = bases2))
+  expect_equal(mean(lsd3[-3]), deb_lsd(4, 12, 10.25))
   # Error with different bases
   expect_error(sum(lsd3, lsd_bases),
                "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
-  expect_equal(mean(lsd3), deb_lsd(4, 12, 10.25))
 })
 
 test_that("sum and mean work with deb_decimal", {

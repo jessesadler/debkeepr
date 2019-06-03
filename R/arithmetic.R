@@ -106,8 +106,9 @@ vec_math.deb_lsd <- function(fun, x, ...) {
   switch(
     fun,
     sum = lsd_sum(x, ...),
-    # Remove NA from divisor
-    mean = lsd_sum(x, ...) / vctrs::vec_size(purrr::discard(x, .p = is.na)),
+    # purrr::discard not working to remove NA.
+    # Deal with NA later, when there is more robust support in vctrs
+    mean = lsd_sum(x, ...) / vctrs::vec_size(x),
     ceiling = lsd_ceiling(x),
     floor = lsd_floor(x),
     trunc = lsd_trunc(x, ...)
