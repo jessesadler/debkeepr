@@ -6,7 +6,7 @@
 \alias{vec_cast.deb_decimal}
 \alias{vec_type2.deb_lsd}
 \alias{vec_type2.deb_decimal}
-\alias{vec_proxy.deb_lsd}
+\alias{vec_proxy_equal.deb_lsd}
 \alias{vec_proxy_compare.deb_lsd}
 \alias{vctrs-compat}
 \title{vctrs compatibility functions for casting, coercion, and comparison}
@@ -19,7 +19,7 @@
 
 \method{vec_type2}{deb_decimal}(x, y, ...)
 
-\method{vec_proxy}{deb_lsd}(x)
+\method{vec_proxy_equal}{deb_lsd}(x)
 
 \method{vec_proxy_compare}{deb_lsd}(x)
 }
