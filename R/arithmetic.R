@@ -56,13 +56,27 @@ NULL
 # deb_lsd mathematic functions --------------------------------------------
 
 # sum
-lsd_sum <- function(x, ...) {
-  ret <- new_lsd(sum(vctrs::field(x, "l"), ...),
-                 sum(vctrs::field(x, "s"), ...),
-                 sum(vctrs::field(x, "d"), ...),
+sum.deb_lsd <- function(..., na.rm = FALSE) {
+  x <- vctrs::vec_c(...)
+  # Remove NA so fields that are not NA are not added
+  if (na.rm == TRUE) {
+    x <- x[!is.na(x)]
+  }
+
+  ret <- new_lsd(sum(vctrs::field(x, "l"), na.rm = na.rm),
+                 sum(vctrs::field(x, "s"), na.rm = na.rm),
+                 sum(vctrs::field(x, "d"), na.rm = na.rm),
                  bases = deb_bases(x))
 
   deb_normalize(ret)
+}
+
+mean.deb_lsd <- function(x, trim = 0, na.rm = FALSE, ...) {
+  if (na.rm == TRUE) {
+    x <- x[!is.na(x)]
+  }
+
+  sum(x, ...) / vctrs::vec_size(x)
 }
 
 # Rounding ----------------------------------------------------------------
@@ -105,10 +119,6 @@ lsd_trunc <- function(x, ...) {
 vec_math.deb_lsd <- function(fun, x, ...) {
   switch(
     fun,
-    sum = lsd_sum(x, ...),
-    # purrr::discard not working to remove NA.
-    # Deal with NA later, when there is more robust support in vctrs
-    mean = lsd_sum(x, ...) / vctrs::vec_size(x),
     ceiling = lsd_ceiling(x),
     floor = lsd_floor(x),
     trunc = lsd_trunc(x, ...)
