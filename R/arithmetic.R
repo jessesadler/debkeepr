@@ -79,6 +79,15 @@ mean.deb_lsd <- function(x, trim = 0, na.rm = FALSE, ...) {
   sum(x, ...) / vctrs::vec_size(x)
 }
 
+cumsum.deb_lsd <- function(x) {
+  ret <- new_lsd(cumsum(vctrs::field(x, "l")),
+                 cumsum(vctrs::field(x, "s")),
+                 cumsum(vctrs::field(x, "d")),
+                 bases = deb_bases(x))
+
+  deb_normalize(ret)
+}
+
 # Rounding ----------------------------------------------------------------
 
 #' @rdname mathematics

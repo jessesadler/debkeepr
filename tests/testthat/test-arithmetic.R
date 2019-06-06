@@ -16,13 +16,15 @@ decimal3 <- deb_decimal(c(1.8375, NA, 5.225, 3.2875, 1.1125))
 
 # Sum and mean ------------------------------------------------------------
 
-test_that("sum and mean with deb_lsd work", {
+test_that("sum, cumsum, and mean with deb_lsd work", {
   expect_equal(sum(lsd3), deb_lsd(NA, NA, NA))
   expect_equal(sum(lsd3, na.rm = TRUE), deb_lsd(18, 11, 5))
   expect_equal(sum(deb_lsd(c(1, 1), c(2, 1), c(3, NA)), na.rm = TRUE),
                deb_lsd(1, 2, 3))
   expect_equal(sum(lsd1, lsd2), deb_lsd(7, 3, 5))
   expect_equal(sum(lsd_bases), deb_lsd(6, 23, 1, bases = bases2))
+  expect_equal(cumsum(deb_lsd(rep(1, 5), rep(1, 5), rep(1, 5))),
+               deb_lsd(1:5, 1:5, 1:5))
   expect_equal(mean(c(lsd1, lsd2)), deb_lsd(3, 11, 8.5))
   expect_equal(mean(lsd3, na.rm = TRUE), deb_lsd(4, 12, 10.25))
   expect_equal(mean(deb_lsd(c(1, 5), c(42, 30), c(13, 15), bases = bases2)),
