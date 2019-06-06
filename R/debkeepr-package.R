@@ -30,6 +30,7 @@ NULL
 #'
 #' @param x,y Vectors.
 #' @param to Type to cast to.
+#' @param ... Arguments passed on to further methods.
 #'
 #' @name vctrs-compat
 #'

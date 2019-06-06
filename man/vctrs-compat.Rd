@@ -27,6 +27,8 @@
 \item{x, y}{Vectors.}
 
 \item{to}{Type to cast to.}
+
+\item{...}{Arguments passed on to further methods.}
 }
 \description{
 These functions are the extensions that allow debkeepr vectors to

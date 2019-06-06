@@ -2,11 +2,20 @@
 % Please edit documentation in R/arithmetic.R
 \name{mathematics}
 \alias{mathematics}
+\alias{sum.deb_lsd}
+\alias{mean.deb_lsd}
+\alias{cumsum.deb_lsd}
 \alias{round.deb_lsd}
 \alias{signif.deb_lsd}
 \alias{vec_math.deb_lsd}
 \title{Mathematical functions with deb_lsd objects}
 \usage{
+\method{sum}{deb_lsd}(..., na.rm = FALSE)
+
+\method{mean}{deb_lsd}(x, trim = 0, na.rm = FALSE, ...)
+
+\method{cumsum}{deb_lsd}(x)
+
 \method{round}{deb_lsd}(x, digits = 0)
 
 \method{signif}{deb_lsd}(x, digits = 6)
@@ -14,14 +23,18 @@
 \method{vec_math}{deb_lsd}(fun, x, ...)
 }
 \arguments{
+\item{...}{Arguments passed on to further methods.}
+
+\item{na.rm}{logical. Should missing values (including NaN) be removed?}
+
 \item{x}{An object of class \code{deb_lsd}.}
+
+\item{trim}{argument from mean that is currently not implemented}
 
 \item{digits}{Integer indicating the number of decimal places (round)
 or significant digits (signif) to be used.}
 
 \item{fun}{Used internally to enable debkeepr to work with vctrs.}
-
-\item{...}{Arguments passed on to further methods.}
 }
 \value{
 A \code{deb_lsd} object with normalized values.
