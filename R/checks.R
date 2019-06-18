@@ -26,7 +26,7 @@ lsd_check <- function(l, s, d) {
   lengths <- purrr::map_int(list(l, s, d), length)
 
   # Must be either all zero length or no zero length
-  if (sum(lengths) == 1L | sum(lengths) == 2L) {
+  if (sum(lengths) == 1L || sum(lengths) == 2L) {
     stop(call. = FALSE,
          "`l`, `s`, and `d` must all have values. You may have forgotten a value or need to use 0.")
   }
@@ -44,7 +44,7 @@ is_natural <- function(x, tol = .Machine$double.eps^0.5) {
 }
 
 bases_check <- function(bases) {
-  if (!is.numeric(bases) | vctrs::vec_size(bases) != 2L | is.null(bases)) {
+  if (!is.numeric(bases) || vctrs::vec_size(bases) != 2L || is.null(bases)) {
     stop(call. = FALSE, "`bases` must be a numeric vector of length 2.")
   }
   if (any(rlang::are_na(bases))) {
