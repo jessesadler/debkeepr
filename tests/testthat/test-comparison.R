@@ -7,6 +7,9 @@ decimal1 <- deb_decimal(1.1125)
 decimal2 <- deb_decimal(8.825)
 decimal3 <- deb_decimal(c(1.1125, NA, 5.225, 3.2875, 1.1125))
 
+bases_error <- paste0("`bases` attributes must be equal to combine ",
+                      "<deb_lsd> or <deb_decimal> objects.")
+
 # Equality ----------------------------------------------------------------
 
 test_that("Equality works with deb_lsd", {
@@ -19,7 +22,7 @@ test_that("Equality works with deb_lsd", {
   expect_equal(is.na(normalize), c(FALSE, FALSE, TRUE, FALSE, FALSE))
   # Error with different bases
   expect_error(lsd1 == deb_lsd(5, 6, 8, bases = c(20, 16)),
-               "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
+               bases_error)
 })
 
 test_that("Equality works with deb_decimal", {
@@ -31,7 +34,7 @@ test_that("Equality works with deb_decimal", {
   expect_equal(is.na(decimal3), c(FALSE, TRUE, FALSE, FALSE, FALSE))
   # Error with different bases
   expect_error(decimal1 == deb_decimal(1.1125, bases = c(24, 12)),
-               "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
+               bases_error)
 })
 
 
@@ -53,9 +56,9 @@ test_that("Comparison logical operators work", {
 
   # Error with different bases
   expect_error(lsd1 < deb_lsd(15, 6, 8, bases = c(20, 16)),
-               "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
+               bases_error)
   expect_error(decimal1 < deb_decimal(11.125, bases = c(24, 12)),
-               "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
+               bases_error)
 })
 
 test_that("Comparison functions work", {

@@ -28,13 +28,15 @@ lsd_check <- function(l, s, d) {
   # Must be either all zero length or no zero length
   if (sum(lengths) == 1L || sum(lengths) == 2L) {
     stop(call. = FALSE,
-         "`l`, `s`, and `d` must all have values. You may have forgotten a value or need to use 0.")
+         paste0("`l`, `s`, and `d` must all have values. ",
+                "You may have forgotten a value or need to use 0."))
   }
 
   # Must be only one length other than scalar
   non_scalar <- lengths[lengths != 1L]
   if (length(unique(non_scalar)) > 1L) {
-    stop(call. = FALSE, "`l`, `s`, and `d` must be vectors of equal length or length 1")
+    stop(call. = FALSE,
+         "`l`, `s`, and `d` must be vectors of equal length or length 1")
   }
 }
 
@@ -70,7 +72,8 @@ bases_assert <- function(bases) {
 bases_equal <- function(x, y) {
   if (!identical(deb_bases(x), deb_bases(y))) {
     stop(call. = FALSE,
-         "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
+         paste0("`bases` attributes must be equal to combine <deb_lsd> ",
+                "or <deb_decimal> objects."))
   }
 }
 
@@ -79,6 +82,7 @@ bases_equal <- function(x, y) {
 
 unit_equal <- function(x, y) {
   if (!identical(attr(x, "unit"), attr(y, "unit"))) {
-    stop(call. = FALSE, "`unit` attributes must be equal to combine <deb_decimal> objects.")
+    stop(call. = FALSE,
+         "`unit` attributes must be equal to combine <deb_decimal> objects.")
   }
 }

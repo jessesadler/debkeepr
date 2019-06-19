@@ -1,5 +1,8 @@
 ## Test checks ##
 
+bases_error <- paste0("`bases` attributes must be equal to combine ",
+                      "<deb_lsd> or <deb_decimal> objects.")
+
 # lsd_check ---------------------------------------------------------------
 
 test_that("non-numeric is an error", {
@@ -20,9 +23,11 @@ test_that("NA scalar is not an error", {
 test_that("length of l, s, and d all have values or are all length 0", {
   expect_invisible(lsd_check(double(), double(), double()))
   expect_error(lsd_check(2, double(), double()),
-               "`l`, `s`, and `d` must all have values. You may have forgotten a value or need to use 0.")
+               paste0("`l`, `s`, and `d` must all have values. ",
+                      "You may have forgotten a value or need to use 0."))
   expect_error(lsd_check(2, 3, double()),
-               "`l`, `s`, and `d` must all have values. You may have forgotten a value or need to use 0.")
+               paste0("`l`, `s`, and `d` must all have values. ",
+                      "You may have forgotten a value or need to use 0."))
 })
 
 test_that("length of l, s, and d are same length, length 1, or length 0", {
@@ -87,19 +92,23 @@ test_that("bases tests equivalency", {
                                deb_lsd(3, 2, 1, bases = c(60, 12))))
   expect_invisible(bases_equal(deb_decimal(1.25), deb_decimal(1.25)))
   # Errors
-  expect_error(bases_equal(deb_lsd(2, 3, 4), deb_lsd(3, 2, 1, bases = c(60, 12))),
-               "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
-  expect_error(bases_equal(deb_lsd(2, 3, 4), deb_lsd(3, 2, 1, bases = c(20, 16))),
-               "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
-  expect_error(bases_equal(deb_decimal(1.25), deb_decimal(1.25, bases = c(60, 12))),
-               "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
-  expect_error(bases_equal(deb_decimal(1.25), deb_decimal(1.25, bases = c(20, 16))),
-               "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
+  expect_error(bases_equal(deb_lsd(2, 3, 4),
+                           deb_lsd(3, 2, 1, bases = c(60, 12))),
+               bases_error)
+  expect_error(bases_equal(deb_lsd(2, 3, 4),
+                           deb_lsd(3, 2, 1, bases = c(20, 16))),
+               bases_error)
+  expect_error(bases_equal(deb_decimal(1.25),
+                           deb_decimal(1.25, bases = c(60, 12))),
+               bases_error)
+  expect_error(bases_equal(deb_decimal(1.25),
+                           deb_decimal(1.25, bases = c(20, 16))),
+               bases_error)
 })
 
 test_that("unit tests equivalency", {
   expect_invisible(unit_equal(deb_decimal(1.25), deb_decimal(1.25)))
   expect_invisible(unit_equal(deb_decimal(1.25, "s"), deb_decimal(1.25, "s")))
   expect_error(unit_equal(deb_decimal(1.25), deb_decimal(1.25, "s")),
-               "`unit` attributes must be equal to combine <deb_decimal> objects.")
+    "`unit` attributes must be equal to combine <deb_decimal> objects.")
 })

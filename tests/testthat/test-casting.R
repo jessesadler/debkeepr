@@ -12,6 +12,8 @@ dec_s <- deb_decimal(22.25, unit = "s")
 dec_d <- deb_decimal(267, unit = "d")
 dec3 <- deb_decimal(c(1.1125, 2.225, 3.2875))
 
+bases_error <- paste0("`bases` attributes must be equal to combine ",
+                      "<deb_lsd> or <deb_decimal> objects.")
 
 # Test with vec_cast ------------------------------------------------------
 
@@ -20,7 +22,7 @@ test_that("vec_cast works for deb_lsd", {
   expect_equal(vctrs::vec_cast(lsd, deb_lsd()), lsd)
   expect_equal(vctrs::vec_cast(lsd_alt, deb_lsd(bases = c(50, 16))), lsd_alt)
   expect_error(vctrs::vec_cast(lsd_alt, deb_lsd()),
-               "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
+               bases_error)
 
   # deb_lsd with double and integer
   expect_equal(vctrs::vec_cast(lsd1, numeric()), 1.1125)
@@ -35,12 +37,12 @@ test_that("vec_cast works for deb_lsd", {
 test_that("vec_cast works for deb_decimal", {
   # deb_decimal to deb_decimal: checks for equal bases
   expect_equal(vctrs::vec_cast(dec, deb_decimal()), dec)
-  expect_equal(vctrs::vec_cast(dec_bases, deb_decimal(bases = c(50, 16))), dec_bases)
+  expect_equal(vctrs::vec_cast(dec_bases, deb_decimal(bases = c(50, 16))),
+               dec_bases)
   expect_equal(vctrs::vec_cast(dec_s, deb_decimal(unit = "s")), dec_s)
-  expect_error(vctrs::vec_cast(dec_bases, deb_decimal()),
-               "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
+  expect_error(vctrs::vec_cast(dec_bases, deb_decimal()), bases_error)
   expect_error(vctrs::vec_cast(dec_s, deb_decimal()),
-               "`unit` attributes must be equal to combine <deb_decimal> objects.")
+    "`unit` attributes must be equal to combine <deb_decimal> objects.")
 
   # deb_decimal with double and integer
   expect_equal(vctrs::vec_cast(dec, numeric()), c(NA, 2.225, 3.2875))
@@ -59,21 +61,19 @@ test_that("vec_cast works with both deb_lsd and deb_decimal", {
   # Units dealt with correctly
   expect_equal(vctrs::vec_cast(dec_s, deb_lsd()), lsd1)
   # Alt bases and units work if provided to prototype
-  expect_equal(vctrs::vec_cast(dec_bases, deb_lsd(bases = c(50, 16))), lsd_alt)
-  expect_equal(vctrs::vec_cast(lsd_alt, deb_decimal(bases = c(50, 16))), dec_bases)
+  expect_equal(vctrs::vec_cast(dec_bases, deb_lsd(bases = c(50, 16))),
+               lsd_alt)
+  expect_equal(vctrs::vec_cast(lsd_alt, deb_decimal(bases = c(50, 16))),
+               dec_bases)
   expect_equal(vctrs::vec_cast(dec_s, deb_decimal(unit = "s")), dec_s)
 
   # Errors when x has different bases or units than default if not changed
-  expect_error(vctrs::vec_cast(lsd_alt, deb_lsd()),
-               "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
-  expect_error(vctrs::vec_cast(dec_bases, deb_decimal()),
-               "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
-  expect_error(vctrs::vec_cast(dec_bases, deb_lsd()),
-               "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
-  expect_error(vctrs::vec_cast(lsd_alt, deb_decimal()),
-               "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
+  expect_error(vctrs::vec_cast(lsd_alt, deb_lsd()), bases_error)
+  expect_error(vctrs::vec_cast(dec_bases, deb_decimal()), bases_error)
+  expect_error(vctrs::vec_cast(dec_bases, deb_lsd()), bases_error)
+  expect_error(vctrs::vec_cast(lsd_alt, deb_decimal()), bases_error)
   expect_error(vctrs::vec_cast(dec_s, deb_decimal()),
-               "`unit` attributes must be equal to combine <deb_decimal> objects.")
+    "`unit` attributes must be equal to combine <deb_decimal> objects.")
 })
 
 
@@ -131,14 +131,10 @@ test_that("assignment subsetting works", {
   expect_equal(dec, dec3)
 
   # Errors due to attribute mismatches
-  expect_error(lsd[[1]] <- lsd_alt,
-               "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
-  expect_error(lsd[[1]] <- dec_bases,
-               "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
-  expect_error(dec[[1]] <- dec_bases,
-               "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
-  expect_error(dec[[1]] <- lsd_alt,
-               "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
+  expect_error(lsd[[1]] <- lsd_alt, bases_error)
+  expect_error(lsd[[1]] <- dec_bases, bases_error)
+  expect_error(dec[[1]] <- dec_bases, bases_error)
+  expect_error(dec[[1]] <- lsd_alt, bases_error)
   expect_error(dec[[1]] <- dec_s,
-               "`unit` attributes must be equal to combine <deb_decimal> objects.")
+    "`unit` attributes must be equal to combine <deb_decimal> objects.")
 })

@@ -14,10 +14,12 @@ decimal_check <- function(lsd) {
   temp_s <- s + (l - trunc(l)) * deb_bases(lsd)[[1]]
   vctrs::field(lsd, "s") <- trunc(temp_s)
   vctrs::field(lsd, "d") <- d + (temp_s - trunc(temp_s)) * deb_bases(lsd)[[2]]
+
   # Deal with floating point problems potentially introduced by the above
-  vctrs::field(lsd, "d") <- dplyr::if_else(should_be_int(vctrs::field(lsd, "d")),
-                                           round(vctrs::field(lsd, "d")),
-                                           vctrs::field(lsd, "d"))
+  vctrs::field(lsd, "d") <- dplyr::if_else(
+    should_be_int(vctrs::field(lsd, "d")),
+    round(vctrs::field(lsd, "d")),
+    vctrs::field(lsd, "d"))
 
   lsd
 }

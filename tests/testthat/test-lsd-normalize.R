@@ -51,7 +51,7 @@ test_that("it comes together with deb_normalize", {
 test_that("deb_normalize works with numeric vector", {
   # Errors
   expect_error(deb_normalize(TRUE),
-               "`x` must be a <deb_lsd> vector or a numeric vector of length 3.")
+     "`x` must be a <deb_lsd> vector or a numeric vector of length 3.")
   expect_error(deb_normalize(4), "`x` must be a numeric vector of length 3.")
   expect_error(deb_normalize(1:4), "`x` must be a numeric vector of length 3.")
   # It works

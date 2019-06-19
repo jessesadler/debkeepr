@@ -56,7 +56,9 @@ vec_type2.integer.deb_lsd <- function(x, y, ...) y
 #' @method vec_type2 deb_decimal
 #' @export
 #' @export vec_type2.deb_decimal
-vec_type2.deb_decimal <- function(x, y, ...) UseMethod("vec_type2.deb_decimal", y)
+vec_type2.deb_decimal <- function(x, y, ...) {
+  UseMethod("vec_type2.deb_decimal", y)
+}
 
 #' @method vec_type2.deb_decimal default
 #' @export
