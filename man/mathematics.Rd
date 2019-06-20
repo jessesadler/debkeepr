@@ -20,7 +20,7 @@
 
 \method{signif}{deb_lsd}(x, digits = 6)
 
-\method{vec_math}{deb_lsd}(fun, x, ...)
+\method{vec_math}{deb_lsd}(.fn, .x, ...)
 }
 \arguments{
 \item{...}{Arguments passed on to further methods.}
@@ -34,7 +34,9 @@
 \item{digits}{Integer indicating the number of decimal places (round)
 or significant digits (signif) to be used.}
 
-\item{fun}{Used internally to enable debkeepr to work with vctrs.}
+\item{.fn}{Used internally to enable debkeepr to work with vctrs.}
+
+\item{.x}{An object of class \code{deb_lsd}.}
 }
 \value{
 A \code{deb_lsd} object with normalized values.

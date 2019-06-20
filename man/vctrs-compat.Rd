@@ -11,9 +11,9 @@
 \alias{vctrs-compat}
 \title{vctrs compatibility functions for casting, coercion, and comparison}
 \usage{
-\method{vec_cast}{deb_lsd}(x, to)
+\method{vec_cast}{deb_lsd}(x, to, ...)
 
-\method{vec_cast}{deb_decimal}(x, to)
+\method{vec_cast}{deb_decimal}(x, to, ...)
 
 \method{vec_type2}{deb_lsd}(x, y, ...)
 

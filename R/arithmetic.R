@@ -11,12 +11,13 @@
 #' `deb_lsd` object. The value will be normalized if necessary.
 #'
 #' @param x An object of class `deb_lsd`.
+#' @param .x An object of class `deb_lsd`.
 #' @param ... Arguments passed on to further methods.
 #' @param na.rm logical. Should missing values (including NaN) be removed?
 #' @param trim argument from mean that is currently not implemented
 #' @param digits Integer indicating the number of decimal places (round)
 #'   or significant digits (signif) to be used.
-#' @param fun Used internally to enable debkeepr to work with vctrs.
+#' @param .fn Used internally to enable debkeepr to work with vctrs.
 #'
 #' @return A `deb_lsd` object with normalized values.
 #' @examples
@@ -134,12 +135,11 @@ lsd_trunc <- function(x, ...) {
 #' @method vec_math deb_lsd
 #' @export
 #' @export vec_math.deb_lsd
-vec_math.deb_lsd <- function(fun, x, ...) {
-  switch(
-    fun,
-    ceiling = lsd_ceiling(x),
-    floor = lsd_floor(x),
-    trunc = lsd_trunc(x, ...)
+vec_math.deb_lsd <- function(.fn, .x, ...) {
+  switch(.fn,
+    ceiling = lsd_ceiling(.x),
+    floor = lsd_floor(.x),
+    trunc = lsd_trunc(.x, ...)
   )
 }
 
