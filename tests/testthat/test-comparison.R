@@ -60,11 +60,14 @@ test_that("Comparison logical operators work", {
 })
 
 test_that("Comparison functions work", {
-  # median, and quantile not working with vctrs 0.1.0
+  # median and quantile not implemented yet
   expect_equal(min(normalize, na.rm = TRUE), lsd1)
   expect_equal(max(normalize, na.rm = TRUE), deb_lsd(2, 84, 65))
+  expect_equal(range(normalize, na.rm = TRUE), c(lsd1, deb_lsd(2, 84, 65)))
+  expect_equal(sort(normalize), normalize[c(1, 2, 4, 5)])
+
   expect_equal(min(decimal3, na.rm = TRUE), decimal1)
   expect_equal(max(decimal3, na.rm = TRUE), deb_decimal(5.225))
-  expect_equal(sort(normalize), normalize[c(1, 2, 4, 5)])
+  expect_equal(range(decimal3, na.rm = TRUE), c(decimal1, deb_decimal(5.225)))
   expect_equal(sort(decimal3), decimal3[c(1, 1, 4, 3)])
 })
