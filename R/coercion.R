@@ -12,13 +12,9 @@ vec_type2.deb_lsd <- function(x, y, ...) UseMethod("vec_type2.deb_lsd", y)
 
 #' @method vec_type2.deb_lsd default
 #' @export
-vec_type2.deb_lsd.default <- function(x, y, ..., x_arg = "", y_arg = "") {
-  stop_incompatible_type(x, y, x_arg = x_arg, y_arg = y_arg)
+vec_type2.deb_lsd.default <- function(x, y, ..., x_arg = "x", y_arg = "y") {
+  vec_default_type2(x, y, x_arg = x_arg, y_arg = y_arg)
 }
-
-#' @method vec_type2.deb_lsd vctrs_unspecified
-#' @export
-vec_type2.deb_lsd.vctrs_unspecified <- function(x, y, ...) x
 
 # deb_lsd and deb_lsd
 
@@ -62,13 +58,9 @@ vec_type2.deb_decimal <- function(x, y, ...) {
 
 #' @method vec_type2.deb_decimal default
 #' @export
-vec_type2.deb_decimal.default <- function(x, y, ..., x_arg = "", y_arg = "") {
-  stop_incompatible_type(x, y, x_arg = x_arg, y_arg = y_arg)
+vec_type2.deb_decimal.default <- function(x, y, ..., x_arg = "x", y_arg = "y") {
+  vec_default_type2(x, y, x_arg = x_arg, y_arg = y_arg)
 }
-
-#' @method vec_type2.deb_decimal vctrs_unspecified
-#' @export
-vec_type2.deb_decimal.vctrs_unspecified <- function(x, y, ...) x
 
 # deb_decimal and deb_decimal
 
