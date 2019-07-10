@@ -129,16 +129,23 @@
 <h1 class="page-header">
 <a href="#debkeepr-0-0-4" class="anchor"></a>debkeepr 0.0.4</h1>
 <ul>
-<li>Total rewrite of package using <code>vctrs</code> package with <code>deb_lsd</code> and <code>deb_decimal</code> classes.</li>
+<li>Rewrite package using <code>vctrs</code> to create <code>deb_lsd</code> and <code>deb_decimal</code> classes.</li>
 <li>Normalization of <code>deb_lsd</code> vectors.</li>
 <li>Coercion and casting methods with <code>deb_lsd</code> and <code>deb_decimal</code>.</li>
 <li>Mathematical functions and arithmetic operators with <code>deb_lsd</code> and <code>deb_decimal</code>.</li>
 <li>Functions to convert bases of <code>deb_lsd</code> and <code>deb_decimal</code> vectors and unit of <code>deb_decimal</code> vectors.</li>
-<li>Remove old functions using list-lsd class.</li>
-<li>Remove accounts and list-column functions. This functionality is not replicated yet due to <code>vctrs</code> not integrating with <code>dplyr</code> yet.</li>
 <li>Rewrite README to reflect changes.</li>
 <li>Rewrite transactions vignette. Getting started and ledger vignettes temporarily removed, because they need more substantial revision.</li>
 </ul>
+<div id="breaking-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
+<ul>
+<li>Basically everything.</li>
+<li>Remove old functions using list-lsd class.</li>
+<li>Remove accounts and list-column functions. This functionality is not replicated due to <code>vctrs</code> not integrating with <code>dplyr</code> yet.</li>
+</ul>
+</div>
 </div>
     <div id="debkeepr-0-0-3" class="section level1">
 <h1 class="page-header">

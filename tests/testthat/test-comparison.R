@@ -7,6 +7,9 @@ decimal1 <- deb_decimal(1.1125)
 decimal2 <- deb_decimal(8.825)
 decimal3 <- deb_decimal(c(1.1125, NA, 5.225, 3.2875, 1.1125))
 
+bases_error <- paste0("`bases` attributes must be equal to combine ",
+                      "<deb_lsd> or <deb_decimal> objects.")
+
 # Equality ----------------------------------------------------------------
 
 test_that("Equality works with deb_lsd", {
@@ -19,7 +22,7 @@ test_that("Equality works with deb_lsd", {
   expect_equal(is.na(normalize), c(FALSE, FALSE, TRUE, FALSE, FALSE))
   # Error with different bases
   expect_error(lsd1 == deb_lsd(5, 6, 8, bases = c(20, 16)),
-               "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
+               bases_error)
 })
 
 test_that("Equality works with deb_decimal", {
@@ -31,7 +34,7 @@ test_that("Equality works with deb_decimal", {
   expect_equal(is.na(decimal3), c(FALSE, TRUE, FALSE, FALSE, FALSE))
   # Error with different bases
   expect_error(decimal1 == deb_decimal(1.1125, bases = c(24, 12)),
-               "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
+               bases_error)
 })
 
 
@@ -52,18 +55,19 @@ test_that("Comparison logical operators work", {
   expect_false(decimal2 < 5)
 
   # Error with different bases
-  expect_error(lsd1 < deb_lsd(15, 6, 8, bases = c(20, 16)),
-               "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
-  expect_error(decimal1 < deb_decimal(11.125, bases = c(24, 12)),
-               "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
+  expect_error(lsd1 < deb_lsd(15, 6, 8, bases = c(20, 16)), bases_error)
+  expect_error(decimal1 < deb_decimal(11.125, bases = c(24, 12)), bases_error)
 })
 
 test_that("Comparison functions work", {
-  # median, and quantile not working with vctrs 0.1.0
-  expect_equal(min(normalize[-3]), lsd1) # bug with NA
-  expect_equal(max(normalize[-3]), deb_lsd(2, 84, 65)) # bug with NA
-  expect_equal(min(decimal3[-2]), decimal1) # bug with NA
-  expect_equal(max(decimal3[-2]), deb_decimal(5.225)) # bug with NA
+  # median and quantile not implemented yet
+  expect_equal(min(normalize, na.rm = TRUE), lsd1)
+  expect_equal(max(normalize, na.rm = TRUE), deb_lsd(2, 84, 65))
+  expect_equal(range(normalize, na.rm = TRUE), c(lsd1, deb_lsd(2, 84, 65)))
   expect_equal(sort(normalize), normalize[c(1, 2, 4, 5)])
+
+  expect_equal(min(decimal3, na.rm = TRUE), decimal1)
+  expect_equal(max(decimal3, na.rm = TRUE), deb_decimal(5.225))
+  expect_equal(range(decimal3, na.rm = TRUE), c(decimal1, deb_decimal(5.225)))
   expect_equal(sort(decimal3), decimal3[c(1, 1, 4, 3)])
 })

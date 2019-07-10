@@ -13,37 +13,45 @@ decimal1 <- deb_decimal(1.8375)
 decimal2 <- deb_decimal(36.75, unit = "s")
 decimal3 <- deb_decimal(c(1.8375, NA, 5.225, 3.2875, 1.1125))
 
+bases_error <- paste0("`bases` attributes must be equal to combine ",
+                      "<deb_lsd> or <deb_decimal> objects.")
 
 # Sum and mean ------------------------------------------------------------
 
-test_that("sum and mean with deb_lsd work", {
-  # na.rm argument not working
-  expect_equal(sum(lsd3), deb_lsd(18, 11, 5))
+test_that("sum, cumsum, and mean with deb_lsd work", {
+  expect_equal(sum(lsd3), deb_lsd(NA, NA, NA))
+  expect_equal(sum(lsd3, na.rm = TRUE), deb_lsd(18, 11, 5))
+  expect_equal(sum(deb_lsd(c(1, 1), c(2, 1), c(3, NA)), na.rm = TRUE),
+               deb_lsd(1, 2, 3))
   expect_equal(sum(lsd1, lsd2), deb_lsd(7, 3, 5))
   expect_equal(sum(lsd_bases), deb_lsd(6, 23, 1, bases = bases2))
+  expect_equal(cumsum(deb_lsd(rep(1, 5), rep(1, 5), rep(1, 5))),
+               deb_lsd(1:5, 1:5, 1:5))
+  expect_equal(mean(c(lsd1, lsd2)), deb_lsd(3, 11, 8.5))
+  expect_equal(mean(lsd3, na.rm = TRUE), deb_lsd(4, 12, 10.25))
+  expect_equal(mean(deb_lsd(c(1, 5), c(42, 30), c(13, 15), bases = bases2)),
+               deb_lsd(3, 36, 14, bases2))
   # Error with different bases
-  expect_error(sum(lsd3, lsd_bases),
-               "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
-  expect_equal(mean(lsd3), deb_lsd(4, 12, 10.25))
+  expect_error(sum(lsd3, lsd_bases), bases_error)
 })
 
 test_that("sum and mean work with deb_decimal", {
-  # na.rm argument not working
   expect_equal(sum(decimal1, deb_decimal(1.5)), deb_decimal(3.3375))
-  expect_equal(sum(decimal3), deb_decimal(sum(as.numeric(decimal3), na.rm = TRUE)))
+  expect_equal(sum(decimal3, na.rm = TRUE),
+               deb_decimal(sum(as.numeric(decimal3), na.rm = TRUE)))
   # Errors
-  expect_error(sum(decimal1, deb_decimal(1.5, bases = bases2)),
-               "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
+  expect_error(sum(decimal1, deb_decimal(1.5, bases = bases2)), bases_error)
   expect_error(sum(decimal1, decimal2),
-               "`unit` attributes must be equal to combine <deb_decimal> objects.")
-  expect_equal(mean(decimal3), deb_decimal(2.865625))
+    "`unit` attributes must be equal to combine <deb_decimal> objects.")
+  expect_equal(mean(decimal3, na.rm = TRUE), deb_decimal(2.865625))
 })
 
 test_that("sum and mean work with deb-style objects and numeric", {
   expect_equal(sum(lsd1, decimal1), deb_lsd(3, 13, 6))
   expect_equal(sum(lsd1, decimal1), sum(lsd1, decimal2))
-  expect_equal(sum(lsd3, 1.8375, 3), deb_lsd(23, 8, 2))
-  expect_equal(sum(decimal3, 3.5), deb_decimal(sum(1.8375, 5.225, 3.2875, 1.1125, 3.5)))
+  expect_equal(sum(lsd3, 1.8375, 3, na.rm = TRUE), deb_lsd(23, 8, 2))
+  expect_equal(sum(decimal3, 3.5, na.rm = TRUE),
+               deb_decimal(sum(1.8375, 5.225, 3.2875, 1.1125, 3.5)))
 })
 
 
@@ -76,8 +84,7 @@ test_that("Arithmetic operators work with two deb_lsd objects", {
   expect_equal(lsd1 + lsd2, deb_lsd(7, 3, 5))
   expect_equal(lsd_bases + deb_lsd(2, 10, 5, bases2),
                deb_lsd(c(3, 7), c(26, 16), c(14, 13), bases2))
-  expect_error(lsd1 + lsd_bases,
-               "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
+  expect_error(lsd1 + lsd_bases, bases_error)
   # minus
   expect_equal(lsd1 - lsd2, deb_lsd(-3, -9, -11))
   expect_equal(lsd2 - lsd1, deb_lsd(3, 9, 11))
@@ -107,9 +114,8 @@ test_that("Arithmetic operators work with two deb_decimal objects", {
   expect_equal(deb_decimal(3.25) / deb_decimal(6.5), 0.5)
   # Errors
   expect_error(decimal1 + decimal2,
-               "`unit` attributes must be equal to combine <deb_decimal> objects.")
-  expect_error(decimal1 + deb_decimal(1.5, bases = bases2),
-               "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
+    "`unit` attributes must be equal to combine <deb_decimal> objects.")
+  expect_error(decimal1 + deb_decimal(1.5, bases = bases2), bases_error)
   expect_error(decimal1 * decimal3)
 })
 
@@ -148,16 +154,14 @@ test_that("Arithmetic operators work with deb_lsd and deb_decimal", {
   expect_equal(lsd_bases + deb_decimal(2.5, bases = bases2),
                deb_lsd(c(3, 7), c(41, 31), c(9, 8), bases2))
   expect_equal(lsd2 - decimal1, deb_lsd(3, 9, 11))
-  expect_equal(lsd2 / deb_decimal(2 + 2/3), 2)
+  expect_equal(lsd2 / deb_decimal(2 + 2 / 3), 2)
   # deb_decimal and deb_lsd
   expect_equal(decimal1 + lsd2, deb_lsd(7, 3, 5))
   expect_equal(decimal1 - lsd2, deb_lsd(-3, -9, -11))
-  expect_equal(deb_decimal(10 + 2/3) / lsd2, 2)
+  expect_equal(deb_decimal(10 + 2 / 3) / lsd2, 2)
   # Errors
-  expect_error(lsd_bases + decimal1,
-               "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
-  expect_error(decimal1 + lsd_bases,
-               "`bases` attributes must be equal to combine <deb_lsd> or <deb_decimal> objects.")
+  expect_error(lsd_bases + decimal1, bases_error)
+  expect_error(decimal1 + lsd_bases, bases_error)
   expect_error(lsd1 * decimal1)
   expect_error(decimal1 * lsd1)
 })

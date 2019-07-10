@@ -8,21 +8,17 @@
 #' @method vec_cast deb_lsd
 #' @export
 #' @export vec_cast.deb_lsd
-vec_cast.deb_lsd <- function(x, to) UseMethod("vec_cast.deb_lsd")
+vec_cast.deb_lsd <- function(x, to, ...) UseMethod("vec_cast.deb_lsd")
 
 #' @method vec_cast.deb_lsd default
 #' @export
-vec_cast.deb_lsd.default <- function(x, to) vctrs::stop_incompatible_cast(x, to)
-
-#' @method vec_cast.deb_lsd logical
-#' @export
-vec_cast.deb_lsd.logical <- function(x, to) vctrs::vec_unspecified_cast(x, to)
+vec_cast.deb_lsd.default <- function(x, to, ...) vctrs::vec_default_cast(x, to)
 
 # deb_lsd to deb_lsd
 
 #' @method vec_cast.deb_lsd deb_lsd
 #' @export
-vec_cast.deb_lsd.deb_lsd <- function(x, to) {
+vec_cast.deb_lsd.deb_lsd <- function(x, to, ...) {
   bases_equal(x, to)
   x
 }
@@ -31,7 +27,7 @@ vec_cast.deb_lsd.deb_lsd <- function(x, to) {
 
 #' @method vec_cast.deb_lsd double
 #' @export
-vec_cast.double.deb_lsd <- function(x, to) {
+vec_cast.double.deb_lsd <- function(x, to, ...) {
   l <- vctrs::field(x, "l")
   s <- vctrs::field(x, "s")
   d <- vctrs::field(x, "d")
@@ -44,7 +40,7 @@ vec_cast.double.deb_lsd <- function(x, to) {
 
 #' @method vec_cast.double deb_lsd
 #' @export
-vec_cast.deb_lsd.double <- function(x, to) {
+vec_cast.deb_lsd.double <- function(x, to, ...) {
   lsd <- deb_lsd(x, 0, 0, bases = deb_bases(to))
   deb_normalize(lsd)
 }
@@ -53,7 +49,7 @@ vec_cast.deb_lsd.double <- function(x, to) {
 
 #' @method vec_cast.deb_lsd integer
 #' @export
-vec_cast.deb_lsd.integer <- function(x, to) {
+vec_cast.deb_lsd.integer <- function(x, to, ...) {
   deb_lsd(x, 0, 0, bases = deb_bases(to))
 }
 
@@ -65,21 +61,19 @@ vec_cast.deb_lsd.integer <- function(x, to) {
 #' @method vec_cast deb_decimal
 #' @export
 #' @export vec_cast.deb_decimal
-vec_cast.deb_decimal <- function(x, to) UseMethod("vec_cast.deb_decimal")
+vec_cast.deb_decimal <- function(x, to, ...) UseMethod("vec_cast.deb_decimal")
 
 #' @method vec_cast.deb_decimal default
 #' @export
-vec_cast.deb_decimal.default <- function(x, to) vctrs::stop_incompatible_cast(x, to)
-
-#' @method vec_cast.deb_decimal logical
-#' @export
-vec_cast.deb_decimal.logical <- function(x, to) vctrs::vec_unspecified_cast(x, to)
+vec_cast.deb_decimal.default <- function(x, to, ...) {
+  vctrs::vec_default_cast(x, to)
+}
 
 # deb_decimal to deb_decimal
 
 #' @method vec_cast.deb_decimal deb_decimal
 #' @export
-vec_cast.deb_decimal.deb_decimal <- function(x, to) {
+vec_cast.deb_decimal.deb_decimal <- function(x, to, ...) {
   bases_equal(x, to)
   unit_equal(x, to)
   x
@@ -89,19 +83,19 @@ vec_cast.deb_decimal.deb_decimal <- function(x, to) {
 
 #' @method vec_cast.deb_decimal double
 #' @export
-vec_cast.deb_decimal.double  <- function(x, to) {
+vec_cast.deb_decimal.double  <- function(x, to, ...) {
   deb_decimal(x, unit = deb_unit(to), bases = deb_bases(to))
 }
 
 #' @method vec_cast.double deb_decimal
 #' @export
-vec_cast.double.deb_decimal  <- function(x, to) vctrs::vec_data(x)
+vec_cast.double.deb_decimal  <- function(x, to, ...) vctrs::vec_data(x)
 
 # integer to deb_decimal
 
 #' @method vec_cast.deb_decimal integer
 #' @export
-vec_cast.deb_decimal.integer  <- function(x, to) {
+vec_cast.deb_decimal.integer  <- function(x, to, ...) {
   deb_decimal(x, unit = deb_unit(to), bases = deb_bases(to))
 }
 
@@ -123,7 +117,7 @@ decimal_to_lsd <- function(x) {
 
 #' @method vec_cast.deb_decimal deb_lsd
 #' @export
-vec_cast.deb_lsd.deb_decimal <- function(x, to) {
+vec_cast.deb_lsd.deb_decimal <- function(x, to, ...) {
   bases_equal(x, to)
 
   decimal_to_lsd(x)
@@ -152,7 +146,7 @@ lsd_to_decimal <- function(x, to) {
 
 #' @method vec_cast.deb_lsd deb_decimal
 #' @export
-vec_cast.deb_decimal.deb_lsd <- function(x, to) {
+vec_cast.deb_decimal.deb_lsd <- function(x, to, ...) {
   bases_equal(x, to)
 
   lsd_to_decimal(x, to)
@@ -201,7 +195,7 @@ deb_as_lsd  <- function(x, ...) {
 #' @rdname cast-lsd
 #' @export
 deb_as_lsd.default <- function(x, ...) {
-  vctrs::stop_incompatible_cast(x, deb_lsd())
+  vctrs::vec_default_cast(x, deb_lsd())
 }
 
 #' @rdname cast-lsd
@@ -280,7 +274,7 @@ deb_as_decimal <- function(x, ...) {
 #' @rdname cast-decimal
 #' @export
 deb_as_decimal.default <- function(x, ...) {
-  vctrs::stop_incompatible_cast(x, deb_decimal())
+  vctrs::vec_default_cast(x, deb_decimal())
 }
 
 #' @rdname cast-decimal

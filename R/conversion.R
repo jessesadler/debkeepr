@@ -114,11 +114,12 @@ deb_convert_unit <- function(x, to = c("l", "s", "d")) {
   }
   to <- rlang::arg_match(to)
   from <- deb_unit(x)
-  bases <- deb_bases(x)
 
   if (from == to) {
     return(x)
   }
+
+  bases <- deb_bases(x)
 
   converted <- dplyr::case_when(
     from == "l" & to == "s" ~ x * bases[[1]],

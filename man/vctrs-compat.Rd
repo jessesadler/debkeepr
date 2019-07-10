@@ -4,20 +4,20 @@
 \name{vec_cast.deb_lsd}
 \alias{vec_cast.deb_lsd}
 \alias{vec_cast.deb_decimal}
-\alias{vec_type2.deb_lsd}
-\alias{vec_type2.deb_decimal}
+\alias{vec_ptype2.deb_lsd}
+\alias{vec_ptype2.deb_decimal}
 \alias{vec_proxy_equal.deb_lsd}
 \alias{vec_proxy_compare.deb_lsd}
 \alias{vctrs-compat}
 \title{vctrs compatibility functions for casting, coercion, and comparison}
 \usage{
-\method{vec_cast}{deb_lsd}(x, to)
+\method{vec_cast}{deb_lsd}(x, to, ...)
 
-\method{vec_cast}{deb_decimal}(x, to)
+\method{vec_cast}{deb_decimal}(x, to, ...)
 
-\method{vec_type2}{deb_lsd}(x, y)
+\method{vec_ptype2}{deb_lsd}(x, y, ...)
 
-\method{vec_type2}{deb_decimal}(x, y)
+\method{vec_ptype2}{deb_decimal}(x, y, ...)
 
 \method{vec_proxy_equal}{deb_lsd}(x)
 
@@ -27,6 +27,8 @@
 \item{x, y}{Vectors.}
 
 \item{to}{Type to cast to.}
+
+\item{...}{Arguments passed on to further methods.}
 }
 \description{
 These functions are the extensions that allow debkeepr vectors to

@@ -11,10 +11,13 @@
 #' `deb_lsd` object. The value will be normalized if necessary.
 #'
 #' @param x An object of class `deb_lsd`.
+#' @param .x An object of class `deb_lsd`.
 #' @param ... Arguments passed on to further methods.
+#' @param na.rm logical. Should missing values (including NaN) be removed?
+#' @param trim argument from mean that is currently not implemented
 #' @param digits Integer indicating the number of decimal places (round)
 #'   or significant digits (signif) to be used.
-#' @param fun Used internally to enable debkeepr to work with vctrs.
+#' @param .fn Used internally to enable debkeepr to work with vctrs.
 #'
 #' @return A `deb_lsd` object with normalized values.
 #' @examples
@@ -56,10 +59,40 @@ NULL
 # deb_lsd mathematic functions --------------------------------------------
 
 # sum
-lsd_sum <- function(x, ...) {
-  ret <- new_lsd(sum(vctrs::field(x, "l"), ...),
-                 sum(vctrs::field(x, "s"), ...),
-                 sum(vctrs::field(x, "d"), ...),
+
+#' @rdname mathematics
+#' @export
+sum.deb_lsd <- function(..., na.rm = FALSE) {
+  x <- vctrs::vec_c(...)
+  # Remove NA so fields that are not NA are not added
+  if (na.rm == TRUE) {
+    x <- x[!is.na(x)]
+  }
+
+  ret <- new_lsd(sum(vctrs::field(x, "l"), na.rm = na.rm),
+                 sum(vctrs::field(x, "s"), na.rm = na.rm),
+                 sum(vctrs::field(x, "d"), na.rm = na.rm),
+                 bases = deb_bases(x))
+
+  deb_normalize(ret)
+}
+
+#' @rdname mathematics
+#' @export
+mean.deb_lsd <- function(x, trim = 0, na.rm = FALSE, ...) {
+  if (na.rm == TRUE) {
+    x <- x[!is.na(x)]
+  }
+
+  sum(x, ...) / vctrs::vec_size(x)
+}
+
+#' @rdname mathematics
+#' @export
+cumsum.deb_lsd <- function(x) {
+  ret <- new_lsd(cumsum(vctrs::field(x, "l")),
+                 cumsum(vctrs::field(x, "s")),
+                 cumsum(vctrs::field(x, "d")),
                  bases = deb_bases(x))
 
   deb_normalize(ret)
@@ -102,15 +135,11 @@ lsd_trunc <- function(x, ...) {
 #' @method vec_math deb_lsd
 #' @export
 #' @export vec_math.deb_lsd
-vec_math.deb_lsd <- function(fun, x, ...) {
-  switch(
-    fun,
-    sum = lsd_sum(x, ...),
-    # Remove NA from divisor
-    mean = lsd_sum(x, ...) / vctrs::vec_size(purrr::discard(x, .p = is.na)),
-    ceiling = lsd_ceiling(x),
-    floor = lsd_floor(x),
-    trunc = lsd_trunc(x, ...)
+vec_math.deb_lsd <- function(.fn, .x, ...) {
+  switch(.fn,
+    ceiling = lsd_ceiling(.x),
+    floor = lsd_floor(.x),
+    trunc = lsd_trunc(.x, ...)
   )
 }
 
