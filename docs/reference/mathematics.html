@@ -138,20 +138,41 @@ represented by the deb_lsd class.</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for deb_lsd</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sum'>sum</a></span>(<span class='no'>...</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
+<span class='co'># S3 method for deb_lsd</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/mean'>mean</a></span>(<span class='no'>x</span>, <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for deb_lsd</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cumsum'>cumsum</a></span>(<span class='no'>x</span>)
+
+<span class='co'># S3 method for deb_lsd</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Round'>round</a></span>(<span class='no'>x</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 
 <span class='co'># S3 method for deb_lsd</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Round'>signif</a></span>(<span class='no'>x</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>6</span>)
 
 <span class='co'># S3 method for deb_lsd</span>
-<span class='fu'>vec_math</span>(<span class='no'>fun</span>, <span class='no'>x</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>vec_math</span>(<span class='no'>.fn</span>, <span class='no'>.x</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>...</th>
+      <td><p>Arguments passed on to further methods.</p></td>
+    </tr>
+    <tr>
+      <th>na.rm</th>
+      <td><p>logical. Should missing values (including NaN) be removed?</p></td>
+    </tr>
+    <tr>
       <th>x</th>
       <td><p>An object of class <code>deb_lsd</code>.</p></td>
+    </tr>
+    <tr>
+      <th>trim</th>
+      <td><p>argument from mean that is currently not implemented</p></td>
     </tr>
     <tr>
       <th>digits</th>
@@ -159,12 +180,12 @@ represented by the deb_lsd class.</p>
 or significant digits (signif) to be used.</p></td>
     </tr>
     <tr>
-      <th>fun</th>
+      <th>.fn</th>
       <td><p>Used internally to enable debkeepr to work with vctrs.</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>Arguments passed on to further methods.</p></td>
+      <th>.x</th>
+      <td><p>An object of class <code>deb_lsd</code>.</p></td>
     </tr>
     </table>
     

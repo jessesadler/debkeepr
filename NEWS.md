@@ -1,13 +1,16 @@
 # debkeepr 0.0.4
-- Total rewrite of package using `vctrs` package with `deb_lsd` and `deb_decimal` classes.
+- Rewrite package using `vctrs` to create `deb_lsd` and `deb_decimal` classes.
 - Normalization of `deb_lsd` vectors.
 - Coercion and casting methods with `deb_lsd` and `deb_decimal`.
 - Mathematical functions and arithmetic operators with `deb_lsd` and `deb_decimal`.
 - Functions to convert bases of `deb_lsd` and `deb_decimal` vectors and unit of `deb_decimal` vectors.
-- Remove old functions using list-lsd class.
-- Remove accounts and list-column functions. This functionality is not replicated yet due to `vctrs` not integrating with `dplyr` yet.
 - Rewrite README to reflect changes.
 - Rewrite transactions vignette. Getting started and ledger vignettes temporarily removed, because they need more substantial revision.
+
+## Breaking changes
+- Basically everything.
+- Remove old functions using list-lsd class.
+- Remove accounts and list-column functions. This functionality is not replicated due to `vctrs` not integrating with `dplyr` yet.
 
 # debkeepr 0.0.3
 
