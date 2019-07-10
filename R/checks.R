@@ -23,7 +23,7 @@ lsd_check <- function(l, s, d) {
   }
 
   # Check that l, s, and d are same length, length 1, or all length 0
-  lengths <- purrr::map_int(list(l, s, d), length)
+  lengths <- c(vec_size(l), vec_size(s), vec_size(d))
 
   # Must be either all zero length or no zero length
   if (sum(lengths) == 1L || sum(lengths) == 2L) {
@@ -40,6 +40,7 @@ lsd_check <- function(l, s, d) {
   }
 }
 
+# Check that bases are natural number: whole number greater than 0
 # From integer docs and SO: https://stackoverflow.com/a/4562291
 is_natural <- function(x, tol = .Machine$double.eps^0.5) {
   x > tol & abs(x - round(x)) < tol
