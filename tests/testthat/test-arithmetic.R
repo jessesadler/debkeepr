@@ -77,6 +77,10 @@ test_that("round family works with deb_lsd", {
   expect_equal(trunc(neg_round), deb_lsd(-5, -19, -11))
 })
 
+test_that("abs works with deb_lsd objects", {
+  expect_equal(abs(lsd_round), lsd_round)
+  expect_equal(abs(neg_round), lsd_round)
+})
 
 # deb_lsd arithmetic operators --------------------------------------------
 test_that("Arithmetic operators work with two deb_lsd objects", {
