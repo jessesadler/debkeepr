@@ -1,16 +1,30 @@
-## Accounts functions ##
+## Transaction functions ##
+
 
 deb_account <- function(df, account_id,
                         credit = credit, debit = debit,
                         lsd = lsd,
                         na.rm = FALSE) {
 
+  # First two for transaction_check
+  # Distinguish from non-quoted; not necessary but why not
+  credit_quo <- rlang::enquo(credit)
+  debit_quo <- rlang::enquo(debit)
   lsd_quo <- rlang::enquo(lsd)
   # need cn for base subsetting to access lsd column
   cn <- rlang::as_name(lsd_quo)
+
+  transaction_check(df, cn = cn,
+                    credit = credit_quo, debit = debit_quo,
+                    edge_columns = c(rlang::as_name(credit_quo),
+                                     rlang::as_name(debit_quo)),
+                    account_id = account_id)
+
   # Access data for bases and class
   lsd_vctr <- rlang::eval_tidy(lsd_quo, df)
   bases <- deb_bases(lsd_vctr)
+
+  deb_ptype_check(lsd_vctr)
 
   # deb_lsd
   if (deb_is_lsd(lsd_vctr)) {
@@ -29,7 +43,7 @@ deb_account <- function(df, account_id,
     }
 
     current <- cred - deb
-  # deb_decimal
+    # deb_decimal
   } else {
     pos <- dplyr::filter(df, {{ credit }} == account_id)
     if (vec_size(pos) < 1) {
@@ -46,7 +60,7 @@ deb_account <- function(df, account_id,
     }
 
     current <- cred - deb
-    # Deal with potential floating point issues
+    # Deal with floating point issues
     if (should_be_int(current) == TRUE) {
       current <- round(current)
     }
@@ -56,18 +70,27 @@ deb_account <- function(df, account_id,
                  !! cn := c(cred, deb, current))
 }
 
+
 deb_account_summary <- function(df,
                                 credit = credit, debit = debit,
                                 lsd = lsd,
                                 na.rm = FALSE) {
 
-  # Distinguish from non-quoted lsd, not necessary but nicer
+  credit_quo <- rlang::enquo(credit)
+  debit_quo <- rlang::enquo(debit)
   lsd_quo <- rlang::enquo(lsd)
-  cn <- rlang::as_name(lsd_quo) # Helps distinguish name from data
-  is_lsd <- deb_is_lsd(rlang::eval_tidy(lsd_quo, df))
+  cn <- rlang::as_name(lsd_quo)
+
+  transaction_check(df, cn = cn,
+                    credit = credit_quo, debit = debit_quo,
+                    edge_columns = c(rlang::as_name(credit_quo),
+                                     rlang::as_name(debit_quo)))
+
+  lsd_vctr <- rlang::eval_tidy(lsd_quo, df)
+  deb_ptype_check(lsd_vctr)
 
   # Turn deb_lsd to deb_decimal until dplyr works with rcrd
-  if (is_lsd) {
+  if (deb_is_lsd(lsd_vctr)) {
     df <- dplyr::mutate(df, !! cn := deb_as_decimal({{ lsd }}))
   }
 
@@ -88,7 +111,7 @@ deb_account_summary <- function(df,
     dplyr::arrange(.data$account_id)
 
   # Return deb_decimal back to deb_lsd
-  if (is_lsd) {
+  if (deb_is_lsd(lsd_vctr)) {
     ret[["credit"]] <- deb_as_lsd(ret[["credit"]])
     ret[["debit"]] <- deb_as_lsd(ret[["debit"]])
     ret[["current"]] <- deb_as_lsd(ret[["current"]])
@@ -102,12 +125,21 @@ deb_credit <- function(df,
                        lsd = lsd,
                        na.rm = FALSE) {
 
+  credit_quo <- rlang::enquo(credit)
+  debit_quo <- rlang::enquo(debit)
   lsd_quo <- rlang::enquo(lsd)
   cn <- rlang::as_name(lsd_quo)
-  is_lsd <- deb_is_lsd(rlang::eval_tidy(lsd_quo, df))
+
+  transaction_check(df, cn = cn,
+                    credit = credit_quo, debit = debit_quo,
+                    edge_columns = c(rlang::as_name(credit_quo),
+                                     rlang::as_name(debit_quo)))
+
+  lsd_vctr <- rlang::eval_tidy(lsd_quo, df)
+  deb_ptype_check(lsd_vctr)
 
   # Turn deb_lsd to deb_decimal until dplyr works with rcrd
-  if (is_lsd) {
+  if (deb_is_lsd(lsd_vctr)) {
     df <- dplyr::mutate(df, !! cn := deb_as_decimal({{ lsd }}))
   }
 
@@ -120,7 +152,7 @@ deb_credit <- function(df,
     dplyr::mutate(!! cn := dplyr::coalesce({{ lsd }}, 0)) %>%
     dplyr::arrange(.data$account_id)
 
-  if (is_lsd) {
+  if (deb_is_lsd(lsd_vctr)) {
     ret[[cn]] <- deb_as_lsd(ret[[cn]])
   }
 
@@ -132,12 +164,21 @@ deb_debit <- function(df,
                        lsd = lsd,
                        na.rm = FALSE) {
 
+  credit_quo <- rlang::enquo(credit)
+  debit_quo <- rlang::enquo(debit)
   lsd_quo <- rlang::enquo(lsd)
   cn <- rlang::as_name(lsd_quo)
-  is_lsd <- deb_is_lsd(rlang::eval_tidy(lsd_quo, df))
+
+  transaction_check(df, cn = cn,
+                    credit = credit_quo, debit = debit_quo,
+                    edge_columns = c(rlang::as_name(credit_quo),
+                                     rlang::as_name(debit_quo)))
+
+  lsd_vctr <- rlang::eval_tidy(lsd_quo, df)
+  deb_ptype_check(lsd_vctr)
 
   # Turn deb_lsd to deb_decimal until dplyr works with rcrd
-  if (is_lsd) {
+  if (deb_is_lsd(lsd_vctr)) {
     df <- dplyr::mutate(df, !! cn := deb_as_decimal({{ lsd }}))
   }
 
@@ -150,7 +191,7 @@ deb_debit <- function(df,
     dplyr::mutate(!! cn := dplyr::coalesce({{ lsd }}, 0)) %>%
     dplyr::arrange(.data$account_id)
 
-  if (is_lsd) {
+  if (deb_is_lsd(lsd_vctr)) {
     ret[[cn]] <- deb_as_lsd(ret[[cn]])
   }
 

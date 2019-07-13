@@ -87,3 +87,51 @@ unit_equal <- function(x, y) {
          "`unit` attributes must be equal to combine <deb_decimal> objects.")
   }
 }
+
+
+
+# Transaction checks ------------------------------------------------------
+
+transaction_check <- function(df,
+                              cn,
+                              credit,
+                              debit,
+                              edge_columns,
+                              account_id = NULL) {
+
+  if (!is.data.frame(df)) {
+    stop(call. = FALSE, "`df` must be a data frame")
+  }
+
+  if (rlang::is_false(cn %in% names(df))) {
+    stop(call. = FALSE,
+         "`lsd` must be provided if the default is not present in `df`.")
+  }
+
+  if (all(edge_columns %in% names(df)) == FALSE) {
+    stop(call. = FALSE,
+         paste("Column names for `credit` and `debit` must be provided if",
+               "the default names are not present in `df`.",
+               sep = " "))
+  }
+
+  credit <- rlang::eval_tidy(credit, df)
+  debit <- rlang::eval_tidy(debit, df)
+  if (!identical(class(credit), class(debit))) {
+    stop(call. = FALSE, "`credit` and `debit` must be of the same class.")
+  }
+
+  if (!is.null(account_id)) {
+    if (rlang::is_false(account_id %in% c(credit, debit))) {
+      stop(call. = FALSE,
+           "`account_id` must be a value present in `credit` and/or `debit`.")
+    }
+  }
+}
+
+deb_ptype_check <- function(x) {
+  if (!deb_is_lsd(x) && !deb_is_decimal(x)) {
+    stop(call. = FALSE,
+         "`lsd`` must be either a <deb_lsd> or a <deb_decimal> object.")
+  }
+}
