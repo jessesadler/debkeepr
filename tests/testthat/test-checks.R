@@ -20,6 +20,12 @@ test_that("NA scalar is not an error", {
   expect_invisible(lsd_check(3, 4, NA))
 })
 
+test_that("Multiple NA is not an error", {
+  expect_invisible(lsd_check(c(NA, NA), 1:2, 3:4))
+  expect_invisible(lsd_check(1:2, c(NA, NA), 3:4))
+  expect_invisible(lsd_check(1:2, 3:4, c(NA, NA)))
+})
+
 test_that("length of l, s, and d all have values or are all length 0", {
   expect_invisible(lsd_check(double(), double(), double()))
   expect_error(lsd_check(2, double(), double()),

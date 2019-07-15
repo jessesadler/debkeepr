@@ -4,19 +4,19 @@
 
 lsd_check <- function(l, s, d) {
   # Check that l, s, and d are numeric
-  if (!rlang::is_na(l)) {
+  if (!all(rlang::are_na(l))) {
     if (!is.numeric(l)) {
       stop(call. = FALSE, "`l` must be a numeric vector")
     }
   }
 
-  if (!rlang::is_na(s)) {
+  if (!all(rlang::are_na(s))) {
     if (!is.numeric(s)) {
       stop(call. = FALSE, "`s` must be a numeric vector")
     }
   }
 
-  if (!rlang::is_na(d)) {
+  if (!all(rlang::are_na(d))) {
     if (!is.numeric(d)) {
       stop(call. = FALSE, "`d` must be a numeric vector")
     }
@@ -100,7 +100,7 @@ transaction_check <- function(df,
                               account_id = NULL) {
 
   if (!is.data.frame(df)) {
-    stop(call. = FALSE, "`df` must be a data frame")
+    stop(call. = FALSE, "`df` must be a data frame.")
   }
 
   if (rlang::is_false(cn %in% names(df))) {
@@ -111,14 +111,13 @@ transaction_check <- function(df,
   if (all(edge_columns %in% names(df)) == FALSE) {
     stop(call. = FALSE,
          paste("Column names for `credit` and `debit` must be provided if",
-               "the default names are not present in `df`.",
-               sep = " "))
+               "the default names are not present in `df`.", sep = " "))
   }
 
   credit <- rlang::eval_tidy(credit, df)
   debit <- rlang::eval_tidy(debit, df)
-  if (!identical(class(credit), class(debit))) {
-    stop(call. = FALSE, "`credit` and `debit` must be of the same class.")
+  if (!identical(vctrs::vec_ptype(credit), vctrs::vec_ptype(debit))) {
+    stop(call. = FALSE, "`credit` and `debit` must be of the same prototype.")
   }
 
   if (!is.null(account_id)) {
