@@ -61,7 +61,7 @@ deb_account <- function(df, account_id,
     current <- cred - deb
     # Deal with floating point issues
     if (!is.na(current)){
-      if (should_be_int(current) == TRUE) {
+      if (should_be_int(current)) {
         current <- round(current)
         }
     }

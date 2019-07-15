@@ -1,10 +1,5 @@
 ## Normalize lsd values ##
 
-# To help deal with floating point problems in lsd_decimal
-should_be_int <- function(x, tol = .Machine$double.eps^0.5) {
-  abs(x - round(x)) < tol
-}
-
 decimal_check <- function(lsd) {
   l <- vctrs::field(lsd, "l")
   s <- vctrs::field(lsd, "s")
