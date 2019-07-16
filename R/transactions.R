@@ -71,6 +71,7 @@ deb_account <- function(df, account_id,
                  !! cn := c(cred, deb, current))
 }
 
+
 deb_account_summary <- function(df,
                                 credit = credit, debit = debit,
                                 lsd = lsd,
@@ -102,20 +103,21 @@ deb_account_summary <- function(df,
     dplyr::rename(account_id = {{ debit }}, debit = {{ lsd }})
 
   # If statements to ensure NAs from above not turned into 0s.
-  # If no NAs, then any NAs from join should be 0s
-  if (!anyNA(c(pos$credit, neg$debit))) {
-    ret <- dplyr::full_join(pos, neg, by = "account_id") %>%
-      dplyr::mutate(credit = dplyr::coalesce(credit, 0), # replace NA with 0
-                    debit = dplyr::coalesce(debit, 0),
-                    current = credit - debit,
+  # If all accounts present in pos and neg, no NAs will be introduced
+  if (all_present(pos, neg)) {
+    ret <- dplyr::left_join(pos, neg, by = "account_id") %>%
+      dplyr::mutate(current = credit - debit,
                     current = dplyr::if_else(should_be_int(current),
                                              round(current),
                                              current)) %>%
       dplyr::arrange(.data$account_id)
-  # If all accounts present in pos and neg, no NAs will be introduced
-  } else if (all_present(pos, neg)) {
-    ret <- dplyr::left_join(pos, neg, by = "account_id") %>%
-      dplyr::mutate(current = credit - debit,
+  # If no NAs, then any NAs from join should be 0s
+  } else if (!anyNA(c(pos[[2]], neg[[2]]))) {
+    ret <- dplyr::full_join(pos, neg, by = "account_id") %>%
+      dplyr::mutate(credit = dplyr::coalesce(credit, 0), # replace NA with 0
+                    debit = dplyr::coalesce(debit, 0), # replace NA with 0
+                    current = credit - debit,
+                    # floating point problems
                     current = dplyr::if_else(should_be_int(current),
                                              round(current),
                                              current)) %>%
@@ -134,7 +136,7 @@ deb_account_summary <- function(df,
                                      rep(0, vctrs::vec_size(pos_missing))))
     neg <- tibble::tibble(account_id = c(neg_acc, neg_missing),
                           debit = c(neg$debit,
-                                     rep(0, vctrs::vec_size(neg_missing))))
+                                    rep(0, vctrs::vec_size(neg_missing))))
 
     ret <- dplyr::left_join(pos, neg, by = "account_id") %>%
       dplyr::mutate(current = credit - debit,
@@ -153,6 +155,7 @@ deb_account_summary <- function(df,
 
   ret
 }
+
 
 deb_credit <- function(df,
                        credit = credit, debit = debit,
@@ -182,12 +185,11 @@ deb_credit <- function(df,
     dplyr::rename(account_id = {{ credit }})
   neg <- dplyr::distinct(df, {{ debit }})
 
-  if (!anyNA(c(pos[[2]]))) {
+  if (all_present(pos, neg)) {
+    ret <- dplyr::arrange(pos, .data$account_id)
+  } else if (!anyNA(pos[[2]])) {
     ret <- dplyr::full_join(pos, neg, by = c("account_id" = names(neg))) %>%
       dplyr::mutate(!! cn := dplyr::coalesce({{ lsd }}, 0)) %>%
-      dplyr::arrange(.data$account_id)
-  } else if (all_present(pos, neg)) {
-    ret <- dplyr::left_join(pos, neg, by = c("account_id" = names(neg))) %>%
       dplyr::arrange(.data$account_id)
   } else {
     pos_acc <- pos[[1]]
@@ -236,12 +238,11 @@ deb_debit <- function(df,
     dplyr::rename(account_id = {{ debit }})
   pos <- dplyr::distinct(df, {{ credit }})
 
-  if (!anyNA(c(neg[[2]]))) {
+  if (all_present(pos, neg)) {
+    ret <- dplyr::arrange(neg, .data$account_id)
+  } else if (!anyNA(neg[[2]])) {
     ret <- dplyr::full_join(neg, pos, c("account_id" = names(pos))) %>%
       dplyr::mutate(!! cn := dplyr::coalesce({{ lsd }}, 0)) %>%
-      dplyr::arrange(.data$account_id)
-  } else if (all_present(pos, neg)) {
-    ret <- dplyr::left_join(neg, pos, by = c("account_id" = names(pos))) %>%
       dplyr::arrange(.data$account_id)
   } else {
     neg_acc <- neg[[1]]

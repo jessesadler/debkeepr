@@ -30,6 +30,7 @@ dec_b1 <- deb_as_decimal(lsd_b1)
 dec_b2 <- deb_as_decimal(lsd_b2)
 
 # Account d and e only have one type of transaction
+# Tests no NAs path in deb_account_summary
 tbl_b1 <- tibble(credit = cred, debit = deb,
                  lsd = lsd_b1,
                  dec = dec_b1)
@@ -39,26 +40,29 @@ tbl_b2 <- tibble(from = cred, to = deb,
                  data = lsd_b2,
                  dec = dec_b2)
 df_b2 <- as.data.frame(tbl_b2)
+
+# totally balanced
+# Tests all accounts present path in deb_account_summary
+balanced <- tibble(credit = c("a", "b", "a", "c"),
+                   debit = c("b", "a", "c", "a"),
+                   lsd = deb_lsd(l = c(10, 10, 7, 7),
+                                 s = c(15, 15, 11, 11),
+                                 d = c(6, 6, 8, 8)))
+balanced[["dec"]] <- deb_as_decimal(balanced[["lsd"]])
+
 # NA, and account "e's" only credit is NA
+# Tests else path in deb_account_summary
 tbl_na <- tibble(credit = c(cred, "e", "a"), debit = c(deb, "b", "b"),
                  lsd = c(lsd_b1, NA, NA),
                  dec = c(dec_b1, NA, NA))
-# NAs but all accounts have credit and debit; totally balanced
+# NAs but all accounts have credit and debit
+# Tests all accounts present path in deb_account_summary
 tbl_na2 <- tibble(credit = c("a", "b", "a", "c", "c"),
                   debit = c("b", "a", "c", "a", "a"),
                   lsd = deb_lsd(l = c(10, 10, 7, 9, NA),
                                 s = c(15, 15, 11, 2, NA),
                                 d = c(6, 6, 8, 11, NA)))
 tbl_na2[["dec"]] <- deb_as_decimal(tbl_na2[["lsd"]])
-
-# totally balanced
-tbl_balanced <- tibble(credit = c("a", "b", "a", "c"),
-                       debit = c("b", "a", "c", "a"),
-                       lsd = deb_lsd(l = c(10, 10, 7, 7),
-                                     s = c(15, 15, 11, 11),
-                                     d = c(6, 6, 8, 8)))
-tbl_balanced[["dec"]] <- deb_as_decimal(tbl_balanced[["lsd"]])
-
 
 relation_v <- c("credit", "debit", "current")
 
@@ -71,7 +75,7 @@ s_b1 <- tibble(account_id = letters[1:5],
                                d = c(2, 6, 8, 0, 4)),
                current = deb_lsd(l = c(-16, 0, 14, 15, -12),
                                  s = c(-12, 0, 1, 0, -10),
-                                 d = c(-0, 0, 7, 9, -4)))
+                                 d = c(0, 0, 7, 9, -4)))
 sdec_b1 <- tibble(account_id = letters[1:5],
                   credit = deb_decimal(s_b1$credit),
                   debit = deb_decimal(s_b1$debit),
@@ -93,6 +97,20 @@ sdec_b2 <- tibble(account_id = letters[1:5],
                   credit = deb_decimal(s_b2$credit),
                   debit = deb_decimal(s_b2$debit),
                   current = deb_decimal(s_b2$current))
+s_balanced <- tibble(account_id = letters[1:3],
+                     credit = deb_lsd(l = c(18, 10, 7),
+                                      s = c(7, 15, 11),
+                                      d = c(2, 6, 8)),
+                     debit = deb_lsd(l = c(18, 10, 7),
+                                     s = c(7, 15, 11),
+                                     d = c(2, 6, 8)),
+                     current = deb_lsd(l = c(0, 0, 0),
+                                       s = c(0, 0, 0),
+                                       d = c(0, 0, 0)))
+sdec_balanced <- tibble(account_id = letters[1:3],
+                        credit = deb_decimal(s_balanced$credit),
+                        debit = deb_decimal(s_balanced$debit),
+                        current = deb_decimal(s_balanced$current))
 s_na <- tibble(account_id = letters[1:5],
                credit = deb_lsd(l = c(NA, 10, 21, 15, NA),
                                 s = c(NA, 15, 13, 0, NA),
@@ -238,6 +256,8 @@ test_that("deb_account_summary works", {
                deb_as_decimal(s_b1[["current"]]))
   expect_identical(deb_account_summary(df_b1), s_b1)
   expect_identical(deb_account_summary(tbl_b2, from, to, data), s_b2)
+  expect_identical(deb_account_summary(balanced), s_balanced)
+  expect_identical(deb_account_summary(balanced, lsd = dec), sdec_balanced)
 
   # na.rm works
   expect_identical(deb_account_summary(tbl_na, na.rm = TRUE), s_b1)
@@ -265,6 +285,8 @@ test_that("deb_credit works", {
   expect_equal(deb_credit(tbl_b1, lsd = dec)[[2]], sdec_b1[[2]])
   expect_identical(deb_credit(tbl_b2, from, to, data)[[2]], s_b2[[2]])
   expect_identical(deb_credit(df_b1)[[2]], s_b1[[2]])
+  expect_identical(deb_credit(balanced)[[2]], s_balanced[[2]])
+  expect_identical(deb_credit(balanced, lsd = dec)[[2]], sdec_balanced[[2]])
   # Deal with NA values
   expect_identical(deb_credit(tbl_na, na.rm = TRUE), deb_credit(tbl_b1))
   expect_identical(deb_credit(tbl_na)[[2]], s_na[[2]])
@@ -283,6 +305,8 @@ test_that("deb_debit works", {
   expect_equal(deb_debit(tbl_b1, lsd = dec)[[2]], sdec_b1[[3]])
   expect_identical(deb_debit(tbl_b2, from, to, data)[[2]], s_b2[[3]])
   expect_identical(deb_debit(df_b1)[[2]], s_b1[[3]])
+  expect_identical(deb_debit(balanced)[[2]], s_balanced[[3]])
+  expect_identical(deb_debit(balanced, lsd = dec)[[2]], sdec_balanced[[3]])
   # Deal with NA values
   expect_identical(deb_debit(tbl_na, na.rm = TRUE), deb_debit(tbl_b1))
   expect_identical(deb_debit(tbl_na)[[2]], s_na[[3]])
@@ -301,7 +325,7 @@ test_that("deb_current works", {
   expect_identical(deb_current(tbl_b2, from, to, data)[[2]], s_b2[[4]])
   expect_identical(deb_current(df_b1)[[2]], s_b1[[4]])
   # all zeros
-  expect_identical(deb_current(tbl_balanced),
+  expect_identical(deb_current(balanced),
                    tibble(account_id = c("a", "b", "c"),
                           lsd = deb_lsd(l = c(0, 0, 0),
                                         s = c(0, 0, 0),
@@ -323,7 +347,7 @@ test_that("deb_open works", {
   expect_identical(deb_open(tbl_b2, from, to, data)[[2]], s_b2[[4]][c(1, 3:5)])
   expect_identical(deb_open(df_b1)[[2]], s_b1[[4]][c(1, 3:5)])
   # all zeros returns empty tibble
-  expect_equal(nrow(deb_open(tbl_balanced)), 0)
+  expect_equal(nrow(deb_open(balanced)), 0)
   # Deal with NA values
   expect_identical(deb_open(tbl_na, na.rm = TRUE), deb_open(tbl_b1))
   expect_identical(deb_open(tbl_na)[[2]], s_na[[4]])
@@ -348,7 +372,7 @@ test_that("deb_balance works", {
                    deb_lsd(c(29, -29), c(2, -2), c(0, 0), b2))
   expect_identical(deb_balance(df_b1)[[2]], res1)
   # all zeros
-  expect_identical(deb_balance(tbl_balanced),
+  expect_identical(deb_balance(balanced),
                    tibble(relation = rel,
                           lsd = deb_lsd(c(0, 0), c(0, 0), c(0, 0))))
   # Deal with NA values: Any NAs lead to both being NA
