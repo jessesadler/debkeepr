@@ -26,7 +26,7 @@
 #' have additional variables with attributes for each transaction such as id
 #' or date.
 #'
-#' @param df A data frame with at least credit, debit, and lsd varibles.
+#' @param df A data frame with at least credit, debit, and lsd variables.
 #' @param account_id The id of the account to be used to calculate the
 #'   credit, debit, and current values.
 #' @param credit Credit column: Unquoted name of the credit variable,
@@ -224,7 +224,7 @@ deb_account_summary <- function(df,
                                              round(current),
                                              current)) %>%
       dplyr::arrange(.data$account_id)
-  # If there are NAs and NAs will be introduced by join, need to distingush
+  # If there are NAs and NAs will be introduced by join, need to distinguish
   # between the two types. Add 0s from missing accounts then join.
   } else {
     pos_acc <- pos[[1]]

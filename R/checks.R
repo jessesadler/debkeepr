@@ -6,19 +6,19 @@ lsd_check <- function(l, s, d) {
   # Check that l, s, and d are numeric
   if (!all(rlang::are_na(l))) {
     if (!is.numeric(l)) {
-      stop(call. = FALSE, "`l` must be a numeric vector")
+      stop(call. = FALSE, "`l` must be a numeric vector.")
     }
   }
 
   if (!all(rlang::are_na(s))) {
     if (!is.numeric(s)) {
-      stop(call. = FALSE, "`s` must be a numeric vector")
+      stop(call. = FALSE, "`s` must be a numeric vector.")
     }
   }
 
   if (!all(rlang::are_na(d))) {
     if (!is.numeric(d)) {
-      stop(call. = FALSE, "`d` must be a numeric vector")
+      stop(call. = FALSE, "`d` must be a numeric vector.")
     }
   }
 
@@ -36,7 +36,7 @@ lsd_check <- function(l, s, d) {
   non_scalar <- lengths[lengths != 1L]
   if (length(unique(non_scalar)) > 1L) {
     stop(call. = FALSE,
-         "`l`, `s`, and `d` must be vectors of equal length or length 1")
+         "`l`, `s`, and `d` must be vectors of equal length or length 1.")
   }
 }
 
@@ -131,6 +131,6 @@ transaction_check <- function(df,
 deb_ptype_check <- function(x) {
   if (!deb_is_lsd(x) && !deb_is_decimal(x)) {
     stop(call. = FALSE,
-         "`lsd`` must be either a <deb_lsd> or a <deb_decimal> object.")
+         "`lsd` must be either a <deb_lsd> or a <deb_decimal> object.")
   }
 }

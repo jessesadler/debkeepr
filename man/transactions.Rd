@@ -33,7 +33,7 @@ deb_balance(df, credit = credit, debit = debit, lsd = lsd,
   na.rm = FALSE)
 }
 \arguments{
-\item{df}{A data frame with at least credit, debit, and lsd varibles.}
+\item{df}{A data frame with at least credit, debit, and lsd variables.}
 
 \item{account_id}{The id of the account to be used to calculate the
 credit, debit, and current values.}

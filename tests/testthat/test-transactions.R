@@ -159,7 +159,7 @@ test_that("transaction_check works", {
                "`account_id` must be a value present in `credit` and/or `debit`.")
   # deb_ptype_check
   expect_error(deb_account(tbl_b1, "a", lsd = credit),
-               "`lsd`` must be either a <deb_lsd> or a <deb_decimal> object.")
+               "`lsd` must be either a <deb_lsd> or a <deb_decimal> object.")
 
   # transaction_check with data frames
   expect_error(deb_account(df_b2, "a", credit = from, debit = to),
@@ -174,7 +174,7 @@ test_that("transaction_check works", {
                "`account_id` must be a value present in `credit` and/or `debit`.")
   # deb_ptype_check
   expect_error(deb_account(df_b1, "a", lsd = credit),
-               "`lsd`` must be either a <deb_lsd> or a <deb_decimal> object.")
+               "`lsd` must be either a <deb_lsd> or a <deb_decimal> object.")
 })
 
 
