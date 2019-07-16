@@ -53,7 +53,7 @@ lsd_normalize_neg <- function(lsd) {
 
 # deb_normalize methods ---------------------------------------------------
 
-#' Normalize pounds, shillings, and pence
+#' Normalize pounds, shillings, and pence values
 #'
 #' Normalize pounds, shillings, and pence values to given bases of solidus
 #' and denarius units.

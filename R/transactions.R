@@ -1,5 +1,105 @@
 ## Transaction functions ##
 
+#' Analysis of double-entry bookkeeping
+#'
+#' @description
+#' Family of seven related functions to analyze transactions data frames that
+#' have credit, debit, and lsd variables, mimicking an account book.
+#'
+#' - `deb_account()` credit, debit, and current value of a single account.
+#' - `deb_account_summary()` credit, debit, and current value of all accounts.
+#' - `deb_credit()` total credit of each account.
+#' - `deb_debit()` total debit of each account.
+#' - `deb_current()` current value of each account (credit - debit).
+#' - `deb_open()` current value of each account that has a positive or
+#'   negative value.
+#' - `deb_balance()` positive and negative value remaining in a transactions
+#'   data frame.
+#'
+#' @section Transactions data frames:
+#' Transactions data frames have the structure of an account book. They
+#' should have a similar arrangement to `dafforne_transactions`. Each row is
+#' a transaction in the book. `credit` and `debit` variables contain the
+#' account ids associated with discharging account (credit) and the receiving
+#' account (debit). The `lsd` variable represents the value of each
+#' transaction. Like `dafforne_transactions`, transactions data frames can
+#' have additional variables with attributes for each transaction such as id
+#' or date.
+#'
+#' @param df A data frame with at least credit, debit, and lsd varibles.
+#' @param account_id The id of the account to be used to calculate the
+#'   credit, debit, and current values.
+#' @param credit Credit column: Unquoted name of the credit variable,
+#'   representing the accounts that discharge the transactional values or
+#'   from which the values derive. Default is `credit`.
+#' @param debit Debit column: Unquoted name of the debit variable,
+#'   representing the accounts that receive the transactional values.
+#'   Default is `debit`.
+#' @param lsd Value column: Unquoted name of a variable of class `deb_lsd`
+#'   or `deb_decimal`. Default is `lsd`.
+#' @param na.rm logical. Should missing values (including NaN) be removed?
+#'
+#' @return
+#' All return a tibble with variables for accounts and values in the same
+#' class as `lsd`:
+#'
+#' - `deb_account()` a tibble with three rows showing the credit, debit, and
+#'   current value of the given account.
+#' - `deb_account_summary()` a tibble with one row for each account in `df`
+#'   and credit, debit, and current value variables.
+#' - `deb_credit()` a tibble with one row for each account with the total
+#'   credit of the accounts.
+#' - `deb_debit()` a tibble with one row for each account with the total
+#'   debit of the accounts.
+#' - `deb_current()` a tibble with one row for each account with the current
+#'   value of the accounts.
+#' - `deb_open()` a tibble with one row for each account whose current value
+#'   is not `0`. If all accounts are equal to zero, a tibble with zero rows
+#'   will be returned.
+#' - `deb_balance()` a tibble with two rows showing the credit and debit
+#'   remaining in `df`.
+#'
+#' @examples
+#' # Examples with dafforne_transactions data,
+#' # which uses default variable names.
+#' # See dafforne_accounts for account names.
+#'
+#' # Credit, debit, and current value of cash account
+#' deb_account(dafforne_transactions, account_id = 1,
+#'             credit = credit, debit = debit)
+#'
+#' # Credit, debit, and current value of profit and loss account
+#' deb_account(dafforne_transactions, account_id = 23)
+#'
+#' # Summary of all accounts in Dafforne's ledger
+#' deb_account_summary(dafforne_transactions)
+#'
+#' # Credit of accounts in Dafforne's ledger
+#' deb_credit(dafforne_transactions)
+#'
+#' # Debit of accounts in Dafforne's ledger
+#' deb_debit(dafforne_transactions)
+#'
+#' # Current value of accounts in Dafforne's ledger
+#' deb_current(dafforne_transactions)
+#'
+#' # Current value of open account in Dafforne's ledger
+#' deb_open(dafforne_transactions)
+#'
+#' # Compare the amount of rows in returned values of
+#' # deb_current() vs deb_open()
+#' nrow(deb_current(dafforne_transactions))
+#' nrow(deb_open(dafforne_transactions))
+#'
+#' # Credit and debit remaining on Dafforne's ledger
+#' deb_balance(dafforne_transactions)
+#'
+#' @name transactions
+NULL
+
+
+#' @rdname transactions
+#' @export
 deb_account <- function(df, account_id,
                         credit = credit, debit = debit,
                         lsd = lsd,
@@ -72,6 +172,8 @@ deb_account <- function(df, account_id,
 }
 
 
+#' @rdname transactions
+#' @export
 deb_account_summary <- function(df,
                                 credit = credit, debit = debit,
                                 lsd = lsd,
@@ -157,6 +259,8 @@ deb_account_summary <- function(df,
 }
 
 
+#' @rdname transactions
+#' @export
 deb_credit <- function(df,
                        credit = credit, debit = debit,
                        lsd = lsd,
@@ -210,6 +314,9 @@ deb_credit <- function(df,
   ret
 }
 
+
+#' @rdname transactions
+#' @export
 deb_debit <- function(df,
                        credit = credit, debit = debit,
                        lsd = lsd,
@@ -263,6 +370,9 @@ deb_debit <- function(df,
   ret
 }
 
+
+#' @rdname transactions
+#' @export
 deb_current <- function(df,
                         credit = credit, debit = debit,
                         lsd = lsd,
@@ -276,6 +386,9 @@ deb_current <- function(df,
     dplyr::select(.data$account_id, {{ lsd }} := current)
 }
 
+
+#' @rdname transactions
+#' @export
 deb_open <- function(df,
                      credit = credit, debit = debit,
                      lsd = lsd,
@@ -291,6 +404,9 @@ deb_open <- function(df,
     dplyr::filter({{ lsd }} != 0 | is.na({{ lsd }}))
 }
 
+
+#' @rdname transactions
+#' @export
 deb_balance <- function(df,
                         credit = credit, debit = debit,
                         lsd = lsd,
