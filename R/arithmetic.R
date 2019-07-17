@@ -7,8 +7,8 @@
 #'
 #' `sum()` and `mean()` return a normalized `deb_lsd` value.
 #'
-#' Round family of functions only affect the denarius (`d`) unit of a
-#' `deb_lsd` object. The value will be normalized if necessary.
+#' Round family of functions normalize the value and only affects the
+#' denarius (`d`) unit of a `deb_lsd` object.
 #'
 #' @param x An object of class `deb_lsd`.
 #' @param .x An object of class `deb_lsd`.
@@ -102,6 +102,7 @@ cumsum.deb_lsd <- function(x) {
 #' @rdname mathematics
 #' @export
 round.deb_lsd <- function(x, digits = 0) {
+  x <- decimal_check(x)
   vctrs::field(x, "d") <- round(vctrs::field(x, "d"), digits = digits)
   deb_normalize(x)
 }
@@ -114,16 +115,19 @@ signif.deb_lsd <- function(x, digits = 6) {
 }
 
 lsd_ceiling <- function(x) {
+  x <- decimal_check(x)
   vctrs::field(x, "d") <- ceiling(vctrs::field(x, "d"))
   deb_normalize(x)
 }
 
 lsd_floor <- function(x) {
+  x <- decimal_check(x)
   vctrs::field(x, "d") <- floor(vctrs::field(x, "d"))
   deb_normalize(x)
 }
 
 lsd_trunc <- function(x, ...) {
+  x <- decimal_check(x)
   vctrs::field(x, "d") <- trunc(vctrs::field(x, "d"))
   deb_normalize(x)
 }

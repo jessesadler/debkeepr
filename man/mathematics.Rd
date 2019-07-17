@@ -46,8 +46,8 @@ represented by the deb_lsd class.
 \details{
 \code{sum()} and \code{mean()} return a normalized \code{deb_lsd} value.
 
-Round family of functions only affect the denarius (\code{d}) unit of a
-\code{deb_lsd} object. The value will be normalized if necessary.
+Round family of functions normalize the value and only affects the
+denarius (\code{d}) unit of a \code{deb_lsd} object.
 }
 \examples{
 

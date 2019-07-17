@@ -8,6 +8,7 @@ bases2 <- c(50, 16)
 lsd_bases <- deb_lsd(c(1, 5), c(16, 6), c(9, 8), bases = bases2)
 lsd_round <- deb_lsd(5, 19, 11.8755)
 neg_round <- deb_lsd(-5, -19, -11.8755)
+multi_decimal <- deb_lsd(2, 3.3, 2.2)
 round1 <- deb_lsd(6, 0, 0)
 round2 <- deb_lsd(-6, 0, 0)
 decimal1 <- deb_decimal(1.8375)
@@ -73,18 +74,22 @@ test_that("round family works with deb_lsd", {
   expect_equal(round(neg_round), round2)
   expect_equal(round(deb_lsd(5, 49, 15.6, bases2)), deb_lsd(6, 0, 0, bases2))
   expect_equal(round(lsd_round, 3), deb_lsd(5, 19, 11.876))
+  expect_equal(round(multi_decimal), round(deb_normalize(multi_decimal)))
   # signif
   expect_equal(signif(lsd_round, 3), deb_lsd(5, 19, 11.9))
   expect_equal(signif(lsd_round, 2), round1)
   # ceiling
   expect_equal(ceiling(lsd_round), round1)
   expect_equal(ceiling(neg_round), deb_lsd(-5, -19, -11))
+  expect_equal(ceiling(multi_decimal), ceiling(deb_normalize(multi_decimal)))
   # floor
   expect_equal(floor(lsd_round), deb_lsd(5, 19, 11))
   expect_equal(floor(neg_round), round2)
+  expect_equal(floor(multi_decimal), floor(deb_normalize(multi_decimal)))
   # trunc
   expect_equal(trunc(lsd_round), deb_lsd(5, 19, 11))
   expect_equal(trunc(neg_round), deb_lsd(-5, -19, -11))
+  expect_equal(trunc(multi_decimal), trunc(deb_normalize(multi_decimal)))
 })
 
 test_that("abs works with deb_lsd objects", {
