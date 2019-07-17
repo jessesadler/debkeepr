@@ -46,6 +46,9 @@
     <loc>https://jessesadler.github.io/debkeepr//reference/debkeepr-package.html</loc>
   </url>
   <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/lsd-column.html</loc>
+  </url>
+  <url>
     <loc>https://jessesadler.github.io/debkeepr//reference/mathematics.html</loc>
   </url>
   <url>
@@ -62,6 +65,12 @@
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr//reference/pipe.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/tidyeval.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/transactions.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr//reference/vctrs-compat.html</loc>

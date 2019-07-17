@@ -95,11 +95,12 @@ deb_gather_lsd(x, replace = TRUE)
 deb_spread_lsd(y, replace = TRUE)
 
 # Choose non-default column names
-deb_gather_lsd(x, lsd_col = data)
+deb_gather_lsd(x, lsd_col = data, replace = TRUE)
 deb_spread_lsd(y,
                l_col = libra,
                s_col = solidus,
-               d_col = denarius)
+               d_col = denarius,
+               replace = TRUE)
 
 # The two functions are opposites
 z <- x \%>\%
