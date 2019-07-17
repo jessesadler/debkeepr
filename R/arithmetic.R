@@ -139,7 +139,9 @@ vec_math.deb_lsd <- function(.fn, .x, ...) {
     ceiling = lsd_ceiling(.x),
     floor = lsd_floor(.x),
     trunc = lsd_trunc(.x, ...),
-    abs = deb_as_lsd(abs(deb_as_decimal(.x)))
+    abs = deb_as_lsd(abs(deb_as_decimal(.x))),
+    stop(call. = FALSE, paste0("`", .fn, ".", class(.x)[[1]],
+                               "()` not implemented."))
   )
 }
 

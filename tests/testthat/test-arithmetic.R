@@ -3,6 +3,7 @@
 lsd1 <- deb_lsd(1, 16, 9)
 lsd2 <- deb_lsd(5, 6, 8)
 lsd3 <- c(lsd1, lsd2, NA, deb_lsd(c(3, 7), c(12, 15), c(1, 11)))
+lsd4 <- c(lsd1, lsd2, deb_lsd(c(3, 7), c(12, 15), c(1, 11)))
 bases2 <- c(50, 16)
 lsd_bases <- deb_lsd(c(1, 5), c(16, 6), c(9, 8), bases = bases2)
 lsd_round <- deb_lsd(5, 19, 11.8755)
@@ -12,9 +13,18 @@ round2 <- deb_lsd(-6, 0, 0)
 decimal1 <- deb_decimal(1.8375)
 decimal2 <- deb_decimal(36.75, unit = "s")
 decimal3 <- deb_decimal(c(1.8375, NA, 5.225, 3.2875, 1.1125))
+decimal4 <- deb_decimal(c(1.8375, 5.225, 3.2875, 1.1125))
 
 bases_error <- paste0("`bases` attributes must be equal to combine ",
                       "<deb_lsd> or <deb_decimal> objects.")
+
+
+# vec_math ----------------------------------------------------------------
+test_that("vec_math has error message for unimplemented functions", {
+  expect_error(prod(lsd4), "not implemented.$")
+  expect_error(sin(lsd4), "not implemented.$")
+})
+
 
 # Sum and mean ------------------------------------------------------------
 
