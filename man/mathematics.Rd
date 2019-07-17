@@ -12,7 +12,7 @@
 \usage{
 \method{sum}{deb_lsd}(..., na.rm = FALSE)
 
-\method{mean}{deb_lsd}(x, trim = 0, na.rm = FALSE, ...)
+\method{mean}{deb_lsd}(x, ..., na.rm = FALSE)
 
 \method{cumsum}{deb_lsd}(x)
 
@@ -28,8 +28,6 @@
 \item{na.rm}{logical. Should missing values (including NaN) be removed?}
 
 \item{x}{An object of class \code{deb_lsd}.}
-
-\item{trim}{argument from mean that is currently not implemented}
 
 \item{digits}{Integer indicating the number of decimal places (round)
 or significant digits (signif) to be used.}

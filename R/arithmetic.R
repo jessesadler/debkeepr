@@ -14,7 +14,6 @@
 #' @param .x An object of class `deb_lsd`.
 #' @param ... Arguments passed on to further methods.
 #' @param na.rm logical. Should missing values (including NaN) be removed?
-#' @param trim argument from mean that is currently not implemented
 #' @param digits Integer indicating the number of decimal places (round)
 #'   or significant digits (signif) to be used.
 #' @param .fn Used internally to enable debkeepr to work with vctrs.
@@ -79,7 +78,7 @@ sum.deb_lsd <- function(..., na.rm = FALSE) {
 
 #' @rdname mathematics
 #' @export
-mean.deb_lsd <- function(x, trim = 0, na.rm = FALSE, ...) {
+mean.deb_lsd <- function(x, ..., na.rm = FALSE) {
   if (na.rm == TRUE) {
     x <- x[!is.na(x)]
   }
