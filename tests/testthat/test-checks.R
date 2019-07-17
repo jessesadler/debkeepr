@@ -7,17 +7,23 @@ bases_error <- paste0("`bases` attributes must be equal to combine ",
 
 test_that("non-numeric is an error", {
   expect_error(lsd_check("hello", 3, 4),
-               "`l` must be a numeric vector")
+               "`l` must be a numeric vector.")
   expect_error(lsd_check(3, "hello", 4),
-               "`s` must be a numeric vector")
+               "`s` must be a numeric vector.")
   expect_error(lsd_check(3, 4, "hello"),
-               "`d` must be a numeric vector")
+               "`d` must be a numeric vector.")
 })
 
 test_that("NA scalar is not an error", {
   expect_invisible(lsd_check(NA, 3, 4))
   expect_invisible(lsd_check(3, NA, 4))
   expect_invisible(lsd_check(3, 4, NA))
+})
+
+test_that("Multiple NA is not an error", {
+  expect_invisible(lsd_check(c(NA, NA), 1:2, 3:4))
+  expect_invisible(lsd_check(1:2, c(NA, NA), 3:4))
+  expect_invisible(lsd_check(1:2, 3:4, c(NA, NA)))
 })
 
 test_that("length of l, s, and d all have values or are all length 0", {

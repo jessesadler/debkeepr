@@ -4,21 +4,21 @@
 
 lsd_check <- function(l, s, d) {
   # Check that l, s, and d are numeric
-  if (!rlang::is_na(l)) {
+  if (!all(rlang::are_na(l))) {
     if (!is.numeric(l)) {
-      stop(call. = FALSE, "`l` must be a numeric vector")
+      stop(call. = FALSE, "`l` must be a numeric vector.")
     }
   }
 
-  if (!rlang::is_na(s)) {
+  if (!all(rlang::are_na(s))) {
     if (!is.numeric(s)) {
-      stop(call. = FALSE, "`s` must be a numeric vector")
+      stop(call. = FALSE, "`s` must be a numeric vector.")
     }
   }
 
-  if (!rlang::is_na(d)) {
+  if (!all(rlang::are_na(d))) {
     if (!is.numeric(d)) {
-      stop(call. = FALSE, "`d` must be a numeric vector")
+      stop(call. = FALSE, "`d` must be a numeric vector.")
     }
   }
 
@@ -36,7 +36,7 @@ lsd_check <- function(l, s, d) {
   non_scalar <- lengths[lengths != 1L]
   if (length(unique(non_scalar)) > 1L) {
     stop(call. = FALSE,
-         "`l`, `s`, and `d` must be vectors of equal length or length 1")
+         "`l`, `s`, and `d` must be vectors of equal length or length 1.")
   }
 }
 
@@ -85,5 +85,52 @@ unit_equal <- function(x, y) {
   if (!identical(attr(x, "unit"), attr(y, "unit"))) {
     stop(call. = FALSE,
          "`unit` attributes must be equal to combine <deb_decimal> objects.")
+  }
+}
+
+
+
+# Transaction checks ------------------------------------------------------
+
+transaction_check <- function(df,
+                              cn,
+                              credit,
+                              debit,
+                              edge_columns,
+                              account_id = NULL) {
+
+  if (!is.data.frame(df)) {
+    stop(call. = FALSE, "`df` must be a data frame.")
+  }
+
+  if (rlang::is_false(cn %in% names(df))) {
+    stop(call. = FALSE,
+         "`lsd` must be provided if the default is not present in `df`.")
+  }
+
+  if (all(edge_columns %in% names(df)) == FALSE) {
+    stop(call. = FALSE,
+         paste("Column names for `credit` and `debit` must be provided if",
+               "the default names are not present in `df`.", sep = " "))
+  }
+
+  credit <- rlang::eval_tidy(credit, df)
+  debit <- rlang::eval_tidy(debit, df)
+  if (!identical(vctrs::vec_ptype(credit), vctrs::vec_ptype(debit))) {
+    stop(call. = FALSE, "`credit` and `debit` must be of the same prototype.")
+  }
+
+  if (!is.null(account_id)) {
+    if (rlang::is_false(account_id %in% c(credit, debit))) {
+      stop(call. = FALSE,
+           "`account_id` must be a value present in `credit` and/or `debit`.")
+    }
+  }
+}
+
+deb_ptype_check <- function(x) {
+  if (!deb_is_lsd(x) && !deb_is_decimal(x)) {
+    stop(call. = FALSE,
+         "`lsd` must be either a <deb_lsd> or a <deb_decimal> object.")
   }
 }

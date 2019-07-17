@@ -6,7 +6,7 @@
 \alias{deb_normalize.default}
 \alias{deb_normalize.deb_lsd}
 \alias{deb_normalize.numeric}
-\title{Normalize pounds, shillings, and pence}
+\title{Normalize pounds, shillings, and pence values}
 \usage{
 deb_normalize(x, ...)
 

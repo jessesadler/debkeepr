@@ -47,3 +47,11 @@ NULL
 #' @importFrom magrittr %>%
 #' @usage lhs \%>\% rhs
 NULL
+
+#' Tidy eval helpers
+#'
+#' @name tidyeval
+#' @keywords internal
+#' @importFrom rlang :=
+#' @importFrom rlang .data
+NULL

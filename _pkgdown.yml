@@ -26,6 +26,19 @@ reference:
     contents:
     - deb_convert_bases
     - deb_convert_unit
+  - title: Analysis of double-entry bookkeeping
+    contents:
+    - deb_account
+    - deb_account_summary
+    - deb_credit
+    - deb_debit
+    - deb_current
+    - deb_open
+    - deb_balance
+  - title: Data frame helpers for deb_lsd class
+    contents:
+    - deb_gather_lsd
+    - deb_spread_lsd
   - title: Data
     contents:
     - dafforne_accounts
