@@ -1,3 +1,3 @@
 # Get rid of no visible binding for global variable from CMD check #
 
-globalVariables("current")
+globalVariables(c("current", "lsd", "l", "s", "d"))
