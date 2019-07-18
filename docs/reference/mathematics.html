@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Mathematical functions with deb_lsd objects — mathematics • debkeepr</title>
+<title>Math group with deb_lsd objects — mathematics • debkeepr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,19 @@
 
 
 
-<meta property="og:title" content="Mathematical functions with deb_lsd objects — mathematics" />
+<meta property="og:title" content="Math group with deb_lsd objects — mathematics" />
 
-<meta property="og:description" content="Mathematical functions with pounds, shillings, and pence values as
-represented by the deb_lsd class." />
+<meta property="og:description" content="Math and Summary group of functions with deb_lsd objects.
+Implemented functions:
+Summary group: sum(), any(), and all().
+Math group: abs(), round(), signif(), ceiling(),
+floor(), trunc(), cummax(), cummin(), and cumsum().
+Additional generics: mean(), is.nan(), is.finite(), and
+is.infinite().
+" />
+
+<meta property="og:description" content="All other functions from the groups not currently implemented,
+including median(), quantile(), and summary()." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -125,15 +134,24 @@ represented by the deb_lsd class." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Mathematical functions with deb_lsd objects</h1>
+    <h1>Math group with deb_lsd objects</h1>
     <small class="dont-index">Source: <a href='https://github.com/jessesadler/debkeepr/blob/master/R/arithmetic.R'><code>R/arithmetic.R</code></a></small>
     <div class="hidden name"><code>mathematics.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Mathematical functions with pounds, shillings, and pence values as
-represented by the deb_lsd class.</p>
+    <p>Math and Summary group of functions with deb_lsd objects.
+Implemented functions:</p><ul>
+<li><p><a href='https://www.rdocumentation.org/packages/base/topics/groupGeneric'>Summary</a> group: <code><a href='https://www.rdocumentation.org/packages/base/topics/sum'>sum()</a></code>, <code><a href='https://www.rdocumentation.org/packages/base/topics/any'>any()</a></code>, and <code><a href='https://www.rdocumentation.org/packages/base/topics/all'>all()</a></code>.</p></li>
+<li><p><a href='https://www.rdocumentation.org/packages/base/topics/groupGeneric'>Math</a> group: <code><a href='https://www.rdocumentation.org/packages/base/topics/MathFun'>abs()</a></code>, <code><a href='https://www.rdocumentation.org/packages/base/topics/Round'>round()</a></code>, <code><a href='https://www.rdocumentation.org/packages/base/topics/Round'>signif()</a></code>, <code><a href='https://www.rdocumentation.org/packages/base/topics/Round'>ceiling()</a></code>,
+<code><a href='https://www.rdocumentation.org/packages/base/topics/Round'>floor()</a></code>, <code><a href='https://www.rdocumentation.org/packages/base/topics/Round'>trunc()</a></code>, <code><a href='https://www.rdocumentation.org/packages/base/topics/cumsum'>cummax()</a></code>, <code><a href='https://www.rdocumentation.org/packages/base/topics/cumsum'>cummin()</a></code>, and <code><a href='https://www.rdocumentation.org/packages/base/topics/cumsum'>cumsum()</a></code>.</p></li>
+<li><p>Additional generics: <code><a href='https://www.rdocumentation.org/packages/base/topics/mean'>mean()</a></code>, <code><a href='https://www.rdocumentation.org/packages/base/topics/is.finite'>is.nan()</a></code>, <code><a href='https://www.rdocumentation.org/packages/base/topics/is.finite'>is.finite()</a></code>, and
+<code><a href='https://www.rdocumentation.org/packages/base/topics/is.finite'>is.infinite()</a></code>.</p></li>
+</ul>
+
+    <p>All other functions from the groups not currently implemented,
+including <code><a href='https://www.rdocumentation.org/packages/stats/topics/median'>median()</a></code>, <code><a href='https://www.rdocumentation.org/packages/stats/topics/quantile'>quantile()</a></code>, and <code><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary()</a></code>.</p>
     
     </div>
 
@@ -141,7 +159,7 @@ represented by the deb_lsd class.</p>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sum'>sum</a></span>(<span class='no'>...</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># S3 method for deb_lsd</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/mean'>mean</a></span>(<span class='no'>x</span>, <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/mean'>mean</a></span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># S3 method for deb_lsd</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cumsum'>cumsum</a></span>(<span class='no'>x</span>)
@@ -153,14 +171,21 @@ represented by the deb_lsd class.</p>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Round'>signif</a></span>(<span class='no'>x</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>6</span>)
 
 <span class='co'># S3 method for deb_lsd</span>
-<span class='fu'>vec_math</span>(<span class='no'>.fn</span>, <span class='no'>.x</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Round'>ceiling</a></span>(<span class='no'>x</span>)
+
+<span class='co'># S3 method for deb_lsd</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Round'>floor</a></span>(<span class='no'>x</span>)
+
+<span class='co'># S3 method for deb_lsd</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Round'>trunc</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>...</th>
-      <td><p>Arguments passed on to further methods.</p></td>
+      <td><p>deb_lsd vectors in <code><a href='https://www.rdocumentation.org/packages/base/topics/sum'>sum()</a></code> and arguments passed on to
+further methods in <code><a href='https://www.rdocumentation.org/packages/base/topics/mean'>mean()</a></code>.</p></td>
     </tr>
     <tr>
       <th>na.rm</th>
@@ -171,45 +196,33 @@ represented by the deb_lsd class.</p>
       <td><p>An object of class <code>deb_lsd</code>.</p></td>
     </tr>
     <tr>
-      <th>trim</th>
-      <td><p>argument from mean that is currently not implemented</p></td>
-    </tr>
-    <tr>
       <th>digits</th>
-      <td><p>Integer indicating the number of decimal places (round)
-or significant digits (signif) to be used.</p></td>
-    </tr>
-    <tr>
-      <th>.fn</th>
-      <td><p>Used internally to enable debkeepr to work with vctrs.</p></td>
-    </tr>
-    <tr>
-      <th>.x</th>
-      <td><p>An object of class <code>deb_lsd</code>.</p></td>
+      <td><p>integer. Indicating the number of decimal places
+(<code><a href='https://www.rdocumentation.org/packages/base/topics/Round'>round()</a></code>) or significant digits (<code><a href='https://www.rdocumentation.org/packages/base/topics/Round'>signif()</a></code>) to be used.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>deb_lsd</code> object with normalized values.</p>
+    <p>A <code>deb_lsd</code> vector with normalized values.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code><a href='https://www.rdocumentation.org/packages/base/topics/sum'>sum()</a></code> and <code><a href='https://www.rdocumentation.org/packages/base/topics/mean'>mean()</a></code> return a normalized <code>deb_lsd</code> value.</p>
+    <p><code><a href='https://www.rdocumentation.org/packages/base/topics/sum'>sum()</a></code> and <code><a href='https://www.rdocumentation.org/packages/base/topics/cumsum'>cumsum()</a></code> return a normalized <code>deb_lsd</code> values.</p>
 <p>Round family of functions only affect the denarius (<code>d</code>) unit of a
-<code>deb_lsd</code> object. The value will be normalized if necessary.</p>
+<code>deb_lsd</code> value. All values are normalized.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='deb_lsd.html'>deb_lsd</a></span>(<span class='kw'>l</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>8</span>, <span class='fl'>12</span>),
+    <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='deb_lsd.html'>deb_lsd</a></span>(<span class='kw'>l</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>8</span>, <span class='fl'>12</span>),
              <span class='kw'>s</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>16</span>, <span class='fl'>6</span>, <span class='fl'>13</span>),
              <span class='kw'>d</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>6</span>, <span class='fl'>11</span>, <span class='fl'>0</span>))
 
-<span class='co'># Sum and mean with a deb_lsd object</span>
-<span class='co'># All values are normalized</span>
+<span class='co'># All values are normalized with sum and cumsum</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sum'>sum</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
 #&gt; [1] 26:16s:5d
+#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cumsum'>cumsum</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[3]&gt;
+#&gt; [1] 5:16s:6d  14:3s:5d  26:16s:5d
 #&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/mean'>mean</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
 #&gt; [1] 8:18s:9.667d
 #&gt; # Bases: 20s 12d</div><div class='input'>

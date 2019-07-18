@@ -23,7 +23,7 @@ NULL
 
 # Documentation for vctrs methods -----------------------------------------
 
-#' vctrs compatibility functions for casting, coercion, and comparison
+#' vctrs compatibility functions for math, casting, coercion, and comparison
 #'
 #' These functions are the extensions that allow debkeepr vectors to
 #' work with vctrs.
@@ -31,6 +31,8 @@ NULL
 #' @param x,y Vectors.
 #' @param to Type to cast to.
 #' @param ... Arguments passed on to further methods.
+#' @param .fn Mathematical function.
+#' @param .x Vector.
 #'
 #' @name vctrs-compat
 #'

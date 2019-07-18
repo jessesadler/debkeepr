@@ -26,6 +26,10 @@ reference:
     contents:
     - deb_convert_bases
     - deb_convert_unit
+  - title: Math
+    contents:
+    - sum.deb_lsd
+    - mean.deb_lsd
   - title: Analysis of double-entry bookkeeping
     contents:
     - deb_account

@@ -1,33 +1,42 @@
 ## Arithmetic for deb_lsd and deb_decimal ##
 
-#' Mathematical functions with deb_lsd objects
+#' Math group with deb_lsd objects
 #'
-#' Mathematical functions with pounds, shillings, and pence values as
-#' represented by the deb_lsd class.
+#' @description
+#' Math and Summary group of functions with deb_lsd objects.
+#' Implemented functions:
+#' - [Summary] group: `sum()`, `any()`, and `all()`.
+#' - [Math] group: `abs()`, `round()`, `signif()`, `ceiling()`,
+#'   `floor()`, `trunc()`, `cummax()`, `cummin()`, and `cumsum()`.
+#' - Additional generics: `mean()`, `is.nan()`, `is.finite()`, and
+#'   `is.infinite()`.
 #'
-#' `sum()` and `mean()` return a normalized `deb_lsd` value.
+#' All other functions from the groups not currently implemented,
+#'   including `median()`, `quantile()`, and `summary()`.
 #'
-#' Round family of functions normalize the value and only affects the
-#' denarius (`d`) unit of a `deb_lsd` object.
+#' @details
+#' `sum()` and `cumsum()` return a normalized `deb_lsd` values.
+#'
+#' Round family of functions only affect the denarius (`d`) unit of a
+#' `deb_lsd` value. All values are normalized.
 #'
 #' @param x An object of class `deb_lsd`.
-#' @param .x An object of class `deb_lsd`.
-#' @param ... Arguments passed on to further methods.
+#' @param ... deb_lsd vectors in `sum()` and arguments passed on to
+#'   further methods in `mean()`.
 #' @param na.rm logical. Should missing values (including NaN) be removed?
-#' @param digits Integer indicating the number of decimal places (round)
-#'   or significant digits (signif) to be used.
-#' @param .fn Used internally to enable debkeepr to work with vctrs.
+#' @param digits integer. Indicating the number of decimal places
+#'   (`round()`) or significant digits (`signif()`) to be used.
 #'
-#' @return A `deb_lsd` object with normalized values.
+#' @return A `deb_lsd` vector with normalized values.
+#'
 #' @examples
-#'
 #' x <- deb_lsd(l = c(5, 8, 12),
 #'              s = c(16, 6, 13),
 #'              d = c(6, 11, 0))
 #'
-#' # Sum and mean with a deb_lsd object
-#' # All values are normalized
+#' # All values are normalized with sum and cumsum
 #' sum(x)
+#' cumsum(x)
 #' mean(x)
 #'
 #' # Round family on deb_lsd affects the denarius unit
@@ -83,8 +92,16 @@ mean.deb_lsd <- function(x, ..., na.rm = FALSE) {
   sum(x) / vctrs::vec_size(x)
 }
 
+#' @export
+abs.deb_lsd <- function(x) {
+  dec <- deb_as_decimal(x)
+  deb_as_lsd(abs(dec))
+}
+
+
 # Cumulative functions
 
+#' @rdname mathematics
 #' @export
 cumsum.deb_lsd <- function(x) {
   ret <- new_lsd(cumsum(vctrs::field(x, "l")),
@@ -141,19 +158,25 @@ signif.deb_lsd <- function(x, digits = 6) {
   deb_normalize(x)
 }
 
-lsd_ceiling <- function(x) {
+#' @rdname mathematics
+#' @export
+ceiling.deb_lsd <- function(x) {
   x <- decimal_check(x)
   vctrs::field(x, "d") <- ceiling(vctrs::field(x, "d"))
   deb_normalize(x)
 }
 
-lsd_floor <- function(x) {
+#' @rdname mathematics
+#' @export
+floor.deb_lsd <- function(x) {
   x <- decimal_check(x)
   vctrs::field(x, "d") <- floor(vctrs::field(x, "d"))
   deb_normalize(x)
 }
 
-lsd_trunc <- function(x, ...) {
+#' @rdname mathematics
+#' @export
+trunc.deb_lsd <- function(x, ...) {
   x <- decimal_check(x)
   vctrs::field(x, "d") <- trunc(vctrs::field(x, "d"))
   deb_normalize(x)
@@ -161,19 +184,13 @@ lsd_trunc <- function(x, ...) {
 
 # Methods
 
-#' @rdname mathematics
+#' @rdname vctrs-compat
 #' @method vec_math deb_lsd
 #' @export
 #' @export vec_math.deb_lsd
 vec_math.deb_lsd <- function(.fn, .x, ...) {
-  switch(.fn,
-    ceiling = lsd_ceiling(.x),
-    floor = lsd_floor(.x),
-    trunc = lsd_trunc(.x, ...),
-    abs = deb_as_lsd(abs(deb_as_decimal(.x))),
-    stop(call. = FALSE, paste0("`", .fn, ".", class(.x)[[1]],
-                               "()` not implemented."))
-  )
+  stop(call. = FALSE,
+       paste0("`", .fn, ".", class(.x)[[1]], "()` not implemented."))
 }
 
 
