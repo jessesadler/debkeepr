@@ -57,8 +57,6 @@ NULL
 
 # deb_lsd mathematic functions --------------------------------------------
 
-# sum
-
 #' @rdname mathematics
 #' @export
 sum.deb_lsd <- function(..., na.rm = FALSE) {
@@ -82,9 +80,10 @@ mean.deb_lsd <- function(x, ..., na.rm = FALSE) {
   if (na.rm == TRUE) {
     x <- x[!is.na(x)]
   }
-
-  sum(x, ...) / vctrs::vec_size(x)
+  sum(x) / vctrs::vec_size(x)
 }
+
+# Cumulative functions
 
 #' @export
 cumsum.deb_lsd <- function(x) {
@@ -106,6 +105,23 @@ cummin.deb_lsd <- function(x) {
 cummax.deb_lsd <- function(x) {
   dec <- deb_as_decimal(x)
   deb_as_lsd(cummax(dec))
+}
+
+# Finite and infinite
+
+#' @export
+is.finite.deb_lsd <- function(x) {
+  vec_math("is.finite", deb_as_decimal(x))
+}
+
+#' @export
+is.infinite.deb_lsd <- function(x) {
+  vec_math("is.infinite", deb_as_decimal(x))
+}
+
+#' @export
+is.nan.deb_lsd <- function(x) {
+  vec_math("is.nan", deb_as_decimal(x))
 }
 
 # Rounding ----------------------------------------------------------------

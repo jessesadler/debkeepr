@@ -11,6 +11,7 @@ neg_round <- deb_lsd(-5, -19, -11.8755)
 multi_decimal <- deb_lsd(2, 3.3, 2.2)
 round1 <- deb_lsd(6, 0, 0)
 round2 <- deb_lsd(-6, 0, 0)
+finite <- deb_lsd(c(Inf, NaN, 1), c(Inf, NaN, 2), c(Inf, NaN, 3))
 dec1 <- deb_decimal(1.8375)
 dec2 <- deb_decimal(36.75, unit = "s")
 dec3 <- deb_decimal(c(1.8375, NA, 5.225, 3.2875, 1.1125))
@@ -27,8 +28,7 @@ test_that("vec_math has error message for unimplemented functions", {
 })
 
 
-# Sum and mean ------------------------------------------------------------
-
+# Math group --------------------------------------------------------------
 test_that("sum and mean with deb_lsd work", {
   expect_equal(sum(lsd3), deb_lsd(NA, NA, NA))
   expect_equal(sum(lsd3, na.rm = TRUE), deb_lsd(18, 11, 5))
@@ -40,6 +40,8 @@ test_that("sum and mean with deb_lsd work", {
   expect_equal(mean(lsd3, na.rm = TRUE), deb_lsd(4, 12, 10.25))
   expect_equal(mean(deb_lsd(c(1, 5), c(42, 30), c(13, 15), bases = bases2)),
                deb_lsd(3, 36, 14, bases2))
+  # Mean only takes first object
+  expect_equal(mean(lsd4, lsd3), deb_lsd(4, 12, 10.25))
   # Error with different bases
   expect_error(sum(lsd3, lsd_bases), bases_error)
 })
@@ -55,7 +57,7 @@ test_that("sum and mean work with deb_decimal", {
   expect_equal(mean(dec3, na.rm = TRUE), deb_decimal(2.865625))
 })
 
-test_that("sum and mean work with deb-style objects and numeric", {
+test_that("sum works with deb-style objects and numeric", {
   expect_equal(sum(lsd1, dec1), deb_lsd(3, 13, 6))
   expect_equal(sum(lsd1, dec1), sum(lsd1, dec2))
   expect_equal(sum(lsd3, 1.8375, 3, na.rm = TRUE), deb_lsd(23, 8, 2))
@@ -76,6 +78,15 @@ test_that("cumulative functions work", {
   # cummax
   expect_equal(cummax(lsd4), c(lsd1, lsd2, lsd2, lsd4[[4]]))
   expect_equal(cummax(dec4), c(dec1, rep(dec4[[2]], 3)))
+})
+
+test_that("finite, infinite and NaN checks work with deb_lsd", {
+  expect_equal(is.finite(lsd4), c(T, T, T, T))
+  expect_equal(is.infinite(lsd4), c(F, F, F, F))
+  expect_equal(is.nan(lsd4), c(F, F, F, F))
+  expect_equal(is.finite(finite), c(F, F, T))
+  expect_equal(is.infinite(finite), c(T, F, F))
+  expect_equal(is.nan(finite), c(F, T, F))
 })
 
 # Round family with deb_lsd -----------------------------------------------
