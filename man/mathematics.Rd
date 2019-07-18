@@ -7,12 +7,14 @@
 \alias{cumsum.deb_lsd}
 \alias{round.deb_lsd}
 \alias{signif.deb_lsd}
-\alias{vec_math.deb_lsd}
-\title{Mathematical functions with deb_lsd objects}
+\alias{ceiling.deb_lsd}
+\alias{floor.deb_lsd}
+\alias{trunc.deb_lsd}
+\title{Math group with deb_lsd objects}
 \usage{
 \method{sum}{deb_lsd}(..., na.rm = FALSE)
 
-\method{mean}{deb_lsd}(x, trim = 0, na.rm = FALSE, ...)
+\method{mean}{deb_lsd}(x, ..., na.rm = FALSE)
 
 \method{cumsum}{deb_lsd}(x)
 
@@ -20,46 +22,54 @@
 
 \method{signif}{deb_lsd}(x, digits = 6)
 
-\method{vec_math}{deb_lsd}(.fn, .x, ...)
+\method{ceiling}{deb_lsd}(x)
+
+\method{floor}{deb_lsd}(x)
+
+\method{trunc}{deb_lsd}(x, ...)
 }
 \arguments{
-\item{...}{Arguments passed on to further methods.}
+\item{...}{deb_lsd vectors in \code{sum()} and arguments passed on to
+further methods in \code{mean()}.}
 
 \item{na.rm}{logical. Should missing values (including NaN) be removed?}
 
 \item{x}{An object of class \code{deb_lsd}.}
 
-\item{trim}{argument from mean that is currently not implemented}
-
-\item{digits}{Integer indicating the number of decimal places (round)
-or significant digits (signif) to be used.}
-
-\item{.fn}{Used internally to enable debkeepr to work with vctrs.}
-
-\item{.x}{An object of class \code{deb_lsd}.}
+\item{digits}{integer. Indicating the number of decimal places
+(\code{round()}) or significant digits (\code{signif()}) to be used.}
 }
 \value{
-A \code{deb_lsd} object with normalized values.
+A \code{deb_lsd} vector with normalized values.
 }
 \description{
-Mathematical functions with pounds, shillings, and pence values as
-represented by the deb_lsd class.
+Math and Summary group of functions with deb_lsd objects.
+Implemented functions:
+\itemize{
+\item \link{Summary} group: \code{sum()}, \code{any()}, and \code{all()}.
+\item \link{Math} group: \code{abs()}, \code{round()}, \code{signif()}, \code{ceiling()},
+\code{floor()}, \code{trunc()}, \code{cummax()}, \code{cummin()}, and \code{cumsum()}.
+\item Additional generics: \code{mean()}, \code{is.nan()}, \code{is.finite()}, and
+\code{is.infinite()}.
+}
+
+All other functions from the groups not currently implemented,
+including \code{median()}, \code{quantile()}, and \code{summary()}.
 }
 \details{
-\code{sum()} and \code{mean()} return a normalized \code{deb_lsd} value.
+\code{sum()} and \code{cumsum()} return a normalized \code{deb_lsd} values.
 
 Round family of functions only affect the denarius (\code{d}) unit of a
-\code{deb_lsd} object. The value will be normalized if necessary.
+\code{deb_lsd} value. All values are normalized.
 }
 \examples{
-
 x <- deb_lsd(l = c(5, 8, 12),
              s = c(16, 6, 13),
              d = c(6, 11, 0))
 
-# Sum and mean with a deb_lsd object
-# All values are normalized
+# All values are normalized with sum and cumsum
 sum(x)
+cumsum(x)
 mean(x)
 
 # Round family on deb_lsd affects the denarius unit

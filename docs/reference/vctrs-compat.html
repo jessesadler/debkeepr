@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>vctrs compatibility functions for casting, coercion, and comparison — vec_cast.deb_lsd • debkeepr</title>
+<title>vctrs compatibility functions for math, casting, coercion, and comparison — vec_math.deb_lsd • debkeepr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,7 +30,7 @@
 
 
 
-<meta property="og:title" content="vctrs compatibility functions for casting, coercion, and comparison — vec_cast.deb_lsd" />
+<meta property="og:title" content="vctrs compatibility functions for math, casting, coercion, and comparison — vec_math.deb_lsd" />
 
 <meta property="og:description" content="These functions are the extensions that allow debkeepr vectors to
 work with vctrs." />
@@ -125,8 +125,8 @@ work with vctrs." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>vctrs compatibility functions for casting, coercion, and comparison</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jessesadler/debkeepr/blob/master/R/casting.R'><code>R/casting.R</code></a>, <a href='https://github.com/jessesadler/debkeepr/blob/master/R/coercion.R'><code>R/coercion.R</code></a>, <a href='https://github.com/jessesadler/debkeepr/blob/master/R/comparison.R'><code>R/comparison.R</code></a>, and 2 more</small>
+    <h1>vctrs compatibility functions for math, casting, coercion, and comparison</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jessesadler/debkeepr/blob/master/R/arithmetic.R'><code>R/arithmetic.R</code></a>, <a href='https://github.com/jessesadler/debkeepr/blob/master/R/casting.R'><code>R/casting.R</code></a>, <a href='https://github.com/jessesadler/debkeepr/blob/master/R/coercion.R'><code>R/coercion.R</code></a>, and 3 more</small>
     <div class="hidden name"><code>vctrs-compat.Rd</code></div>
     </div>
 
@@ -138,6 +138,9 @@ work with vctrs.</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for deb_lsd</span>
+<span class='fu'>vec_math</span>(<span class='no'>.fn</span>, <span class='no'>.x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for deb_lsd</span>
 <span class='fu'>vec_cast</span>(<span class='no'>x</span>, <span class='no'>to</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for deb_decimal</span>
@@ -159,16 +162,24 @@ work with vctrs.</p>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>.fn</th>
+      <td><p>Mathematical function.</p></td>
+    </tr>
+    <tr>
+      <th>.x</th>
+      <td><p>Vector.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Arguments passed on to further methods.</p></td>
+    </tr>
+    <tr>
       <th>x, y</th>
       <td><p>Vectors.</p></td>
     </tr>
     <tr>
       <th>to</th>
       <td><p>Type to cast to.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Arguments passed on to further methods.</p></td>
     </tr>
     </table>
     
