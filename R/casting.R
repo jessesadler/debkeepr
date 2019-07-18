@@ -53,6 +53,15 @@ vec_cast.deb_lsd.integer <- function(x, to, ...) {
   deb_lsd(x, 0, 0, bases = deb_bases(to))
 }
 
+# deb_lsd to character
+# Enables View(as.data.frame(deb_lsd))
+
+#' @method vec_cast.deb_lsd character
+#' @export
+vec_cast.character.deb_lsd <- function(x, to, ...) {
+  format(x, ...)
+}
+
 # deb_decimal -------------------------------------------------------------
 
 # Boilerplate
@@ -97,6 +106,14 @@ vec_cast.double.deb_decimal  <- function(x, to, ...) vctrs::vec_data(x)
 #' @export
 vec_cast.deb_decimal.integer  <- function(x, to, ...) {
   deb_decimal(x, unit = deb_unit(to), bases = deb_bases(to))
+}
+
+# deb_decimal to character
+
+#' @method vec_cast.deb_decimal character
+#' @export
+vec_cast.character.deb_decimal <- function(x, to, ...) {
+  as.character(vctrs::vec_data(x))
 }
 
 # deb_decimal to deb_lsd --------------------------------------------------
