@@ -11,10 +11,10 @@ neg_round <- deb_lsd(-5, -19, -11.8755)
 multi_decimal <- deb_lsd(2, 3.3, 2.2)
 round1 <- deb_lsd(6, 0, 0)
 round2 <- deb_lsd(-6, 0, 0)
-decimal1 <- deb_decimal(1.8375)
-decimal2 <- deb_decimal(36.75, unit = "s")
-decimal3 <- deb_decimal(c(1.8375, NA, 5.225, 3.2875, 1.1125))
-decimal4 <- deb_decimal(c(1.8375, 5.225, 3.2875, 1.1125))
+dec1 <- deb_decimal(1.8375)
+dec2 <- deb_decimal(36.75, unit = "s")
+dec3 <- deb_decimal(c(1.8375, NA, 5.225, 3.2875, 1.1125))
+dec4 <- deb_decimal(c(1.8375, 5.225, 3.2875, 1.1125))
 
 bases_error <- paste0("`bases` attributes must be equal to combine ",
                       "<deb_lsd> or <deb_decimal> objects.")
@@ -29,15 +29,13 @@ test_that("vec_math has error message for unimplemented functions", {
 
 # Sum and mean ------------------------------------------------------------
 
-test_that("sum, cumsum, and mean with deb_lsd work", {
+test_that("sum and mean with deb_lsd work", {
   expect_equal(sum(lsd3), deb_lsd(NA, NA, NA))
   expect_equal(sum(lsd3, na.rm = TRUE), deb_lsd(18, 11, 5))
   expect_equal(sum(deb_lsd(c(1, 1), c(2, 1), c(3, NA)), na.rm = TRUE),
                deb_lsd(1, 2, 3))
   expect_equal(sum(lsd1, lsd2), deb_lsd(7, 3, 5))
   expect_equal(sum(lsd_bases), deb_lsd(6, 23, 1, bases = bases2))
-  expect_equal(cumsum(deb_lsd(rep(1, 5), rep(1, 5), rep(1, 5))),
-               deb_lsd(1:5, 1:5, 1:5))
   expect_equal(mean(c(lsd1, lsd2)), deb_lsd(3, 11, 8.5))
   expect_equal(mean(lsd3, na.rm = TRUE), deb_lsd(4, 12, 10.25))
   expect_equal(mean(deb_lsd(c(1, 5), c(42, 30), c(13, 15), bases = bases2)),
@@ -47,24 +45,38 @@ test_that("sum, cumsum, and mean with deb_lsd work", {
 })
 
 test_that("sum and mean work with deb_decimal", {
-  expect_equal(sum(decimal1, deb_decimal(1.5)), deb_decimal(3.3375))
-  expect_equal(sum(decimal3, na.rm = TRUE),
-               deb_decimal(sum(as.numeric(decimal3), na.rm = TRUE)))
+  expect_equal(sum(dec1, deb_decimal(1.5)), deb_decimal(3.3375))
+  expect_equal(sum(dec3, na.rm = TRUE),
+               deb_decimal(sum(as.numeric(dec3), na.rm = TRUE)))
   # Errors
-  expect_error(sum(decimal1, deb_decimal(1.5, bases = bases2)), bases_error)
-  expect_error(sum(decimal1, decimal2),
+  expect_error(sum(dec1, deb_decimal(1.5, bases = bases2)), bases_error)
+  expect_error(sum(dec1, dec2),
     "`unit` attributes must be equal to combine <deb_decimal> objects.")
-  expect_equal(mean(decimal3, na.rm = TRUE), deb_decimal(2.865625))
+  expect_equal(mean(dec3, na.rm = TRUE), deb_decimal(2.865625))
 })
 
 test_that("sum and mean work with deb-style objects and numeric", {
-  expect_equal(sum(lsd1, decimal1), deb_lsd(3, 13, 6))
-  expect_equal(sum(lsd1, decimal1), sum(lsd1, decimal2))
+  expect_equal(sum(lsd1, dec1), deb_lsd(3, 13, 6))
+  expect_equal(sum(lsd1, dec1), sum(lsd1, dec2))
   expect_equal(sum(lsd3, 1.8375, 3, na.rm = TRUE), deb_lsd(23, 8, 2))
-  expect_equal(sum(decimal3, 3.5, na.rm = TRUE),
+  expect_equal(sum(dec3, 3.5, na.rm = TRUE),
                deb_decimal(sum(1.8375, 5.225, 3.2875, 1.1125, 3.5)))
 })
 
+test_that("cumulative functions work", {
+  # cumsum
+  expect_equal(cumsum(deb_lsd(rep(1, 5), rep(1, 5), rep(1, 5))),
+               deb_lsd(1:5, 1:5, 1:5))
+  expect_equal(cumsum(lsd4),
+               c(lsd1, sum(lsd4[1:2]), sum(lsd4[1:3]), sum(lsd4[1:4])))
+  expect_equal(as.numeric(cumsum(dec4)), cumsum(as.numeric(dec4)))
+  # cummin
+  expect_equal(cummin(lsd4), deb_lsd(rep(1, 4), rep(16, 4), rep(9, 4)))
+  expect_equal(cummin(dec4), c(rep(dec4[[1]], 3), dec4[[4]]))
+  # cummax
+  expect_equal(cummax(lsd4), c(lsd1, lsd2, lsd2, lsd4[[4]]))
+  expect_equal(cummax(dec4), c(dec1, rep(dec4[[2]], 3)))
+})
 
 # Round family with deb_lsd -----------------------------------------------
 
@@ -128,30 +140,30 @@ test_that("Arithmetic operators work with deb_lsd and numeric", {
 # deb_decimal arithmetic operators ----------------------------------------
 
 test_that("Arithmetic operators work with two deb_decimal objects", {
-  expect_equal(decimal1 + deb_decimal(1.5), deb_decimal(3.3375))
-  expect_equal(decimal1 - deb_decimal(1.5), deb_decimal(0.3375))
+  expect_equal(dec1 + deb_decimal(1.5), deb_decimal(3.3375))
+  expect_equal(dec1 - deb_decimal(1.5), deb_decimal(0.3375))
   expect_equal(deb_decimal(3.25) / deb_decimal(6.5), 0.5)
   # Errors
-  expect_error(decimal1 + decimal2,
+  expect_error(dec1 + dec2,
     "`unit` attributes must be equal to combine <deb_decimal> objects.")
-  expect_error(decimal1 + deb_decimal(1.5, bases = bases2), bases_error)
-  expect_error(decimal1 * decimal3)
+  expect_error(dec1 + deb_decimal(1.5, bases = bases2), bases_error)
+  expect_error(dec1 * dec3)
 })
 
 test_that("Arithmetic operators work with deb_lsd and numeric", {
   # deb_decimal and numeric
-  expect_equal(decimal1 + 1.5, deb_decimal(3.3375))
-  expect_equal(decimal1 - 1.5, deb_decimal(0.3375))
-  expect_equal(decimal2 * 2, deb_decimal(73.5, unit = "s"))
+  expect_equal(dec1 + 1.5, deb_decimal(3.3375))
+  expect_equal(dec1 - 1.5, deb_decimal(0.3375))
+  expect_equal(dec2 * 2, deb_decimal(73.5, unit = "s"))
   expect_equal(deb_decimal(2.5)^2, deb_decimal(6.25))
-  expect_equal(decimal2 / 3, deb_decimal(12.25, unit = "s"))
-  expect_equal(decimal2 %% 3, deb_decimal(0.75, unit = "s"))
-  expect_equal(decimal2 %/% 3, deb_decimal(12, unit = "s"))
+  expect_equal(dec2 / 3, deb_decimal(12.25, unit = "s"))
+  expect_equal(dec2 %% 3, deb_decimal(0.75, unit = "s"))
+  expect_equal(dec2 %/% 3, deb_decimal(12, unit = "s"))
   # numeric and deb_decimal
-  expect_equal(1.5 + decimal1, deb_decimal(3.3375))
-  expect_equal(1.5 - decimal1, deb_decimal(-0.3375))
-  expect_equal(2 * decimal2, deb_decimal(73.5, unit = "s"))
-  expect_error(2 / decimal2)
+  expect_equal(1.5 + dec1, deb_decimal(3.3375))
+  expect_equal(1.5 - dec1, deb_decimal(-0.3375))
+  expect_equal(2 * dec2, deb_decimal(73.5, unit = "s"))
+  expect_error(2 / dec2)
 })
 
 
@@ -160,27 +172,27 @@ test_that("Arithmetic operators work with deb_lsd and numeric", {
 test_that("unary operators work", {
   expect_equal(-lsd_round, neg_round)
   expect_equal(+lsd_bases, lsd_bases)
-  expect_equal(-decimal1, deb_decimal(-1.8375))
-  expect_equal(+decimal2, decimal2)
+  expect_equal(-dec1, deb_decimal(-1.8375))
+  expect_equal(+dec2, dec2)
 })
 
 # deb_lsd and deb_decimal arithmetic operators ----------------------------
 
 test_that("Arithmetic operators work with deb_lsd and deb_decimal", {
   # deb_lsd and deb_decimal
-  expect_equal(lsd2 + decimal1, deb_lsd(7, 3, 5))
-  expect_equal(lsd2 + decimal2, deb_lsd(7, 3, 5))
+  expect_equal(lsd2 + dec1, deb_lsd(7, 3, 5))
+  expect_equal(lsd2 + dec2, deb_lsd(7, 3, 5))
   expect_equal(lsd_bases + deb_decimal(2.5, bases = bases2),
                deb_lsd(c(3, 7), c(41, 31), c(9, 8), bases2))
-  expect_equal(lsd2 - decimal1, deb_lsd(3, 9, 11))
+  expect_equal(lsd2 - dec1, deb_lsd(3, 9, 11))
   expect_equal(lsd2 / deb_decimal(2 + 2 / 3), 2)
   # deb_decimal and deb_lsd
-  expect_equal(decimal1 + lsd2, deb_lsd(7, 3, 5))
-  expect_equal(decimal1 - lsd2, deb_lsd(-3, -9, -11))
+  expect_equal(dec1 + lsd2, deb_lsd(7, 3, 5))
+  expect_equal(dec1 - lsd2, deb_lsd(-3, -9, -11))
   expect_equal(deb_decimal(10 + 2 / 3) / lsd2, 2)
   # Errors
-  expect_error(lsd_bases + decimal1, bases_error)
-  expect_error(decimal1 + lsd_bases, bases_error)
-  expect_error(lsd1 * decimal1)
-  expect_error(decimal1 * lsd1)
+  expect_error(lsd_bases + dec1, bases_error)
+  expect_error(dec1 + lsd_bases, bases_error)
+  expect_error(lsd1 * dec1)
+  expect_error(dec1 * lsd1)
 })

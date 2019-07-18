@@ -4,7 +4,6 @@
 \alias{mathematics}
 \alias{sum.deb_lsd}
 \alias{mean.deb_lsd}
-\alias{cumsum.deb_lsd}
 \alias{round.deb_lsd}
 \alias{signif.deb_lsd}
 \alias{vec_math.deb_lsd}
@@ -13,8 +12,6 @@
 \method{sum}{deb_lsd}(..., na.rm = FALSE)
 
 \method{mean}{deb_lsd}(x, ..., na.rm = FALSE)
-
-\method{cumsum}{deb_lsd}(x)
 
 \method{round}{deb_lsd}(x, digits = 0)
 
