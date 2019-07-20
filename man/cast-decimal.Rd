@@ -7,7 +7,7 @@
 \alias{deb_as_decimal.deb_lsd}
 \alias{deb_as_decimal.numeric}
 \alias{deb_as_decimal.logical}
-\title{Cast to deb_decimal}
+\title{Cast to \code{deb_decimal}}
 \usage{
 deb_as_decimal(x, ...)
 

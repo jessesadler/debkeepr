@@ -4,7 +4,7 @@
 \alias{lsd-column}
 \alias{deb_gather_lsd}
 \alias{deb_spread_lsd}
-\title{Helpers to create and separate a deb_lsd column in a data frame}
+\title{Helpers to create and separate a \code{deb_lsd} column in a data frame}
 \usage{
 deb_gather_lsd(df, l = l, s = s, d = d, bases = c(20, 12),
   lsd_col = lsd, replace = FALSE)
@@ -16,13 +16,13 @@ deb_spread_lsd(df, lsd = lsd, l_col = l, s_col = s, d_col = d,
 \item{df}{A data frame.}
 
 \item{l}{Pounds column: Unquoted name of a numeric variable corresponding
-to the pounds or librae unit. Default is \code{l}.}
+to the pounds or libra unit. Default is \code{l}.}
 
 \item{s}{Shillings column: Unquoted name of numeric variable corresponding
-to the shillings or solidi unit. Default is \code{s}.}
+to the shillings or solidus unit. Default is \code{s}.}
 
 \item{d}{Pence column: Unquoted name of numeric variable corresponding to
-the pence or denarii unit. Default is \code{d}.}
+the pence or denarius unit. Default is \code{d}.}
 
 \item{bases}{Numeric vector of length 2 used to specify the bases for the
 solidus or s and denarius or d units. Default is \code{c(20, 12)}, which
@@ -32,7 +32,7 @@ conforms to the most widely used system of 1 pound = 20 shillings and
 \item{lsd_col}{Unquoted name of the \code{deb_lsd} column create. Default
 is \code{lsd}.}
 
-\item{replace}{Logical (default \code{FALSE}): when \code{TRUE} the newly created
+\item{replace}{Logical (default \code{FALSE}). When \code{TRUE}, the newly created
 column(s) will replace the one(s) used to create it/them.}
 
 \item{lsd}{\code{deb_lsd} column: Unquoted name of a \code{deb_lsd} column.

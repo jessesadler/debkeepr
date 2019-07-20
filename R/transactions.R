@@ -37,7 +37,7 @@
 #'   Default is `debit`.
 #' @param lsd Value column: Unquoted name of a variable of class `deb_lsd`
 #'   or `deb_decimal`. Default is `lsd`.
-#' @param na.rm logical. Should missing values (including NaN) be removed?
+#' @param na.rm Logical. Should missing values (including `NaN`) be removed?
 #'
 #' @return
 #' All return a tibble with variables for accounts and values in the same
@@ -151,7 +151,7 @@ deb_account <- function(df, account_id,
       cred <- sum(pos[[cn]], na.rm = na.rm)
     }
 
-    neg <- dplyr::filter(df, {{ debit }}== account_id)
+    neg <- dplyr::filter(df, {{ debit }} == account_id)
     if (vec_size(neg) < 1) {
       deb <- deb_decimal(0, bases = bases)
     } else {

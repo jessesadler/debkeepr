@@ -49,7 +49,7 @@ Default is \code{debit}.}
 \item{lsd}{Value column: Unquoted name of a variable of class \code{deb_lsd}
 or \code{deb_decimal}. Default is \code{lsd}.}
 
-\item{na.rm}{logical. Should missing values (including NaN) be removed?}
+\item{na.rm}{Logical. Should missing values (including \code{NaN}) be removed?}
 }
 \value{
 All return a tibble with variables for accounts and values in the same

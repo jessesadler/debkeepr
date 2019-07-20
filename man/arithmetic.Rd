@@ -16,7 +16,7 @@
 \alias{vec_arith.deb_decimal.MISSING}
 \alias{vec_arith.deb_lsd.deb_decimal}
 \alias{vec_arith.deb_decimal.deb_lsd}
-\title{Arithmetic operations with deb_lsd and deb_decimal}
+\title{Arithmetic operations with \code{deb_lsd} and \code{deb_decimal}}
 \usage{
 \method{vec_arith}{deb_lsd}(op, x, y)
 

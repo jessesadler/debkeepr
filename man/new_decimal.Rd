@@ -2,7 +2,7 @@
 % Please edit documentation in R/decimal-class.R
 \name{new_decimal}
 \alias{new_decimal}
-\title{Internal constructor to create deb_decimal type}
+\title{Internal constructor to create \code{deb_decimal} type}
 \usage{
 new_decimal(x = double(), unit = c("l", "s", "d"), bases = c(20L,
   12L))

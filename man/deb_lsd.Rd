@@ -33,23 +33,22 @@ shillings, and pence units. The abbreviations derive from the Latin terms
 \href{https://en.wikipedia.org/wiki/French_livre}{libra},
 \href{https://en.wikipedia.org/wiki/Solidus_(coin)}{solidus}, and
 \href{https://en.wikipedia.org/wiki/Denarius}{denarius}. In the 8th century a
-solidus came to represent 12 denarii coins, and 240 denarii were made from
-one libra or pound of silver. The custom of counting coins in dozens
-(solidi) and scores of dozens (librae) spread throughout the Carolingian
-Empire and became engrained in much of Europe. However,
+solidus came to represent 12 denarii coins, and, for a time at least, 240
+denarii were made from one libra or pound of silver. The custom of counting
+coins in dozens (solidi) and scores of dozens (librae) spread throughout the
+Carolingian Empire and became engrained in much of Europe. However, a
+variety of accounting systems arose at different times that used
 \href{https://en.wikipedia.org/wiki/Non-decimal_currency}{other bases} for the
-solidus and denarius units were also in use. The \code{bases} attribute makes
-it possible to specify alternative bases for the solidus and denarius units.
+solidus and denarius units. The \code{bases} attribute of \code{deb_lsd} objects
+makes it possible to specify alternative bases for the solidus and denarius
+units.
 
-The length of \code{l}, \code{s}, and \code{d} must either be all equal or a vector of
+The length of \code{l}, \code{s}, and \code{d} must either be all equal, or a vector of
 length 1 can be recycled to the length of the other argument(s). See
 the \href{https://vctrs.r-lib.org/articles/type-size.html}{vctrs package}
 for further details on recycling vectors. In addition, \code{l}, \code{s}, and \code{d}
-must either all have no values—resulting in a vector of length 0—or all
+must either all have no values, resulting in a vector of length 0, or all
 possess numeric vectors.
-
-The \code{deb_lsd} class works in concert with the \code{deb_decimal} class, which
-represents non-decimal currencies as decimalized values.
 }
 \examples{
 
@@ -63,7 +62,7 @@ deb_lsd(l = c(10, 8, 5),
         s = c(6, 13, 8),
         d = 0)
 
-# Set the `bases` of the object
+# Set the bases of the object
 deb_lsd(5, 3, 8, bases = c(60, 16))
 deb_lsd(l = c(10, 28, 5),
         s = c(6, 33, 13),
@@ -72,4 +71,9 @@ deb_lsd(l = c(10, 28, 5),
 
 # Create a prototype or object of length 0
 deb_lsd()
+}
+\seealso{
+The \code{deb_lsd} class works in concert with the \code{deb_decimal} class, which
+represents non-decimal currencies as decimalized values. See
+\code{\link[=deb_decimal]{deb_decimal()}}.
 }

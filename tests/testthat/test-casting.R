@@ -29,6 +29,8 @@ test_that("vec_cast works for deb_lsd", {
   expect_equal(vctrs::vec_cast(1.1125, deb_lsd()), lsd1)
   expect_equal(vctrs::vec_cast(1:3, deb_lsd()), deb_lsd(1:3, 0, 0))
   expect_error(vctrs::vec_cast(lsd, integer()))
+  # deb_lsd to character
+  expect_equal(vctrs::vec_cast(lsd, character()), c(NA, "2:4s:6d", "3:5s:9d"))
   # NA and incompatible cast from boilerplate
   expect_equal(vctrs::vec_cast(NA, deb_lsd()), deb_lsd(NA, NA, NA))
   expect_error(vctrs::vec_cast(factor("hello"), deb_lsd()))
@@ -49,6 +51,8 @@ test_that("vec_cast works for deb_decimal", {
   expect_equal(vctrs::vec_cast(1.1125, deb_decimal()), dec1)
   expect_equal(vctrs::vec_cast(1:3, deb_decimal()), deb_decimal(1:3))
   expect_error(vctrs::vec_cast(dec, integer()))
+  # deb_lsd to character
+  expect_equal(vctrs::vec_cast(dec, character()), c(NA, "2.225", "3.2875"))
   # NA and incompatible cast from boilerplate
   expect_equal(vctrs::vec_cast(NA, deb_decimal()), deb_decimal(NA))
   expect_error(vctrs::vec_cast(factor("hello"), deb_decimal()))

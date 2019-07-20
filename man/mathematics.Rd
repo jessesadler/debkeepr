@@ -10,7 +10,7 @@
 \alias{ceiling.deb_lsd}
 \alias{floor.deb_lsd}
 \alias{trunc.deb_lsd}
-\title{Math group with deb_lsd objects}
+\title{Math group with \code{deb_lsd} objects}
 \usage{
 \method{sum}{deb_lsd}(..., na.rm = FALSE)
 
@@ -29,21 +29,21 @@
 \method{trunc}{deb_lsd}(x, ...)
 }
 \arguments{
-\item{...}{deb_lsd vectors in \code{sum()} and arguments passed on to
+\item{...}{\code{deb_lsd} vectors in \code{sum()} and arguments passed on to
 further methods in \code{mean()}.}
 
-\item{na.rm}{logical. Should missing values (including NaN) be removed?}
+\item{na.rm}{Logical. Should missing values (including `NaN``) be removed?}
 
 \item{x}{An object of class \code{deb_lsd}.}
 
-\item{digits}{integer. Indicating the number of decimal places
+\item{digits}{Integer. Indicating the number of decimal places
 (\code{round()}) or significant digits (\code{signif()}) to be used.}
 }
 \value{
 A \code{deb_lsd} vector with normalized values.
 }
 \description{
-Math and Summary group of functions with deb_lsd objects.
+Math and Summary group of functions with \code{deb_lsd} objects.
 Implemented functions:
 \itemize{
 \item \link{Summary} group: \code{sum()}, \code{any()}, and \code{all()}.

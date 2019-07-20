@@ -176,21 +176,27 @@ shillings, and pence units. The abbreviations derive from the Latin terms
 <a href='https://en.wikipedia.org/wiki/French_livre'>libra</a>,
 <a href='https://en.wikipedia.org/wiki/Solidus_(coin)'>solidus</a>, and
 <a href='https://en.wikipedia.org/wiki/Denarius'>denarius</a>. In the 8th century a
-solidus came to represent 12 denarii coins, and 240 denarii were made from
-one libra or pound of silver. The custom of counting coins in dozens
-(solidi) and scores of dozens (librae) spread throughout the Carolingian
-Empire and became engrained in much of Europe. However,
+solidus came to represent 12 denarii coins, and, for a time at least, 240
+denarii were made from one libra or pound of silver. The custom of counting
+coins in dozens (solidi) and scores of dozens (librae) spread throughout the
+Carolingian Empire and became engrained in much of Europe. However, a
+variety of accounting systems arose at different times that used
 <a href='https://en.wikipedia.org/wiki/Non-decimal_currency'>other bases</a> for the
-solidus and denarius units were also in use. The <code>bases</code> attribute makes
-it possible to specify alternative bases for the solidus and denarius units.</p>
-<p>The length of <code>l</code>, <code>s</code>, and <code>d</code> must either be all equal or a vector of
+solidus and denarius units. The <code>bases</code> attribute of <code>deb_lsd</code> objects
+makes it possible to specify alternative bases for the solidus and denarius
+units.</p>
+<p>The length of <code>l</code>, <code>s</code>, and <code>d</code> must either be all equal, or a vector of
 length 1 can be recycled to the length of the other argument(s). See
 the <a href='https://vctrs.r-lib.org/articles/type-size.html'>vctrs package</a>
 for further details on recycling vectors. In addition, <code>l</code>, <code>s</code>, and <code>d</code>
-must either all have no values—resulting in a vector of length 0—or all
+must either all have no values, resulting in a vector of length 0, or all
 possess numeric vectors.</p>
-<p>The <code>deb_lsd</code> class works in concert with the <code>deb_decimal</code> class, which
-represents non-decimal currencies as decimalized values.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>The <code>deb_lsd</code> class works in concert with the <code>deb_decimal</code> class, which
+represents non-decimal currencies as decimalized values. See
+<code><a href='deb_decimal.html'>deb_decimal()</a></code>.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -208,7 +214,7 @@ represents non-decimal currencies as decimalized values.</p>
         <span class='kw'>d</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[3]&gt;
 #&gt; [1] 10:6s:0d 8:13s:0d 5:8s:0d 
 #&gt; # Bases: 20s 12d</div><div class='input'>
-<span class='co'># Set the `bases` of the object</span>
+<span class='co'># Set the bases of the object</span>
 <span class='fu'>deb_lsd</span>(<span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>8</span>, <span class='kw'>bases</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>60</span>, <span class='fl'>16</span>))</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
 #&gt; [1] 5:3s:8d
 #&gt; # Bases: 60s 16d</div><div class='input'><span class='fu'>deb_lsd</span>(<span class='kw'>l</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>10</span>, <span class='fl'>28</span>, <span class='fl'>5</span>),
@@ -229,6 +235,8 @@ represents non-decimal currencies as decimalized values.</p>
       <li><a href="#value">Value</a></li>
 
       <li><a href="#details">Details</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

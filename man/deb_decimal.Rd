@@ -27,20 +27,39 @@ Create an object of class \code{deb_decimal} to integrate non-decimal currencies
 into standardized forms of analysis provided by R.
 }
 \details{
-The \code{deb_decimal} class works in concert with the \code{deb_lsd} class, which
-maintains the tripartite unit structure of most non-decimal currencies.
+The \code{deb_decimal} class and the \code{debkeepr} package use the nomenclature of
+\href{https://en.wikipedia.org/wiki/£sd}{l, s, and d} to represent pounds,
+shillings, and pence units. The abbreviations derive from the Latin terms
+\href{https://en.wikipedia.org/wiki/French_livre}{libra},
+\href{https://en.wikipedia.org/wiki/Solidus_(coin)}{solidus}, and
+\href{https://en.wikipedia.org/wiki/Denarius}{denarius}. In the 8th century a
+solidus came to represent 12 denarii coins, and, for a time at least, 240
+denarii were made from one libra or pound of silver. The custom of counting
+coins in dozens (solidi) and scores of dozens (librae) spread throughout the
+Carolingian Empire and became engrained in much of Europe. However, a
+variety of accounting systems arose at different times that used
+\href{https://en.wikipedia.org/wiki/Non-decimal_currency}{other bases} for the
+solidus and denarius units. The \code{bases} attribute of \code{deb_decimal} objects
+makes it possible to specify alternative bases for the solidus and denarius
+units, while the \code{unit} attribute identifies the decimalized unit: either
+libra, solidus, or denarius.
 }
 \examples{
 
 deb_decimal(c(5.25, 3.825, 8.5))
 
-# Set the `unit` of the object
+# Set the unit of the object
 deb_decimal(c(105, 76.5, 170), unit = "s")
 deb_decimal(c(1260, 918, 240), unit = "d")
 
-# Set the `bases` of the object
+# Set the bases of the object
 deb_decimal(c(5.25, 3.825, 8.5), bases = c(60, 16))
 
 # Create a prototype or object of length 0
 deb_decimal()
+}
+\seealso{
+The \code{deb_decimal} class works in concert with the \code{deb_lsd} class, which
+maintains the tripartite unit structure of most non-decimal currencies.
+See \code{\link[=deb_lsd]{deb_lsd()}}.
 }

@@ -58,7 +58,8 @@ vec_ptype2.deb_decimal <- function(x, y, ...) {
 
 #' @method vec_ptype2.deb_decimal default
 #' @export
-vec_ptype2.deb_decimal.default <- function(x, y, ..., x_arg = "x", y_arg = "y") {
+vec_ptype2.deb_decimal.default <- function(x, y, ...,
+                                           x_arg = "x", y_arg = "y") {
   vec_default_ptype2(x, y, x_arg = x_arg, y_arg = y_arg)
 }
 

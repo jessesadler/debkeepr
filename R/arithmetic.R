@@ -1,9 +1,9 @@
 ## Arithmetic for deb_lsd and deb_decimal ##
 
-#' Math group with deb_lsd objects
+#' Math group with `deb_lsd` objects
 #'
 #' @description
-#' Math and Summary group of functions with deb_lsd objects.
+#' Math and Summary group of functions with `deb_lsd` objects.
 #' Implemented functions:
 #' - [Summary] group: `sum()`, `any()`, and `all()`.
 #' - [Math] group: `abs()`, `round()`, `signif()`, `ceiling()`,
@@ -21,10 +21,10 @@
 #' `deb_lsd` value. All values are normalized.
 #'
 #' @param x An object of class `deb_lsd`.
-#' @param ... deb_lsd vectors in `sum()` and arguments passed on to
+#' @param ... `deb_lsd` vectors in `sum()` and arguments passed on to
 #'   further methods in `mean()`.
-#' @param na.rm logical. Should missing values (including NaN) be removed?
-#' @param digits integer. Indicating the number of decimal places
+#' @param na.rm Logical. Should missing values (including `NaN``) be removed?
+#' @param digits Integer. Indicating the number of decimal places
 #'   (`round()`) or significant digits (`signif()`) to be used.
 #'
 #' @return A `deb_lsd` vector with normalized values.
@@ -196,7 +196,7 @@ vec_math.deb_lsd <- function(.fn, .x, ...) {
 
 # Arithmetic operators documentation --------------------------------------
 
-#' Arithmetic operations with deb_lsd and deb_decimal
+#' Arithmetic operations with `deb_lsd` and `deb_decimal`
 #'
 #' Implementation of arithmetic operations for pounds, shillings, and pence
 #' values as `deb_lsd` and `deb_decimal` vectors. Available operations are:
