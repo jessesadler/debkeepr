@@ -6,7 +6,7 @@
 \alias{deb_text.default}
 \alias{deb_text.deb_lsd}
 \alias{deb_text.deb_decimal}
-\title{Format deb_lsd and deb_decimal objects as text}
+\title{Format \code{deb_lsd} and \code{deb_decimal} objects as text}
 \usage{
 deb_text(x, ...)
 
@@ -25,29 +25,31 @@ deb_text(x, ...)
 \item{...}{Arguments passed on to further methods.}
 
 \item{digits}{Desired number of digits after the decimal mark to which to
-round the numeric values. Default is 0.}
+round the numeric values. Default is \code{0}.}
 
 \item{currency}{Character used for the currency mark. Default is pound sign.}
 
 \item{s.mark}{Character used following the shillings (s) unit.
-Default is "s.".}
+Default is \code{"s."}.}
 
-\item{d.mark}{Character used following the pence (d) unit. Default is "d.".}
+\item{d.mark}{Character used following the pence (d) unit.
+Default is \code{"d."}.}
 
-\item{sep}{Character to separate pounds, shillings, and pence units.}
+\item{sep}{Character to separate pounds, shillings, and pence units.
+Default is \code{" "}.}
 
 \item{big.mark}{Character used to mark intervals to the left of the decimal
-mark. Default is "," with default \code{big.interval} of 3.}
+mark. Default is \code{","} with default \code{big.interval} of \code{3}.}
 
-\item{decimal.mark}{Character used for decimal mark. Default is ".".}
+\item{decimal.mark}{Character used for decimal mark. Default is \code{"."}.}
 
-\item{suffix}{Character placed after the values. Default is "".}
+\item{suffix}{Character placed after the values. Default is \code{""}.}
 }
 \value{
 A Character vector of formatted values.
 }
 \description{
-Flexible way to nicely format deb_lsd and deb_decimal objects for
+Flexible way to nicely format \code{deb_lsd} and \code{deb_decimal} objects for
 use as labels or texts.
 }
 \details{

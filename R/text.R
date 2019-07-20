@@ -1,8 +1,8 @@
 ## Transform deb_lsd and deb_decimal to text for labels ##
 
-#' Format deb_lsd and deb_decimal objects as text
+#' Format `deb_lsd` and `deb_decimal` objects as text
 #'
-#' Flexible way to nicely format deb_lsd and deb_decimal objects for
+#' Flexible way to nicely format `deb_lsd` and `deb_decimal` objects for
 #' use as labels or texts.
 #'
 #' @details
@@ -22,16 +22,18 @@
 #'
 #' @param x An object of class `deb_lsd` or `deb_decimal`.
 #' @param digits Desired number of digits after the decimal mark to which to
-#'   round the numeric values. Default is 0.
+#'   round the numeric values. Default is `0`.
 #' @param currency Character used for the currency mark. Default is pound sign.
 #' @param s.mark Character used following the shillings (s) unit.
-#'   Default is "s.".
-#' @param d.mark Character used following the pence (d) unit. Default is "d.".
+#'   Default is `"s."`.
+#' @param d.mark Character used following the pence (d) unit.
+#'   Default is `"d."`.
 #' @param sep Character to separate pounds, shillings, and pence units.
+#'   Default is `" "`.
 #' @param big.mark Character used to mark intervals to the left of the decimal
-#'   mark. Default is "," with default `big.interval` of 3.
-#' @param decimal.mark Character used for decimal mark. Default is ".".
-#' @param suffix Character placed after the values. Default is "".
+#'   mark. Default is `","` with default `big.interval` of `3`.
+#' @param decimal.mark Character used for decimal mark. Default is `"."`.
+#' @param suffix Character placed after the values. Default is `""`.
 #' @param ... Arguments passed on to further methods.
 #'
 #' @return A Character vector of formatted values.

@@ -5,7 +5,7 @@
 \alias{deb_convert_bases}
 \alias{deb_convert_bases.deb_lsd}
 \alias{deb_convert_bases.deb_decimal}
-\title{Convert bases of pounds, shillings, and pence values}
+\title{Convert bases of \code{deb_lsd} and \code{deb_decimal} objects}
 \usage{
 deb_convert_bases(x, to)
 
@@ -16,7 +16,7 @@ deb_convert_bases(x, to)
 \arguments{
 \item{x}{An object of class \code{deb_lsd} or \code{deb_decimal}.}
 
-\item{to}{Numeric vector of length 2 representing the bases for the
+\item{to}{Numeric vector of length 2, representing the bases for the
 solidus and denarius units to be converted to.}
 }
 \value{

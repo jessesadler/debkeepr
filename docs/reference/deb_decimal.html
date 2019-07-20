@@ -168,8 +168,28 @@ conforms to the most widely used system of 1 pound = 20 shillings and
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The <code>deb_decimal</code> class works in concert with the <code>deb_lsd</code> class, which
-maintains the tripartite unit structure of most non-decimal currencies.</p>
+    <p>The <code>deb_decimal</code> class and the <code>debkeepr</code> package use the nomenclature of
+<a href='https://en.wikipedia.org/wiki/£sd'>l, s, and d</a> to represent pounds,
+shillings, and pence units. The abbreviations derive from the Latin terms
+<a href='https://en.wikipedia.org/wiki/French_livre'>libra</a>,
+<a href='https://en.wikipedia.org/wiki/Solidus_(coin)'>solidus</a>, and
+<a href='https://en.wikipedia.org/wiki/Denarius'>denarius</a>. In the 8th century a
+solidus came to represent 12 denarii coins, and, for a time at least, 240
+denarii were made from one libra or pound of silver. The custom of counting
+coins in dozens (solidi) and scores of dozens (librae) spread throughout the
+Carolingian Empire and became engrained in much of Europe. However, a
+variety of accounting systems arose at different times that used
+<a href='https://en.wikipedia.org/wiki/Non-decimal_currency'>other bases</a> for the
+solidus and denarius units. The <code>bases</code> attribute of <code>deb_decimal</code> objects
+makes it possible to specify alternative bases for the solidus and denarius
+units, while the <code>unit</code> attribute identifies the decimalized unit: either
+libra, solidus, or denarius.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>The <code>deb_decimal</code> class works in concert with the <code>deb_lsd</code> class, which
+maintains the tripartite unit structure of most non-decimal currencies.
+See <code><a href='deb_lsd.html'>deb_lsd()</a></code>.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -178,7 +198,7 @@ maintains the tripartite unit structure of most non-decimal currencies.</p>
 #&gt; [1] 5.250 3.825 8.500
 #&gt; # Unit: libra
 #&gt; # Bases: 20s 12d</div><div class='input'>
-<span class='co'># Set the `unit` of the object</span>
+<span class='co'># Set the unit of the object</span>
 <span class='fu'>deb_decimal</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>105</span>, <span class='fl'>76.5</span>, <span class='fl'>170</span>), <span class='kw'>unit</span> <span class='kw'>=</span> <span class='st'>"s"</span>)</div><div class='output co'>#&gt; &lt;deb_decimal[3]&gt;
 #&gt; [1] 105.0  76.5 170.0
 #&gt; # Unit: solidus
@@ -186,7 +206,7 @@ maintains the tripartite unit structure of most non-decimal currencies.</p>
 #&gt; [1] 1260  918  240
 #&gt; # Unit: denarius
 #&gt; # Bases: 20s 12d</div><div class='input'>
-<span class='co'># Set the `bases` of the object</span>
+<span class='co'># Set the bases of the object</span>
 <span class='fu'>deb_decimal</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>5.25</span>, <span class='fl'>3.825</span>, <span class='fl'>8.5</span>), <span class='kw'>bases</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>60</span>, <span class='fl'>16</span>))</div><div class='output co'>#&gt; &lt;deb_decimal[3]&gt;
 #&gt; [1] 5.250 3.825 8.500
 #&gt; # Unit: libra
@@ -204,6 +224,8 @@ maintains the tripartite unit structure of most non-decimal currencies.</p>
       <li><a href="#value">Value</a></li>
 
       <li><a href="#details">Details</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

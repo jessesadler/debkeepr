@@ -172,7 +172,7 @@ vec_cast.deb_decimal.deb_lsd <- function(x, to, ...) {
 
 # deb_lsd casting methods -------------------------------------------------
 
-#' Cast to deb_lsd
+#' Cast to `deb_lsd`
 #'
 #' Cast `x` to a `deb_lsd` vector.
 #'
@@ -239,7 +239,7 @@ deb_as_lsd.logical <- function(x, bases = c(20, 12), ...) {
 
 # deb_decimal casting methods ---------------------------------------------
 
-#' Cast to deb_decimal
+#' Cast to `deb_decimal`
 #'
 #' Cast `x` to a `deb_decimal` vector.
 #'

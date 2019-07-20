@@ -2,7 +2,7 @@
 
 # Constructor -------------------------------------------------------------
 
-#' Internal constructor to create deb_decimal type
+#' Internal constructor to create `deb_decimal` type
 #'
 #' Asserts that `x` is a `double()`, that `unit` is "l", "s", or "d", and
 #' that `bases` is an `integer()` of length 2. Creates the object through
@@ -33,8 +33,28 @@ new_decimal <- function(x = double(),
 #' Create an object of class `deb_decimal` to integrate non-decimal currencies
 #' into standardized forms of analysis provided by R.
 #'
+#' @details
+#' The `deb_decimal` class and the `debkeepr` package use the nomenclature of
+#' [l, s, and d](https://en.wikipedia.org/wiki/£sd) to represent pounds,
+#' shillings, and pence units. The abbreviations derive from the Latin terms
+#' [libra](https://en.wikipedia.org/wiki/French_livre),
+#' [solidus](https://en.wikipedia.org/wiki/Solidus_(coin)), and
+#' [denarius](https://en.wikipedia.org/wiki/Denarius). In the 8th century a
+#' solidus came to represent 12 denarii coins, and, for a time at least, 240
+#' denarii were made from one libra or pound of silver. The custom of counting
+#' coins in dozens (solidi) and scores of dozens (librae) spread throughout the
+#' Carolingian Empire and became engrained in much of Europe. However, a
+#' variety of accounting systems arose at different times that used
+#' [other bases](https://en.wikipedia.org/wiki/Non-decimal_currency) for the
+#' solidus and denarius units. The `bases` attribute of `deb_decimal` objects
+#' makes it possible to specify alternative bases for the solidus and denarius
+#' units, while the `unit` attribute identifies the decimalized unit: either
+#' libra, solidus, or denarius.
+#'
+#' @seealso
 #' The `deb_decimal` class works in concert with the `deb_lsd` class, which
 #' maintains the tripartite unit structure of most non-decimal currencies.
+#' See [`deb_lsd()`].
 #'
 #' @param x A numeric vector representing the decimalized values of a
 #'   non-decimal currency.
@@ -49,11 +69,11 @@ new_decimal <- function(x = double(),
 #'
 #' deb_decimal(c(5.25, 3.825, 8.5))
 #'
-#' # Set the `unit` of the object
+#' # Set the unit of the object
 #' deb_decimal(c(105, 76.5, 170), unit = "s")
 #' deb_decimal(c(1260, 918, 240), unit = "d")
 #'
-#' # Set the `bases` of the object
+#' # Set the bases of the object
 #' deb_decimal(c(5.25, 3.825, 8.5), bases = c(60, 16))
 #'
 #' # Create a prototype or object of length 0
@@ -74,7 +94,7 @@ deb_decimal <- function(x = double(),
 
 # Attribute access --------------------------------------------------------
 
-#' Access the `unit` attribute of a `deb_decimal` object.
+#' Access the unit attribute of a `deb_decimal` object.
 #'
 #' @keywords internal
 

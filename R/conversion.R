@@ -2,7 +2,7 @@
 
 # Convert bases -----------------------------------------------------------
 
-#' Convert bases of pounds, shillings, and pence values
+#' Convert bases of `deb_lsd` and `deb_decimal` objects
 #'
 #' Convert the bases of the solidus and denarius units of `deb_lsd` or
 #' `deb_decimal` objects.
@@ -11,7 +11,7 @@
 #' and denarius units associated with objects of class `deb_lsd` or `deb_lsd`.
 #'
 #' @param x An object of class `deb_lsd` or `deb_decimal`.
-#' @param to Numeric vector of length 2 representing the bases for the
+#' @param to Numeric vector of length 2, representing the bases for the
 #'   solidus and denarius units to be converted to.
 #'
 #' @return An object of the same class as `x` with converted `bases` attribute.
@@ -83,9 +83,9 @@ deb_convert_bases.deb_decimal <- function(x, to) {
 
 # Convert units -----------------------------------------------------------
 
-#' Convert the unit of a `deb_decimal` object
+#' Convert the unit of `deb_decimal` objects
 #'
-#' Convert the `unit` attribute of a `deb_decimal` object.
+#' Convert the `unit` attribute of `deb_decimal` objects.
 #'
 #' `deb_convert_unit()` converts the `unit` of a `deb_decimal` object to
 #' either `"l"`, `"s"`, or `"d"`. This changes the representation of the
@@ -96,7 +96,7 @@ deb_convert_bases.deb_decimal <- function(x, to) {
 #'   converted to. Choice of `"l"` (libra, the default), `"s"` (solidus),
 #'   or `"d"` (denarius).
 #'
-#' @return A `deb_decimal` object with a converted unit.
+#' @return A `deb_decimal` object with a converted `unit` attribute.
 #' @export
 #' @examples
 #'

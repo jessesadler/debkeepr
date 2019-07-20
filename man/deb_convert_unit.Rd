@@ -2,7 +2,7 @@
 % Please edit documentation in R/conversion.R
 \name{deb_convert_unit}
 \alias{deb_convert_unit}
-\title{Convert the unit of a \code{deb_decimal} object}
+\title{Convert the unit of \code{deb_decimal} objects}
 \usage{
 deb_convert_unit(x, to = c("l", "s", "d"))
 }
@@ -14,10 +14,10 @@ converted to. Choice of \code{"l"} (libra, the default), \code{"s"} (solidus),
 or \code{"d"} (denarius).}
 }
 \value{
-A \code{deb_decimal} object with a converted unit.
+A \code{deb_decimal} object with a converted \code{unit} attribute.
 }
 \description{
-Convert the \code{unit} attribute of a \code{deb_decimal} object.
+Convert the \code{unit} attribute of \code{deb_decimal} objects.
 }
 \details{
 \code{deb_convert_unit()} converts the \code{unit} of a \code{deb_decimal} object to

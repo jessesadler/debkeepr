@@ -1,6 +1,6 @@
 ## Create and separate a deb_lsd column ##
 
-#' Helpers to create and separate a deb_lsd column in a data frame
+#' Helpers to create and separate a `deb_lsd` column in a data frame
 #'
 #' @description
 #' - `deb_gather_lsd()` creates a `deb_lsd` column from separate variables
@@ -21,18 +21,18 @@
 #'
 #' @param df A data frame.
 #' @param l Pounds column: Unquoted name of a numeric variable corresponding
-#'   to the pounds or librae unit. Default is `l`.
+#'   to the pounds or libra unit. Default is `l`.
 #' @param s Shillings column: Unquoted name of numeric variable corresponding
-#'   to the shillings or solidi unit. Default is `s`.
+#'   to the shillings or solidus unit. Default is `s`.
 #' @param d Pence column: Unquoted name of numeric variable corresponding to
-#'   the pence or denarii unit. Default is `d`.
+#'   the pence or denarius unit. Default is `d`.
 #' @param bases Numeric vector of length 2 used to specify the bases for the
 #'   solidus or s and denarius or d units. Default is `c(20, 12)`, which
 #'   conforms to the most widely used system of 1 pound = 20 shillings and
 #'   1 shilling = 12 pence.
 #' @param lsd_col Unquoted name of the `deb_lsd` column create. Default
 #'   is `lsd`.
-#' @param replace Logical (default `FALSE`): when `TRUE` the newly created
+#' @param replace Logical (default `FALSE`). When `TRUE`, the newly created
 #'   column(s) will replace the one(s) used to create it/them.
 #' @param lsd `deb_lsd` column: Unquoted name of a `deb_lsd` column.
 #'   Default is `lsd`.
