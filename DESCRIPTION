@@ -31,7 +31,11 @@ Suggests:
     covr,
     knitr,
     testthat (>= 2.1.0),
-    rmarkdown
+    rmarkdown,
+    ggplot2,
+    igraph,
+    ggraph,
+    scales
 URL: https://github.com/jessesadler/debkeepr, https://jessesadler.github.io/debkeepr/
 BugReports: https://github.com/jessesadler/debkeepr/issues
 VignetteBuilder: knitr
