@@ -61,6 +61,8 @@ navbar:
       menu:
       - text: 1. Transactions in Richard Dafforne's Journal
         href: articles/transactions.html
+      - text: 2. Analysis of Richard Dafforne’s Journal and Ledger
+        href: articles/ledger.html
     - text: News
       href: news/index.html
   right:

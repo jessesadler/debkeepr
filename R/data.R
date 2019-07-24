@@ -65,7 +65,7 @@
 #'   * `date`: Date on which the transaction was entered into the journal. Date
 #'     conforms to the Anglican calendar that used the old Julian calendar with
 #'     the new year on 25 March. Encoded as a date object.
-#'   * `lsd`: List column of class lsd with pounds, shillings, and pence
+#'   * `lsd`: Column of class `deb_lsd` with pounds, shillings, and pence
 #'     values. Bases for shillings and pence are 20 and 12 respectively.
 #'   * `journal`: Page on which the transaction is recorded in the journal.
 #'   * `ledger`: The pages on which the transaction is recorded in the ledger.
