@@ -194,92 +194,11 @@ vec_math.deb_lsd <- function(.fn, .x, ...) {
 }
 
 
-# Arithmetic operators documentation --------------------------------------
-
-#' Arithmetic operations with `deb_lsd` and `deb_decimal`
-#'
-#' Implementation of arithmetic operations for pounds, shillings, and pence
-#' values as `deb_lsd` and `deb_decimal` vectors. Available operations are:
-#'
-#' * `deb_lsd` and `deb_lsd`: `+`, `-`, and `/`. The first two return a
-#'   `deb_lsd` vector; the last returns a numeric vector.
-#'
-#' * `deb_lsd` and `numeric`: `\*` and `/`. Both return a `deb_lsd` vector.
-#'
-#' * `numeric` and `deb_lsd`: `\*`, returning a `deb_lsd` vector.
-#'
-#' * `deb_decimal` and `deb_decimal`: `+`, `-`, and `/`. The first two
-#'   return a `deb_lsd` vector; the last returns a numeric vector.
-#'
-#' * `deb_decimal` and `numeric`: `+`, `-`, `/`, `\*`, `^`, `%%`, `%/%`.
-#'   All return a `deb_decimal` vector.
-#'
-#' * `numeric` and `deb_decimal`: `+`, `-`, `\*`. All return a
-#'   `deb_decimal` vector.
-#'
-#' * `deb_lsd` and `deb_decimal`: `+`, `-`, `/`. The first two return a
-#'   `deb_lsd` vector; the last returns a numeric vector.
-#'
-#' * `deb_decimal` and `deb_lsd`: `+`, `-`, `/`. The first two return a
-#'   `deb_lsd` vector; the last returns a numeric vector.
-#'
-#' @param x,y A pair of vectors.
-#' @param op Used internally to enable debkeepr to work with vctrs.
-#'
-#' @examples
-#'
-#' # Arithmetic with deb_lsd
-#' lsd1 <- deb_lsd(5, 16, 6)
-#' lsd2 <- deb_lsd(7, 6, 8)
-#'
-#' lsd1 + lsd2
-#' lsd2 - lsd1
-#' # Find the ration between two values
-#' lsd2 / lsd1
-#'
-#' # Works with deb_lsd and numeric values
-#' lsd2 / 2
-#' 2 * lsd1
-#'
-#' # Arithmetic with deb_decimal
-#' dec1 <- deb_decimal(8.45)
-#' dec2 <- deb_decimal(4.625)
-#'
-#' dec1 + dec2
-#' dec1 - dec2
-#'
-#' # Works with deb_decimal and numeric values
-#' dec1 + dec2 + 7/3 + 8.25
-#' dec1 / 2
-#' 2 * dec2
-#'
-#' # deb_lsd and deb_decimal returns a deb_lsd
-#' # except with division
-#'
-#' lsd1 + dec1
-#' dec1 - lsd2
-#'
-#' # When combing two deb-style vectors, the bases must match
-#'
-#' \dontrun{
-#' lsd1 + deb_lsd(5, 8, 3, bases = c(60, 16))
-#' dec1 - deb_decimal(3.25, bases = c(60, 16))
-#' }
-#'
-#' # When combining two `deb_decimal` vectors, the units must match
-#'
-#' \dontrun{
-#' dec1 + deb_decimal(23.25, unit = "s")
-#' }
-#'
-#' @name arithmetic
-NULL
-
 # deb_lsd arithmetic operators --------------------------------------------
 
 ## Arithmetic boilerplate ##
 
-#' @rdname arithmetic
+#' @rdname vctrs-compat
 #' @method vec_arith deb_lsd
 #' @export
 #' @export vec_arith.deb_lsd
@@ -287,7 +206,7 @@ vec_arith.deb_lsd <- function(op, x, y) {
   UseMethod("vec_arith.deb_lsd", y)
 }
 
-#' @rdname arithmetic
+#' @rdname vctrs-compat
 #' @method vec_arith.deb_lsd default
 #' @export
 vec_arith.deb_lsd.default <- function(op, x, y) {
@@ -319,7 +238,7 @@ lsd_minus <- function(x, y) {
   deb_normalize(ret)
 }
 
-#' @rdname arithmetic
+#' @rdname vctrs-compat
 #' @method vec_arith.deb_lsd deb_lsd
 #' @export
 vec_arith.deb_lsd.deb_lsd <- function(op, x, y) {
@@ -361,7 +280,7 @@ lsd_divide <- function(x, divisor) {
 
 # deb_lsd and numeric
 
-#' @rdname arithmetic
+#' @rdname vctrs-compat
 #' @method vec_arith.deb_lsd numeric
 #' @export
 vec_arith.deb_lsd.numeric <- function(op, x, y) {
@@ -375,7 +294,7 @@ vec_arith.deb_lsd.numeric <- function(op, x, y) {
 
 # numeric and deb_lsd
 
-#' @rdname arithmetic
+#' @rdname vctrs-compat
 #' @method vec_arith.numeric deb_lsd
 #' @export
 vec_arith.numeric.deb_lsd <- function(op, x, y) {
@@ -397,7 +316,7 @@ lsd_negate <- function(x) {
   x
 }
 
-#' @rdname arithmetic
+#' @rdname vctrs-compat
 #' @method vec_arith.deb_lsd MISSING
 #' @export
 vec_arith.deb_lsd.MISSING <- function(op, x, y) {
@@ -413,7 +332,7 @@ vec_arith.deb_lsd.MISSING <- function(op, x, y) {
 
 ## Arithmetic boilerplate ##
 
-#' @rdname arithmetic
+#' @rdname vctrs-compat
 #' @method vec_arith deb_decimal
 #' @export
 #' @export vec_arith.deb_decimal
@@ -421,7 +340,7 @@ vec_arith.deb_decimal <- function(op, x, y) {
   UseMethod("vec_arith.deb_decimal", y)
 }
 
-#' @rdname arithmetic
+#' @rdname vctrs-compat
 #' @method vec_arith.deb_decimal default
 #' @export
 vec_arith.deb_decimal.default <- function(op, x, y) {
@@ -431,7 +350,7 @@ vec_arith.deb_decimal.default <- function(op, x, y) {
 
 # Operators with deb_decimal and deb_decimal ------------------------------
 
-#' @rdname arithmetic
+#' @rdname vctrs-compat
 #' @method vec_arith.deb_decimal deb_decimal
 #' @export
 vec_arith.deb_decimal.deb_decimal <- function(op, x, y) {
@@ -453,7 +372,7 @@ vec_arith.deb_decimal.deb_decimal <- function(op, x, y) {
 
 # Operators with deb_decimal and numeric ----------------------------------
 
-#' @rdname arithmetic
+#' @rdname vctrs-compat
 #' @method vec_arith.deb_decimal numeric
 #' @export
 vec_arith.deb_decimal.numeric <- function(op, x, y) {
@@ -474,7 +393,7 @@ vec_arith.deb_decimal.numeric <- function(op, x, y) {
 
 # numeric and deb_decimal
 
-#' @rdname arithmetic
+#' @rdname vctrs-compat
 #' @method vec_arith.numeric deb_decimal
 #' @export
 vec_arith.numeric.deb_decimal <- function(op, x, y) {
@@ -492,7 +411,7 @@ vec_arith.numeric.deb_decimal <- function(op, x, y) {
 
 # Unary operators with deb_decimal ----------------------------------------
 
-#' @rdname arithmetic
+#' @rdname vctrs-compat
 #' @method vec_arith.deb_decimal MISSING
 #' @export
 vec_arith.deb_decimal.MISSING <- function(op, x, y) {
@@ -509,7 +428,7 @@ vec_arith.deb_decimal.MISSING <- function(op, x, y) {
 
 # deb_lsd and deb_decimal
 
-#' @rdname arithmetic
+#' @rdname vctrs-compat
 #' @method vec_arith.deb_lsd deb_decimal
 #' @export
 vec_arith.deb_lsd.deb_decimal <- function(op, x, y) {
@@ -526,7 +445,7 @@ vec_arith.deb_lsd.deb_decimal <- function(op, x, y) {
 
 # deb_decimal and deb_lsd
 
-#' @rdname arithmetic
+#' @rdname vctrs-compat
 #' @method vec_arith.deb_decimal deb_lsd
 #' @export
 vec_arith.deb_decimal.deb_lsd <- function(op, x, y) {
