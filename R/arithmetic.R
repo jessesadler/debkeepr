@@ -20,6 +20,11 @@
 #' Round family of functions only affect the denarius (`d`) unit of a
 #' `deb_lsd` value. All values are normalized.
 #'
+#' If you need a wider implementation of Math and Summary group functions,
+#' use a `deb_decimal` vector. However, `median()`, `quantile()`, and
+#' `summary()` are also not currently implemented for `deb_decimal` vectors.
+#' To use these functions cast `deb_lsd` and `deb_decimal` vectors to numeric.
+#'
 #' @param x An object of class `deb_lsd`.
 #' @param ... `deb_lsd` vectors in `sum()` and arguments passed on to
 #'   further methods in `mean()`.

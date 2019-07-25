@@ -61,6 +61,11 @@ including \code{median()}, \code{quantile()}, and \code{summary()}.
 
 Round family of functions only affect the denarius (\code{d}) unit of a
 \code{deb_lsd} value. All values are normalized.
+
+If you need a wider implementation of Math and Summary group functions,
+use a \code{deb_decimal} vector. However, \code{median()}, \code{quantile()}, and
+\code{summary()} are also not currently implemented for \code{deb_decimal} vectors.
+To use these functions cast \code{deb_lsd} and \code{deb_decimal} vectors to numeric.
 }
 \examples{
 x <- deb_lsd(l = c(5, 8, 12),
