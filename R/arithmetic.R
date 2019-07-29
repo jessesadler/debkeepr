@@ -355,21 +355,25 @@ vec_arith.deb_decimal.default <- function(op, x, y) {
 
 # Operators with deb_decimal and deb_decimal ------------------------------
 
+dec_arithmetic <- function(op, x, y) {
+  xy <- vctrs::vec_cast_common(x, y)
+  vctrs::vec_arith_base(op, xy[[1]], xy[[2]])
+}
+
 #' @rdname vctrs-compat
 #' @method vec_arith.deb_decimal deb_decimal
 #' @export
 vec_arith.deb_decimal.deb_decimal <- function(op, x, y) {
-  # Ensure bases and units are equal
+  # Ensure bases are equal
   bases_equal(x, y)
-  unit_equal(x, y)
 
   switch(
     op,
     "+" = ,
-    "-" = new_decimal(vctrs::vec_arith_base(op, x, y),
-                      unit = deb_unit(x),
+    "-" = new_decimal(dec_arithmetic(op, x, y),
+                      unit = unit_hierarchy(x, y),
                       bases = deb_bases(x)),
-    "/" = vctrs::vec_arith_base(op, x, y),
+    "/" = dec_arithmetic(op, x, y),
     vctrs::stop_incompatible_op(op, x, y)
   )
 }

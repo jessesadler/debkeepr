@@ -112,25 +112,7 @@ deb_convert_unit <- function(x, to = c("l", "s", "d")) {
   if (!deb_is_decimal(x)) {
     stop(call. = FALSE, "`x` must be a <deb_decimal> object.")
   }
-  to <- rlang::arg_match(to)
-  from <- deb_unit(x)
+  to_unit <- rlang::arg_match(to)
 
-  if (from == to) {
-    return(x)
-  }
-
-  bases <- deb_bases(x)
-
-  converted <- dplyr::case_when(
-    from == "l" & to == "s" ~ x * bases[[1]],
-    from == "l" & to == "d" ~ x * prod(bases),
-    from == "s" & to == "d" ~ x * bases[[2]],
-    from == "s" & to == "l" ~ x / bases[[1]],
-    from == "d" & to == "l" ~ x / prod(bases),
-    from == "d" & to == "s" ~ x / bases[[2]]
-  )
-
-  attr(converted, "unit") <- to
-
-  converted
+  vctrs::vec_cast(x, deb_decimal(unit = to_unit, bases = deb_bases(x)))
 }

@@ -111,10 +111,3 @@ test_that("bases tests equivalency", {
                            deb_decimal(1.25, bases = c(20, 16))),
                bases_error)
 })
-
-test_that("unit tests equivalency", {
-  expect_invisible(unit_equal(deb_decimal(1.25), deb_decimal(1.25)))
-  expect_invisible(unit_equal(deb_decimal(1.25, "s"), deb_decimal(1.25, "s")))
-  expect_error(unit_equal(deb_decimal(1.25), deb_decimal(1.25, "s")),
-    "`unit` attributes must be equal to combine <deb_decimal> objects.")
-})

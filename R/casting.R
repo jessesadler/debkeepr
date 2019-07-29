@@ -84,8 +84,28 @@ vec_cast.deb_decimal.default <- function(x, to, ...) {
 #' @export
 vec_cast.deb_decimal.deb_decimal <- function(x, to, ...) {
   bases_equal(x, to)
-  unit_equal(x, to)
-  x
+
+  from_unit <- deb_unit(x)
+  to_unit <- deb_unit(to)
+
+  if (from_unit == to_unit) {
+    return(x)
+  }
+
+  bases <- deb_bases(x)
+
+  converted <- dplyr::case_when(
+    from_unit == "l" & to_unit == "s" ~ x * bases[[1]],
+    from_unit == "l" & to_unit == "d" ~ x * prod(bases),
+    from_unit == "s" & to_unit == "d" ~ x * bases[[2]],
+    from_unit == "s" & to_unit == "l" ~ x / bases[[1]],
+    from_unit == "d" & to_unit == "l" ~ x / prod(bases),
+    from_unit == "d" & to_unit == "s" ~ x / bases[[2]]
+  )
+
+  attr(converted, "unit") <- to_unit
+
+  converted
 }
 
 # double to deb_decimal and back
