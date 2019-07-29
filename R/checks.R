@@ -89,7 +89,6 @@ unit_equal <- function(x, y) {
 }
 
 
-
 # Transaction checks ------------------------------------------------------
 
 transaction_check <- function(df,

@@ -64,9 +64,9 @@
 
 \method{vec_ptype2}{deb_decimal}(x, y, ...)
 
-\method{vec_proxy_equal}{deb_lsd}(x)
+\method{vec_proxy_equal}{deb_lsd}(x, ...)
 
-\method{vec_proxy_compare}{deb_lsd}(x)
+\method{vec_proxy_compare}{deb_lsd}(x, ...)
 }
 \arguments{
 \item{.fn}{Mathematical function.}

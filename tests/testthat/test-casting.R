@@ -76,8 +76,6 @@ test_that("vec_cast works with both deb_lsd and deb_decimal", {
   expect_error(vctrs::vec_cast(dec_bases, deb_decimal()), bases_error)
   expect_error(vctrs::vec_cast(dec_bases, deb_lsd()), bases_error)
   expect_error(vctrs::vec_cast(lsd_alt, deb_decimal()), bases_error)
-  expect_error(vctrs::vec_cast(dec_s, deb_decimal()),
-    "`unit` attributes must be equal to combine <deb_decimal> objects.")
 })
 
 
