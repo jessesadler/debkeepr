@@ -3,6 +3,20 @@
 %   R/comparison.R, R/debkeepr-package.R
 \name{vec_math.deb_lsd}
 \alias{vec_math.deb_lsd}
+\alias{vec_arith.deb_lsd}
+\alias{vec_arith.deb_lsd.default}
+\alias{vec_arith.deb_lsd.deb_lsd}
+\alias{vec_arith.deb_lsd.numeric}
+\alias{vec_arith.numeric.deb_lsd}
+\alias{vec_arith.deb_lsd.MISSING}
+\alias{vec_arith.deb_decimal}
+\alias{vec_arith.deb_decimal.default}
+\alias{vec_arith.deb_decimal.deb_decimal}
+\alias{vec_arith.deb_decimal.numeric}
+\alias{vec_arith.numeric.deb_decimal}
+\alias{vec_arith.deb_decimal.MISSING}
+\alias{vec_arith.deb_lsd.deb_decimal}
+\alias{vec_arith.deb_decimal.deb_lsd}
 \alias{vec_cast.deb_lsd}
 \alias{vec_cast.deb_decimal}
 \alias{vec_ptype2.deb_lsd}
@@ -14,6 +28,34 @@
 \usage{
 \method{vec_math}{deb_lsd}(.fn, .x, ...)
 
+\method{vec_arith}{deb_lsd}(op, x, y)
+
+\method{vec_arith.deb_lsd}{default}(op, x, y)
+
+\method{vec_arith.deb_lsd}{deb_lsd}(op, x, y)
+
+\method{vec_arith.deb_lsd}{numeric}(op, x, y)
+
+\method{vec_arith.numeric}{deb_lsd}(op, x, y)
+
+\method{vec_arith.deb_lsd}{MISSING}(op, x, y)
+
+\method{vec_arith}{deb_decimal}(op, x, y)
+
+\method{vec_arith.deb_decimal}{default}(op, x, y)
+
+\method{vec_arith.deb_decimal}{deb_decimal}(op, x, y)
+
+\method{vec_arith.deb_decimal}{numeric}(op, x, y)
+
+\method{vec_arith.numeric}{deb_decimal}(op, x, y)
+
+\method{vec_arith.deb_decimal}{MISSING}(op, x, y)
+
+\method{vec_arith.deb_lsd}{deb_decimal}(op, x, y)
+
+\method{vec_arith.deb_decimal}{deb_lsd}(op, x, y)
+
 \method{vec_cast}{deb_lsd}(x, to, ...)
 
 \method{vec_cast}{deb_decimal}(x, to, ...)
@@ -22,9 +64,9 @@
 
 \method{vec_ptype2}{deb_decimal}(x, y, ...)
 
-\method{vec_proxy_equal}{deb_lsd}(x)
+\method{vec_proxy_equal}{deb_lsd}(x, ...)
 
-\method{vec_proxy_compare}{deb_lsd}(x)
+\method{vec_proxy_compare}{deb_lsd}(x, ...)
 }
 \arguments{
 \item{.fn}{Mathematical function.}
@@ -32,6 +74,8 @@
 \item{.x}{Vector.}
 
 \item{...}{Arguments passed on to further methods.}
+
+\item{op}{Arithmetic operation.}
 
 \item{x, y}{Vectors.}
 

@@ -69,8 +69,9 @@ vec_ptype2.deb_decimal.default <- function(x, y, ...,
 #' @export
 vec_ptype2.deb_decimal.deb_decimal <- function(x, y, ...) {
   bases_equal(x, y)
-  unit_equal(x, y)
-  new_decimal(bases = deb_bases(x), unit = deb_unit(x))
+  unit <- unit_hierarchy(x, y)
+
+  new_decimal(bases = deb_bases(x), unit = unit)
 }
 
 # deb_decimal and double

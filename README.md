@@ -77,8 +77,8 @@ c(x, y)
 `debkeepr` introduces two classes that both deal with two interrelated
 problems associated with historical currencies. Firstly, historical
 currencies consisted of three separate non-decimal units: pounds,
-shillings, and pence. Secondly, the bases of the units
-[differed](https://en.wikipedia.org/wiki/Non-decimal_currency) by
+shillings, and pence. Secondly, the bases of the shillings and pence
+units [differed](https://en.wikipedia.org/wiki/Non-decimal_currency) by
 region, coinage, and era. The `deb_lsd` class maintains the tripartite
 structure of non-decimal currencies and provides a `bases` attribute to
 record the bases for the shillings and pence units. The `deb_decimal`
@@ -178,12 +178,11 @@ and pence values to specified non-decimal unit bases in the process of
 making various calculations. Even in the simplest arithmetic operations
 can be tricky with non-decimal currencies. `debkeepr` simplifies this
 process, while also making it safer to work with values that use
-different bases. The `bases` of `deb_lsd` and `deb_decimal` vectors can
-only be modified explicitly.
+different bases.
 
 For example, adding together a set of values by hand might result in the
 non-standard form of £131 62s. 41d. in a currency with the standard
-bases of 20 shillings per £1 and 12 pence per shilling.
+bases of 20 shillings per pound and 12 pence per shilling.
 
 ``` r
 # Normalize £131 62s. 41d.

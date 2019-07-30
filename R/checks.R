@@ -79,17 +79,6 @@ bases_equal <- function(x, y) {
 }
 
 
-# Units equivalent --------------------------------------------------------
-
-unit_equal <- function(x, y) {
-  if (!identical(attr(x, "unit"), attr(y, "unit"))) {
-    stop(call. = FALSE,
-         "`unit` attributes must be equal to combine <deb_decimal> objects.")
-  }
-}
-
-
-
 # Transaction checks ------------------------------------------------------
 
 transaction_check <- function(df,
