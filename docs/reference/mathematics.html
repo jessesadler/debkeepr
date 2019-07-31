@@ -98,6 +98,9 @@ including median(), quantile(), and summary()." />
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li>
+  <a href="../articles/debkeepr.html">Get started</a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Articles
@@ -214,6 +217,10 @@ further methods in <code><a href='https://www.rdocumentation.org/packages/base/t
     <p><code><a href='https://www.rdocumentation.org/packages/base/topics/sum'>sum()</a></code> and <code><a href='https://www.rdocumentation.org/packages/base/topics/cumsum'>cumsum()</a></code> return a normalized <code>deb_lsd</code> values.</p>
 <p>Round family of functions only affect the denarius (<code>d</code>) unit of a
 <code>deb_lsd</code> value. All values are normalized.</p>
+<p>If you need a wider implementation of Math and Summary group functions,
+use a <code>deb_decimal</code> vector. However, <code><a href='https://www.rdocumentation.org/packages/stats/topics/median'>median()</a></code>, <code><a href='https://www.rdocumentation.org/packages/stats/topics/quantile'>quantile()</a></code>, and
+<code><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary()</a></code> are also not currently implemented for <code>deb_decimal</code> vectors.
+To use these functions cast <code>deb_lsd</code> and <code>deb_decimal</code> vectors to numeric.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

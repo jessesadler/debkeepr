@@ -307,7 +307,7 @@ lsd == deb_convert_bases(lsd, to = c(20, 16))
 ```
 
 
-## `deb_lsd` and `deb_decimal` vectors in data frames
+## Data frames: `deb_lsd` and `deb_decimal` columns
 
 Thus far this vignette has only dealt with `debkeepr` objects as vectors, but, of course, these vectors also work as columns in data frames. `deb_lsd` and `deb_decimal` columns are essential to achieve `debkeepr`'s goal of facilitating reproducible analysis and visualization of larger sets of values found in account books. This section discusses how to create and manipulate data frames with `debkeepr` columns, the current differences between `deb_lsd` and `deb_decimal` columns in `dplyr`, and the process of visualizing the values with `ggplot2`.
 
@@ -390,11 +390,11 @@ dec_summary <- trans_summary %>%
 
 At this point, the data can be plotted as if the values were `deb_decimal` values were `numeric`. The only notable difference is the need to explicitly call `scale_y_continuous()` to avoid a message, but in this case, `scale_y_continuous()` is also used to label the axis with the pound sign.
 
-```{r ex-plot, fig.height = 4, fig.width = 6}
+```{r ex-plot, fig.height = 4, fig.width = 8}
 ggplot(data = dec_summary) + 
 	geom_linerange(aes(x = account_id, ymin = debit, ymax = credit)) + 
 	geom_point(aes(x = account_id, y = current)) +
-  geom_text(aes(x = account_id, y = current, label = current_text), nudge_x = 0.25) + 
+  geom_text(aes(x = account_id, y = current, label = current_text), nudge_x = 0.32) + 
   scale_y_continuous(labels = scales::dollar_format(prefix = "£")) + 
 	labs(x = "Accounts",
 		   y = "Value in pounds",
