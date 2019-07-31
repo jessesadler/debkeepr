@@ -230,7 +230,7 @@ deb_convert_bases(tr58_crowns, to = c(20, 12)) * 72 / 240
 Thus far the examples have all involved single pounds, shillings, and pence values even if multiple values went into the calculation. This is hardly accidental. Dafforne’s advised that every transfer of value between accounts should be listed separately.[^6] However, `debkeepr` and `lsd` objects allow the manipulation of multiple lsd values. Of course, it only makes sense to bring together multiple values into a single `deb_lsd` object if the exact same calculation is to be performed on the two values. Transactions 64 and 65 present such an opportunity. On 7 April 1634 the bookkeeper sent two bills of exchange to Arthur Mumperson in Danzig on behalf of Jacob Symonson. The money of account used by Mumperson in Danzig was the Polish florin of 30 gros and gros of 18 denar, and the exchange rate was again calculated in terms of pounds Flemish. In this case, both bills of exchange were sent at the rate of 232 gros per £1 Flemish. There are a couple of ways to calculate the ratio to be used within `deb_convert_bases()`, but the easiest way is to place the base for the gros unit over the rate.
 
 ```{r 64 and 65. florins to sterling}
-# 64 and 65. Create deb_lsd vectoir with florins
+# 64 and 65. Create deb_lsd vector with florins
 tr64_florins <- deb_lsd(l = c(3987, 1907), s = c(16, 26), d = 0, bases = c(30, 18))
 
 # Convert florins to sterling through pounds Flemish

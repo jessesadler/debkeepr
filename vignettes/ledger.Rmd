@@ -41,7 +41,7 @@ transactions <- dafforne_transactions
 accounts <- dafforne_accounts
 ```
 
-Note that `deb_lsd` objects are not currently fully integrated into `dplyr`. This means that certain `dplyr` functions such as `summarise()`, `mutate()`, and `arrange()` do not work with `deb_lsd` columns. The same is true for plotting with `ggplot2`. However, you can get around these limitations by converting `deb_lsd` values to `deb_decimal`. The following code simplifies the `dafforne_transactions` data frame and adds a `deb_decimal` column.
+Note that `deb_lsd` objects are not currently fully integrated into `dplyr`. This means that `dplyr` functions such as `summarise()`, `mutate()`, and `arrange()` do not work with `deb_lsd` columns. The same is true for plotting with `ggplot2`. However, you can get around these limitations by converting `deb_lsd` values to `deb_decimal`. The following code simplifies the `dafforne_transactions` data frame and adds a `deb_decimal` column.
 
 ```{r summary of transactions}
 (transactions <- transactions %>% 
@@ -96,7 +96,7 @@ deb_account_summary(transactions, lsd = dec) %>%
 	  geom_point(aes(x = account_id, y = current,
 	                 color = if_else(current == 0, "Closed", "Open"))) +
 	  scale_color_manual(values = c(Open = "black", Closed = "blue")) + 
-      scale_y_continuous(labels = scales::dollar_format(prefix = "£")) + 
+    scale_y_continuous(labels = scales::dollar_format(prefix = "£")) + 
 	  labs(x = "Accounts",
 		     y = "Pounds sterling",
 		     color = "Status",
@@ -118,7 +118,7 @@ The above plots treat either the transactions or accounts as discrete entities. 
 
 A network graph can show various types of information beyond the linking of the accounts by associating the edges or links and the nodes or accounts with variables from the data. The links between the accounts can be related to the total value of the transactions in each direction, and the nodes can be associated with either the total value they received (debit) or sent (credit). Extra information can be added to the nodes by joining the total values for each account with columns from the `dafforne_accounts` data. In this case, the "investor" variable is attached to the debit values for each account.
 
-```{r network-analysis, message = FALSE}
+```{r network-analysis, warning = FALSE}
 library(igraph)
 library(ggraph)
 
@@ -146,7 +146,8 @@ set.seed(240)
 ggraph(ledger_graph, layout = "kk") + 
   geom_edge_fan(aes(edge_alpha = dec),
                 width = 1,
-                arrow = arrow(length = unit(2, 'mm')),
+                arrow = arrow(length = unit(2, 'mm'),
+                              type = "closed"),
                 end_cap = circle(3, 'mm')) + 
   scale_edge_alpha(labels = scales::dollar_format(prefix = "£")) + 
   geom_node_point(aes(size = dec, color = investor), alpha = 0.9) + 
