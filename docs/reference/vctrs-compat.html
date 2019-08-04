@@ -89,6 +89,9 @@ work with vctrs." />
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li>
+  <a href="../articles/debkeepr.html">Get started</a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Articles
@@ -144,6 +147,48 @@ work with vctrs.</p>
 <span class='fu'>vec_math</span>(<span class='no'>.fn</span>, <span class='no'>.x</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for deb_lsd</span>
+<span class='fu'>vec_arith</span>(<span class='no'>op</span>, <span class='no'>x</span>, <span class='no'>y</span>)
+
+<span class='co'># S3 method for default</span>
+<span class='fu'>vec_arith.deb_lsd</span>(<span class='no'>op</span>, <span class='no'>x</span>, <span class='no'>y</span>)
+
+<span class='co'># S3 method for deb_lsd</span>
+<span class='fu'>vec_arith.deb_lsd</span>(<span class='no'>op</span>, <span class='no'>x</span>, <span class='no'>y</span>)
+
+<span class='co'># S3 method for numeric</span>
+<span class='fu'>vec_arith.deb_lsd</span>(<span class='no'>op</span>, <span class='no'>x</span>, <span class='no'>y</span>)
+
+<span class='co'># S3 method for deb_lsd</span>
+<span class='fu'>vec_arith.numeric</span>(<span class='no'>op</span>, <span class='no'>x</span>, <span class='no'>y</span>)
+
+<span class='co'># S3 method for MISSING</span>
+<span class='fu'>vec_arith.deb_lsd</span>(<span class='no'>op</span>, <span class='no'>x</span>, <span class='no'>y</span>)
+
+<span class='co'># S3 method for deb_decimal</span>
+<span class='fu'>vec_arith</span>(<span class='no'>op</span>, <span class='no'>x</span>, <span class='no'>y</span>)
+
+<span class='co'># S3 method for default</span>
+<span class='fu'>vec_arith.deb_decimal</span>(<span class='no'>op</span>, <span class='no'>x</span>, <span class='no'>y</span>)
+
+<span class='co'># S3 method for deb_decimal</span>
+<span class='fu'>vec_arith.deb_decimal</span>(<span class='no'>op</span>, <span class='no'>x</span>, <span class='no'>y</span>)
+
+<span class='co'># S3 method for numeric</span>
+<span class='fu'>vec_arith.deb_decimal</span>(<span class='no'>op</span>, <span class='no'>x</span>, <span class='no'>y</span>)
+
+<span class='co'># S3 method for deb_decimal</span>
+<span class='fu'>vec_arith.numeric</span>(<span class='no'>op</span>, <span class='no'>x</span>, <span class='no'>y</span>)
+
+<span class='co'># S3 method for MISSING</span>
+<span class='fu'>vec_arith.deb_decimal</span>(<span class='no'>op</span>, <span class='no'>x</span>, <span class='no'>y</span>)
+
+<span class='co'># S3 method for deb_decimal</span>
+<span class='fu'>vec_arith.deb_lsd</span>(<span class='no'>op</span>, <span class='no'>x</span>, <span class='no'>y</span>)
+
+<span class='co'># S3 method for deb_lsd</span>
+<span class='fu'>vec_arith.deb_decimal</span>(<span class='no'>op</span>, <span class='no'>x</span>, <span class='no'>y</span>)
+
+<span class='co'># S3 method for deb_lsd</span>
 <span class='fu'>vec_cast</span>(<span class='no'>x</span>, <span class='no'>to</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for deb_decimal</span>
@@ -156,10 +201,10 @@ work with vctrs.</p>
 <span class='fu'>vec_ptype2</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for deb_lsd</span>
-<span class='fu'>vec_proxy_equal</span>(<span class='no'>x</span>)
+<span class='fu'>vec_proxy_equal</span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for deb_lsd</span>
-<span class='fu'>vec_proxy_compare</span>(<span class='no'>x</span>)</pre>
+<span class='fu'>vec_proxy_compare</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -175,6 +220,10 @@ work with vctrs.</p>
     <tr>
       <th>...</th>
       <td><p>Arguments passed on to further methods.</p></td>
+    </tr>
+    <tr>
+      <th>op</th>
+      <td><p>Arithmetic operation.</p></td>
     </tr>
     <tr>
       <th>x, y</th>

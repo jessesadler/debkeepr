@@ -6,13 +6,8 @@
 \alias{debkeepr-package}
 \title{debkeepr: Analysis of Non-Decimal Currencies and Double-Entry Bookkeeping}
 \description{
-`debkeepr` provides an interface for analyzing non-decimal
-    currencies that use the tripartite system of pounds, shillings, and pence
-    through the implementation of the `lsd` class. `debkeepr` includes
-    functions to apply arithmetic and financial operations to single or
-    multiple values and to analyze account books that use either
-    single-entry bookkeeping or double-entry bookkeeping with the latter
-    providing the name for `debkeepr`.
+Analysis of historical non-decimal currencies that use the
+    tripartite system of pounds, shillings, and pence.
 }
 \seealso{
 Useful links:

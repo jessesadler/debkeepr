@@ -3,7 +3,7 @@
 \docType{data}
 \name{dafforne_transactions}
 \alias{dafforne_transactions}
-\title{Transactions from the example journal and ledger of Richard Dafforne}
+\title{Transactions from the practice journal and ledger of Richard Dafforne}
 \format{A data frame with 177 rows and 8 variables.}
 \source{
 Richard Dafforne, \emph{The Merchant's Mirrour, Or Directions for the}
@@ -14,14 +14,14 @@ Richard Dafforne, \emph{The Merchant's Mirrour, Or Directions for the}
 dafforne_transactions
 }
 \description{
-A data set of the transactions from the first example journal and ledger in
+A data set of the transactions from the first practice journal and ledger in
 Richard Dafforne's accounting manual from 1660 called \emph{The Merchant's}
 \emph{Mirrour}. By 1660 \emph{The Merchant's Mirrour} was in its third edition, and
 its contents had been printed in the well-known merchant manual of Gerard
 Malynes, \emph{Consuetudo Vel Lex Mercatoira} since the 1636 edition, making it
 one of the most popular bookkeeping manuals in 17th-century England. The
 data set is meant to be used in conjunction with \code{dafforne_accounts}. It
-contains the transactions in the example journal and ledger that Dafforne
+contains the transactions in the practice journal and ledger that Dafforne
 used to teach double-entry bookkeeping practices.
 }
 \details{

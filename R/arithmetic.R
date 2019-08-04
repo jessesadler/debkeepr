@@ -272,7 +272,8 @@ lsd_multiply <- function(x, multiplier) {
   deb_normalize(ret)
 }
 
-lsd_divide <- function(x, divisor) {
+# Divide lsd by numeric
+lsd_dividend <- function(x, divisor) {
   c(x, divisor) %<-% vctrs::vec_recycle_common(x, divisor)
 
   ret <- new_lsd(vctrs::field(x, "l") / divisor,
@@ -281,6 +282,15 @@ lsd_divide <- function(x, divisor) {
                  bases = deb_bases(x))
 
   deb_normalize(ret)
+}
+
+# Divide numeric by lsd
+lsd_divisor <- function(dividend, x) {
+  c(dividend, x) %<-% vctrs::vec_recycle_common(dividend, x)
+
+  ret <- dividend / deb_as_decimal(x)
+
+  deb_as_lsd(ret)
 }
 
 # deb_lsd and numeric
@@ -292,7 +302,7 @@ vec_arith.deb_lsd.numeric <- function(op, x, y) {
   switch(
     op,
     "*" = lsd_multiply(x, multiplier = y),
-    "/" = lsd_divide(x, divisor = y),
+    "/" = lsd_dividend(x, divisor = y),
     vctrs::stop_incompatible_op(op, x, y)
   )
 }
@@ -306,6 +316,7 @@ vec_arith.numeric.deb_lsd <- function(op, x, y) {
   switch(
     op,
     "*" = lsd_multiply(y, multiplier = x),
+    "/" = lsd_divisor(dividend = x, y),
     vctrs::stop_incompatible_op(op, x, y)
   )
 }
@@ -410,9 +421,10 @@ vec_arith.numeric.deb_decimal <- function(op, x, y) {
     op,
     "+" = ,
     "-" = ,
-    "*" = new_decimal(vctrs::vec_arith_base(op, x, y),
-                        unit = deb_unit(y),
-                        bases = deb_bases(y)),
+    "*" = ,
+    "/" = new_decimal(vctrs::vec_arith_base(op, x, y),
+                      unit = deb_unit(y),
+                      bases = deb_bases(y)),
     vctrs::stop_incompatible_op(op, x, y)
   )
 }

@@ -138,6 +138,9 @@ test_that("Arithmetic operators work with two deb_lsd objects", {
   expect_equal(lsd2 - lsd1, deb_lsd(3, 9, 11))
   # division
   expect_equal(deb_lsd(10, 13, 4) / lsd2, 2)
+  expect_equal(1 / deb_lsd(0, 12, 0), deb_lsd(1, 13, 4))
+  expect_equal(as.numeric(1 / deb_lsd(0, 36, 10)),
+               deb_lsd(1, 0, 0) / deb_lsd(0, 36, 10))
   # Incompatible op
   expect_error(lsd1 * lsd2)
 })
@@ -150,7 +153,7 @@ test_that("Arithmetic operators work with deb_lsd and numeric", {
   expect_error(lsd1 + 3)
   # numeric and deb_lsd
   expect_equal(3 * lsd2, deb_lsd(16, 0, 0))
-  expect_error(3 / lsd1)
+  expect_error(3 %% lsd1)
 })
 
 
@@ -182,8 +185,10 @@ test_that("Arithmetic operators work with deb_lsd and numeric", {
   # numeric and deb_decimal
   expect_equal(1.5 + dec_l, deb_decimal(3.3375))
   expect_equal(1.5 - dec_l, deb_decimal(-0.3375))
+  expect_equal(1 / deb_decimal(0.6), deb_decimal(1 + 2 / 3))
   expect_equal(2 * dec_s, deb_decimal(73.5, unit = "s"))
-  expect_error(2 / dec_s)
+  # Error
+  expect_error(1 %% dec_l)
 })
 
 

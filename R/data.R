@@ -1,15 +1,15 @@
 ## Documentation for data ##
 
-#' Accounts from the example journal and ledger of Richard Dafforne
+#' Accounts from the practice journal and ledger of Richard Dafforne
 #'
-#' A data set of the accounts from the first example journal and ledger in
+#' A data set of the accounts from the first practice journal and ledger in
 #' Richard Dafforne's accounting manual from 1660 called *The Merchant's*
 #' *Mirrour*. By 1660 *The Merchant's Mirrour* was in its third edition, and
 #' its contents had been printed in the well-known merchant manual of Gerard
 #' Malynes, *Consuetudo Vel Lex Mercatoira* since the 1636 edition, making it
 #' one of the most popular bookkeeping manuals in 17th-century England. The
 #' data set is meant to be used in conjunction with `dafforne_transactions`.
-#' It contains information on the accounts found in the example journal and
+#' It contains information on the accounts found in the practice journal and
 #' ledger that Dafforne used to teach double-entry bookkeeping practices.
 #'
 #' The data set does not include the Balance account that Dafforne uses to
@@ -34,16 +34,16 @@
 #'   1660)
 "dafforne_accounts"
 
-#' Transactions from the example journal and ledger of Richard Dafforne
+#' Transactions from the practice journal and ledger of Richard Dafforne
 #'
-#' A data set of the transactions from the first example journal and ledger in
+#' A data set of the transactions from the first practice journal and ledger in
 #' Richard Dafforne's accounting manual from 1660 called *The Merchant's*
 #' *Mirrour*. By 1660 *The Merchant's Mirrour* was in its third edition, and
 #' its contents had been printed in the well-known merchant manual of Gerard
 #' Malynes, *Consuetudo Vel Lex Mercatoira* since the 1636 edition, making it
 #' one of the most popular bookkeeping manuals in 17th-century England. The
 #' data set is meant to be used in conjunction with `dafforne_accounts`. It
-#' contains the transactions in the example journal and ledger that Dafforne
+#' contains the transactions in the practice journal and ledger that Dafforne
 #' used to teach double-entry bookkeeping practices.
 #'
 #' The data set does not include the last 16 transactions recorded in the

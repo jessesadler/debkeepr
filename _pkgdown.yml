@@ -57,6 +57,8 @@ navbar:
       href: index.html
     - text: Reference
       href: reference/index.html
+    - text: Get started
+      href: articles/debkeepr.html
     - text: Articles
       menu:
       - text: 1. Transactions in Richard Dafforne's Journal

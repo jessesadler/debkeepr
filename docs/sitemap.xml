@@ -4,9 +4,6 @@
     <loc>https://jessesadler.github.io/debkeepr//index.html</loc>
   </url>
   <url>
-    <loc>https://jessesadler.github.io/debkeepr//reference/arithmetic.html</loc>
-  </url>
-  <url>
     <loc>https://jessesadler.github.io/debkeepr//reference/cast-decimal.html</loc>
   </url>
   <url>
@@ -77,6 +74,9 @@
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr//reference/vctrs-compat.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr//articles/debkeepr.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr//articles/ledger.html</loc>
