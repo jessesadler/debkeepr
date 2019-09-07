@@ -222,6 +222,9 @@ vec_cast.deb_decimal.deb_lsd <- function(x, to, ...) {
 #'
 #' # Use the bases argument to apply non-default bases
 #' deb_as_lsd(x, bases = c(60, 16))
+#'
+#' @name cast-lsd
+NULL
 
 #' @rdname cast-lsd
 #' @export
@@ -298,9 +301,9 @@ deb_as_lsd.logical <- function(x, bases = c(20, 12), ...) {
 #' # Use the unit and bases arguments to specify
 #' # the unit and apply non-default bases
 #' deb_as_decimal(y, unit = "s", bases = c(60, 16))
-
-#' @rdname cast-decimal
-#' @export
+#'
+#' @name cast-decimal
+NULL
 
 #' @rdname cast-decimal
 #' @export
