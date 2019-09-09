@@ -234,12 +234,6 @@ deb_as_lsd  <- function(x, ...) {
 
 #' @rdname cast-lsd
 #' @export
-deb_as_lsd.default <- function(x, ...) {
-  vctrs::vec_default_cast(x, deb_lsd())
-}
-
-#' @rdname cast-lsd
-#' @export
 deb_as_lsd.deb_lsd <- function(x, ...) x
 
 #' @rdname cast-lsd
@@ -309,12 +303,6 @@ NULL
 #' @export
 deb_as_decimal <- function(x, ...) {
   UseMethod("deb_as_decimal")
-}
-
-#' @rdname cast-decimal
-#' @export
-deb_as_decimal.default <- function(x, ...) {
-  vctrs::vec_default_cast(x, deb_decimal())
 }
 
 #' @rdname cast-decimal
