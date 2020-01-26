@@ -11,26 +11,32 @@
 \alias{deb_balance}
 \title{Analysis of double-entry bookkeeping}
 \usage{
-deb_account(df, account_id, credit = credit, debit = debit,
-  lsd = lsd, na.rm = FALSE)
+deb_account(
+  df,
+  account_id,
+  credit = credit,
+  debit = debit,
+  lsd = lsd,
+  na.rm = FALSE
+)
 
-deb_account_summary(df, credit = credit, debit = debit, lsd = lsd,
-  na.rm = FALSE)
+deb_account_summary(
+  df,
+  credit = credit,
+  debit = debit,
+  lsd = lsd,
+  na.rm = FALSE
+)
 
-deb_credit(df, credit = credit, debit = debit, lsd = lsd,
-  na.rm = FALSE)
+deb_credit(df, credit = credit, debit = debit, lsd = lsd, na.rm = FALSE)
 
-deb_debit(df, credit = credit, debit = debit, lsd = lsd,
-  na.rm = FALSE)
+deb_debit(df, credit = credit, debit = debit, lsd = lsd, na.rm = FALSE)
 
-deb_current(df, credit = credit, debit = debit, lsd = lsd,
-  na.rm = FALSE)
+deb_current(df, credit = credit, debit = debit, lsd = lsd, na.rm = FALSE)
 
-deb_open(df, credit = credit, debit = debit, lsd = lsd,
-  na.rm = FALSE)
+deb_open(df, credit = credit, debit = debit, lsd = lsd, na.rm = FALSE)
 
-deb_balance(df, credit = credit, debit = debit, lsd = lsd,
-  na.rm = FALSE)
+deb_balance(df, credit = credit, debit = debit, lsd = lsd, na.rm = FALSE)
 }
 \arguments{
 \item{df}{A data frame with at least credit, debit, and lsd variables.}

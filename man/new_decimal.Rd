@@ -4,8 +4,7 @@
 \alias{new_decimal}
 \title{Internal constructor to create \code{deb_decimal} type}
 \usage{
-new_decimal(x = double(), unit = c("l", "s", "d"), bases = c(20L,
-  12L))
+new_decimal(x = double(), unit = c("l", "s", "d"), bases = c(20L, 12L))
 }
 \value{
 An object of class \code{deb_decimal}.
