@@ -17,7 +17,7 @@ Imports:
     dplyr (>= 0.8.1),
     magrittr,
     rlang (>= 0.4.0),
-    vctrs (>= 0.2.0),
+    vctrs (>= 0.2.4),
     zeallot,
     tibble
 Roxygen: list(markdown = TRUE)
