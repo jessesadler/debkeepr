@@ -93,6 +93,11 @@ deb_decimal <- function(x = double(),
 }
 
 
+# Compatibility with S4 ---------------------------------------------------
+
+methods::setOldClass(c("deb_decimal", "vctrs_vctr"))
+
+
 # Attribute access --------------------------------------------------------
 
 #' Access the unit attribute of a `deb_decimal` object.

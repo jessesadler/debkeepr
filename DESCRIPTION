@@ -19,7 +19,8 @@ Imports:
     rlang (>= 0.4.5),
     vctrs (>= 0.3.0),
     zeallot,
-    tibble
+    tibble,
+    methods
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Suggests: 

@@ -112,6 +112,12 @@ deb_lsd <- function(l = double(),
 }
 
 
+
+# Compatibility with S4 ---------------------------------------------------
+
+methods::setOldClass(c("deb_lsd", "vctrs_rcrd", "vctrs_vctr"))
+
+
 # Attribute access --------------------------------------------------------
 
 #' Access the bases attribute of a `deb_lsd` object.
