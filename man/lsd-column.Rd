@@ -6,11 +6,17 @@
 \alias{deb_spread_lsd}
 \title{Helpers to create and separate a \code{deb_lsd} column in a data frame}
 \usage{
-deb_gather_lsd(df, l = l, s = s, d = d, bases = c(20, 12),
-  lsd_col = lsd, replace = FALSE)
+deb_gather_lsd(
+  df,
+  l = l,
+  s = s,
+  d = d,
+  bases = c(20, 12),
+  lsd_col = lsd,
+  replace = FALSE
+)
 
-deb_spread_lsd(df, lsd = lsd, l_col = l, s_col = s, d_col = d,
-  replace = FALSE)
+deb_spread_lsd(df, lsd = lsd, l_col = l, s_col = s, d_col = d, replace = FALSE)
 }
 \arguments{
 \item{df}{A data frame.}

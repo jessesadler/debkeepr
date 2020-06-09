@@ -22,7 +22,8 @@ new_decimal <- function(x = double(),
   vctrs::new_vctr(x,
                   unit = unit,
                   bases = bases,
-                  class = "deb_decimal")
+                  class = "deb_decimal",
+                  inherit_base_type = TRUE)
 }
 
 

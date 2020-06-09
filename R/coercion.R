@@ -96,8 +96,6 @@ vec_ptype2.integer.deb_decimal <- function(x, y, ...) y
 
 # deb_lsd and deb_decimal -------------------------------------------------
 
-# deb_lsd and double
-
 #' @method vec_ptype2.deb_lsd deb_decimal
 #' @export
 vec_ptype2.deb_lsd.deb_decimal <- function(x, y, ...) x

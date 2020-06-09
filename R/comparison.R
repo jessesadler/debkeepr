@@ -1,4 +1,6 @@
-## Equality and comparison for
+## Equality and comparison for deb_lsd ##
+
+# deb_decimal gets this for free because it is based on double()
 
 # deb_lsd equality --------------------------------------------------------
 

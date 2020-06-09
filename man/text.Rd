@@ -12,12 +12,28 @@ deb_text(x, ...)
 
 \method{deb_text}{default}(x, ...)
 
-\method{deb_text}{deb_lsd}(x, digits = 0, currency = "£",
-  s.mark = "s.", d.mark = "d.", sep = " ", big.mark = ",",
-  decimal.mark = ".", suffix = "", ...)
+\method{deb_text}{deb_lsd}(
+  x,
+  digits = 0,
+  currency = "£",
+  s.mark = "s.",
+  d.mark = "d.",
+  sep = " ",
+  big.mark = ",",
+  decimal.mark = ".",
+  suffix = "",
+  ...
+)
 
-\method{deb_text}{deb_decimal}(x, digits = 0, currency = "£",
-  big.mark = ",", decimal.mark = ".", suffix = "", ...)
+\method{deb_text}{deb_decimal}(
+  x,
+  digits = 0,
+  currency = "£",
+  big.mark = ",",
+  decimal.mark = ".",
+  suffix = "",
+  ...
+)
 }
 \arguments{
 \item{x}{An object of class \code{deb_lsd} or \code{deb_decimal}.}
