@@ -2,9 +2,15 @@
 
 # deb_decimal gets this for free because it is based on double()
 
+#' Equality and comparison
+#' @param x A deb_lsd object.
+#' @param ... Arguments passed on to further methods.
+#' @name comparison
+NULL
+
 # deb_lsd equality --------------------------------------------------------
 
-#' @rdname vctrs-compat
+#' @rdname comparison
 #' @method vec_proxy_equal deb_lsd
 #' @export
 #' @export vec_proxy_equal.deb_lsd
@@ -18,7 +24,7 @@ vec_proxy_equal.deb_lsd <- function(x, ...) {
 
 # deb_lsd comparison ------------------------------------------------------
 
-#' @rdname vctrs-compat
+#' @rdname comparison
 #' @method vec_proxy_compare deb_lsd
 #' @export
 #' @export vec_proxy_compare.deb_lsd

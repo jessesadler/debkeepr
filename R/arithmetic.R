@@ -187,31 +187,38 @@ trunc.deb_lsd <- function(x, ...) {
   deb_normalize(x)
 }
 
-# Methods
-
-#' @rdname vctrs-compat
-#' @method vec_math deb_lsd
+#' Error message for unimplemented mathematics functions
+#' @param .fn A mathematical function from the base package.
+#' @param .x A vector.
+#' @param ... Additional arguments passed to `.fn`.
 #' @export
-#' @export vec_math.deb_lsd
 vec_math.deb_lsd <- function(.fn, .x, ...) {
   stop(call. = FALSE,
        paste0("`", .fn, ".", class(.x)[[1]], "()` not implemented."))
 }
 
 
+
+# Arithmetic operators ----------------------------------------------------
+
+#' Arithmetic operations for debvctrs
+#' @param x,y Vectors.
+#' @param op Arithmetic operation.
+#' @name arithmetic
+NULL
+
 # deb_lsd arithmetic operators --------------------------------------------
 
 ## Arithmetic boilerplate ##
 
-#' @rdname vctrs-compat
+#' @rdname arithmetic
 #' @method vec_arith deb_lsd
 #' @export
-#' @export vec_arith.deb_lsd
 vec_arith.deb_lsd <- function(op, x, y) {
   UseMethod("vec_arith.deb_lsd", y)
 }
 
-#' @rdname vctrs-compat
+#' @rdname arithmetic
 #' @method vec_arith.deb_lsd default
 #' @export
 vec_arith.deb_lsd.default <- function(op, x, y) {
@@ -243,7 +250,7 @@ lsd_minus <- function(x, y) {
   deb_normalize(ret)
 }
 
-#' @rdname vctrs-compat
+#' @rdname arithmetic
 #' @method vec_arith.deb_lsd deb_lsd
 #' @export
 vec_arith.deb_lsd.deb_lsd <- function(op, x, y) {
@@ -295,7 +302,7 @@ lsd_divisor <- function(dividend, x) {
 
 # deb_lsd and numeric
 
-#' @rdname vctrs-compat
+#' @rdname arithmetic
 #' @method vec_arith.deb_lsd numeric
 #' @export
 vec_arith.deb_lsd.numeric <- function(op, x, y) {
@@ -309,7 +316,7 @@ vec_arith.deb_lsd.numeric <- function(op, x, y) {
 
 # numeric and deb_lsd
 
-#' @rdname vctrs-compat
+#' @rdname arithmetic
 #' @method vec_arith.numeric deb_lsd
 #' @export
 vec_arith.numeric.deb_lsd <- function(op, x, y) {
@@ -332,7 +339,7 @@ lsd_negate <- function(x) {
   x
 }
 
-#' @rdname vctrs-compat
+#' @rdname arithmetic
 #' @method vec_arith.deb_lsd MISSING
 #' @export
 vec_arith.deb_lsd.MISSING <- function(op, x, y) {
@@ -348,15 +355,14 @@ vec_arith.deb_lsd.MISSING <- function(op, x, y) {
 
 ## Arithmetic boilerplate ##
 
-#' @rdname vctrs-compat
+#' @rdname arithmetic
 #' @method vec_arith deb_decimal
 #' @export
-#' @export vec_arith.deb_decimal
 vec_arith.deb_decimal <- function(op, x, y) {
   UseMethod("vec_arith.deb_decimal", y)
 }
 
-#' @rdname vctrs-compat
+#' @rdname arithmetic
 #' @method vec_arith.deb_decimal default
 #' @export
 vec_arith.deb_decimal.default <- function(op, x, y) {
@@ -371,7 +377,7 @@ dec_arithmetic <- function(op, x, y) {
   vctrs::vec_arith_base(op, xy[[1]], xy[[2]])
 }
 
-#' @rdname vctrs-compat
+#' @rdname arithmetic
 #' @method vec_arith.deb_decimal deb_decimal
 #' @export
 vec_arith.deb_decimal.deb_decimal <- function(op, x, y) {
@@ -392,7 +398,7 @@ vec_arith.deb_decimal.deb_decimal <- function(op, x, y) {
 
 # Operators with deb_decimal and numeric ----------------------------------
 
-#' @rdname vctrs-compat
+#' @rdname arithmetic
 #' @method vec_arith.deb_decimal numeric
 #' @export
 vec_arith.deb_decimal.numeric <- function(op, x, y) {
@@ -413,7 +419,7 @@ vec_arith.deb_decimal.numeric <- function(op, x, y) {
 
 # numeric and deb_decimal
 
-#' @rdname vctrs-compat
+#' @rdname arithmetic
 #' @method vec_arith.numeric deb_decimal
 #' @export
 vec_arith.numeric.deb_decimal <- function(op, x, y) {
@@ -432,7 +438,7 @@ vec_arith.numeric.deb_decimal <- function(op, x, y) {
 
 # Unary operators with deb_decimal ----------------------------------------
 
-#' @rdname vctrs-compat
+#' @rdname arithmetic
 #' @method vec_arith.deb_decimal MISSING
 #' @export
 vec_arith.deb_decimal.MISSING <- function(op, x, y) {
@@ -449,7 +455,7 @@ vec_arith.deb_decimal.MISSING <- function(op, x, y) {
 
 # deb_lsd and deb_decimal
 
-#' @rdname vctrs-compat
+#' @rdname arithmetic
 #' @method vec_arith.deb_lsd deb_decimal
 #' @export
 vec_arith.deb_lsd.deb_decimal <- function(op, x, y) {
@@ -466,7 +472,7 @@ vec_arith.deb_lsd.deb_decimal <- function(op, x, y) {
 
 # deb_decimal and deb_lsd
 
-#' @rdname vctrs-compat
+#' @rdname arithmetic
 #' @method vec_arith.deb_decimal deb_lsd
 #' @export
 vec_arith.deb_decimal.deb_lsd <- function(op, x, y) {

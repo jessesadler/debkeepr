@@ -106,18 +106,6 @@ methods::setOldClass(c("deb_decimal", "vctrs_vctr"))
 
 deb_unit <- function(x) attr(x, "unit")
 
-# To print full name of unit
-unit_word <- function(x) {
-  if (attr(x, "unit") == "l") {
-    unit <- "libra"
-  } else if (attr(x, "unit") == "s") {
-    unit <- "solidus"
-  } else {
-    unit <- "denarius"
-  }
-  unit
-}
-
 
 # Class check -------------------------------------------------------------
 
@@ -143,6 +131,22 @@ deb_is_decimal <- function(x) inherits(x, "deb_decimal")
 # No format.deb_decimal to keep default vector printing
 
 # Add footer with attribute data
+
+#' Print full name of unit in footer
+#'
+#' @param x A deb_decimal object.
+#' @keywords internal
+
+unit_word <- function(x) {
+  if (attr(x, "unit") == "l") {
+    unit <- "libra"
+  } else if (attr(x, "unit") == "s") {
+    unit <- "solidus"
+  } else {
+    unit <- "denarius"
+  }
+  unit
+}
 
 #' @export
 obj_print_footer.deb_decimal <- function(x, ...) {
