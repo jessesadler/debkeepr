@@ -16,9 +16,9 @@ NULL
 #' @export vec_proxy_equal.deb_lsd
 vec_proxy_equal.deb_lsd <- function(x, ...) {
   x <- deb_normalize(x)
-  data.frame(l = vctrs::field(x, "l"),
-             s = vctrs::field(x, "s"),
-             d = vctrs::field(x, "d"))
+  data.frame(l = field(x, "l"),
+             s = field(x, "s"),
+             d = field(x, "d"))
 }
 
 
@@ -29,6 +29,6 @@ vec_proxy_equal.deb_lsd <- function(x, ...) {
 #' @export
 #' @export vec_proxy_compare.deb_lsd
 vec_proxy_compare.deb_lsd <- function(x, ...) {
-  vctrs::field(x, "l") + vctrs::field(x, "s") /
-    deb_bases(x)[[1]] + vctrs::field(x, "d") / prod(deb_bases(x))
+  field(x, "l") + field(x, "s") /
+    deb_bases(x)[[1]] + field(x, "d") / prod(deb_bases(x))
 }

@@ -235,10 +235,10 @@ deb_account_summary <- function(df,
 
     pos <- tibble::tibble(account_id = c(pos_acc, pos_missing),
                           credit = c(pos$credit,
-                                     rep(0, vctrs::vec_size(pos_missing))))
+                                     rep(0, vec_size(pos_missing))))
     neg <- tibble::tibble(account_id = c(neg_acc, neg_missing),
                           debit = c(neg$debit,
-                                    rep(0, vctrs::vec_size(neg_missing))))
+                                    rep(0, vec_size(neg_missing))))
 
     ret <- dplyr::left_join(pos, neg, by = "account_id") %>%
       dplyr::mutate(current = credit - debit,
@@ -303,7 +303,7 @@ deb_credit <- function(df,
 
     ret <- tibble::tibble(account_id = c(pos_acc, pos_missing),
                           !! cn := c(pos[[2]],
-                                     rep(0, vctrs::vec_size(pos_missing)))) %>%
+                                     rep(0, vec_size(pos_missing)))) %>%
       dplyr::arrange(.data$account_id)
   }
 
@@ -359,7 +359,7 @@ deb_debit <- function(df,
 
     ret <- tibble::tibble(account_id = c(neg_acc, neg_missing),
                           !! cn := c(neg[[2]],
-                                     rep(0, vctrs::vec_size(neg_missing)))) %>%
+                                     rep(0, vec_size(neg_missing)))) %>%
       dplyr::arrange(.data$account_id)
   }
 
@@ -430,7 +430,7 @@ deb_balance <- function(df,
   # If there are NAs
   if(anyNA(vals)) {
     return(tibble::tibble(relation = c("credit", "debit"),
-             !! cn := vctrs::vec_init(deb_lsd(bases = bases), 2L)))
+             !! cn := vec_init(deb_lsd(bases = bases), 2L)))
   }
 
   # If completely balanced

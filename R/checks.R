@@ -47,7 +47,7 @@ is_natural <- function(x, tol = .Machine$double.eps^0.5) {
 }
 
 bases_check <- function(bases) {
-  if (!is.numeric(bases) || vctrs::vec_size(bases) != 2L || is.null(bases)) {
+  if (!is.numeric(bases) || vec_size(bases) != 2L || is.null(bases)) {
     stop(call. = FALSE, "`bases` must be a numeric vector of length 2.")
   }
   if (any(rlang::are_na(bases))) {
@@ -63,7 +63,7 @@ bases_check <- function(bases) {
 
 bases_assert <- function(bases) {
   bases <- rlang::set_names(bases, NULL) # vec_assert has error if named
-  vctrs::vec_assert(bases, ptype = integer(), size = 2)
+  vec_assert(bases, ptype = integer(), size = 2)
   rlang::set_names(bases, c("s", "d"))
 }
 
@@ -105,7 +105,7 @@ transaction_check <- function(df,
 
   credit <- rlang::eval_tidy(credit, df)
   debit <- rlang::eval_tidy(debit, df)
-  if (!identical(vctrs::vec_ptype(credit), vctrs::vec_ptype(debit))) {
+  if (!identical(vec_ptype(credit), vec_ptype(debit))) {
     stop(call. = FALSE, "`credit` and `debit` must be of the same prototype.")
   }
 

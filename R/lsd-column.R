@@ -132,9 +132,9 @@ deb_spread_lsd <- function(df,
   }
 
   ret <- dplyr::mutate(df,
-                       !! ln := vctrs::field(!! lsd, "l"),
-                       !! sn := vctrs::field(!! lsd, "s"),
-                       !! dn := vctrs::field(!! lsd, "d"))
+                       !! ln := field(!! lsd, "l"),
+                       !! sn := field(!! lsd, "s"),
+                       !! dn := field(!! lsd, "d"))
   if (replace == TRUE) {
     ret <- dplyr::select(ret, -(!! lsd))
   }

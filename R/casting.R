@@ -14,9 +14,9 @@ vec_cast.deb_lsd.deb_lsd <- function(x, to, ...) {
 
 #' @export
 vec_cast.double.deb_lsd <- function(x, to, ...) {
-  l <- vctrs::field(x, "l")
-  s <- vctrs::field(x, "s")
-  d <- vctrs::field(x, "d")
+  l <- field(x, "l")
+  s <- field(x, "s")
+  d <- field(x, "d")
   bases <- deb_bases(x)
 
   l + s / bases[[1]] + d / prod(bases)
@@ -84,7 +84,7 @@ vec_cast.deb_decimal.double  <- function(x, to, ...) {
 }
 
 #' @export
-vec_cast.double.deb_decimal  <- function(x, to, ...) vctrs::vec_data(x)
+vec_cast.double.deb_decimal  <- function(x, to, ...) vec_data(x)
 
 # integer to deb_decimal
 
@@ -97,7 +97,7 @@ vec_cast.deb_decimal.integer  <- function(x, to, ...) {
 
 #' @export
 vec_cast.character.deb_decimal <- function(x, to, ...) {
-  as.character(vctrs::vec_data(x))
+  as.character(vec_data(x))
 }
 
 # deb_decimal to deb_lsd --------------------------------------------------
@@ -126,9 +126,9 @@ vec_cast.deb_lsd.deb_decimal <- function(x, to, ...) {
 # deb_lsd to deb_decimal --------------------------------------------------
 
 lsd_to_decimal <- function(x, to) {
-  l <- vctrs::field(x, "l")
-  s <- vctrs::field(x, "s")
-  d <- vctrs::field(x, "d")
+  l <- field(x, "l")
+  s <- field(x, "s")
+  d <- field(x, "d")
   bases <- deb_bases(x)
   unit <- deb_unit(to)
 
@@ -207,13 +207,13 @@ deb_as_lsd.deb_decimal <- function(x, ...) {
 #' @rdname cast-lsd
 #' @export
 deb_as_lsd.numeric <- function(x, bases = c(20, 12), ...) {
-  vctrs::vec_cast(x, to = deb_lsd(bases = bases))
+  vec_cast(x, to = deb_lsd(bases = bases))
 }
 
 #' @rdname cast-lsd
 #' @export
 deb_as_lsd.logical <- function(x, bases = c(20, 12), ...) {
-  vctrs::vec_cast(x, to = deb_lsd(bases = bases))
+  vec_cast(x, to = deb_lsd(bases = bases))
 }
 
 # deb_decimal casting methods ---------------------------------------------
@@ -283,7 +283,7 @@ deb_as_decimal.deb_lsd <- function(x, unit = c("l", "s", "d"), ...) {
 deb_as_decimal.numeric <- function(x,
                                    unit = c("l", "s", "d"),
                                    bases = c(20, 12), ...) {
-  vctrs::vec_cast(x, to = deb_decimal(unit = unit, bases = bases))
+  vec_cast(x, to = deb_decimal(unit = unit, bases = bases))
 }
 
 #' @rdname cast-decimal
@@ -291,5 +291,5 @@ deb_as_decimal.numeric <- function(x,
 deb_as_decimal.logical <- function(x,
                                    unit = c("l", "s", "d"),
                                    bases = c(20, 12), ...) {
-  vctrs::vec_cast(x, to = deb_decimal(unit = unit, bases = bases))
+  vec_cast(x, to = deb_decimal(unit = unit, bases = bases))
 }

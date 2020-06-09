@@ -6,7 +6,7 @@
 #'
 #' Asserts that `x` is a `double()`, that `unit` is "l", "s", or "d", and
 #' that `bases` is an `integer()` of length 2. Creates the object through
-#' `vctrs::new_vctr()`.
+#' `new_vctr()`.
 #'
 #' @return An object of class `deb_decimal`.
 #' @keywords internal
@@ -16,14 +16,14 @@ new_decimal <- function(x = double(),
                         bases = c(20L, 12L)) {
   unit <- rlang::arg_match(unit)
 
-  vctrs::vec_assert(x, ptype = double())
+  vec_assert(x, ptype = double())
   bases <- bases_assert(bases)
 
-  vctrs::new_vctr(x,
-                  unit = unit,
-                  bases = bases,
-                  class = "deb_decimal",
-                  inherit_base_type = TRUE)
+  new_vctr(x,
+           unit = unit,
+           bases = bases,
+           class = "deb_decimal",
+           inherit_base_type = TRUE)
 }
 
 
@@ -86,8 +86,8 @@ deb_decimal <- function(x = double(),
   unit <- rlang::arg_match(unit)
   bases_check(bases)
 
-  x <- vctrs::vec_cast(x, to = double())
-  bases <- vctrs::vec_cast(bases, to = integer())
+  x <- vec_cast(x, to = double())
+  bases <- vec_cast(bases, to = integer())
 
   new_decimal(x = x, unit = unit, bases = bases)
 }
