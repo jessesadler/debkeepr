@@ -4,7 +4,9 @@
 \name{dafforne_transactions}
 \alias{dafforne_transactions}
 \title{Transactions from the practice journal and ledger of Richard Dafforne}
-\format{A data frame with 177 rows and 8 variables.}
+\format{
+A data frame with 177 rows and 8 variables.
+}
 \source{
 Richard Dafforne, \emph{The Merchant's Mirrour, Or Directions for the}
 \emph{Perfect Ordering and Keeping of His Accounts}, Third Edition, (London,

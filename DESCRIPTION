@@ -1,7 +1,7 @@
 Package: debkeepr
 Type: Package
 Title: Analysis of Non-Decimal Currencies and Double-Entry Bookkeeping
-Version: 0.0.4.9001
+Version: 0.0.5.9000
 Authors@R: person("Jesse", "Sadler",
     email = "jsadler@ucla.edu",
     role = c("aut", "cre"),
@@ -16,16 +16,17 @@ Depends:
 Imports:
     dplyr (>= 0.8.1),
     magrittr,
-    rlang (>= 0.4.0),
-    vctrs (>= 0.2.4),
+    rlang (>= 0.4.5),
+    vctrs (>= 0.3.0),
     zeallot,
-    tibble
+    tibble,
+    methods
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 Suggests: 
     covr,
     knitr,
-    testthat (>= 2.1.0),
+    testthat (>= 2.3.0),
     rmarkdown,
     ggplot2,
     igraph,

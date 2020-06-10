@@ -6,7 +6,7 @@
 #'
 #' Asserts that `x` is a `double()`, that `unit` is "l", "s", or "d", and
 #' that `bases` is an `integer()` of length 2. Creates the object through
-#' `vctrs::new_vctr()`.
+#' `new_vctr()`.
 #'
 #' @return An object of class `deb_decimal`.
 #' @keywords internal
@@ -16,14 +16,14 @@ new_decimal <- function(x = double(),
                         bases = c(20L, 12L)) {
   unit <- rlang::arg_match(unit)
 
-  vctrs::vec_assert(x, ptype = double())
+  vec_assert(x, ptype = double())
   bases <- bases_assert(bases)
 
-  vctrs::new_vctr(x,
-                  unit = unit,
-                  bases = bases,
-                  class = "deb_decimal",
-                  inherit_base_type = TRUE)
+  new_vctr(x,
+           unit = unit,
+           bases = bases,
+           class = "deb_decimal",
+           inherit_base_type = TRUE)
 }
 
 
@@ -86,11 +86,16 @@ deb_decimal <- function(x = double(),
   unit <- rlang::arg_match(unit)
   bases_check(bases)
 
-  x <- vctrs::vec_cast(x, to = double())
-  bases <- vctrs::vec_cast(bases, to = integer())
+  x <- vec_cast(x, to = double())
+  bases <- vec_cast(bases, to = integer())
 
   new_decimal(x = x, unit = unit, bases = bases)
 }
+
+
+# Compatibility with S4 ---------------------------------------------------
+
+methods::setOldClass(c("deb_decimal", "vctrs_vctr"))
 
 
 # Attribute access --------------------------------------------------------
@@ -100,18 +105,6 @@ deb_decimal <- function(x = double(),
 #' @keywords internal
 
 deb_unit <- function(x) attr(x, "unit")
-
-# To print full name of unit
-unit_word <- function(x) {
-  if (attr(x, "unit") == "l") {
-    unit <- "libra"
-  } else if (attr(x, "unit") == "s") {
-    unit <- "solidus"
-  } else {
-    unit <- "denarius"
-  }
-  unit
-}
 
 
 # Class check -------------------------------------------------------------
@@ -138,6 +131,22 @@ deb_is_decimal <- function(x) inherits(x, "deb_decimal")
 # No format.deb_decimal to keep default vector printing
 
 # Add footer with attribute data
+
+#' Print full name of unit in footer
+#'
+#' @param x A deb_decimal object.
+#' @keywords internal
+
+unit_word <- function(x) {
+  if (attr(x, "unit") == "l") {
+    unit <- "libra"
+  } else if (attr(x, "unit") == "s") {
+    unit <- "solidus"
+  } else {
+    unit <- "denarius"
+  }
+  unit
+}
 
 #' @export
 obj_print_footer.deb_decimal <- function(x, ...) {

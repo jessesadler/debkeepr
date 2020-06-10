@@ -43,17 +43,17 @@ deb_convert_bases.deb_lsd <- function(x, to) {
   bases_check(to)
 
   from <- deb_bases(x)
-  to <- vctrs::vec_cast(to, to = integer())
+  to <- vec_cast(to, to = integer())
   to <- rlang::set_names(to, c("s", "d"))
 
   if (identical(from, to)) {
     return(x)
   }
 
-  temp_s <- vctrs::field(x, "s") * to[[1]] / from[[1]]
-  vctrs::field(x, "s") <- trunc(temp_s)
-  vctrs::field(x, "d") <- (temp_s - trunc(temp_s)) * to[[2]] +
-    vctrs::field(x, "d") * prod(to) / prod(from)
+  temp_s <- field(x, "s") * to[[1]] / from[[1]]
+  field(x, "s") <- trunc(temp_s)
+  field(x, "d") <- (temp_s - trunc(temp_s)) * to[[2]] +
+    field(x, "d") * prod(to) / prod(from)
   attr(x, "bases") <- to
 
   deb_normalize(x)
@@ -65,7 +65,7 @@ deb_convert_bases.deb_decimal <- function(x, to) {
   bases_check(to)
 
   from <- deb_bases(x)
-  to <- vctrs::vec_cast(to, to = integer())
+  to <- vec_cast(to, to = integer())
   to <- rlang::set_names(to, c("s", "d"))
 
   if (deb_unit(x) == "l") {
@@ -114,5 +114,5 @@ deb_convert_unit <- function(x, to = c("l", "s", "d")) {
   }
   to_unit <- rlang::arg_match(to)
 
-  vctrs::vec_cast(x, deb_decimal(unit = to_unit, bases = deb_bases(x)))
+  vec_cast(x, deb_decimal(unit = to_unit, bases = deb_bases(x)))
 }

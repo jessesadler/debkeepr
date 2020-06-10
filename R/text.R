@@ -92,13 +92,13 @@ deb_text.deb_lsd <- function(x,
   x <- dplyr::if_else(x >= 0, x, -x)
 
   # Format numeric value of l and d
-  l <- formatC(vctrs::field(x, "l"), format = "f", digits = digits,
+  l <- formatC(field(x, "l"), format = "f", digits = digits,
                big.mark = big.mark, decimal.mark = decimal.mark,
                drop0trailing = TRUE,  ...)
-  s <- formatC(vctrs::field(x, "s"), format = "f", digits = digits,
+  s <- formatC(field(x, "s"), format = "f", digits = digits,
                big.mark = big.mark, decimal.mark = decimal.mark,
                drop0trailing = TRUE, ...)
-  d <- formatC(vctrs::field(x, "d"), format = "f", digits = digits,
+  d <- formatC(field(x, "d"), format = "f", digits = digits,
                big.mark = big.mark, decimal.mark = decimal.mark,
                drop0trailing = TRUE, ...)
 

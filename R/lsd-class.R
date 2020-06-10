@@ -5,7 +5,7 @@
 #' Internal constructor to create deb_lsd type
 #'
 #' Asserts that `l`, `s` and `d` are of type `double()` and that `bases` is an
-#' `integer()` of length 2. Creates the object through `vctrs::new_rcrd()`.
+#' `integer()` of length 2. Creates the object through `new_rcrd()`.
 #'
 #' @return An object of class `deb_lsd`.
 #' @keywords internal
@@ -15,15 +15,15 @@ new_lsd <- function(l = double(),
                     d = double(),
                     bases = c(20L, 12L)) {
 
-  vctrs::vec_assert(l, ptype = double())
-  vctrs::vec_assert(s, ptype = double())
-  vctrs::vec_assert(d, ptype = double())
+  vec_assert(l, ptype = double())
+  vec_assert(s, ptype = double())
+  vec_assert(d, ptype = double())
 
   bases <- bases_assert(bases)
 
-  vctrs::new_rcrd(list(l = l, s = s, d = d),
-                  bases = bases,
-                  class = "deb_lsd")
+  new_rcrd(list(l = l, s = s, d = d),
+           bases = bases,
+           class = "deb_lsd")
 }
 
 
@@ -103,13 +103,19 @@ deb_lsd <- function(l = double(),
   lsd_check(l, s, d)
   bases_check(bases)
 
-  c(l, s, d) %<-% vctrs::vec_cast_common(l, s, d, .to = double())
-  c(l, s, d) %<-% vctrs::vec_recycle_common(l, s, d)
+  c(l, s, d) %<-% vec_cast_common(l, s, d, .to = double())
+  c(l, s, d) %<-% vec_recycle_common(l, s, d)
 
-  bases <- vctrs::vec_cast(bases, to = integer())
+  bases <- vec_cast(bases, to = integer())
 
   new_lsd(l = l, s = s, d = d, bases = bases)
 }
+
+
+
+# Compatibility with S4 ---------------------------------------------------
+
+methods::setOldClass(c("deb_lsd", "vctrs_rcrd", "vctrs_vctr"))
 
 
 # Attribute access --------------------------------------------------------
@@ -145,9 +151,9 @@ deb_is_lsd <- function(x) inherits(x, "deb_lsd")
 
 #' @export
 format.deb_lsd <- function(x, ...) {
-  l <- round(vctrs::field(x, "l"), 3) # only print 3 decimals
-  s <- round(vctrs::field(x, "s"), 3)
-  d <- round(vctrs::field(x, "d"), 3)
+  l <- round(field(x, "l"), 3) # only print 3 decimals
+  s <- round(field(x, "s"), 3)
+  d <- round(field(x, "d"), 3)
 
   out <- paste0(l, ":", s, "s:", d, "d")
   out[is.na(l) | is.na(s) | is.na(d)] <- NA
