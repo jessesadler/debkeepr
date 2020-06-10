@@ -11,17 +11,25 @@ decimal_check <- function(lsd) {
   field(lsd, "d") <- d + (temp_s - trunc(temp_s)) * deb_bases(lsd)[[2]]
 
   # Deal with floating point problems potentially introduced by the above
-  field(lsd, "d") <- dplyr::if_else(
-    should_be_int(field(lsd, "d")),
-    round(field(lsd, "d")),
-    field(lsd, "d"))
+  field(lsd, "d") <- dplyr::if_else(should_be_int(field(lsd, "d")),
+                                    round(field(lsd, "d")),
+                                    field(lsd, "d"))
 
   lsd
 }
 
+
 is_negative <- function(x) {
-  field(x, "l") + field(x, "s") /
-    deb_bases(x)[[1]] + field(x, "d") / prod(deb_bases(x)) < 0
+  field(x, "l") +
+    field(x, "s") / deb_bases(x)[[1]] +
+    field(x, "d") / prod(deb_bases(x)) < 0
+}
+
+normalize <- function(l, s, d, bases) {
+  new_lsd(l = l + ((s + d %/% bases[[2]]) %/% bases[[1]]),
+          s = (s + d %/% bases[[2]]) %% bases[[1]],
+          d = d %% bases[[2]],
+          bases = bases)
 }
 
 lsd_normalize <- function(lsd) {
@@ -30,11 +38,9 @@ lsd_normalize <- function(lsd) {
   d <- field(lsd, "d")
   bases <- deb_bases(lsd)
 
-  field(lsd, "l") <- l + ((s + d %/% bases[[2]]) %/% bases[[1]])
-  field(lsd, "s") <- (s + d %/% bases[[2]]) %% bases[[1]]
-  field(lsd, "d") <- d %% bases[[2]]
+  ret <- normalize(l = l, s = s, d = d, bases = bases)
 
-  lsd
+  ret
 }
 
 lsd_normalize_neg <- function(lsd) {
@@ -43,11 +49,9 @@ lsd_normalize_neg <- function(lsd) {
   d <- -field(lsd, "d")
   bases <- deb_bases(lsd)
 
-  field(lsd, "l") <- l + ((s + d %/% bases[[2]]) %/% bases[[1]])
-  field(lsd, "s") <- (s + d %/% bases[[2]]) %% bases[[1]]
-  field(lsd, "d") <- d %% bases[[2]]
+  ret <- normalize(l = l, s = s, d = d, bases = bases)
 
-  -lsd
+  -ret
 }
 
 
