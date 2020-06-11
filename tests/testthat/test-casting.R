@@ -34,6 +34,9 @@ test_that("vec_cast works for deb_lsd", {
   expect_equal(vec_cast(1.1125, deb_lsd()), lsd1)
   expect_equal(vec_cast(1:3, deb_lsd()), deb_lsd(1:3, 0, 0))
   expect_error(vec_cast(lsd, integer()))
+  # Allow cast from numeric prototypes
+  expect_equal(vec_cast(numeric(), deb_lsd()), deb_lsd())
+  expect_equal(vec_cast(integer(), deb_lsd()), deb_lsd())
   # deb_lsd to character
   expect_equal(vec_cast(lsd, character()), c(NA, "2:4s:6d", "3:5s:9d"))
   # NA and incompatible cast from boilerplate

@@ -26,15 +26,25 @@ vec_cast.double.deb_lsd <- function(x, to, ...) {
 
 #' @export
 vec_cast.deb_lsd.double <- function(x, to, ...) {
-  lsd <- deb_lsd(x, 0, 0, bases = deb_bases(to))
-  deb_normalize(lsd)
+# If statements enables casting from a numeric prototype:
+  if (vec_size(x) == 0) {
+    deb_lsd(bases = deb_bases(to))
+  } else {
+    lsd <- deb_lsd(x, 0, 0, bases = deb_bases(to))
+    deb_normalize(lsd)
+  }
 }
 
 # integer to deb_lsd
 
 #' @export
 vec_cast.deb_lsd.integer <- function(x, to, ...) {
-  deb_lsd(x, 0, 0, bases = deb_bases(to))
+  # If statements enables casting from a numeric prototype:
+  if (vec_size(x) == 0) {
+    deb_lsd(bases = deb_bases(to))
+  } else {
+    lsd <- deb_lsd(x, 0, 0, bases = deb_bases(to))
+  }
 }
 
 # deb_lsd to character
