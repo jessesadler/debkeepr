@@ -1,5 +1,8 @@
 ## Transaction functions ##
 
+# Note that all functions except deb_account() cast deb_lsd() columns to
+# deb_decimal(). This is faster than going through the process with deb_lsd().
+
 #' Analysis of double-entry bookkeeping
 #'
 #' @description
@@ -192,7 +195,7 @@ deb_account_summary <- function(df,
   lsd_vctr <- rlang::eval_tidy(lsd_quo, df)
   deb_ptype_check(lsd_vctr)
 
-  # Turn deb_lsd to deb_decimal until dplyr works with rcrd
+  # Turn deb_lsd to deb_decimal for speed
   if (deb_is_lsd(lsd_vctr)) {
     df <- dplyr::mutate(df, !! cn := deb_as_decimal({{ lsd }}))
   }
@@ -279,7 +282,7 @@ deb_credit <- function(df,
   lsd_vctr <- rlang::eval_tidy(lsd_quo, df)
   deb_ptype_check(lsd_vctr)
 
-  # Turn deb_lsd to deb_decimal until dplyr works with rcrd
+  # Turn deb_lsd to deb_decimal for speed
   if (deb_is_lsd(lsd_vctr)) {
     df <- dplyr::mutate(df, !! cn := deb_as_decimal({{ lsd }}))
   }
@@ -335,7 +338,7 @@ deb_debit <- function(df,
   lsd_vctr <- rlang::eval_tidy(lsd_quo, df)
   deb_ptype_check(lsd_vctr)
 
-  # Turn deb_lsd to deb_decimal until dplyr works with rcrd
+  # Turn deb_lsd to deb_decimal for speed
   if (deb_is_lsd(lsd_vctr)) {
     df <- dplyr::mutate(df, !! cn := deb_as_decimal({{ lsd }}))
   }
