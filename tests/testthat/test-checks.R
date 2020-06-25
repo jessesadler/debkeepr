@@ -111,3 +111,21 @@ test_that("bases tests equivalency", {
                            deb_decimal(1.25, bases = c(20, 16))),
                bases_error)
 })
+
+
+# list checks -------------------------------------------------------------
+
+x <- list(c(5, 12, 3),
+          c(13, 8, 11),
+          c(7, 16, 0),
+          c(1, 2, 3))
+
+test_that("list check works", {
+  expect_invisible(list_check(x))
+  expect_error(list_check(c(x, "hello")),
+               "`x` must be a list of numeric vectors.")
+  expect_error(list_check(c(x, list(c(5, 6, 7, 7)))),
+               "`x` must be a list of numeric vectors of length 3.")
+  expect_error(list_check(c(x, 5)),
+               "`x` must be a list of numeric vectors of length 3.")
+})

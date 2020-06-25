@@ -79,6 +79,23 @@ bases_equal <- function(x, y) {
 }
 
 
+# list check --------------------------------------------------------------
+
+list_check <- function(x) {
+  if (any(purrr::map_lgl(x, rlang::is_null))) {
+    x <- purrr::compact(x)
+  }
+  if (!all(purrr::map_lgl(x, is.numeric))) {
+    stop(call. = FALSE, "`x` must be a list of numeric vectors.")
+  }
+
+  lsd_lengths <- unique(list_sizes(x))
+
+  if (!identical(lsd_lengths, 3L)) {
+    stop(call. = FALSE, "`x` must be a list of numeric vectors of length 3.")
+  }
+}
+
 # Transaction checks ------------------------------------------------------
 
 transaction_check <- function(df,
