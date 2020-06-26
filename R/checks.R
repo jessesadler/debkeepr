@@ -116,8 +116,8 @@ transaction_check <- function(df,
 
   if (all(edge_columns %in% names(df)) == FALSE) {
     stop(call. = FALSE,
-         paste("Column names for `credit` and `debit` must be provided if",
-               "the default names are not present in `df`.", sep = " "))
+         paste0("Column names for `credit` and `debit` must be provided if",
+               " the default names are not present in `df`."))
   }
 
   credit <- rlang::eval_tidy(credit, df)

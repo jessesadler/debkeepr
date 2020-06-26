@@ -150,9 +150,8 @@ test_that("transaction_check works", {
   expect_error(deb_account(tbl_b2, "a", credit = from, debit = to),
                "`lsd` must be provided if the default is not present in `df`.")
   expect_error(deb_account(tbl_b2, "a", lsd = data),
-               paste("Column names for `credit` and `debit` must be provided",
-                     "if the default names are not present in `df`.",
-                     sep = " "))
+               paste0("Column names for `credit` and `debit` must be provided",
+                     " if the default names are not present in `df`."))
   expect_error(deb_account(tbl_b1, "a", credit = credit, debit = lsd),
                "`credit` and `debit` must be of the same prototype.")
   expect_error(deb_account(tbl_b1)) # uses default error
@@ -166,9 +165,8 @@ test_that("transaction_check works", {
   expect_error(deb_account(df_b2, "a", credit = from, debit = to),
                "`lsd` must be provided if the default is not present in `df`.")
   expect_error(deb_account(df_b2, "a", lsd = data),
-               paste("Column names for `credit` and `debit` must be provided",
-                     "if the default names are not present in `df`.",
-                     sep = " "))
+               paste0("Column names for `credit` and `debit` must be provided",
+                     " if the default names are not present in `df`."))
   expect_error(deb_account(df_b1, "a", credit = credit, debit = lsd),
                "`credit` and `debit` must be of the same prototype.")
   expect_error(deb_account(df_b1)) # uses default error
