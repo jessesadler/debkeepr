@@ -193,8 +193,7 @@ trunc.deb_lsd <- function(x, ...) {
 #' @param ... Additional arguments passed to `.fn`.
 #' @export
 vec_math.deb_lsd <- function(.fn, .x, ...) {
-  stop(call. = FALSE,
-       paste0("`", .fn, ".", class(.x)[[1]], "()` not implemented."))
+  rlang::abort(paste0("`", .fn, ".", class(.x)[[1]], "()` not implemented."))
 }
 
 

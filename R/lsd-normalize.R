@@ -96,8 +96,8 @@ deb_normalize <- function(x, ...) {
 #' @rdname normalize
 #' @export
 deb_normalize.default <- function(x, ...) {
-  stop(call. = FALSE,
-       "`x` must be a <deb_lsd> vector or a numeric vector of length 3.")
+  rlang::abort(
+    "`x` must be a <deb_lsd> vector or a numeric vector of length 3.")
 }
 
 #' @rdname normalize
@@ -113,7 +113,7 @@ deb_normalize.deb_lsd <- function(x, ...) {
 #' @export
 deb_normalize.numeric <- function(x, bases = c(20, 12), ...) {
   if (vec_size(x) != 3L) {
-    stop(call. = FALSE, "`x` must be a numeric vector of length 3.")
+    rlang::abort("`x` must be a numeric vector of length 3.")
   }
 
   lsd <- deb_lsd(x[[1]], x[[2]], x[[3]], bases)

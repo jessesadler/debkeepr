@@ -71,8 +71,7 @@ deb_text <- function(x, ...) {
 #' @rdname text
 #' @export
 deb_text.default <- function(x, ...) {
-  stop(call. = FALSE,
-       "`x` must be a <deb_lsd> or <deb_decimal> vector.")
+  rlang::abort("`x` must be a <deb_lsd> or <deb_decimal> vector.")
 }
 
 #' @rdname text

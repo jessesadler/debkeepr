@@ -183,7 +183,7 @@ vec_cast.list.deb_lsd <- function(x, to, ...) {
 
 deb_as_list <- function(x, ...) {
   if (!deb_is_lsd(x)) {
-    stop(call. = FALSE, "`x` must be a <deb_lsd> vector.")
+    rlang::abort("`x` must be a <deb_lsd> vector.")
   }
   vec_cast(x, list())
 }

@@ -6,19 +6,19 @@ lsd_check <- function(l, s, d) {
   # Check that l, s, and d are numeric
   if (!all(rlang::are_na(l))) {
     if (!is.numeric(l)) {
-      stop(call. = FALSE, "`l` must be a numeric vector.")
+      rlang::abort("`l` must be a numeric vector.")
     }
   }
 
   if (!all(rlang::are_na(s))) {
     if (!is.numeric(s)) {
-      stop(call. = FALSE, "`s` must be a numeric vector.")
+      rlang::abort("`s` must be a numeric vector.")
     }
   }
 
   if (!all(rlang::are_na(d))) {
     if (!is.numeric(d)) {
-      stop(call. = FALSE, "`d` must be a numeric vector.")
+      rlang::abort("`d` must be a numeric vector.")
     }
   }
 
@@ -27,16 +27,16 @@ lsd_check <- function(l, s, d) {
 
   # Must be either all zero length or no zero length
   if (sum(lengths) == 1L || sum(lengths) == 2L) {
-    stop(call. = FALSE,
-         paste0("`l`, `s`, and `d` must all have values. ",
-                "You may have forgotten a value or need to use 0."))
+    rlang::abort(
+      paste0("`l`, `s`, and `d` must all have values. ",
+             "You may have forgotten a value or need to use 0."))
   }
 
   # Must be only one length other than scalar
   non_scalar <- lengths[lengths != 1L]
   if (length(unique(non_scalar)) > 1L) {
-    stop(call. = FALSE,
-         "`l`, `s`, and `d` must be vectors of equal length or length 1.")
+    rlang::abort(
+      "`l`, `s`, and `d` must be vectors of equal length or length 1.")
   }
 }
 
@@ -48,13 +48,13 @@ is_natural <- function(x, tol = .Machine$double.eps^0.5) {
 
 bases_check <- function(bases) {
   if (!is.numeric(bases) || vec_size(bases) != 2L || is.null(bases)) {
-    stop(call. = FALSE, "`bases` must be a numeric vector of length 2.")
+    rlang::abort("`bases` must be a numeric vector of length 2.")
   }
   if (any(rlang::are_na(bases))) {
-    stop(call. = FALSE, "`bases` cannot be `NA`.")
+    rlang::abort("`bases` cannot be `NA`.")
   }
   if (!all(is_natural(bases))) {
-    stop(call. = FALSE, "`bases` must be natural numbers greater than zero.")
+    rlang::abort("`bases` must be natural numbers greater than zero.")
   }
 }
 
@@ -72,9 +72,9 @@ bases_assert <- function(bases) {
 # Check that bases are equal for two deb-style objects
 bases_equal <- function(x, y) {
   if (!identical(deb_bases(x), deb_bases(y))) {
-    stop(call. = FALSE,
-         paste0("`bases` attributes must be equal to combine <deb_lsd> ",
-                "or <deb_decimal> objects."))
+    rlang::abort(
+      paste0("`bases` attributes must be equal to combine <deb_lsd> ",
+             "or <deb_decimal> objects."))
   }
 }
 
@@ -86,13 +86,13 @@ list_check <- function(x) {
     x <- Filter(length, x)
   }
   if (!all(vapply(x, is.numeric, logical(1)))) {
-    stop(call. = FALSE, "`x` must be a list of numeric vectors.")
+    rlang::abort("`x` must be a list of numeric vectors.")
   }
 
   lsd_lengths <- unique(list_sizes(x))
 
   if (!identical(lsd_lengths, 3L)) {
-    stop(call. = FALSE, "`x` must be a list of numeric vectors of length 3.")
+    rlang::abort("`x` must be a list of numeric vectors of length 3.")
   }
 }
 
@@ -106,37 +106,36 @@ transaction_check <- function(df,
                               account_id = NULL) {
 
   if (!is.data.frame(df)) {
-    stop(call. = FALSE, "`df` must be a data frame.")
+    rlang::abort("`df` must be a data frame.")
   }
 
   if (rlang::is_false(cn %in% names(df))) {
-    stop(call. = FALSE,
-         "`lsd` must be provided if the default is not present in `df`.")
+    rlang::abort(
+      "`lsd` must be provided if the default is not present in `df`.")
   }
 
   if (all(edge_columns %in% names(df)) == FALSE) {
-    stop(call. = FALSE,
-         paste0("Column names for `credit` and `debit` must be provided if",
-               " the default names are not present in `df`."))
+    rlang::abort(
+      paste0("Column names for `credit` and `debit` must be provided if",
+             " the default names are not present in `df`."))
   }
 
   credit <- rlang::eval_tidy(credit, df)
   debit <- rlang::eval_tidy(debit, df)
   if (!identical(vec_ptype(credit), vec_ptype(debit))) {
-    stop(call. = FALSE, "`credit` and `debit` must be of the same prototype.")
+    rlang::abort("`credit` and `debit` must be of the same type.")
   }
 
   if (!is.null(account_id)) {
     if (rlang::is_false(account_id %in% c(credit, debit))) {
-      stop(call. = FALSE,
-           "`account_id` must be a value present in `credit` and/or `debit`.")
+      rlang::abort(
+        "`account_id` must be a value present in `credit` and/or `debit`.")
     }
   }
 }
 
 deb_ptype_check <- function(x) {
   if (!deb_is_lsd(x) && !deb_is_decimal(x)) {
-    stop(call. = FALSE,
-         "`lsd` must be either a <deb_lsd> or a <deb_decimal> object.")
+    rlang::abort("`lsd` must be either a <deb_lsd> or a <deb_decimal> object.")
   }
 }

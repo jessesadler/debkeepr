@@ -33,8 +33,7 @@ deb_convert_bases <- function(x, to) {
 }
 
 deb_convert_bases.default <- function(x, to) {
-  stop(call. = FALSE,
-       "`x` must be a <deb_lsd> or <deb_decimal> vector.")
+  rlang::abort("`x` must be a <deb_lsd> or <deb_decimal> vector.")
 }
 
 #' @rdname convert-bases
@@ -110,7 +109,7 @@ deb_convert_bases.deb_decimal <- function(x, to) {
 
 deb_convert_unit <- function(x, to = c("l", "s", "d")) {
   if (!deb_is_decimal(x)) {
-    stop(call. = FALSE, "`x` must be a <deb_decimal> object.")
+    rlang::abort("`x` must be a <deb_decimal> object.")
   }
   to_unit <- rlang::arg_match(to)
 
