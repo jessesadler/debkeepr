@@ -21,6 +21,12 @@ dec3 <- deb_decimal(c(1.1125, 2.225, 3.2875))
 bases_error <- paste0("`bases` attributes must be equal to combine ",
                       "<deb_lsd> or <deb_decimal> objects.")
 
+x <- deb_lsd(l = 0:3, s = 4:7, d = 8:11)
+y <- list(c(0, 4, 8),
+          c(1, 5, 9),
+          c(2, 6, 10),
+          c(3, 7, 11))
+
 # Test with vec_cast ------------------------------------------------------
 
 test_that("vec_cast works for deb_lsd", {
@@ -72,6 +78,21 @@ test_that("vec_cast works for deb_decimal", {
   expect_error(vec_cast(factor("hello"), deb_decimal()))
 })
 
+test_that("vec_cast works with lists",{
+  # list to deb_lsd
+  expect_identical(vec_cast(y, deb_lsd()), x)
+  expect_error(vec_cast(c(y, 5), deb_lsd()))
+  expect_false(identical(vec_cast(y, deb_lsd()), lsd))
+  # list to deb_decimal
+  expect_equal(vec_cast(y, deb_decimal()), deb_as_decimal(x))
+  expect_error(vec_cast(c(y, 5), deb_decimal()))
+  # deb_lsd to list
+  expect_identical(vec_cast(x, list()), y)
+  # deb_as_list
+  expect_error(deb_as_list(dec), "`x` must be a <deb_lsd> vector.")
+  expect_identical(deb_as_list(x), y)
+})
+
 test_that("vec_cast works with both deb_lsd and deb_decimal", {
   # Successful
   expect_equal(vec_cast(dec, deb_lsd()), lsd)
@@ -103,6 +124,7 @@ test_that("deb_as_lsd works", {
   expect_equal(deb_as_lsd(1.505, bases = c(50, 16)), lsd_alt)
   expect_equal(deb_as_lsd(NA), deb_lsd(NA, NA, NA))
   expect_error(deb_as_lsd(factor("hello")))
+  expect_identical(deb_as_lsd(y), x)
 })
 
 test_that("deb_as_decimal works", {
@@ -116,6 +138,7 @@ test_that("deb_as_decimal works", {
   expect_equal(deb_as_decimal(22.25, unit = "s"), dec_s)
   expect_equal(deb_as_decimal(NA), deb_decimal(NA))
   expect_error(deb_as_decimal(factor("hello")))
+  expect_identical(deb_as_decimal(y), deb_as_decimal(x))
 })
 
 

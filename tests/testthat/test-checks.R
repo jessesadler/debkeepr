@@ -122,6 +122,7 @@ x <- list(c(5, 12, 3),
 
 test_that("list check works", {
   expect_invisible(list_check(x))
+  expect_invisible(list_check(c(x, list(NULL))))
   expect_error(list_check(c(x, "hello")),
                "`x` must be a list of numeric vectors.")
   expect_error(list_check(c(x, list(c(5, 6, 7, 7)))),
