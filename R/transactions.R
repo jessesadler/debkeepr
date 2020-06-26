@@ -201,10 +201,12 @@ deb_account_summary <- function(df,
   }
 
   pos <- dplyr::group_by(df, {{ credit }}) %>%
-    dplyr::summarise(!! cn := sum({{ lsd }}, na.rm = na.rm)) %>%
+    dplyr::summarise(!! cn := sum({{ lsd }}, na.rm = na.rm),
+                     .groups = "drop") %>%
     dplyr::rename(account_id = {{ credit }}, credit = {{ lsd }})
   neg <- dplyr::group_by(df, {{ debit }}) %>%
-    dplyr::summarise(!! cn := sum({{ lsd }}, na.rm = na.rm)) %>%
+    dplyr::summarise(!! cn := sum({{ lsd }}, na.rm = na.rm),
+                     .groups = "drop") %>%
     dplyr::rename(account_id = {{ debit }}, debit = {{ lsd }})
 
   # If statements to ensure NAs from above not turned into 0s.
@@ -288,7 +290,8 @@ deb_credit <- function(df,
   }
 
   pos <- dplyr::group_by(df, {{ credit }}) %>%
-    dplyr::summarise(!! cn := sum({{ lsd }}, na.rm = na.rm)) %>%
+    dplyr::summarise(!! cn := sum({{ lsd }}, na.rm = na.rm),
+                     .groups = "drop") %>%
     dplyr::rename(account_id = {{ credit }})
   neg <- dplyr::distinct(df, {{ debit }})
 
@@ -344,7 +347,8 @@ deb_debit <- function(df,
   }
 
   neg <- dplyr::group_by(df, {{ debit }}) %>%
-    dplyr::summarise(!! cn := sum({{ lsd }}, na.rm = na.rm)) %>%
+    dplyr::summarise(!! cn := sum({{ lsd }}, na.rm = na.rm),
+                     .groups = "drop") %>%
     dplyr::rename(account_id = {{ debit }})
   pos <- dplyr::distinct(df, {{ credit }})
 
