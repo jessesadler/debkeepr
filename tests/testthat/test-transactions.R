@@ -143,38 +143,35 @@ sdec_na2 <- tibble(account_id = letters[1:3],
 
 # Checks ------------------------------------------------------------------
 
+error1 <- "`lsd` must be provided if the default is not present in `df`."
+error2 <- paste0("Column names for `credit` and `debit` must be provided",
+                 " if the default names are not present in `df`.")
+error3 <- "`credit` and `debit` must be of the same type."
+error4 <- "`account_id` must be a value present in `credit` and/or `debit`."
+error5 <- "`lsd` must be either a <deb_lsd> or a <deb_decimal> object."
+
 # transaction_check makes checks for all transaction functions
 test_that("transaction_check works", {
   # transaction_check with tibble
   expect_error(deb_account(b1), "`df` must be a data frame.")
-  expect_error(deb_account(tbl_b2, "a", credit = from, debit = to),
-               "`lsd` must be provided if the default is not present in `df`.")
-  expect_error(deb_account(tbl_b2, "a", lsd = data),
-               paste0("Column names for `credit` and `debit` must be provided",
-                     " if the default names are not present in `df`."))
+  expect_error(deb_account(tbl_b2, "a", credit = from, debit = to), error1)
+  expect_error(deb_account(tbl_b2, "a", lsd = data), error2)
   expect_error(deb_account(tbl_b1, "a", credit = credit, debit = lsd),
-               "`credit` and `debit` must be of the same type.")
+               error3)
   expect_error(deb_account(tbl_b1)) # uses default error
-  expect_error(deb_account(tbl_b1, account_id = "x"),
-    "`account_id` must be a value present in `credit` and/or `debit`.")
+  expect_error(deb_account(tbl_b1, account_id = "x"), error4)
   # deb_ptype_check
-  expect_error(deb_account(tbl_b1, "a", lsd = credit),
-               "`lsd` must be either a <deb_lsd> or a <deb_decimal> object.")
+  expect_error(deb_account(tbl_b1, "a", lsd = credit), error5)
 
   # transaction_check with data frames
-  expect_error(deb_account(df_b2, "a", credit = from, debit = to),
-               "`lsd` must be provided if the default is not present in `df`.")
-  expect_error(deb_account(df_b2, "a", lsd = data),
-               paste0("Column names for `credit` and `debit` must be provided",
-                     " if the default names are not present in `df`."))
+  expect_error(deb_account(df_b2, "a", credit = from, debit = to), error1)
+  expect_error(deb_account(df_b2, "a", lsd = data), error2)
   expect_error(deb_account(df_b1, "a", credit = credit, debit = lsd),
-               "`credit` and `debit` must be of the same type.")
+               error3)
   expect_error(deb_account(df_b1)) # uses default error
-  expect_error(deb_account(df_b1, account_id = "x"),
-    "`account_id` must be a value present in `credit` and/or `debit`.")
+  expect_error(deb_account(df_b1, account_id = "x"), error4)
   # deb_ptype_check
-  expect_error(deb_account(df_b1, "a", lsd = credit),
-               "`lsd` must be either a <deb_lsd> or a <deb_decimal> object.")
+  expect_error(deb_account(df_b1, "a", lsd = credit), error5)
 })
 
 
