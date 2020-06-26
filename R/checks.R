@@ -82,10 +82,10 @@ bases_equal <- function(x, y) {
 # list check --------------------------------------------------------------
 
 list_check <- function(x) {
-  if (any(purrr::map_lgl(x, rlang::is_null))) {
-    x <- purrr::compact(x)
+  if (any(vapply(x, rlang::is_null, logical(1)))) {
+    x <- Filter(length, x)
   }
-  if (!all(purrr::map_lgl(x, is.numeric))) {
+  if (!all(vapply(x, is.numeric, logical(1)))) {
     stop(call. = FALSE, "`x` must be a list of numeric vectors.")
   }
 
