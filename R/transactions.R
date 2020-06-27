@@ -255,9 +255,10 @@ deb_account_summary <- function(df,
 
   # Return deb_decimal back to deb_lsd
   if (deb_is_lsd(lsd_vctr)) {
-    ret[["credit"]] <- deb_as_lsd(ret[["credit"]])
-    ret[["debit"]] <- deb_as_lsd(ret[["debit"]])
-    ret[["current"]] <- deb_as_lsd(ret[["current"]])
+    ret <- ret %>%
+      dplyr::mutate(credit = deb_as_lsd(credit),
+                    debit = deb_as_lsd(debit),
+                    current = deb_as_lsd(current))
   }
 
   ret
