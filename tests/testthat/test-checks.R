@@ -2,7 +2,7 @@
 
 # Error messages
 bases_error1 <- paste0("`bases` attributes must be equal to combine ",
-                      "<deb_lsd> or <deb_decimal> objects.")
+                      "<deb_lsd> or <deb_decimal> vectors.")
 bases_error2 <- "`bases` must be a numeric vector of length 2."
 bases_error3 <- "`bases` cannot be `NA`."
 bases_error4 <- "`bases` must be natural numbers greater than zero."

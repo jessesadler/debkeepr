@@ -37,7 +37,7 @@ test_that("deb_gather_lsd works", {
 
 test_that("deb_spread_lsd works", {
   # Error
-  expect_error(deb_spread_lsd(x, lsd = l), "`lsd` must be a <deb_lsd> object.")
+  expect_error(deb_spread_lsd(x, lsd = l), "`lsd` must be of type <deb_lsd>.")
   # defaults
   expect_equal(ncol(deb_spread_lsd(y)), 5)
   expect_equal(deb_spread_lsd(y)[[3]], libra)

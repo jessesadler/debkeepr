@@ -92,15 +92,15 @@ From this information, a line-range plot can be constructed with the upper limit
 deb_account_summary(transactions, lsd = dec) %>% 
   mutate(debit = -debit) %>% 
   ggplot() + 
-	geom_linerange(aes(x = account_id, ymin = debit, ymax = credit)) + 
-	geom_point(aes(x = account_id, y = current,
-                   color = if_else(current == 0, "Closed", "Open"))) +
-	scale_color_manual(values = c(Open = "black", Closed = "blue")) + 
-    scale_y_continuous(labels = scales::dollar_format(prefix = "£")) + 
-    labs(x = "Accounts",
-         y = "Pounds sterling",
-         color = "Status",
-         title = "Summary of the accounts") + 
+	  geom_linerange(aes(x = account_id, ymin = debit, ymax = credit)) + 
+	  geom_point(aes(x = account_id, y = current,
+	                 color = if_else(current == 0, "Closed", "Open"))) +
+	  scale_color_manual(values = c(Open = "black", Closed = "blue")) + 
+      scale_y_continuous(labels = scales::dollar_format(prefix = "£")) + 
+      labs(x = "Accounts",
+           y = "Pounds sterling",
+           color = "Status",
+           title = "Summary of the accounts") + 
     theme_light()
 ```
 
@@ -288,7 +288,7 @@ sum(stock_balance$lsd)
 This information enabled merchants to understand the development of their capital. In this instance, the bookkeeper's capital grew by over 56% in less than eight months, as his capital or stock, the amount that the credits on his book surpassed the debits, increased from £1,856 3s. 9d. to £2,902 12s. 7d.
 
 ```{r growth percentage}
-# Create an lsd object for easier calculation
+# Create an lsd vector for easier calculation
 (balance_lsd <- balance$lsd)
 # Percentage of growth: profits over opening capital
 balance_lsd[2] / balance_lsd[1]

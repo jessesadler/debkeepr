@@ -1,9 +1,9 @@
 ## Arithmetic for deb_lsd and deb_decimal ##
 
-#' Math group with `deb_lsd` objects
+#' Math group with `deb_lsd` vectors
 #'
 #' @description
-#' Math and Summary group of functions with `deb_lsd` objects.
+#' Math and Summary group of functions with `deb_lsd` vectors.
 #' Implemented functions:
 #' - [Summary] group: `sum()`, `any()`, and `all()`.
 #' - [Math] group: `abs()`, `round()`, `signif()`, `ceiling()`,
@@ -25,7 +25,7 @@
 #' `summary()` are also not currently implemented for `deb_decimal` vectors.
 #' To use these functions cast `deb_lsd` and `deb_decimal` vectors to numeric.
 #'
-#' @param x An object of class `deb_lsd`.
+#' @param x An vector of class `deb_lsd`.
 #' @param ... `deb_lsd` vectors in `sum()` and arguments passed on to
 #'   further methods in `mean()`.
 #' @param na.rm Logical. Should missing values (including `NaN``) be removed?

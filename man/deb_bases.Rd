@@ -2,11 +2,11 @@
 % Please edit documentation in R/lsd-class.R
 \name{deb_bases}
 \alias{deb_bases}
-\title{Access the bases attribute of a \code{deb_lsd} object.}
+\title{Access the bases attribute of a \code{deb_lsd} vector}
 \usage{
 deb_bases(x)
 }
 \description{
-Access the bases attribute of a \code{deb_lsd} object.
+Access the bases attribute of a \code{deb_lsd} vector
 }
 \keyword{internal}

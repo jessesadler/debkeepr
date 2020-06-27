@@ -148,7 +148,7 @@ error2 <- paste0("Column names for `credit` and `debit` must be provided",
                  " if the default names are not present in `df`.")
 error3 <- "`credit` and `debit` must be of the same type."
 error4 <- "`account_id` must be a value present in `credit` and/or `debit`."
-error5 <- "`lsd` must be either a <deb_lsd> or a <deb_decimal> object."
+error5 <- "`lsd` must be either of type <deb_lsd> or <deb_decimal>."
 
 # transaction_check makes checks for all transaction functions
 test_that("transaction_check works", {

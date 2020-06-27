@@ -19,7 +19,7 @@ dec_d3 <- deb_decimal(c(267, 180, 300), unit = "d")
 dec3 <- deb_decimal(c(1.1125, 2.225, 3.2875))
 
 bases_error <- paste0("`bases` attributes must be equal to combine ",
-                      "<deb_lsd> or <deb_decimal> objects.")
+                      "<deb_lsd> or <deb_decimal> vectors.")
 
 x <- deb_lsd(l = 0:3, s = 4:7, d = 8:11)
 y <- list(c(0, 4, 8),

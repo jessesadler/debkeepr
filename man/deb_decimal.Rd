@@ -20,10 +20,10 @@ conforms to the most widely used system of 1 pound = 20 shillings and
 1 shilling = 12 pence.}
 }
 \value{
-Returns an object of class \code{deb_decimal}.
+Returns a vector of class \code{deb_decimal}.
 }
 \description{
-Create an object of class \code{deb_decimal} to integrate non-decimal currencies
+Create a vector of class \code{deb_decimal} to integrate non-decimal currencies
 into standardized forms of analysis provided by R.
 }
 \details{
@@ -39,7 +39,7 @@ coins in dozens (solidi) and scores of dozens (librae) spread throughout the
 Carolingian Empire and became engrained in much of Europe. However, a
 variety of accounting systems arose at different times that used
 \href{https://en.wikipedia.org/wiki/Non-decimal_currency}{other bases} for the
-solidus and denarius units. The \code{bases} attribute of \code{deb_decimal} objects
+solidus and denarius units. The \code{bases} attribute of \code{deb_decimal} vectors
 makes it possible to specify alternative bases for the solidus and denarius
 units, while the \code{unit} attribute identifies the decimalized unit: either
 libra, solidus, or denarius.
@@ -48,14 +48,14 @@ libra, solidus, or denarius.
 
 deb_decimal(c(5.25, 3.825, 8.5))
 
-# Set the unit of the object
+# Set the unit of the deb_decimal vector
 deb_decimal(c(105, 76.5, 170), unit = "s")
 deb_decimal(c(1260, 918, 240), unit = "d")
 
-# Set the bases of the object
+# Set the bases of the deb_decimal vector
 deb_decimal(c(5.25, 3.825, 8.5), bases = c(60, 16))
 
-# Create a prototype or object of length 0
+# Create a prototype or vector of length 0
 deb_decimal()
 }
 \seealso{

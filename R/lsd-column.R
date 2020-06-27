@@ -128,7 +128,7 @@ deb_spread_lsd <- function(df,
   dn <- rlang::enquo(d_col)
 
   if (!deb_is_lsd(rlang::eval_tidy(lsd, df))) {
-    rlang::abort("`lsd` must be a <deb_lsd> object.")
+    rlang::abort("`lsd` must be of type <deb_lsd>.")
   }
 
   ret <- dplyr::mutate(df,

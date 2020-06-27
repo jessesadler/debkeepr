@@ -11,7 +11,7 @@
 \method{vec_proxy_compare}{deb_lsd}(x, ...)
 }
 \arguments{
-\item{x}{A deb_lsd object.}
+\item{x}{A deb_lsd vector.}
 
 \item{...}{Arguments passed on to further methods.}
 }

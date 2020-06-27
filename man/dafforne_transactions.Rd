@@ -44,7 +44,7 @@ accounts that receive the transactional value. The account ids
 correspond to the \code{id} variable in \code{dafforne_accounts}.
 \item \code{date}: Date on which the transaction was entered into the journal. Date
 conforms to the Anglican calendar that used the old Julian calendar with
-the new year on 25 March. Encoded as a date object.
+the new year on 25 March. Encoded as a date vector.
 \item \code{lsd}: Column of class \code{deb_lsd} with pounds, shillings, and pence
 values. Bases for shillings and pence are 20 and 12 respectively.
 \item \code{journal}: Page on which the transaction is recorded in the journal.

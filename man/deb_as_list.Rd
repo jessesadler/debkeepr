@@ -7,7 +7,7 @@
 deb_as_list(x, ...)
 }
 \arguments{
-\item{x}{A \code{deb_lsd} object to cast to a list of lsd values.}
+\item{x}{A \code{deb_lsd} vector to cast to a list of lsd values.}
 
 \item{...}{Arguments passed on to further methods.}
 }

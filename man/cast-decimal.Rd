@@ -37,7 +37,7 @@ conforms to the most widely used system of 1 pound = 20 shillings and
 1 shilling = 12 pence.}
 }
 \value{
-A \code{deb_decimal} object.
+A \code{deb_decimal} vector.
 }
 \description{
 Cast \code{x} to a \code{deb_decimal} vector.
@@ -49,7 +49,7 @@ helpful because the data is input by the value instead of by the unit.
 }
 \examples{
 
-# Cast a deb_lsd object to deb_decimal
+# Cast a deb_lsd vector to deb_decimal
 x <- deb_lsd(l = c(5, 3, 7),
              s = c(16, 5, 6),
              d = c(6, 0, 8))
