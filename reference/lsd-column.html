@@ -163,34 +163,34 @@ vectors or bare numbers. This follows the rules of dplyr::rename()." />
     <div class="ref-description">
     
 <ul>
-<li><p><code>deb_gather_lsd()</code> creates a <code>deb_lsd</code> column from separate variables
+<li><p><code><a href='https://jessesadler.github.io/debkeepr//reference/lsd-column.html'>deb_gather_lsd()</a></code> creates a <code>deb_lsd</code> column from separate variables
 representing pounds, shillings, and pence values.</p></li>
-<li><p><code>deb_spread_lsd()</code> creates separate variables for pounds, shillings,
+<li><p><code><a href='https://jessesadler.github.io/debkeepr//reference/lsd-column.html'>deb_spread_lsd()</a></code> creates separate variables for pounds, shillings,
 and pence from a <code>deb_lsd</code> column.</p></li>
 </ul>
 
 <p>If transcribing historical accounting data by hand, entering the pounds,
 shillings, and pence values (lsd) into separate columns is probably the
-easiest and least error prone method. <code>deb_gather_lsd()</code> creates a
+easiest and least error prone method. <code><a href='https://jessesadler.github.io/debkeepr//reference/lsd-column.html'>deb_gather_lsd()</a></code> creates a
 <code>deb_lsd</code> column from the three separate <code>l</code>, <code>s</code>, and <code>d</code> columns.
-<code>deb_spread_lsd()</code> does the opposite. It takes a <code>deb_lsd</code> column and
+<code><a href='https://jessesadler.github.io/debkeepr//reference/lsd-column.html'>deb_spread_lsd()</a></code> does the opposite. It takes a <code>deb_lsd</code> column and
 spreads it into three separate pounds, shillings, and pence columns.</p>
 <p>Values for column names (<code>lsd_col</code>, <code>l_col</code>, <code>s_col</code>, and <code>d_col</code>) must
 be valid column names. They can be quoted or unquoted, but they cannot be
 vectors or bare numbers. This follows the rules of <code><a href='https://dplyr.tidyverse.org/reference/rename.html'>dplyr::rename()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>deb_gather_lsd</span>(
-  <span class='no'>df</span>,
-  <span class='kw'>l</span> <span class='kw'>=</span> <span class='no'>l</span>,
-  <span class='kw'>s</span> <span class='kw'>=</span> <span class='no'>s</span>,
-  <span class='kw'>d</span> <span class='kw'>=</span> <span class='no'>d</span>,
-  <span class='kw'>bases</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>20</span>, <span class='fl'>12</span>),
-  <span class='kw'>lsd_col</span> <span class='kw'>=</span> <span class='no'>lsd</span>,
-  <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+    <pre class="usage"><span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/lsd-column.html'>deb_gather_lsd</a></span>(
+  <span class='kw'>df</span>,
+  l = <span class='kw'>l</span>,
+  s = <span class='kw'>s</span>,
+  d = <span class='kw'>d</span>,
+  bases = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>20</span>, <span class='fl'>12</span>),
+  lsd_col = <span class='kw'>lsd</span>,
+  replace = <span class='fl'>FALSE</span>
 )
 
-<span class='fu'>deb_spread_lsd</span>(<span class='no'>df</span>, <span class='kw'>lsd</span> <span class='kw'>=</span> <span class='no'>lsd</span>, <span class='kw'>l_col</span> <span class='kw'>=</span> <span class='no'>l</span>, <span class='kw'>s_col</span> <span class='kw'>=</span> <span class='no'>s</span>, <span class='kw'>d_col</span> <span class='kw'>=</span> <span class='no'>d</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/lsd-column.html'>deb_spread_lsd</a></span>(<span class='kw'>df</span>, lsd = <span class='kw'>lsd</span>, l_col = <span class='kw'>l</span>, s_col = <span class='kw'>s</span>, d_col = <span class='kw'>d</span>, replace = <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -256,64 +256,63 @@ function. Default is <code>d</code>.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>libra</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, <span class='fl'>2</span>)
-<span class='no'>solidus</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>, <span class='fl'>18</span>, <span class='fl'>11</span>, <span class='fl'>16</span>)
-<span class='no'>denarius</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>9</span>, <span class='fl'>11</span>, <span class='fl'>10</span>, <span class='fl'>5</span>)
+<span class='kw'>libra</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, <span class='fl'>2</span>)
+<span class='kw'>solidus</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>, <span class='fl'>18</span>, <span class='fl'>11</span>, <span class='fl'>16</span>)
+<span class='kw'>denarius</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>9</span>, <span class='fl'>11</span>, <span class='fl'>10</span>, <span class='fl'>5</span>)
 
 <span class='co'># data frame with separate l, s, and d variables and default names</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>accounts</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>),
-                <span class='kw'>l</span> <span class='kw'>=</span> <span class='no'>libra</span>,
-                <span class='kw'>s</span> <span class='kw'>=</span> <span class='no'>solidus</span>,
-                <span class='kw'>d</span> <span class='kw'>=</span> <span class='no'>denarius</span>)
+<span class='kw'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(accounts = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>),
+                l = <span class='kw'>libra</span>,
+                s = <span class='kw'>solidus</span>,
+                d = <span class='kw'>denarius</span>)
 
 <span class='co'># data frame with deb_lsd variable and default names</span>
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>accounts</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>),
-                <span class='kw'>lsd</span> <span class='kw'>=</span> <span class='fu'><a href='deb_lsd.html'>deb_lsd</a></span>(<span class='kw'>l</span> <span class='kw'>=</span> <span class='no'>libra</span>,
-                              <span class='kw'>s</span> <span class='kw'>=</span> <span class='no'>solidus</span>,
-                              <span class='kw'>d</span> <span class='kw'>=</span> <span class='no'>denarius</span>))
+<span class='kw'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(accounts = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>),
+                lsd = <span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_lsd.html'>deb_lsd</a></span>(l = <span class='kw'>libra</span>,
+                              s = <span class='kw'>solidus</span>,
+                              d = <span class='kw'>denarius</span>))
 
 <span class='co'># Gather l, s, and d variables into deb_lsd column</span>
-<span class='fu'>deb_gather_lsd</span>(<span class='no'>x</span>, <span class='kw'>l</span> <span class='kw'>=</span> <span class='no'>l</span>, <span class='kw'>s</span> <span class='kw'>=</span> <span class='no'>s</span>, <span class='kw'>d</span> <span class='kw'>=</span> <span class='no'>d</span>)</div><div class='output co'>#&gt;   accounts l  s  d       lsd
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/lsd-column.html'>deb_gather_lsd</a></span>(<span class='kw'>x</span>, l = <span class='kw'>l</span>, s = <span class='kw'>s</span>, d = <span class='kw'>d</span>)</div><div class='output co'>#&gt;   accounts l  s  d       lsd
 #&gt; 1        1 3 10  9  3:10s:9d
 #&gt; 2        2 5 18 11 5:18s:11d
 #&gt; 3        3 6 11 10 6:11s:10d
 #&gt; 4        4 2 16  5  2:16s:5d</div><div class='input'>
 <span class='co'># Spread deb_lsd column into separate l, s, and d columns</span>
-<span class='fu'>deb_spread_lsd</span>(<span class='no'>y</span>, <span class='kw'>lsd</span> <span class='kw'>=</span> <span class='no'>lsd</span>)</div><div class='output co'>#&gt;   accounts       lsd l  s  d
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/lsd-column.html'>deb_spread_lsd</a></span>(<span class='kw'>y</span>, lsd = <span class='kw'>lsd</span>)</div><div class='output co'>#&gt;   accounts       lsd l  s  d
 #&gt; 1        1  3:10s:9d 3 10  9
 #&gt; 2        2 5:18s:11d 5 18 11
 #&gt; 3        3 6:11s:10d 6 11 10
 #&gt; 4        4  2:16s:5d 2 16  5</div><div class='input'>
 <span class='co'># Replace original columns with replace = TRUE</span>
-<span class='fu'>deb_gather_lsd</span>(<span class='no'>x</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;   accounts       lsd
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/lsd-column.html'>deb_gather_lsd</a></span>(<span class='kw'>x</span>, replace = <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;   accounts       lsd
 #&gt; 1        1  3:10s:9d
 #&gt; 2        2 5:18s:11d
 #&gt; 3        3 6:11s:10d
-#&gt; 4        4  2:16s:5d</div><div class='input'><span class='fu'>deb_spread_lsd</span>(<span class='no'>y</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;   accounts l  s  d
+#&gt; 4        4  2:16s:5d</div><div class='input'><span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/lsd-column.html'>deb_spread_lsd</a></span>(<span class='kw'>y</span>, replace = <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;   accounts l  s  d
 #&gt; 1        1 3 10  9
 #&gt; 2        2 5 18 11
 #&gt; 3        3 6 11 10
 #&gt; 4        4 2 16  5</div><div class='input'>
 <span class='co'># Choose non-default column names</span>
-<span class='fu'>deb_gather_lsd</span>(<span class='no'>x</span>, <span class='kw'>lsd_col</span> <span class='kw'>=</span> <span class='no'>data</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;   accounts      data
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/lsd-column.html'>deb_gather_lsd</a></span>(<span class='kw'>x</span>, lsd_col = <span class='kw'>data</span>, replace = <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;   accounts      data
 #&gt; 1        1  3:10s:9d
 #&gt; 2        2 5:18s:11d
 #&gt; 3        3 6:11s:10d
-#&gt; 4        4  2:16s:5d</div><div class='input'><span class='fu'>deb_spread_lsd</span>(<span class='no'>y</span>,
-               <span class='kw'>l_col</span> <span class='kw'>=</span> <span class='no'>libra</span>,
-               <span class='kw'>s_col</span> <span class='kw'>=</span> <span class='no'>solidus</span>,
-               <span class='kw'>d_col</span> <span class='kw'>=</span> <span class='no'>denarius</span>,
-               <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;   accounts libra solidus denarius
+#&gt; 4        4  2:16s:5d</div><div class='input'><span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/lsd-column.html'>deb_spread_lsd</a></span>(<span class='kw'>y</span>,
+               l_col = <span class='kw'>libra</span>,
+               s_col = <span class='kw'>solidus</span>,
+               d_col = <span class='kw'>denarius</span>,
+               replace = <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;   accounts libra solidus denarius
 #&gt; 1        1     3      10        9
 #&gt; 2        2     5      18       11
 #&gt; 3        3     6      11       10
 #&gt; 4        4     2      16        5</div><div class='input'>
 <span class='co'># The two functions are opposites</span>
-<span class='no'>z</span> <span class='kw'>&lt;-</span> <span class='no'>x</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>deb_gather_lsd</span>(<span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>deb_spread_lsd</span>(<span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span>(<span class='no'>x</span>, <span class='no'>z</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-</div></pre>
+<span class='kw'>z</span> <span class='op'>&lt;-</span> <span class='kw'>x</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/lsd-column.html'>deb_gather_lsd</a></span>(replace = <span class='fl'>TRUE</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/lsd-column.html'>deb_spread_lsd</a></span>(replace = <span class='fl'>TRUE</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span>(<span class='kw'>x</span>, <span class='kw'>z</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -4,7 +4,19 @@
     <loc>https://jessesadler.github.io/debkeepr//index.html</loc>
   </url>
   <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/all_present.html</loc>
+  </url>
+  <url>
     <loc>https://jessesadler.github.io/debkeepr//reference/arithmetic.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/bases_assert.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/bases_check.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/bases_equal.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr//reference/cast-decimal.html</loc>
@@ -25,6 +37,9 @@
     <loc>https://jessesadler.github.io/debkeepr//reference/dafforne_transactions.html</loc>
   </url>
   <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/deb_as_list.html</loc>
+  </url>
+  <url>
     <loc>https://jessesadler.github.io/debkeepr//reference/deb_bases.html</loc>
   </url>
   <url>
@@ -43,13 +58,46 @@
     <loc>https://jessesadler.github.io/debkeepr//reference/deb_lsd.html</loc>
   </url>
   <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/deb_ptype_check.html</loc>
+  </url>
+  <url>
     <loc>https://jessesadler.github.io/debkeepr//reference/deb_unit.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr//reference/debkeepr-package.html</loc>
   </url>
   <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/decimal_check.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/decimal_to_lsd.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/format.deb_lsd.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/is_natural.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/is_negative.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/list_check.html</loc>
+  </url>
+  <url>
     <loc>https://jessesadler.github.io/debkeepr//reference/lsd-column.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/lsd_check.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/lsd_normalize.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/lsd_normalize_neg.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/lsd_to_decimal.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr//reference/mathematics.html</loc>
@@ -67,7 +115,16 @@
     <loc>https://jessesadler.github.io/debkeepr//reference/normalize.html</loc>
   </url>
   <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/obj_print_footer.deb_decimal.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/obj_print_footer.deb_lsd.html</loc>
+  </url>
+  <url>
     <loc>https://jessesadler.github.io/debkeepr//reference/pipe.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/should_be_int.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr//reference/text.html</loc>
@@ -76,13 +133,25 @@
     <loc>https://jessesadler.github.io/debkeepr//reference/tidyeval.html</loc>
   </url>
   <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/transaction_check.html</loc>
+  </url>
+  <url>
     <loc>https://jessesadler.github.io/debkeepr//reference/transactions.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/unit_hierarchy.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr//reference/unit_word.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr//reference/vec_math.deb_lsd.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/vec_ptype_abbr.deb_decimal.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr//reference/vec_ptype_abbr.deb_lsd.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr//articles/debkeepr.html</loc>

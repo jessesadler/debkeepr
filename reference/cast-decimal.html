@@ -148,19 +148,22 @@
     <p>Cast <code>x</code> to a <code>deb_decimal</code> vector.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>deb_as_decimal</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/cast-decimal.html'>deb_as_decimal</a></span>(<span class='kw'>x</span>, <span class='kw'>...</span>)
 
 <span class='co'># S3 method for deb_decimal</span>
-<span class='fu'>deb_as_decimal</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/cast-decimal.html'>deb_as_decimal</a></span>(<span class='kw'>x</span>, <span class='kw'>...</span>)
 
 <span class='co'># S3 method for deb_lsd</span>
-<span class='fu'>deb_as_decimal</span>(<span class='no'>x</span>, <span class='kw'>unit</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"l"</span>, <span class='st'>"s"</span>, <span class='st'>"d"</span>), <span class='no'>...</span>)
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/cast-decimal.html'>deb_as_decimal</a></span>(<span class='kw'>x</span>, unit = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"l"</span>, <span class='st'>"s"</span>, <span class='st'>"d"</span>), <span class='kw'>...</span>)
 
 <span class='co'># S3 method for numeric</span>
-<span class='fu'>deb_as_decimal</span>(<span class='no'>x</span>, <span class='kw'>unit</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"l"</span>, <span class='st'>"s"</span>, <span class='st'>"d"</span>), <span class='kw'>bases</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>20</span>, <span class='fl'>12</span>), <span class='no'>...</span>)
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/cast-decimal.html'>deb_as_decimal</a></span>(<span class='kw'>x</span>, unit = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"l"</span>, <span class='st'>"s"</span>, <span class='st'>"d"</span>), bases = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>20</span>, <span class='fl'>12</span>), <span class='kw'>...</span>)
 
 <span class='co'># S3 method for logical</span>
-<span class='fu'>deb_as_decimal</span>(<span class='no'>x</span>, <span class='kw'>unit</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"l"</span>, <span class='st'>"s"</span>, <span class='st'>"d"</span>), <span class='kw'>bases</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>20</span>, <span class='fl'>12</span>), <span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/cast-decimal.html'>deb_as_decimal</a></span>(<span class='kw'>x</span>, unit = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"l"</span>, <span class='st'>"s"</span>, <span class='st'>"d"</span>), bases = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>20</span>, <span class='fl'>12</span>), <span class='kw'>...</span>)
+
+<span class='co'># S3 method for list</span>
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/cast-decimal.html'>deb_as_decimal</a></span>(<span class='kw'>x</span>, unit = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"l"</span>, <span class='st'>"s"</span>, <span class='st'>"d"</span>), bases = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>20</span>, <span class='fl'>12</span>), <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -190,41 +193,58 @@ conforms to the most widely used system of 1 pound = 20 shillings and
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>deb_decimal</code> object.</p>
+    <p>A <code>deb_decimal</code> vector.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Like <code><a href='https://jessesadler.github.io/debkeepr//reference/cast-lsd.html'>deb_as_lsd()</a></code>, <code><a href='https://jessesadler.github.io/debkeepr//reference/cast-decimal.html'>deb_as_decimal()</a></code> provides a method to
+cast a list of numeric vectors of length 3 to <code>deb_decimal</code>. This may be
+helpful because the data is input by the value instead of by the unit.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='https://jessesadler.github.io/debkeepr//reference/cast-lsd.html'>deb_as_lsd()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='co'># Cast a deb_lsd object to deb_decimal</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='deb_lsd.html'>deb_lsd</a></span>(<span class='kw'>l</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>7</span>),
-             <span class='kw'>s</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>16</span>, <span class='fl'>5</span>, <span class='fl'>6</span>),
-             <span class='kw'>d</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>6</span>, <span class='fl'>0</span>, <span class='fl'>8</span>))
-<span class='fu'>deb_as_decimal</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; &lt;deb_decimal[3]&gt;
+<span class='co'># Cast a deb_lsd vector to deb_decimal</span>
+<span class='kw'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_lsd.html'>deb_lsd</a></span>(l = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>7</span>),
+             s = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>16</span>, <span class='fl'>5</span>, <span class='fl'>6</span>),
+             d = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>6</span>, <span class='fl'>0</span>, <span class='fl'>8</span>))
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/cast-decimal.html'>deb_as_decimal</a></span>(<span class='kw'>x</span>)</div><div class='output co'>#&gt; &lt;deb_decimal[3]&gt;
 #&gt; [1] 5.825000 3.250000 7.333333
 #&gt; # Unit: libra
 #&gt; # Bases: 20s 12d</div><div class='input'>
 <span class='co'># Bases are automatically applied when</span>
 <span class='co'># casting from deb_lsd to deb_decimal</span>
-<span class='no'>x2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='deb_lsd.html'>deb_lsd</a></span>(<span class='kw'>l</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>7</span>),
-              <span class='kw'>s</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>16</span>, <span class='fl'>5</span>, <span class='fl'>6</span>),
-              <span class='kw'>d</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>6</span>, <span class='fl'>0</span>, <span class='fl'>8</span>),
-              <span class='kw'>bases</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>60</span>, <span class='fl'>16</span>))
-<span class='fu'>deb_as_decimal</span>(<span class='no'>x2</span>)</div><div class='output co'>#&gt; &lt;deb_decimal[3]&gt;
+<span class='kw'>x2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_lsd.html'>deb_lsd</a></span>(l = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>7</span>),
+              s = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>16</span>, <span class='fl'>5</span>, <span class='fl'>6</span>),
+              d = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>6</span>, <span class='fl'>0</span>, <span class='fl'>8</span>),
+              bases = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>60</span>, <span class='fl'>16</span>))
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/cast-decimal.html'>deb_as_decimal</a></span>(<span class='kw'>x2</span>)</div><div class='output co'>#&gt; &lt;deb_decimal[3]&gt;
 #&gt; [1] 5.272917 3.083333 7.108333
 #&gt; # Unit: libra
 #&gt; # Bases: 60s 16d</div><div class='input'>
 <span class='co'># Cast a numeric vector to deb_decimal</span>
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5.825</span>, <span class='fl'>3.25</span>, <span class='fl'>22</span>/<span class='fl'>3</span>)
-<span class='fu'>deb_as_decimal</span>(<span class='no'>y</span>)</div><div class='output co'>#&gt; &lt;deb_decimal[3]&gt;
+<span class='kw'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5.825</span>, <span class='fl'>3.25</span>, <span class='fl'>22</span><span class='op'>/</span><span class='fl'>3</span>)
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/cast-decimal.html'>deb_as_decimal</a></span>(<span class='kw'>y</span>)</div><div class='output co'>#&gt; &lt;deb_decimal[3]&gt;
 #&gt; [1] 5.825000 3.250000 7.333333
 #&gt; # Unit: libra
 #&gt; # Bases: 20s 12d</div><div class='input'>
 <span class='co'># Use the unit and bases arguments to specify</span>
 <span class='co'># the unit and apply non-default bases</span>
-<span class='fu'>deb_as_decimal</span>(<span class='no'>y</span>, <span class='kw'>unit</span> <span class='kw'>=</span> <span class='st'>"s"</span>, <span class='kw'>bases</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>60</span>, <span class='fl'>16</span>))</div><div class='output co'>#&gt; &lt;deb_decimal[3]&gt;
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/cast-decimal.html'>deb_as_decimal</a></span>(<span class='kw'>y</span>, unit = <span class='st'>"s"</span>, bases = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>60</span>, <span class='fl'>16</span>))</div><div class='output co'>#&gt; &lt;deb_decimal[3]&gt;
 #&gt; [1] 5.825000 3.250000 7.333333
 #&gt; # Unit: solidus
 #&gt; # Bases: 60s 16d</div><div class='input'>
-</div></pre>
+<span class='co'># Cast a list to deb_lsd provides an alternate</span>
+<span class='co'># to deb_lsd() %&gt;% deb_decimal()</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>12</span>, <span class='fl'>3</span>),
+     <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>13</span>, <span class='fl'>8</span>, <span class='fl'>11</span>),
+     <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>7</span>, <span class='fl'>16</span>, <span class='fl'>0</span>)) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/cast-decimal.html'>deb_as_decimal</a></span>()</div><div class='output co'>#&gt; &lt;deb_decimal[3]&gt;
+#&gt; [1]  5.61250 13.44583  7.80000
+#&gt; # Unit: libra
+#&gt; # Bases: 20s 12d</div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

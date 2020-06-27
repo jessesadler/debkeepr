@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Internal constructor to create <code>deb_decimal</code> type — new_decimal • debkeepr</title>
+<title>deb_lsd to deb_decimal utility — lsd_to_decimal • debkeepr</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,8 @@
 
 
 
-<meta property="og:title" content="Internal constructor to create <code>deb_decimal</code> type — new_decimal" />
-<meta property="og:description" content="Asserts that x is a double(), that unit is &quot;l&quot;, &quot;s&quot;, or &quot;d&quot;, and
-that bases is an integer() of length 2. Creates the object through
-new_vctr()." />
+<meta property="og:title" content="deb_lsd to deb_decimal utility — lsd_to_decimal" />
+<meta property="og:description" content="Arithmetic based on the unit" />
 
 
 
@@ -141,23 +139,18 @@ new_vctr()." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Internal constructor to create <code>deb_decimal</code> type</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jessesadler/debkeepr/blob/master/R/decimal-class.R'><code>R/decimal-class.R</code></a></small>
-    <div class="hidden name"><code>new_decimal.Rd</code></div>
+    <h1>deb_lsd to deb_decimal utility</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jessesadler/debkeepr/blob/master/R/casting.R'><code>R/casting.R</code></a></small>
+    <div class="hidden name"><code>lsd_to_decimal.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Asserts that <code>x</code> is a <code><a href='https://rdrr.io/r/base/double.html'>double()</a></code>, that <code>unit</code> is "l", "s", or "d", and
-that <code>bases</code> is an <code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code> of length 2. Creates the object through
-<code>new_vctr()</code>.</p>
+    <p>Arithmetic based on the unit</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/new_decimal.html'>new_decimal</a></span>(x = <span class='fu'><a href='https://rdrr.io/r/base/double.html'>double</a></span>(), unit = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"l"</span>, <span class='st'>"s"</span>, <span class='st'>"d"</span>), bases = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>20L</span>, <span class='fl'>12L</span>))</pre>
+    <pre class="usage"><span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/lsd_to_decimal.html'>lsd_to_decimal</a></span>(<span class='kw'>x</span>, <span class='kw'>to</span>)</pre>
 
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A vector of class <code>deb_decimal</code>.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

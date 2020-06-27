@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Math group with <code>deb_lsd</code> objects — mathematics • debkeepr</title>
+<title>Math group with <code>deb_lsd</code> vectors — mathematics • debkeepr</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Math group with <code>deb_lsd</code> objects — mathematics" />
-<meta property="og:description" content="Math and Summary group of functions with deb_lsd objects.
+<meta property="og:title" content="Math group with <code>deb_lsd</code> vectors — mathematics" />
+<meta property="og:description" content="Math and Summary group of functions with deb_lsd vectors.
 Implemented functions:
 Summary group: sum(), any(), and all().
 Math group: abs(), round(), signif(), ceiling(),
@@ -149,13 +149,13 @@ including median(), quantile(), and summary()." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Math group with <code>deb_lsd</code> objects</h1>
+    <h1>Math group with <code>deb_lsd</code> vectors</h1>
     <small class="dont-index">Source: <a href='https://github.com/jessesadler/debkeepr/blob/master/R/arithmetic.R'><code>R/arithmetic.R</code></a></small>
     <div class="hidden name"><code>mathematics.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Math and Summary group of functions with <code>deb_lsd</code> objects.
+    <p>Math and Summary group of functions with <code>deb_lsd</code> vectors.
 Implemented functions:</p><ul>
 <li><p><a href='https://rdrr.io/r/base/groupGeneric.html'>Summary</a> group: <code><a href='https://rdrr.io/r/base/sum.html'>sum()</a></code>, <code><a href='https://rdrr.io/r/base/any.html'>any()</a></code>, and <code><a href='https://rdrr.io/r/base/all.html'>all()</a></code>.</p></li>
 <li><p><a href='https://rdrr.io/r/base/groupGeneric.html'>Math</a> group: <code><a href='https://rdrr.io/r/base/MathFun.html'>abs()</a></code>, <code><a href='https://rdrr.io/r/base/Round.html'>round()</a></code>, <code><a href='https://rdrr.io/r/base/Round.html'>signif()</a></code>, <code><a href='https://rdrr.io/r/base/Round.html'>ceiling()</a></code>,
@@ -169,28 +169,28 @@ including <code><a href='https://rdrr.io/r/stats/median.html'>median()</a></code
     </div>
 
     <pre class="usage"><span class='co'># S3 method for deb_lsd</span>
-<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='no'>...</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='kw'>...</span>, na.rm = <span class='fl'>FALSE</span>)
 
 <span class='co'># S3 method for deb_lsd</span>
-<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='kw'>x</span>, <span class='kw'>...</span>, na.rm = <span class='fl'>FALSE</span>)
 
 <span class='co'># S3 method for deb_lsd</span>
-<span class='fu'><a href='https://rdrr.io/r/base/cumsum.html'>cumsum</a></span>(<span class='no'>x</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/cumsum.html'>cumsum</a></span>(<span class='kw'>x</span>)
 
 <span class='co'># S3 method for deb_lsd</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='no'>x</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='kw'>x</span>, digits = <span class='fl'>0</span>)
 
 <span class='co'># S3 method for deb_lsd</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>signif</a></span>(<span class='no'>x</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>6</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>signif</a></span>(<span class='kw'>x</span>, digits = <span class='fl'>6</span>)
 
 <span class='co'># S3 method for deb_lsd</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>ceiling</a></span>(<span class='no'>x</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>ceiling</a></span>(<span class='kw'>x</span>)
 
 <span class='co'># S3 method for deb_lsd</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>floor</a></span>(<span class='no'>x</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>floor</a></span>(<span class='kw'>x</span>)
 
 <span class='co'># S3 method for deb_lsd</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>trunc</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>trunc</a></span>(<span class='kw'>x</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -206,7 +206,7 @@ further methods in <code><a href='https://rdrr.io/r/base/mean.html'>mean()</a></
     </tr>
     <tr>
       <th>x</th>
-      <td><p>An object of class <code>deb_lsd</code>.</p></td>
+      <td><p>An vector of class <code>deb_lsd</code>.</p></td>
     </tr>
     <tr>
       <th>digits</th>
@@ -229,53 +229,52 @@ use a <code>deb_decimal</code> vector. However, <code><a href='https://rdrr.io/r
 To use these functions cast <code>deb_lsd</code> and <code>deb_decimal</code> vectors to numeric.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='deb_lsd.html'>deb_lsd</a></span>(<span class='kw'>l</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>8</span>, <span class='fl'>12</span>),
-             <span class='kw'>s</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>16</span>, <span class='fl'>6</span>, <span class='fl'>13</span>),
-             <span class='kw'>d</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>6</span>, <span class='fl'>11</span>, <span class='fl'>0</span>))
+    <pre class="examples"><div class='input'><span class='kw'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_lsd.html'>deb_lsd</a></span>(l = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>8</span>, <span class='fl'>12</span>),
+             s = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>16</span>, <span class='fl'>6</span>, <span class='fl'>13</span>),
+             d = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>6</span>, <span class='fl'>11</span>, <span class='fl'>0</span>))
 
 <span class='co'># All values are normalized with sum and cumsum</span>
-<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
+<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='kw'>x</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
 #&gt; [1] 26:16s:5d
-#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cumsum.html'>cumsum</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[3]&gt;
+#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cumsum.html'>cumsum</a></span>(<span class='kw'>x</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[3]&gt;
 #&gt; [1] 5:16s:6d  14:3s:5d  26:16s:5d
-#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
+#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='kw'>x</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
 #&gt; [1] 8:18s:9.667d
 #&gt; # Bases: 20s 12d</div><div class='input'>
 <span class='co'># Round family on deb_lsd affects the denarius unit</span>
-<span class='no'>x2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='deb_lsd.html'>deb_lsd</a></span>(<span class='fl'>5</span>, <span class='fl'>12</span>, <span class='fl'>5.8365</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='no'>x2</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
+<span class='kw'>x2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_lsd.html'>deb_lsd</a></span>(<span class='fl'>5</span>, <span class='fl'>12</span>, <span class='fl'>5.8365</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='kw'>x2</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
 #&gt; [1] 5:12s:6d
-#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='no'>x2</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
+#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='kw'>x2</span>, digits = <span class='fl'>2</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
 #&gt; [1] 5:12s:5.84d
-#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>signif</a></span>(<span class='no'>x2</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
+#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>signif</a></span>(<span class='kw'>x2</span>, digits = <span class='fl'>2</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
 #&gt; [1] 5:12s:5.8d
-#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>ceiling</a></span>(<span class='no'>x2</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
+#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>ceiling</a></span>(<span class='kw'>x2</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
 #&gt; [1] 5:12s:6d
-#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>floor</a></span>(<span class='no'>x2</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
+#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>floor</a></span>(<span class='kw'>x2</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
 #&gt; [1] 5:12s:5d
-#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>trunc</a></span>(<span class='no'>x2</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
+#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>trunc</a></span>(<span class='kw'>x2</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
 #&gt; [1] 5:12s:5d
 #&gt; # Bases: 20s 12d</div><div class='input'>
 <span class='co'># The returned values are normalized whether</span>
 <span class='co'># they are positive or negative</span>
-<span class='no'>x3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='deb_lsd.html'>deb_lsd</a></span>(<span class='fl'>9</span>, <span class='fl'>19</span>, <span class='fl'>11.825</span>)
-<span class='no'>x4</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='deb_lsd.html'>deb_lsd</a></span>(-<span class='fl'>9</span>, -<span class='fl'>19</span>, -<span class='fl'>11.825</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='no'>x3</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
+<span class='kw'>x3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_lsd.html'>deb_lsd</a></span>(<span class='fl'>9</span>, <span class='fl'>19</span>, <span class='fl'>11.825</span>)
+<span class='kw'>x4</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_lsd.html'>deb_lsd</a></span>(<span class='op'>-</span><span class='fl'>9</span>, <span class='op'>-</span><span class='fl'>19</span>, <span class='op'>-</span><span class='fl'>11.825</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='kw'>x3</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
 #&gt; [1] 10:0s:0d
-#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='no'>x3</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
+#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='kw'>x3</span>, digits = <span class='fl'>1</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
 #&gt; [1] 9:19s:11.8d
 #&gt; # Bases: 20s 12d</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>ceiling</a></span>(<span class='no'>x3</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
+<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>ceiling</a></span>(<span class='kw'>x3</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
 #&gt; [1] 10:0s:0d
-#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>floor</a></span>(<span class='no'>x4</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
+#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>floor</a></span>(<span class='kw'>x4</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
 #&gt; [1] -10:0s:0d
 #&gt; # Bases: 20s 12d</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>trunc</a></span>(<span class='no'>x3</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
+<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>trunc</a></span>(<span class='kw'>x3</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
 #&gt; [1] 9:19s:11d
-#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>trunc</a></span>(<span class='no'>x4</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
+#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>trunc</a></span>(<span class='kw'>x4</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
 #&gt; [1] -9:-19s:-11d
-#&gt; # Bases: 20s 12d</div><div class='input'>
-</div></pre>
+#&gt; # Bases: 20s 12d</div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

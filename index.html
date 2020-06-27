@@ -98,13 +98,15 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#debkeepr-analysis-of-non-decimal-currencies" class="anchor"></a>debkeepr: Analysis of Non-Decimal Currencies</h1></div>
 
-<p><code>debkeepr</code> integrates non-decimal currencies that use the tripartite system of pounds, shillings, and pence into the methodologies of Digital Humanities and the practices of reproducible research. The package makes it possible for historical non-decimal currencies to behave like decimalized numeric values, while also providing support for values with multiple units whose bases can differ. This is accomplished through the implementation of the <code>deb_lsd</code> and <code>deb_decimal</code> classes, which are based on the infrastructure provided by the <a href="https://vctrs.r-lib.org/">vctrs package</a>. <code>debkkeepr</code> simplifies the process of performing arithmetic calculations with non-decimal currencies — such as adding £3 13s. 4d. sterling to £8 15s. 9d. sterling — and also provides a basis for analyzing account books with thousands of transactions recorded in non-decimal currencies. The name of the <code>debkeepr</code> package derives from this latter capability of analyzing historical account books that use <a href="https://en.wikipedia.org/wiki/Double-entry_bookkeeping_system">double-entry bookkeeping</a>.</p>
+<p><code>debkeepr</code> integrates non-decimal currencies that use the tripartite system of pounds, shillings, and pence into the methodologies of Digital Humanities and the practices of reproducible research. The package makes it possible for historical non-decimal currencies to behave like decimalized numeric values through the implementation of the <code>deb_lsd</code> and <code>deb_decimal</code> vector classes or types. These types are based on the infrastructure provided by the <a href="https://vctrs.r-lib.org/">vctrs package</a>. <code>debkkeepr</code> simplifies the process of performing arithmetic calculations with non-decimal currencies — such as adding £3 13s. 4d. sterling to £8 15s. 9d. sterling — and also provides a basis for analyzing account books with thousands of transactions recorded in non-decimal currencies. The name of the <code>debkeepr</code> package derives from this latter capability of analyzing historical account books that often used <a href="https://en.wikipedia.org/wiki/Double-entry_bookkeeping_system">double-entry bookkeeping</a>.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install <code>debkeepr</code> from GitHub with <a href="https://remotes.r-lib.org">remotes</a>:</p>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="co"># install.packages("remotes")</span>
-<span class="kw pkg">remotes</span><span class="kw ns">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"jessesadler/debkeepr"</span>)</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="co"># install.packages("remotes")</span>
+<span class="kw">remotes</span>::<span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"jessesadler/debkeepr"</span>)
+</pre></div>
 <p>Please open an <a href="https://github.com/jessesadler/debkeepr/issues">issue</a> if you have any questions, comments, or requests.</p>
 </div>
 <div id="historical-background" class="section level2">
@@ -125,9 +127,9 @@
 <a href="#resources" class="anchor"></a>Resources</h2>
 <ul>
 <li>
-<a href="https://jessesadler.github.io/debkeepr/articles/debkeepr.html">Getting Started with debkeepr vignette</a>: An introduction to the <code>deb_lsd</code> and <code>deb_decimal</code> classes and their use as vectors and as columns in data frames.</li>
+<a href="https://jessesadler.github.io/debkeepr/articles/debkeepr.html">Getting Started with debkeepr vignette</a>: An introduction to the <code>deb_lsd</code> and <code>deb_decimal</code> types and their use as vectors and as columns in data frames.</li>
 <li>
-<a href="https://jessesadler.github.io/debkeepr/articles/transactions.html">Transactions in Richard Dafforne’s Journal vignette</a>: Examples of financial and arithmetic calculations dealing with various currencies taken from the practice journal in Richard Dafforne’s <em>Merchant’s Mirrour</em> (1660).</li>
+<a href="https://jessesadler.github.io/debkeepr/articles/transactions.html">Transactions in Richard Dafforne’s Journal vignette</a>: Examples of financial and arithmetic calculations dealing with various currencies taken from the practice journal in Richard Dafforne’s <em>Merchant’s Mirrour</em> (1660), a 17th-century textbook for learning accounting practices.</li>
 <li>
 <a href="https://jessesadler.github.io/debkeepr/articles/ledger.html">Analysis of Richard Dafforne’s Journal and Ledger vignette</a>: An analysis of the practice journal and ledger in Dafforne’s <em>Merchant’s Mirrour</em> using the <code>dafforne_transactions</code> and <code>dafforne_accounts</code> data provided in <code>debkeepr</code>.</li>
 <li>
@@ -137,144 +139,173 @@
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h2>
-<p>The <code>deb_lsd</code> and <code>deb_decimal</code> classes are implemented to deal with two interrelated problems inherent in historical currencies. Firstly, historical currencies consist of three separate non-decimal units: pounds, shillings, and pence. Secondly, the bases of the shillings and pence units differed by region, coinage, and era. The <code>deb_lsd</code> class maintains the tripartite structure of non-decimal currencies and provides a <code>bases</code> attribute to record the bases for the shillings and pence units. The print methods for both classes show the <code>bases</code> attribute, and <code>deb_decimal</code> vectors include the <code>unit</code>.</p>
-<p>Note that all of the functions in <code>debkeepr</code> begin with the prefix <code>deb_</code>, which is short for double-entry bookkeeping.</p>
-<div class="sourceCode" id="cb2"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">debkeepr</span>)
+<p>The <code>deb_lsd</code> and <code>deb_decimal</code> types are implemented to deal with two interrelated problems inherent in historical currencies.</p>
+<ol>
+<li>Historical currencies consist of three separate non-decimal <strong>units</strong>: pounds, shillings, and pence.</li>
+<li>The <strong>bases</strong> of the shillings and pence units differed by region, coinage, and era.</li>
+</ol>
+<p>The <code>deb_lsd</code> class maintains the tripartite structure of non-decimal currencies and provides a <code>bases</code> attribute to record the bases for the shillings and pence units. The <code>deb_decimal</code> class also contains a <code>bases</code> attribute, as well as a <code>unit</code> attribute to track which unit the decimalized value represents (pounds, shillings, or pence). The print methods for both classes show the <code>bases</code> attribute, and <code>deb_decimal</code> vectors include the <code>unit</code>.</p>
+<p>Let’s see how this works in practice, beginning with <code>deb_lsd</code> vectors. Note that all of the functions in <code>debkeepr</code> begin with the prefix <code>deb_</code>, which is short for double-entry bookkeeping.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/jessesadler/debkeepr">debkeepr</a></span>)
 
 <span class="co"># Create deb_lsd vectors with standard bases of 20s. 12d.</span>
-<span class="no">lsd1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/deb_lsd.html">deb_lsd</a></span>(<span class="kw">l</span> <span class="kw">=</span> <span class="fl">3</span>, <span class="kw">s</span> <span class="kw">=</span> <span class="fl">13</span>, <span class="kw">d</span> <span class="kw">=</span> <span class="fl">4</span>)
-<span class="no">lsd2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/deb_lsd.html">deb_lsd</a></span>(<span class="kw">l</span> <span class="kw">=</span> <span class="fl">8</span>, <span class="kw">s</span> <span class="kw">=</span> <span class="fl">15</span>, <span class="kw">d</span> <span class="kw">=</span> <span class="fl">9</span>)
+<span class="kw">lsd1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/deb_lsd.html">deb_lsd</a></span>(l = <span class="fl">3</span>, s = <span class="fl">13</span>, d = <span class="fl">4</span>)
+<span class="kw">lsd2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/deb_lsd.html">deb_lsd</a></span>(l = <span class="fl">8</span>, s = <span class="fl">15</span>, d = <span class="fl">9</span>)
 
+<span class="co"># Combine multiple values together</span>
+<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">lsd1</span>, <span class="kw">lsd2</span>)
+<span class="co">#&gt; &lt;deb_lsd[2]&gt;</span>
+<span class="co">#&gt; [1] 3:13s:4d 8:15s:9d</span>
+<span class="co">#&gt; # Bases: 20s 12d</span>
+</pre></div>
+<p>A primary reason for the creation of the <code>deb_lsd</code> type is to simplify arithmetic calculations with non-decimal currency. Doing calculations by hand requires the use of <a href="https://en.wikipedia.org/wiki/Arithmetic#Compound_unit_arithmetic">compound unit arithmetic</a> and normalization.</p>
+<p><img src="reference/figures/compound-arithmetic.png" width="50%"></p>
+<p>All implemented arithmetic calculations with <code>deb_lsd</code> vectors — <code><a href="https://rdrr.io/r/base/sum.html">sum()</a></code>, <code><a href="https://rdrr.io/r/base/Round.html">round()</a></code>, <code><a href="https://rdrr.io/r/base/Arithmetic.html">+</a></code>, <code><a href="https://rdrr.io/r/base/Arithmetic.html">-</a></code>, etc. — automatically normalize the values according to the <code>bases</code> attribute. In addition, you can manually normalize non-standard values with <code><a href="reference/normalize.html">deb_normalize()</a></code>.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="co"># Perform arithmetic</span>
-<span class="no">lsd1</span> + <span class="no">lsd2</span>
+<span class="kw">lsd1</span> <span class="op">+</span> <span class="kw">lsd2</span>
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 12:9s:1d</span>
 <span class="co">#&gt; # Bases: 20s 12d</span>
-<span class="no">lsd2</span> - <span class="no">lsd1</span>
+<span class="kw">lsd2</span> <span class="op">-</span> <span class="kw">lsd1</span>
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 5:2s:5d</span>
 <span class="co">#&gt; # Bases: 20s 12d</span>
-<span class="no">lsd2</span> * <span class="fl">2</span> - <span class="no">lsd1</span>
+<span class="kw">lsd2</span> <span class="op">*</span> <span class="fl">2</span> <span class="op">-</span> <span class="kw">lsd1</span>
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 13:18s:2d</span>
 <span class="co">#&gt; # Bases: 20s 12d</span>
 
-<span class="co"># Combine multiple values together</span>
-<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">lsd1</span>, <span class="no">lsd2</span>)
-<span class="co">#&gt; &lt;deb_lsd[2]&gt;</span>
-<span class="co">#&gt; [1] 3:13s:4d 8:15s:9d</span>
-<span class="co">#&gt; # Bases: 20s 12d</span></pre></div>
-<p>Both classes allow the user to define the solidus and denarius units of the values, enabling integration of currencies that do not use the standardized bases of 20 shillings to the pound and 12 pence to the shilling. An example of non-standard <a href="https://en.wikipedia.org/wiki/Unit_of_account">money of account</a> is the Polish florin found in Dafforne’s practice journal in which a florin consisted of 30 gros of 18 denars. All arithmetic calculations with <code>deb_lsd</code> vectors — <code><a href="https://rdrr.io/r/base/sum.html">sum()</a></code>, <code><a href="https://rdrr.io/r/base/Round.html">round()</a></code>, <code><a href="https://rdrr.io/r/base/Arithmetic.html">+</a></code>, <code><a href="https://rdrr.io/r/base/Arithmetic.html">-</a></code>, etc. — <a href="https://en.wikipedia.org/wiki/Arithmetic#Compound_unit_arithmetic">normalize</a> the values according to the chosen bases, making it much easier to do the compound unit arithmetic that non-decimal currencies make necessary.</p>
-<p><img src="reference/figures/compound-arithmetic.png" width="50%"></p>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="co"># Create deb_lsd vector with standard bases of 20s. 12d.</span>
-(<span class="no">lsd3</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/deb_lsd.html">deb_lsd</a></span>(<span class="kw">l</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">28</span>, <span class="fl">32</span>, <span class="fl">54</span>, <span class="fl">18</span>),
-                 <span class="kw">s</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">15</span>, <span class="fl">8</span>, <span class="fl">18</span>, <span class="fl">12</span>),
-                 <span class="kw">d</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">8</span>, <span class="fl">11</span>, <span class="fl">7</span>, <span class="fl">9</span>)))
+<span class="co"># Normalize a non-standard value to default bases</span>
+<span class="fu"><a href="reference/normalize.html">deb_normalize</a></span>(<span class="fu"><a href="reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">132</span>, <span class="fl">53</span>, <span class="fl">35</span>))
+<span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
+<span class="co">#&gt; [1] 134:15s:11d</span>
+<span class="co">#&gt; # Bases: 20s 12d</span>
+</pre></div>
+<p>Both types allow the user to define the solidus and denarius units of values, enabling integration of currencies that do not use the standardized bases of 20 shillings to the pound and 12 pence to the shilling. An example of non-standard <a href="https://en.wikipedia.org/wiki/Unit_of_account">money of account</a> is the Polish florin found in Dafforne’s practice journal in which a florin consisted of 30 gros of 18 denars.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="co"># Create deb_lsd vector with standard bases of 20s. 12d.</span>
+(<span class="kw">lsd3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/deb_lsd.html">deb_lsd</a></span>(l = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">28</span>, <span class="fl">32</span>, <span class="fl">54</span>, <span class="fl">18</span>),
+                 s = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">15</span>, <span class="fl">8</span>, <span class="fl">18</span>, <span class="fl">12</span>),
+                 d = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">8</span>, <span class="fl">11</span>, <span class="fl">7</span>, <span class="fl">9</span>)))
 <span class="co">#&gt; &lt;deb_lsd[4]&gt;</span>
 <span class="co">#&gt; [1] 28:15s:8d 32:8s:11d 54:18s:7d 18:12s:9d</span>
 <span class="co">#&gt; # Bases: 20s 12d</span>
 
 <span class="co"># Same numerical values as Polish florins</span>
-(<span class="no">florins</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/deb_lsd.html">deb_lsd</a></span>(<span class="kw">l</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">28</span>, <span class="fl">32</span>, <span class="fl">54</span>, <span class="fl">18</span>),
-                    <span class="kw">s</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">15</span>, <span class="fl">8</span>, <span class="fl">18</span>, <span class="fl">12</span>),
-                    <span class="kw">d</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">8</span>, <span class="fl">11</span>, <span class="fl">7</span>, <span class="fl">9</span>),
-                    <span class="kw">bases</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">30</span>, <span class="fl">18</span>)))
+(<span class="kw">florins</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/deb_lsd.html">deb_lsd</a></span>(l = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">28</span>, <span class="fl">32</span>, <span class="fl">54</span>, <span class="fl">18</span>),
+                    s = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">15</span>, <span class="fl">8</span>, <span class="fl">18</span>, <span class="fl">12</span>),
+                    d = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">8</span>, <span class="fl">11</span>, <span class="fl">7</span>, <span class="fl">9</span>),
+                    bases = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">30</span>, <span class="fl">18</span>)))
 <span class="co">#&gt; &lt;deb_lsd[4]&gt;</span>
 <span class="co">#&gt; [1] 28:15s:8d 32:8s:11d 54:18s:7d 18:12s:9d</span>
 <span class="co">#&gt; # Bases: 30s 18d</span>
 
-<span class="co"># Different outcome with sum due to the bases</span>
-<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">lsd3</span>)
+<span class="co"># Different outcome with sum due to the different bases</span>
+<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="kw">lsd3</span>)
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 134:15s:11d</span>
 <span class="co">#&gt; # Bases: 20s 12d</span>
-<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">florins</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="kw">florins</span>)
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 133:24s:17d</span>
 <span class="co">#&gt; # Bases: 30s 18d</span>
 
-<span class="co"># Normalize a non-standard value to default bases</span>
-<span class="no">non_standard</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">132</span>, <span class="fl">53</span>, <span class="fl">35</span>)
-<span class="fu"><a href="reference/normalize.html">deb_normalize</a></span>(<span class="no">non_standard</span>)
-<span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
-<span class="co">#&gt; [1] 134:15s:11d</span>
-<span class="co">#&gt; # Bases: 20s 12d</span></pre></div>
-<p>The <code>deb_decimal</code> class represents non-decimal currencies in decimalized form. The class tracks the solidus and denarius bases and the unit represented by the decimalized values through the <code>bases</code> and <code>unit</code> attributes. When working with decimalized data is preferable, the <code>deb_decimal</code> class makes casting from and to <code>deb_lsd</code> possible without losing any metadata about the <code>bases</code> used, and therefore the actual value being represented.</p>
-<div class="sourceCode" id="cb4"><pre class="r"><span class="co"># Create deb_decimal from numeric vector</span>
-(<span class="no">dec1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/deb_decimal.html">deb_decimal</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">5.525</span>, <span class="fl">12.235</span>, <span class="fl">8.45</span>)))
+<span class="co"># Vectors with different bases cannot be combined since</span>
+<span class="co"># their relationship is unknown. Doing so results in an error.</span>
+<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="kw">lsd3</span>, <span class="kw">florins</span>)
+<span class="co">#&gt; Error: `bases` attributes must be equal to combine &lt;deb_lsd&gt; or &lt;deb_decimal&gt; vectors.</span>
+</pre></div>
+<p>In contrast to the tripartite structure of <code>deb_lsd</code> vectors, <code>deb_decimal</code> vectors represent non-decimal currencies in the more familiar decimal form. Internally, <code>deb_decimal</code> vectors are built on <code><a href="https://rdrr.io/r/base/double.html">double()</a></code> vectors. These decimalized vectors are linked to their non-decimal form through the <code>unit</code> and <code>bases</code> attributes.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="co"># Create deb_decimal from numeric vector</span>
+(<span class="kw">dec1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/deb_decimal.html">deb_decimal</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">5.525</span>, <span class="fl">12.235</span>, <span class="fl">8.45</span>)))
 <span class="co">#&gt; &lt;deb_decimal[3]&gt;</span>
 <span class="co">#&gt; [1]  5.525 12.235  8.450</span>
 <span class="co">#&gt; # Unit: libra</span>
 <span class="co">#&gt; # Bases: 20s 12d</span>
 
-<span class="co"># Same curreny values in solidus unit</span>
-(<span class="no">dec2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/deb_decimal.html">deb_decimal</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">110.5</span>, <span class="fl">244.7</span>, <span class="fl">169</span>), <span class="kw">unit</span> <span class="kw">=</span> <span class="st">"s"</span>))
+<span class="co"># Same currency values in solidus unit</span>
+(<span class="kw">dec2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/deb_decimal.html">deb_decimal</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">110.5</span>, <span class="fl">244.7</span>, <span class="fl">169</span>), unit = <span class="st">"s"</span>))
 <span class="co">#&gt; &lt;deb_decimal[3]&gt;</span>
 <span class="co">#&gt; [1] 110.5 244.7 169.0</span>
 <span class="co">#&gt; # Unit: solidus</span>
 <span class="co">#&gt; # Bases: 20s 12d</span>
 
 <span class="co"># Equality between different units</span>
-<span class="no">dec1</span> <span class="kw">==</span> <span class="no">dec2</span>
+<span class="kw">dec1</span> <span class="op">==</span> <span class="kw">dec2</span>
 <span class="co">#&gt; [1] TRUE TRUE TRUE</span>
 
+<span class="co"># Equality between deb_lsd and deb_decimal vectors</span>
+<span class="co"># £5 10s. 6d. is equal to 1,326 pence</span>
+<span class="fu"><a href="reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">6</span>) <span class="op">==</span> <span class="fu"><a href="reference/deb_decimal.html">deb_decimal</a></span>(<span class="fl">1326</span>, unit = <span class="st">"d"</span>)
+<span class="co">#&gt; [1] TRUE</span>
+</pre></div>
+<p>When working with decimalized data is preferable, the <code>deb_decimal</code> type makes casting from and to <code>deb_lsd</code> possible without losing any metadata about the <code>bases</code> and therefore the actual value being represented. <code>deb_lsd</code> and <code>deb_decimal</code> vectors can also be combined with numeric vectors or cast from and to numeric vectors. <code>debkeepr</code> uses an internal <a href="https://www.youtube.com/watch?v=8_QoT3ygdI4">conversion hierarchy</a> of <code><a href="https://rdrr.io/r/base/numeric.html">numeric()</a></code> -&gt; <code><a href="reference/deb_decimal.html">deb_decimal()</a></code> -&gt; <code><a href="reference/deb_lsd.html">deb_lsd()</a></code>.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit">
 <span class="co"># Combining deb_lsd and deb_decimal gives a deb_lsd vector</span>
-<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">dec1</span>, <span class="no">lsd1</span>, <span class="no">lsd2</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">dec1</span>, <span class="kw">lsd1</span>, <span class="kw">lsd2</span>)
 <span class="co">#&gt; &lt;deb_lsd[5]&gt;</span>
 <span class="co">#&gt; [1] 5:10s:6d   12:4s:8.4d 8:9s:0d    3:13s:4d   8:15s:9d  </span>
 <span class="co">#&gt; # Bases: 20s 12d</span>
+<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">dec1</span>, <span class="kw">lsd1</span>, <span class="fl">8.25</span>)
+<span class="co">#&gt; &lt;deb_lsd[5]&gt;</span>
+<span class="co">#&gt; [1] 5:10s:6d   12:4s:8.4d 8:9s:0d    3:13s:4d   8:5s:0d   </span>
+<span class="co">#&gt; # Bases: 20s 12d</span>
 
 <span class="co"># Cast between deb_lsd and deb_decimal vectors</span>
-<span class="fu"><a href="reference/cast-lsd.html">deb_as_lsd</a></span>(<span class="no">dec1</span>)
+<span class="fu"><a href="reference/cast-lsd.html">deb_as_lsd</a></span>(<span class="kw">dec1</span>)
 <span class="co">#&gt; &lt;deb_lsd[3]&gt;</span>
 <span class="co">#&gt; [1] 5:10s:6d   12:4s:8.4d 8:9s:0d   </span>
 <span class="co">#&gt; # Bases: 20s 12d</span>
-<span class="fu"><a href="reference/cast-decimal.html">deb_as_decimal</a></span>(<span class="no">lsd3</span>)
+<span class="fu"><a href="reference/cast-decimal.html">deb_as_decimal</a></span>(<span class="kw">lsd3</span>)
 <span class="co">#&gt; &lt;deb_decimal[4]&gt;</span>
 <span class="co">#&gt; [1] 28.78333 32.44583 54.92917 18.63750</span>
 <span class="co">#&gt; # Unit: libra</span>
 <span class="co">#&gt; # Bases: 20s 12d</span>
-<span class="fu"><a href="reference/cast-decimal.html">deb_as_decimal</a></span>(<span class="no">florins</span>)
+<span class="fu"><a href="reference/cast-decimal.html">deb_as_decimal</a></span>(<span class="kw">florins</span>)
 <span class="co">#&gt; &lt;deb_decimal[4]&gt;</span>
 <span class="co">#&gt; [1] 28.51481 32.28704 54.61296 18.41667</span>
 <span class="co">#&gt; # Unit: libra</span>
 <span class="co">#&gt; # Bases: 30s 18d</span>
 
 <span class="co"># Represented by solidus/shillings unit</span>
-<span class="fu"><a href="reference/cast-decimal.html">deb_as_decimal</a></span>(<span class="no">lsd3</span>, <span class="kw">unit</span> <span class="kw">=</span> <span class="st">"s"</span>)
+<span class="fu"><a href="reference/cast-decimal.html">deb_as_decimal</a></span>(<span class="kw">lsd3</span>, unit = <span class="st">"s"</span>)
 <span class="co">#&gt; &lt;deb_decimal[4]&gt;</span>
 <span class="co">#&gt; [1]  575.6667  648.9167 1098.5833  372.7500</span>
 <span class="co">#&gt; # Unit: solidus</span>
 <span class="co">#&gt; # Bases: 20s 12d</span>
 
 <span class="co"># Represented by denarius/pence unit</span>
-<span class="fu"><a href="reference/cast-decimal.html">deb_as_decimal</a></span>(<span class="no">lsd3</span>, <span class="kw">unit</span> <span class="kw">=</span> <span class="st">"d"</span>)
+<span class="fu"><a href="reference/cast-decimal.html">deb_as_decimal</a></span>(<span class="kw">lsd3</span>, unit = <span class="st">"d"</span>)
 <span class="co">#&gt; &lt;deb_decimal[4]&gt;</span>
 <span class="co">#&gt; [1]  6908  7787 13183  4473</span>
 <span class="co">#&gt; # Unit: denarius</span>
 <span class="co">#&gt; # Bases: 20s 12d</span>
 
-<span class="co"># Either class can be cast to base numeric, which,</span>
+<span class="co"># Either type can be cast to base numeric, which,</span>
 <span class="co"># of course, leads to the loss of all metadata</span>
-<span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="no">lsd3</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="kw">lsd3</span>)
 <span class="co">#&gt; [1] 28.78333 32.44583 54.92917 18.63750</span>
-<span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="no">dec1</span>)
-<span class="co">#&gt; [1]  5.525 12.235  8.450</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="kw">dec1</span>)
+<span class="co">#&gt; [1]  5.525 12.235  8.450</span>
+</pre></div>
 </div>
-<div id="differences-between-deb_lsd-and-deb_decimal-vectors" class="section level2">
+<div id="comparing-deb_lsd-and-deb_decimal-vectors" class="section level2">
 <h2 class="hasAnchor">
-<a href="#differences-between-deb_lsd-and-deb_decimal-vectors" class="anchor"></a>Differences between <code>deb_lsd</code> and <code>deb_decimal</code> vectors</h2>
-<p>See the <a href="https://jessesadler.github.io/debkeepr/articles/debkeepr.html">Getting Started with debkeepr vignette</a> for an in depth discussion of the similarities and differences between the two classes.</p>
+<a href="#comparing-deb_lsd-and-deb_decimal-vectors" class="anchor"></a>Comparing <code>deb_lsd</code> and <code>deb_decimal</code> vectors</h2>
+<p>See the <a href="https://jessesadler.github.io/debkeepr/articles/debkeepr.html">Getting Started with debkeepr vignette</a> for an in depth discussion of the similarities and differences between the two types.</p>
 <ul>
-<li>The <code>deb_lsd</code> class has the advantage of maintaining the structure and values used by non-decimal currencies, making it easier to identify and present such values.</li>
+<li>The <code>deb_lsd</code> type has the advantage of maintaining the structure and values used by non-decimal currencies, making it easier to identify and present such values.</li>
 <li>
 <code>deb_decimal</code> implements a wider array of mathematical functions and arithmetic operations than <code>deb_lsd</code>.</li>
-<li>Until <a href="https://dplyr.tidyverse.org">dplyr</a> integrates record-style vectors based on the <code>vctrs</code> package more fully — which should happen with version 0.9.0 — <code>deb_lsd</code> vectors do not work with the <code>dplyr</code> functions <code>mutate()</code>, <code>summarise()</code>, and <code>arrange()</code>. However, the full complement of <code>dplyr</code> functions work with <code>deb_decimal</code> vectors.</li>
+<li>You can move between the two types without losing any data through <code><a href="reference/cast-lsd.html">deb_as_lsd()</a></code> and <code><a href="reference/cast-decimal.html">deb_as_decimal()</a></code> casting methods.</li>
+<li>Because <code>deb_lsd</code> and <code>deb_decimal</code> are based on the <a href="https://vctrs.r-lib.org/">vctrs</a> package, both act as expected in data frames or <a href="https://tibble.tidyverse.org">tibbles</a> columns. From <a href="https://www.tidyverse.org/blog/2020/06/dplyr-1-0-0/">dplyr 1.0.0</a> — which is the minimal version used by debkeepr — all dplyr functions work on both <code>debkeepr</code> types.</li>
 <li>
 <a href="https://ggplot2.tidyverse.org">ggplot2</a> does not know how to pick a scale for <code>deb_lsd</code> vectors. In contrast, <code>deb_decimal</code> vectors work properly with <code>ggplot2</code>, though explicitly identifying the scale as continuous — with <code>scale_y_continuous()</code> or <code>scale_x_continuous()</code> — is needed to avoid the appearance of a message.</li>
-<li>Casting methods between the two classes with <code><a href="reference/cast-lsd.html">deb_as_lsd()</a></code> and <code><a href="reference/cast-decimal.html">deb_as_decimal()</a></code> make it possible to move between the two classes without losing any data.</li>
 <li>
-<code>deb_lsd</code> and <code>deb_decimal</code> vectors cannot be combined in a single function if they have different <code>bases</code>. The only way to transform the bases of <code>deb_lsd</code> and <code>deb_decimal</code> vectors is explicitly with <code><a href="reference/convert-bases.html">deb_convert_bases()</a></code>.</li>
+<code>deb_lsd</code> and <code>deb_decimal</code> vectors cannot be combined in a single function if their <code>bases</code> differ. The only way to transform the bases of <code>deb_lsd</code> and <code>deb_decimal</code> vectors is explicitly with <code><a href="reference/convert-bases.html">deb_convert_bases()</a></code>. This prevents mistakenly combining two different currencies together without properly converting their values.</li>
 </ul>
 </div>
 </div>

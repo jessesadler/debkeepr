@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Internal constructor to create <code>deb_decimal</code> type — new_decimal • debkeepr</title>
+<title>Cast <code>deb_lsd</code> to a list of lsd values — deb_as_list • debkeepr</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,8 @@
 
 
 
-<meta property="og:title" content="Internal constructor to create <code>deb_decimal</code> type — new_decimal" />
-<meta property="og:description" content="Asserts that x is a double(), that unit is &quot;l&quot;, &quot;s&quot;, or &quot;d&quot;, and
-that bases is an integer() of length 2. Creates the object through
-new_vctr()." />
+<meta property="og:title" content="Cast <code>deb_lsd</code> to a list of lsd values — deb_as_list" />
+<meta property="og:description" content="Cast a deb_lsd vector to a list of numeric vectors containing lsd values." />
 
 
 
@@ -141,24 +139,64 @@ new_vctr()." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Internal constructor to create <code>deb_decimal</code> type</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jessesadler/debkeepr/blob/master/R/decimal-class.R'><code>R/decimal-class.R</code></a></small>
-    <div class="hidden name"><code>new_decimal.Rd</code></div>
+    <h1>Cast <code>deb_lsd</code> to a list of lsd values</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jessesadler/debkeepr/blob/master/R/casting.R'><code>R/casting.R</code></a></small>
+    <div class="hidden name"><code>deb_as_list.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Asserts that <code>x</code> is a <code><a href='https://rdrr.io/r/base/double.html'>double()</a></code>, that <code>unit</code> is "l", "s", or "d", and
-that <code>bases</code> is an <code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code> of length 2. Creates the object through
-<code>new_vctr()</code>.</p>
+    <p>Cast a <code>deb_lsd</code> vector to a list of numeric vectors containing lsd values.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/new_decimal.html'>new_decimal</a></span>(x = <span class='fu'><a href='https://rdrr.io/r/base/double.html'>double</a></span>(), unit = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"l"</span>, <span class='st'>"s"</span>, <span class='st'>"d"</span>), bases = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>20L</span>, <span class='fl'>12L</span>))</pre>
+    <pre class="usage"><span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_as_list.html'>deb_as_list</a></span>(<span class='kw'>x</span>, <span class='kw'>...</span>)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>A <code>deb_lsd</code> vector to cast to a list of lsd values.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Arguments passed on to further methods.</p></td>
+    </tr>
+    </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A vector of class <code>deb_decimal</code>.</p>
+    <p>A list of numeric vectors of length 3, corresponding to lsd values.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
+    <p><code><a href='https://jessesadler.github.io/debkeepr//reference/deb_as_list.html'>deb_as_list()</a></code> turns a <code>deb_lsd</code> vector into a list of numeric vectors of
+length 3. It is the inverse of <code><a href='https://jessesadler.github.io/debkeepr//reference/cast-lsd.html'>deb_as_lsd()</a></code>. Compare to <code><a href='https://rdrr.io/r/base/list.html'>as.list()</a></code>,
+which creates a list of <code>deb_lsd</code> vectors or <code><a href='https://rdrr.io/r/base/class.html'>unclass()</a></code>, which creates a
+list of length 3 with numeric vectors for pounds, shillings, and pence.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='https://jessesadler.github.io/debkeepr//reference/cast-lsd.html'>deb_as_lsd()</a></code> for the inverse of <code><a href='https://jessesadler.github.io/debkeepr//reference/deb_as_list.html'>deb_as_list()</a></code>.</p></div>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='co'># deb_lsd vector</span>
+<span class='kw'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_lsd.html'>deb_lsd</a></span>(l = <span class='fl'>0</span><span class='op'>:</span><span class='fl'>3</span>, s = <span class='fl'>4</span><span class='op'>:</span><span class='fl'>7</span>, d = <span class='fl'>8</span><span class='op'>:</span><span class='fl'>11</span>)
+
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_as_list.html'>deb_as_list</a></span>(<span class='kw'>x</span>)</div><div class='output co'>#&gt; [[1]]
+#&gt; [1] 0 4 8
+#&gt; 
+#&gt; [[2]]
+#&gt; [1] 1 5 9
+#&gt; 
+#&gt; [[3]]
+#&gt; [1]  2  6 10
+#&gt; 
+#&gt; [[4]]
+#&gt; [1]  3  7 11
+#&gt; </div><div class='input'>
+<span class='co'># This is the inverse of `deb_as_lsd()` of a list of lsd values</span>
+<span class='kw'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_as_list.html'>deb_as_list</a></span>(<span class='kw'>x</span>)
+
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='kw'>x</span>, <span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/cast-lsd.html'>deb_as_lsd</a></span>(<span class='kw'>y</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Normalize pounds, shillings, and pence values — normalize • debkeepr</title>
+<title>Normalization function — normalize • debkeepr</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,9 @@
 
 
 
-<meta property="og:title" content="Normalize pounds, shillings, and pence values — normalize" />
-<meta property="og:description" content="Normalize pounds, shillings, and pence values to given bases of solidus
+<meta property="og:title" content="Normalization function — normalize" />
+<meta property="og:description" content="Function that actually performs the normalization of lsd value
+Normalize pounds, shillings, and pence values to given bases of solidus
 and denarius units." />
 
 
@@ -140,39 +141,33 @@ and denarius units." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Normalize pounds, shillings, and pence values</h1>
+    <h1>Normalization function</h1>
     <small class="dont-index">Source: <a href='https://github.com/jessesadler/debkeepr/blob/master/R/lsd-normalize.R'><code>R/lsd-normalize.R</code></a></small>
     <div class="hidden name"><code>normalize.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Normalize pounds, shillings, and pence values to given bases of solidus
+    <p>Function that actually performs the normalization of lsd value</p>
+<p>Normalize pounds, shillings, and pence values to given bases of solidus
 and denarius units.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>deb_normalize</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/normalize.html'>normalize</a></span>(<span class='kw'>l</span>, <span class='kw'>s</span>, <span class='kw'>d</span>, <span class='kw'>bases</span>)
+
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/normalize.html'>deb_normalize</a></span>(<span class='kw'>x</span>, <span class='kw'>...</span>)
 
 <span class='co'># S3 method for default</span>
-<span class='fu'>deb_normalize</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/normalize.html'>deb_normalize</a></span>(<span class='kw'>x</span>, <span class='kw'>...</span>)
 
 <span class='co'># S3 method for deb_lsd</span>
-<span class='fu'>deb_normalize</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/normalize.html'>deb_normalize</a></span>(<span class='kw'>x</span>, <span class='kw'>...</span>)
 
 <span class='co'># S3 method for numeric</span>
-<span class='fu'>deb_normalize</span>(<span class='no'>x</span>, <span class='kw'>bases</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>20</span>, <span class='fl'>12</span>), <span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/normalize.html'>deb_normalize</a></span>(<span class='kw'>x</span>, bases = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>20</span>, <span class='fl'>12</span>), <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>x</th>
-      <td><p>Either an object of class <code>deb_lsd</code> or a numeric vector of
-length 3 representing the values to be normalized.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Arguments passed on to further methods.</p></td>
-    </tr>
     <tr>
       <th>bases</th>
       <td><p>Used only if <code>x</code> is a numeric vector. A Numeric vector of
@@ -180,30 +175,38 @@ length 2 used to specify the bases for the shillings or s and pence or
 d units. Default is <code><a href='https://rdrr.io/r/base/c.html'>c(20, 12)</a></code>, which conforms to the most widely used
 system of 1 pound = 20 shillings and 1 shilling = 12 pence.</p></td>
     </tr>
+    <tr>
+      <th>x</th>
+      <td><p>Either an vector of class <code>deb_lsd</code> or a numeric vector of
+length 3 representing the values to be normalized.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Arguments passed on to further methods.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns an object of class <code>deb_lsd</code> with normalized solidus and
+    <p>Returns a vector of class <code>deb_lsd</code> with normalized solidus and
 denarius units.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='co'># Normalize a deb_lsd object</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='deb_lsd.html'>deb_lsd</a></span>(<span class='fl'>12</span>, <span class='fl'>93</span>, <span class='fl'>78</span>)
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='deb_lsd.html'>deb_lsd</a></span>(<span class='fl'>12</span>, <span class='fl'>93</span>, <span class='fl'>78</span>, <span class='kw'>bases</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>60</span>, <span class='fl'>16</span>))
-<span class='fu'>deb_normalize</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
+<span class='co'># Normalize a deb_lsd vector</span>
+<span class='kw'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_lsd.html'>deb_lsd</a></span>(<span class='fl'>12</span>, <span class='fl'>93</span>, <span class='fl'>78</span>)
+<span class='kw'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_lsd.html'>deb_lsd</a></span>(<span class='fl'>12</span>, <span class='fl'>93</span>, <span class='fl'>78</span>, bases = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>60</span>, <span class='fl'>16</span>))
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/normalize.html'>deb_normalize</a></span>(<span class='kw'>x</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
 #&gt; [1] 16:19s:6d
-#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'>deb_normalize</span>(<span class='no'>y</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
+#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/normalize.html'>deb_normalize</a></span>(<span class='kw'>y</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
 #&gt; [1] 13:37s:14d
 #&gt; # Bases: 60s 16d</div><div class='input'>
 <span class='co'># Normalize a numeric vector of length 3</span>
-<span class='fu'>deb_normalize</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>12</span>, <span class='fl'>93</span>, <span class='fl'>78</span>), <span class='kw'>bases</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>20</span>, <span class='fl'>12</span>))</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/normalize.html'>deb_normalize</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>12</span>, <span class='fl'>93</span>, <span class='fl'>78</span>), bases = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>20</span>, <span class='fl'>12</span>))</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
 #&gt; [1] 16:19s:6d
-#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'>deb_normalize</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>12</span>, <span class='fl'>93</span>, <span class='fl'>78</span>), <span class='kw'>bases</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>60</span>, <span class='fl'>16</span>))</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
+#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/normalize.html'>deb_normalize</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>12</span>, <span class='fl'>93</span>, <span class='fl'>78</span>), bases = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>60</span>, <span class='fl'>16</span>))</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
 #&gt; [1] 13:37s:14d
-#&gt; # Bases: 60s 16d</div><div class='input'>
-</div></pre>
+#&gt; # Bases: 60s 16d</div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

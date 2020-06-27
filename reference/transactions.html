@@ -159,45 +159,45 @@ data frame.
     <div class="ref-description">
     <p>Family of seven related functions to analyze transactions data frames that
 have credit, debit, and lsd variables, mimicking an account book.</p><ul>
-<li><p><code>deb_account()</code> credit, debit, and current value of a single account.</p></li>
-<li><p><code>deb_account_summary()</code> credit, debit, and current value of all accounts.</p></li>
-<li><p><code>deb_credit()</code> total credit of each account.</p></li>
-<li><p><code>deb_debit()</code> total debit of each account.</p></li>
-<li><p><code>deb_current()</code> current value of each account (credit - debit).</p></li>
-<li><p><code>deb_open()</code> current value of each account that has a positive or
+<li><p><code><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_account()</a></code> credit, debit, and current value of a single account.</p></li>
+<li><p><code><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_account_summary()</a></code> credit, debit, and current value of all accounts.</p></li>
+<li><p><code><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_credit()</a></code> total credit of each account.</p></li>
+<li><p><code><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_debit()</a></code> total debit of each account.</p></li>
+<li><p><code><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_current()</a></code> current value of each account (credit - debit).</p></li>
+<li><p><code><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_open()</a></code> current value of each account that has a positive or
 negative value.</p></li>
-<li><p><code>deb_balance()</code> positive and negative value remaining in a transactions
+<li><p><code><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_balance()</a></code> positive and negative value remaining in a transactions
 data frame.</p></li>
 </ul>
 
     </div>
 
-    <pre class="usage"><span class='fu'>deb_account</span>(
-  <span class='no'>df</span>,
-  <span class='no'>account_id</span>,
-  <span class='kw'>credit</span> <span class='kw'>=</span> <span class='no'>credit</span>,
-  <span class='kw'>debit</span> <span class='kw'>=</span> <span class='no'>debit</span>,
-  <span class='kw'>lsd</span> <span class='kw'>=</span> <span class='no'>lsd</span>,
-  <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+    <pre class="usage"><span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_account</a></span>(
+  <span class='kw'>df</span>,
+  <span class='kw'>account_id</span>,
+  credit = <span class='kw'>credit</span>,
+  debit = <span class='kw'>debit</span>,
+  lsd = <span class='kw'>lsd</span>,
+  na.rm = <span class='fl'>FALSE</span>
 )
 
-<span class='fu'>deb_account_summary</span>(
-  <span class='no'>df</span>,
-  <span class='kw'>credit</span> <span class='kw'>=</span> <span class='no'>credit</span>,
-  <span class='kw'>debit</span> <span class='kw'>=</span> <span class='no'>debit</span>,
-  <span class='kw'>lsd</span> <span class='kw'>=</span> <span class='no'>lsd</span>,
-  <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_account_summary</a></span>(
+  <span class='kw'>df</span>,
+  credit = <span class='kw'>credit</span>,
+  debit = <span class='kw'>debit</span>,
+  lsd = <span class='kw'>lsd</span>,
+  na.rm = <span class='fl'>FALSE</span>
 )
 
-<span class='fu'>deb_credit</span>(<span class='no'>df</span>, <span class='kw'>credit</span> <span class='kw'>=</span> <span class='no'>credit</span>, <span class='kw'>debit</span> <span class='kw'>=</span> <span class='no'>debit</span>, <span class='kw'>lsd</span> <span class='kw'>=</span> <span class='no'>lsd</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_credit</a></span>(<span class='kw'>df</span>, credit = <span class='kw'>credit</span>, debit = <span class='kw'>debit</span>, lsd = <span class='kw'>lsd</span>, na.rm = <span class='fl'>FALSE</span>)
 
-<span class='fu'>deb_debit</span>(<span class='no'>df</span>, <span class='kw'>credit</span> <span class='kw'>=</span> <span class='no'>credit</span>, <span class='kw'>debit</span> <span class='kw'>=</span> <span class='no'>debit</span>, <span class='kw'>lsd</span> <span class='kw'>=</span> <span class='no'>lsd</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_debit</a></span>(<span class='kw'>df</span>, credit = <span class='kw'>credit</span>, debit = <span class='kw'>debit</span>, lsd = <span class='kw'>lsd</span>, na.rm = <span class='fl'>FALSE</span>)
 
-<span class='fu'>deb_current</span>(<span class='no'>df</span>, <span class='kw'>credit</span> <span class='kw'>=</span> <span class='no'>credit</span>, <span class='kw'>debit</span> <span class='kw'>=</span> <span class='no'>debit</span>, <span class='kw'>lsd</span> <span class='kw'>=</span> <span class='no'>lsd</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_current</a></span>(<span class='kw'>df</span>, credit = <span class='kw'>credit</span>, debit = <span class='kw'>debit</span>, lsd = <span class='kw'>lsd</span>, na.rm = <span class='fl'>FALSE</span>)
 
-<span class='fu'>deb_open</span>(<span class='no'>df</span>, <span class='kw'>credit</span> <span class='kw'>=</span> <span class='no'>credit</span>, <span class='kw'>debit</span> <span class='kw'>=</span> <span class='no'>debit</span>, <span class='kw'>lsd</span> <span class='kw'>=</span> <span class='no'>lsd</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_open</a></span>(<span class='kw'>df</span>, credit = <span class='kw'>credit</span>, debit = <span class='kw'>debit</span>, lsd = <span class='kw'>lsd</span>, na.rm = <span class='fl'>FALSE</span>)
 
-<span class='fu'>deb_balance</span>(<span class='no'>df</span>, <span class='kw'>credit</span> <span class='kw'>=</span> <span class='no'>credit</span>, <span class='kw'>debit</span> <span class='kw'>=</span> <span class='no'>debit</span>, <span class='kw'>lsd</span> <span class='kw'>=</span> <span class='no'>lsd</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_balance</a></span>(<span class='kw'>df</span>, credit = <span class='kw'>credit</span>, debit = <span class='kw'>debit</span>, lsd = <span class='kw'>lsd</span>, na.rm = <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -238,20 +238,20 @@ or <code>deb_decimal</code>. Default is <code>lsd</code>.</p></td>
 
     <p>All return a tibble with variables for accounts and values in the same
 class as <code>lsd</code>:</p><ul>
-<li><p><code>deb_account()</code> a tibble with three rows showing the credit, debit, and
+<li><p><code><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_account()</a></code> a tibble with three rows showing the credit, debit, and
 current value of the given account.</p></li>
-<li><p><code>deb_account_summary()</code> a tibble with one row for each account in <code>df</code>
+<li><p><code><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_account_summary()</a></code> a tibble with one row for each account in <code>df</code>
 and credit, debit, and current value variables.</p></li>
-<li><p><code>deb_credit()</code> a tibble with one row for each account with the total
+<li><p><code><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_credit()</a></code> a tibble with one row for each account with the total
 credit of the accounts.</p></li>
-<li><p><code>deb_debit()</code> a tibble with one row for each account with the total
+<li><p><code><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_debit()</a></code> a tibble with one row for each account with the total
 debit of the accounts.</p></li>
-<li><p><code>deb_current()</code> a tibble with one row for each account with the current
+<li><p><code><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_current()</a></code> a tibble with one row for each account with the current
 value of the accounts.</p></li>
-<li><p><code>deb_open()</code> a tibble with one row for each account whose current value
+<li><p><code><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_open()</a></code> a tibble with one row for each account whose current value
 is not <code>0</code>. If all accounts are equal to zero, a tibble with zero rows
 will be returned.</p></li>
-<li><p><code>deb_balance()</code> a tibble with two rows showing the credit and debit
+<li><p><code><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_balance()</a></code> a tibble with two rows showing the credit and debit
 remaining in <code>df</code>.</p></li>
 </ul>
 
@@ -274,22 +274,22 @@ or date.</p>
 <span class='co'># See dafforne_accounts for account names.</span>
 
 <span class='co'># Credit, debit, and current value of cash account</span>
-<span class='fu'>deb_account</span>(<span class='no'>dafforne_transactions</span>, <span class='kw'>account_id</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-            <span class='kw'>credit</span> <span class='kw'>=</span> <span class='no'>credit</span>, <span class='kw'>debit</span> <span class='kw'>=</span> <span class='no'>debit</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 3 x 2</span><span>
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_account</a></span>(<span class='kw'>dafforne_transactions</span>, account_id = <span class='fl'>1</span>,
+            credit = <span class='kw'>credit</span>, debit = <span class='kw'>debit</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 3 x 2</span><span>
 #&gt;   relation            lsd
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;lsd[20s:12d]&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> credit     1956:10s:11d
 #&gt; </span><span style='color: #555555;'>2</span><span> debit       2903:13s:0d
 #&gt; </span><span style='color: #555555;'>3</span><span> current    -947:-2s:-1d</div><div class='input'>
 <span class='co'># Credit, debit, and current value of profit and loss account</span>
-<span class='fu'>deb_account</span>(<span class='no'>dafforne_transactions</span>, <span class='kw'>account_id</span> <span class='kw'>=</span> <span class='fl'>23</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 3 x 2</span><span>
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_account</a></span>(<span class='kw'>dafforne_transactions</span>, account_id = <span class='fl'>23</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 3 x 2</span><span>
 #&gt;   relation            lsd
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;lsd[20s:12d]&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> credit      1075:8s:11d
 #&gt; </span><span style='color: #555555;'>2</span><span> debit          29:0s:1d
 #&gt; </span><span style='color: #555555;'>3</span><span> current     1046:8s:10d</div><div class='input'>
 <span class='co'># Summary of all accounts in Dafforne's ledger</span>
-<span class='fu'>deb_account_summary</span>(<span class='no'>dafforne_transactions</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 46 x 4</span><span>
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_account_summary</a></span>(<span class='kw'>dafforne_transactions</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 46 x 4</span><span>
 #&gt;    account_id         credit          debit        current
 #&gt;         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lsd[20s:12d]&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lsd[20s:12d]&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lsd[20s:12d]&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span>          1   1956:10s:11d    2903:13s:0d   -947:-2s:-1d
@@ -304,7 +304,7 @@ or date.</p>
 #&gt; </span><span style='color: #555555;'>10</span><span>         10      606:2s:6d      606:2s:6d        0:0s:0d
 #&gt; </span><span style='color: #555555;'># … with 36 more rows</span><span></div><div class='input'>
 <span class='co'># Credit of accounts in Dafforne's ledger</span>
-<span class='fu'>deb_credit</span>(<span class='no'>dafforne_transactions</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 46 x 2</span><span>
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_credit</a></span>(<span class='kw'>dafforne_transactions</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 46 x 2</span><span>
 #&gt;    account_id            lsd
 #&gt;         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lsd[20s:12d]&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span>          1   1956:10s:11d
@@ -319,7 +319,7 @@ or date.</p>
 #&gt; </span><span style='color: #555555;'>10</span><span>         10      606:2s:6d
 #&gt; </span><span style='color: #555555;'># … with 36 more rows</span><span></div><div class='input'>
 <span class='co'># Debit of accounts in Dafforne's ledger</span>
-<span class='fu'>deb_debit</span>(<span class='no'>dafforne_transactions</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 46 x 2</span><span>
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_debit</a></span>(<span class='kw'>dafforne_transactions</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 46 x 2</span><span>
 #&gt;    account_id            lsd
 #&gt;         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lsd[20s:12d]&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span>          1    2903:13s:0d
@@ -334,7 +334,7 @@ or date.</p>
 #&gt; </span><span style='color: #555555;'>10</span><span>         10      606:2s:6d
 #&gt; </span><span style='color: #555555;'># … with 36 more rows</span><span></div><div class='input'>
 <span class='co'># Current value of accounts in Dafforne's ledger</span>
-<span class='fu'>deb_current</span>(<span class='no'>dafforne_transactions</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 46 x 2</span><span>
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_current</a></span>(<span class='kw'>dafforne_transactions</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 46 x 2</span><span>
 #&gt;    account_id            lsd
 #&gt;         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lsd[20s:12d]&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span>          1   -947:-2s:-1d
@@ -349,7 +349,7 @@ or date.</p>
 #&gt; </span><span style='color: #555555;'>10</span><span>         10        0:0s:0d
 #&gt; </span><span style='color: #555555;'># … with 36 more rows</span><span></div><div class='input'>
 <span class='co'># Current value of open account in Dafforne's ledger</span>
-<span class='fu'>deb_open</span>(<span class='no'>dafforne_transactions</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 14 x 2</span><span>
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_open</a></span>(<span class='kw'>dafforne_transactions</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 14 x 2</span><span>
 #&gt;    account_id             lsd
 #&gt;         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;lsd[20s:12d]&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span>          1    -947:-2s:-1d
@@ -368,14 +368,13 @@ or date.</p>
 #&gt; </span><span style='color: #555555;'>14</span><span>         46       93:19s:8d</div><div class='input'>
 <span class='co'># Compare the amount of rows in returned values of</span>
 <span class='co'># deb_current() vs deb_open()</span>
-<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='fu'>deb_current</span>(<span class='no'>dafforne_transactions</span>))</div><div class='output co'>#&gt; [1] 46</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='fu'>deb_open</span>(<span class='no'>dafforne_transactions</span>))</div><div class='output co'>#&gt; [1] 14</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_current</a></span>(<span class='kw'>dafforne_transactions</span>))</div><div class='output co'>#&gt; [1] 46</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_open</a></span>(<span class='kw'>dafforne_transactions</span>))</div><div class='output co'>#&gt; [1] 14</div><div class='input'>
 <span class='co'># Credit and debit remaining on Dafforne's ledger</span>
-<span class='fu'>deb_balance</span>(<span class='no'>dafforne_transactions</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 2 x 2</span><span>
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/transactions.html'>deb_balance</a></span>(<span class='kw'>dafforne_transactions</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 2 x 2</span><span>
 #&gt;   relation            lsd
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;lsd[20s:12d]&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> credit      4599:11s:0d
-#&gt; </span><span style='color: #555555;'>2</span><span> debit     -4599:-11s:0d</div><div class='input'>
-</div></span></pre>
+#&gt; </span><span style='color: #555555;'>2</span><span> debit     -4599:-11s:0d</div><div class='input'></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

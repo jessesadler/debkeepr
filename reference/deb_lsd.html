@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="A class for pounds, shillings and pence values — deb_lsd" />
-<meta property="og:description" content="Create an object of class deb_lsd to integrate non-decimal currencies
+<meta property="og:description" content="Create a vector of class deb_lsd to integrate non-decimal currencies
 into standardized forms of analysis provided by R." />
 
 
@@ -146,11 +146,11 @@ into standardized forms of analysis provided by R." />
     </div>
 
     <div class="ref-description">
-    <p>Create an object of class <code>deb_lsd</code> to integrate non-decimal currencies
+    <p>Create a vector of class <code>deb_lsd</code> to integrate non-decimal currencies
 into standardized forms of analysis provided by R.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>deb_lsd</span>(<span class='kw'>l</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/double.html'>double</a></span>(), <span class='kw'>s</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/double.html'>double</a></span>(), <span class='kw'>d</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/double.html'>double</a></span>(), <span class='kw'>bases</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>20</span>, <span class='fl'>12</span>))</pre>
+    <pre class="usage"><span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_lsd.html'>deb_lsd</a></span>(l = <span class='fu'><a href='https://rdrr.io/r/base/double.html'>double</a></span>(), s = <span class='fu'><a href='https://rdrr.io/r/base/double.html'>double</a></span>(), d = <span class='fu'><a href='https://rdrr.io/r/base/double.html'>double</a></span>(), bases = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>20</span>, <span class='fl'>12</span>))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -178,7 +178,7 @@ conforms to the most widely used system of 1 pound = 20 shillings and
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns an object of class <code>deb_lsd</code>.</p>
+    <p>Returns a vector of class <code>deb_lsd</code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The <code>deb_lsd</code> class and the <code>debkeepr</code> package use the nomenclature of
@@ -193,7 +193,7 @@ coins in dozens (solidi) and scores of dozens (librae) spread throughout the
 Carolingian Empire and became engrained in much of Europe. However, a
 variety of accounting systems arose at different times that used
 <a href='https://en.wikipedia.org/wiki/Non-decimal_currency'>other bases</a> for the
-solidus and denarius units. The <code>bases</code> attribute of <code>deb_lsd</code> objects
+solidus and denarius units. The <code>bases</code> attribute of <code>deb_lsd</code> vectors
 makes it possible to specify alternative bases for the solidus and denarius
 units.</p>
 <p>The length of <code>l</code>, <code>s</code>, and <code>d</code> must either be all equal, or a vector of
@@ -206,34 +206,34 @@ possess numeric vectors.</p>
 
     <div class='dont-index'><p>The <code>deb_lsd</code> class works in concert with the <code>deb_decimal</code> class, which
 represents non-decimal currencies as decimalized values. See
-<code><a href='deb_decimal.html'>deb_decimal()</a></code>.</p></div>
+<code><a href='https://jessesadler.github.io/debkeepr//reference/deb_decimal.html'>deb_decimal()</a></code>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'>deb_lsd</span>(<span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>8</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_lsd.html'>deb_lsd</a></span>(<span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>8</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
 #&gt; [1] 5:3s:8d
-#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'>deb_lsd</span>(<span class='kw'>l</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>, <span class='fl'>8</span>, <span class='fl'>5</span>),
-        <span class='kw'>s</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>6</span>, <span class='fl'>13</span>, <span class='fl'>8</span>),
-        <span class='kw'>d</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>8</span>, <span class='fl'>4</span>, <span class='fl'>10</span>))</div><div class='output co'>#&gt; &lt;deb_lsd[3]&gt;
+#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_lsd.html'>deb_lsd</a></span>(l = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>, <span class='fl'>8</span>, <span class='fl'>5</span>),
+        s = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>6</span>, <span class='fl'>13</span>, <span class='fl'>8</span>),
+        d = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>8</span>, <span class='fl'>4</span>, <span class='fl'>10</span>))</div><div class='output co'>#&gt; &lt;deb_lsd[3]&gt;
 #&gt; [1] 10:6s:8d 8:13s:4d 5:8s:10d
 #&gt; # Bases: 20s 12d</div><div class='input'>
 <span class='co'># Recycle length 1 vector</span>
-<span class='fu'>deb_lsd</span>(<span class='kw'>l</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>, <span class='fl'>8</span>, <span class='fl'>5</span>),
-        <span class='kw'>s</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>6</span>, <span class='fl'>13</span>, <span class='fl'>8</span>),
-        <span class='kw'>d</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[3]&gt;
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_lsd.html'>deb_lsd</a></span>(l = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>, <span class='fl'>8</span>, <span class='fl'>5</span>),
+        s = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>6</span>, <span class='fl'>13</span>, <span class='fl'>8</span>),
+        d = <span class='fl'>0</span>)</div><div class='output co'>#&gt; &lt;deb_lsd[3]&gt;
 #&gt; [1] 10:6s:0d 8:13s:0d 5:8s:0d 
 #&gt; # Bases: 20s 12d</div><div class='input'>
-<span class='co'># Set the bases of the object</span>
-<span class='fu'>deb_lsd</span>(<span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>8</span>, <span class='kw'>bases</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>60</span>, <span class='fl'>16</span>))</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
+<span class='co'># Set the bases of the deb_lsd vector</span>
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_lsd.html'>deb_lsd</a></span>(<span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>8</span>, bases = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>60</span>, <span class='fl'>16</span>))</div><div class='output co'>#&gt; &lt;deb_lsd[1]&gt;
 #&gt; [1] 5:3s:8d
-#&gt; # Bases: 60s 16d</div><div class='input'><span class='fu'>deb_lsd</span>(<span class='kw'>l</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>, <span class='fl'>28</span>, <span class='fl'>5</span>),
-        <span class='kw'>s</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>6</span>, <span class='fl'>33</span>, <span class='fl'>13</span>),
-        <span class='kw'>d</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>8</span>, <span class='fl'>42</span>, <span class='fl'>10</span>),
-        <span class='kw'>bases</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>60</span>, <span class='fl'>16</span>))</div><div class='output co'>#&gt; &lt;deb_lsd[3]&gt;
+#&gt; # Bases: 60s 16d</div><div class='input'><span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_lsd.html'>deb_lsd</a></span>(l = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>, <span class='fl'>28</span>, <span class='fl'>5</span>),
+        s = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>6</span>, <span class='fl'>33</span>, <span class='fl'>13</span>),
+        d = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>8</span>, <span class='fl'>42</span>, <span class='fl'>10</span>),
+        bases = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>60</span>, <span class='fl'>16</span>))</div><div class='output co'>#&gt; &lt;deb_lsd[3]&gt;
 #&gt; [1] 10:6s:8d   28:33s:42d 5:13s:10d 
 #&gt; # Bases: 60s 16d</div><div class='input'>
-<span class='co'># Create a prototype or object of length 0</span>
-<span class='fu'>deb_lsd</span>()</div><div class='output co'>#&gt; &lt;deb_lsd[0]&gt;
+<span class='co'># Create a prototype or vector of length 0</span>
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_lsd.html'>deb_lsd</a></span>()</div><div class='output co'>#&gt; &lt;deb_lsd[0]&gt;
 #&gt; # Bases: 20s 12d</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

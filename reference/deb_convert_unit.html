@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Convert the unit of <code>deb_decimal</code> objects — deb_convert_unit • debkeepr</title>
+<title>Convert the unit of <code>deb_decimal</code> vectors — deb_convert_unit • debkeepr</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Convert the unit of <code>deb_decimal</code> objects — deb_convert_unit" />
-<meta property="og:description" content="Convert the unit attribute of deb_decimal objects." />
+<meta property="og:title" content="Convert the unit of <code>deb_decimal</code> vectors — deb_convert_unit" />
+<meta property="og:description" content="Convert the unit attribute of deb_decimal vectors." />
 
 
 
@@ -139,23 +139,23 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Convert the unit of <code>deb_decimal</code> objects</h1>
+    <h1>Convert the unit of <code>deb_decimal</code> vectors</h1>
     <small class="dont-index">Source: <a href='https://github.com/jessesadler/debkeepr/blob/master/R/conversion.R'><code>R/conversion.R</code></a></small>
     <div class="hidden name"><code>deb_convert_unit.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Convert the <code>unit</code> attribute of <code>deb_decimal</code> objects.</p>
+    <p>Convert the <code>unit</code> attribute of <code>deb_decimal</code> vectors.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>deb_convert_unit</span>(<span class='no'>x</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"l"</span>, <span class='st'>"s"</span>, <span class='st'>"d"</span>))</pre>
+    <pre class="usage"><span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_convert_unit.html'>deb_convert_unit</a></span>(<span class='kw'>x</span>, to = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"l"</span>, <span class='st'>"s"</span>, <span class='st'>"d"</span>))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>An object of class <code>deb_decimal</code>.</p></td>
+      <td><p>A vector of class <code>deb_decimal</code>.</p></td>
     </tr>
     <tr>
       <th>to</th>
@@ -167,28 +167,28 @@ or <code>"d"</code> (denarius).</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>deb_decimal</code> object with a converted <code>unit</code> attribute.</p>
+    <p>A <code>deb_decimal</code> vector with a converted <code>unit</code> attribute.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>deb_convert_unit()</code> converts the <code>unit</code> of a <code>deb_decimal</code> object to
+    <p><code><a href='https://jessesadler.github.io/debkeepr//reference/deb_convert_unit.html'>deb_convert_unit()</a></code> converts the <code>unit</code> of a <code>deb_decimal</code> vector to
 either <code>"l"</code>, <code>"s"</code>, or <code>"d"</code>. This changes the representation of the
-object, but the value remains equivalent.</p>
+vector, but the value remains equivalent.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='deb_decimal.html'>deb_decimal</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>8.825</span>, <span class='fl'>15.125</span>, <span class='fl'>3.65</span>))
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='deb_decimal.html'>deb_decimal</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>56.45</span>, <span class='fl'>106.525</span>, <span class='fl'>200.4</span>), <span class='kw'>unit</span> <span class='kw'>=</span> <span class='st'>"s"</span>)
+<span class='kw'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_decimal.html'>deb_decimal</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>8.825</span>, <span class='fl'>15.125</span>, <span class='fl'>3.65</span>))
+<span class='kw'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_decimal.html'>deb_decimal</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>56.45</span>, <span class='fl'>106.525</span>, <span class='fl'>200.4</span>), unit = <span class='st'>"s"</span>)
 
-<span class='fu'>deb_convert_unit</span>(<span class='no'>x</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"s"</span>)</div><div class='output co'>#&gt; &lt;deb_decimal[3]&gt;
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_convert_unit.html'>deb_convert_unit</a></span>(<span class='kw'>x</span>, to = <span class='st'>"s"</span>)</div><div class='output co'>#&gt; &lt;deb_decimal[3]&gt;
 #&gt; [1] 176.5 302.5  73.0
 #&gt; # Unit: solidus
-#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'>deb_convert_unit</span>(<span class='no'>x</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"d"</span>)</div><div class='output co'>#&gt; &lt;deb_decimal[3]&gt;
+#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_convert_unit.html'>deb_convert_unit</a></span>(<span class='kw'>x</span>, to = <span class='st'>"d"</span>)</div><div class='output co'>#&gt; &lt;deb_decimal[3]&gt;
 #&gt; [1] 2118 3630  876
 #&gt; # Unit: denarius
-#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'>deb_convert_unit</span>(<span class='no'>y</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"l"</span>)</div><div class='output co'>#&gt; &lt;deb_decimal[3]&gt;
+#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_convert_unit.html'>deb_convert_unit</a></span>(<span class='kw'>y</span>, to = <span class='st'>"l"</span>)</div><div class='output co'>#&gt; &lt;deb_decimal[3]&gt;
 #&gt; [1]  2.82250  5.32625 10.02000
 #&gt; # Unit: libra
-#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'>deb_convert_unit</span>(<span class='no'>y</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"d"</span>)</div><div class='output co'>#&gt; &lt;deb_decimal[3]&gt;
+#&gt; # Bases: 20s 12d</div><div class='input'><span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_convert_unit.html'>deb_convert_unit</a></span>(<span class='kw'>y</span>, to = <span class='st'>"d"</span>)</div><div class='output co'>#&gt; &lt;deb_decimal[3]&gt;
 #&gt; [1]  677.4 1278.3 2404.8
 #&gt; # Unit: denarius
 #&gt; # Bases: 20s 12d</div></pre>

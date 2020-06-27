@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Format <code>deb_lsd</code> and <code>deb_decimal</code> objects as text — text • debkeepr</title>
+<title>Format <code>deb_lsd</code> and <code>deb_decimal</code> vectors as text — text • debkeepr</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Format <code>deb_lsd</code> and <code>deb_decimal</code> objects as text — text" />
-<meta property="og:description" content="Flexible way to nicely format deb_lsd and deb_decimal objects for
+<meta property="og:title" content="Format <code>deb_lsd</code> and <code>deb_decimal</code> vectors as text — text" />
+<meta property="og:description" content="Flexible way to nicely format deb_lsd and deb_decimal vectors for
 use as labels or texts." />
 
 
@@ -140,44 +140,44 @@ use as labels or texts." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Format <code>deb_lsd</code> and <code>deb_decimal</code> objects as text</h1>
+    <h1>Format <code>deb_lsd</code> and <code>deb_decimal</code> vectors as text</h1>
     <small class="dont-index">Source: <a href='https://github.com/jessesadler/debkeepr/blob/master/R/text.R'><code>R/text.R</code></a></small>
     <div class="hidden name"><code>text.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Flexible way to nicely format <code>deb_lsd</code> and <code>deb_decimal</code> objects for
+    <p>Flexible way to nicely format <code>deb_lsd</code> and <code>deb_decimal</code> vectors for
 use as labels or texts.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>deb_text</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/text.html'>deb_text</a></span>(<span class='kw'>x</span>, <span class='kw'>...</span>)
 
 <span class='co'># S3 method for default</span>
-<span class='fu'>deb_text</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/text.html'>deb_text</a></span>(<span class='kw'>x</span>, <span class='kw'>...</span>)
 
 <span class='co'># S3 method for deb_lsd</span>
-<span class='fu'>deb_text</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>currency</span> <span class='kw'>=</span> <span class='st'>"£"</span>,
-  <span class='kw'>s.mark</span> <span class='kw'>=</span> <span class='st'>"s."</span>,
-  <span class='kw'>d.mark</span> <span class='kw'>=</span> <span class='st'>"d."</span>,
-  <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>" "</span>,
-  <span class='kw'>big.mark</span> <span class='kw'>=</span> <span class='st'>","</span>,
-  <span class='kw'>decimal.mark</span> <span class='kw'>=</span> <span class='st'>"."</span>,
-  <span class='kw'>suffix</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='no'>...</span>
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/text.html'>deb_text</a></span>(
+  <span class='kw'>x</span>,
+  digits = <span class='fl'>0</span>,
+  currency = <span class='st'>"£"</span>,
+  s.mark = <span class='st'>"s."</span>,
+  d.mark = <span class='st'>"d."</span>,
+  sep = <span class='st'>" "</span>,
+  big.mark = <span class='st'>","</span>,
+  decimal.mark = <span class='st'>"."</span>,
+  suffix = <span class='st'>""</span>,
+  <span class='kw'>...</span>
 )
 
 <span class='co'># S3 method for deb_decimal</span>
-<span class='fu'>deb_text</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>currency</span> <span class='kw'>=</span> <span class='st'>"£"</span>,
-  <span class='kw'>big.mark</span> <span class='kw'>=</span> <span class='st'>","</span>,
-  <span class='kw'>decimal.mark</span> <span class='kw'>=</span> <span class='st'>"."</span>,
-  <span class='kw'>suffix</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='no'>...</span>
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/text.html'>deb_text</a></span>(
+  <span class='kw'>x</span>,
+  digits = <span class='fl'>0</span>,
+  currency = <span class='st'>"£"</span>,
+  big.mark = <span class='st'>","</span>,
+  decimal.mark = <span class='st'>"."</span>,
+  suffix = <span class='st'>""</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -185,7 +185,7 @@ use as labels or texts.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>An object of class <code>deb_lsd</code> or <code>deb_decimal</code>.</p></td>
+      <td><p>A vector of class <code>deb_lsd</code> or <code>deb_decimal</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -237,11 +237,11 @@ mark. Default is <code>","</code> with default <code>big.interval</code> of <cod
 
     <p><code>deb_text</code> is similar to <code><a href='https://rdrr.io/r/base/character.html'>as.character()</a></code> in that both return a character
 vector of the values of <code>deb_lsd</code> and <code>deb_decimal</code> vectors. However,
-<code><a href='https://rdrr.io/r/base/character.html'>as.character()</a></code> uses the normal printing method for these objects.
-<code>deb_text()</code> provides a convenient way to nicely format <code>deb_lsd</code> and
-<code>deb_decimal</code> objects for use as text or labels with options for
+<code><a href='https://rdrr.io/r/base/character.html'>as.character()</a></code> uses the normal printing method for these vectors.
+<code><a href='https://jessesadler.github.io/debkeepr//reference/text.html'>deb_text()</a></code> provides a convenient way to nicely format <code>deb_lsd</code> and
+<code>deb_decimal</code> vectors for use as text or labels with options for
 customization.</p>
-<p><code>deb_text()</code> uses <code><a href='https://rdrr.io/r/base/formatc.html'>formatC()</a></code> to format the numeric values of <code>x</code>. Numbers
+<p><code><a href='https://jessesadler.github.io/debkeepr//reference/text.html'>deb_text()</a></code> uses <code><a href='https://rdrr.io/r/base/formatc.html'>formatC()</a></code> to format the numeric values of <code>x</code>. Numbers
 are printed in non-scientific format and trailing zeros are dropped.</p>
 <p>All character vector arguments should be length 1.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -249,20 +249,19 @@ are printed in non-scientific format and trailing zeros are dropped.</p>
     <div class='dont-index'><p><code><a href='https://rdrr.io/r/base/formatc.html'>formatC()</a></code> for further options passed to <code>...</code>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>lsd</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='deb_lsd.html'>deb_lsd</a></span>(<span class='kw'>l</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10000</span>, <span class='fl'>0</span>, -<span class='fl'>10000</span>),
-               <span class='kw'>s</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>8</span>, <span class='fl'>0</span>, -<span class='fl'>8</span>),
-               <span class='kw'>d</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5.8252</span>, <span class='fl'>0</span>, -<span class='fl'>5.8252</span>))
-<span class='no'>dec</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='deb_decimal.html'>deb_decimal</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10000.8252</span>, <span class='fl'>0</span>, -<span class='fl'>10000.8252</span>))
+    <pre class="examples"><div class='input'><span class='kw'>lsd</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_lsd.html'>deb_lsd</a></span>(l = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10000</span>, <span class='fl'>0</span>, <span class='op'>-</span><span class='fl'>10000</span>),
+               s = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>8</span>, <span class='fl'>0</span>, <span class='op'>-</span><span class='fl'>8</span>),
+               d = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5.8252</span>, <span class='fl'>0</span>, <span class='op'>-</span><span class='fl'>5.8252</span>))
+<span class='kw'>dec</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/deb_decimal.html'>deb_decimal</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10000.8252</span>, <span class='fl'>0</span>, <span class='op'>-</span><span class='fl'>10000.8252</span>))
 
-<span class='fu'>deb_text</span>(<span class='no'>lsd</span>)</div><div class='output co'>#&gt; [1] "£10,000 8s. 6d."  "£0 0s. 0d."       "-£10,000 8s. 6d."</div><div class='input'><span class='fu'>deb_text</span>(<span class='no'>dec</span>)</div><div class='output co'>#&gt; [1] "£10,001"  "£0"       "-£10,001"</div><div class='input'>
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/text.html'>deb_text</a></span>(<span class='kw'>lsd</span>)</div><div class='output co'>#&gt; [1] "£10,000 8s. 6d."  "£0 0s. 0d."       "-£10,000 8s. 6d."</div><div class='input'><span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/text.html'>deb_text</a></span>(<span class='kw'>dec</span>)</div><div class='output co'>#&gt; [1] "£10,001"  "£0"       "-£10,001"</div><div class='input'>
 <span class='co'># Compact format for deb_lsd with suffix to distinguish currency</span>
-<span class='fu'>deb_text</span>(<span class='no'>lsd</span>, <span class='kw'>s.mark</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>d.mark</span> <span class='kw'>=</span> <span class='st'>""</span>,
-         <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>suffix</span> <span class='kw'>=</span> <span class='st'>" Flemish"</span>)</div><div class='output co'>#&gt; [1] "£10,000.8.6 Flemish"  "£0.0.0 Flemish"       "-£10,000.8.6 Flemish"</div><div class='input'>
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/text.html'>deb_text</a></span>(<span class='kw'>lsd</span>, s.mark = <span class='st'>""</span>, d.mark = <span class='st'>""</span>,
+         sep = <span class='st'>"."</span>, suffix = <span class='st'>" Flemish"</span>)</div><div class='output co'>#&gt; [1] "£10,000.8.6 Flemish"  "£0.0.0 Flemish"       "-£10,000.8.6 Flemish"</div><div class='input'>
 <span class='co'># Control the number of digits</span>
-<span class='fu'>deb_text</span>(<span class='no'>lsd</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; [1] "£10,000 8s. 5.825d."  "£0 0s. 0d."           "-£10,000 8s. 5.825d."</div><div class='input'><span class='fu'>deb_text</span>(<span class='no'>dec</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; [1] "£10,000.825"  "£0"           "-£10,000.825"</div><div class='input'>
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/text.html'>deb_text</a></span>(<span class='kw'>lsd</span>, digits = <span class='fl'>3</span>)</div><div class='output co'>#&gt; [1] "£10,000 8s. 5.825d."  "£0 0s. 0d."           "-£10,000 8s. 5.825d."</div><div class='input'><span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/text.html'>deb_text</a></span>(<span class='kw'>dec</span>, digits = <span class='fl'>3</span>)</div><div class='output co'>#&gt; [1] "£10,000.825"  "£0"           "-£10,000.825"</div><div class='input'>
 <span class='co'># Change big mark and decimal mark</span>
-<span class='fu'>deb_text</span>(<span class='no'>lsd</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>big.mark</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>decimal.mark</span> <span class='kw'>=</span> <span class='st'>","</span>)</div><div class='output co'>#&gt; [1] "£10.000 8s. 5,8252d."  "£0 0s. 0d."            "-£10.000 8s. 5,8252d."</div><div class='input'><span class='fu'>deb_text</span>(<span class='no'>dec</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>big.mark</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>decimal.mark</span> <span class='kw'>=</span> <span class='st'>","</span>)</div><div class='output co'>#&gt; [1] "£10.000,8252"  "£0"            "-£10.000,8252"</div><div class='input'>
-</div></pre>
+<span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/text.html'>deb_text</a></span>(<span class='kw'>lsd</span>, digits = <span class='fl'>4</span>, big.mark = <span class='st'>"."</span>, decimal.mark = <span class='st'>","</span>)</div><div class='output co'>#&gt; [1] "£10.000 8s. 5,8252d."  "£0 0s. 0d."            "-£10.000 8s. 5,8252d."</div><div class='input'><span class='fu'><a href='https://jessesadler.github.io/debkeepr//reference/text.html'>deb_text</a></span>(<span class='kw'>dec</span>, digits = <span class='fl'>4</span>, big.mark = <span class='st'>"."</span>, decimal.mark = <span class='st'>","</span>)</div><div class='output co'>#&gt; [1] "£10.000,8252"  "£0"            "-£10.000,8252"</div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

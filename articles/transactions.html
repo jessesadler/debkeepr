@@ -91,7 +91,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="transactions_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Transactions in Richard Dafforne’s Journal</h1>
@@ -129,34 +129,42 @@
 <h2 class="hasAnchor">
 <a href="#arithmetic-calculations" class="anchor"></a>Arithmetic calculations</h2>
 <p>This section contains examples of various arithmetic calculations to recreate the values recorded in Dafforne’s practice journal. This both shows off the capabilities of <code>debkeepr</code> and helps to explicate the calculations that went into bookkeeping in the early modern period.<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> The transaction numbers recorded in the journal correspond to the “id” variable in the <code>dafforne_transactions</code> data. The accounts and the names attached to them can be seen in <code>dafforne_accounts</code>.<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a></p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="co"># load debkeepr</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">debkeepr</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="co"># load debkeepr</span>
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/jessesadler/debkeepr">debkeepr</a></span>)
+</pre></div>
 <div id="division-and-multiplication" class="section level3">
 <h3 class="hasAnchor">
 <a href="#division-and-multiplication" class="anchor"></a>Division and multiplication</h3>
 <p>One of the more straightforward calculations in bookkeeping is division or multiplication of a value to split it among multiple partners or to calculate costs that are charged at a certain percentage of the value of the goods. For instance, in transaction 18 in the journal the merchant Randoll Rice purchased 100 pieces of says or woolen serges for £566 13s. 4d. sterling that were sent to Lisbon for a company in which Rice had a three-fifths part. Transaction 19 calculates the value of Rice’s part in the says.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="co"># 19. For Rice's 3/5 part of the 100 says valued at £566.13.4 nr 18</span>
-<span class="no">tr18</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">566</span>, <span class="fl">13</span>, <span class="fl">4</span>)
-<span class="no">tr18</span> * <span class="fl">3</span> / <span class="fl">5</span>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="co"># 19. For Rice's 3/5 part of the 100 says valued at £566.13.4 nr 18</span>
+<span class="kw">tr18</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">566</span>, <span class="fl">13</span>, <span class="fl">4</span>)
+<span class="kw">tr18</span> <span class="op">*</span> <span class="fl">3</span> <span class="op">/</span> <span class="fl">5</span>
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 340:0s:0d</span>
-<span class="co">#&gt; # Bases: 20s 12d</span></pre></body></html></div>
+<span class="co">#&gt; # Bases: 20s 12d</span>
+</pre></div>
 <p>In transaction 21 expenses for the says are dealt with, including a brokerage charge of 1/8% and a provision charge of 1/3%.</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="co"># 21. For brokerage costs in nr 18 and 20 at 1/8% and provision at 1/3%</span>
-<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">tr18</span> * <span class="fl">1</span> / <span class="fl">800</span>, <span class="no">tr18</span> * <span class="fl">1</span> / <span class="fl">300</span>)
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="co"># 21. For brokerage costs in nr 18 and 20 at 1/8% and provision at 1/3%</span>
+<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="kw">tr18</span> <span class="op">*</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">800</span>, <span class="kw">tr18</span> <span class="op">*</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">300</span>)
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 2:11s:11.333d</span>
-<span class="co">#&gt; # Bases: 20s 12d</span></pre></body></html></div>
+<span class="co">#&gt; # Bases: 20s 12d</span>
+</pre></div>
 </div>
 <div id="interest" class="section level3">
 <h3 class="hasAnchor">
 <a href="#interest" class="anchor"></a>Interest</h3>
 <p>Another straightforward calculation is that of interest. Dafforne dedicated an entire section of his bookkeeping manual to the calculation of interest, providing his readers with a table to calculate interest at different rates for different periods of time. An example in the journal is transaction 87 that assesses interest of 8% on £96 14s. 9d. sterling over a period of four months. Though the result here would round down to £2 11s. 7d., the journal lists the interest as £2 11s. 8d.</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="co"># 87. For £96.14.9 detained upon interest at 8% for 4 months</span>
-<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">96</span>, <span class="fl">14</span>, <span class="fl">9</span>) * <span class="fl">0.08</span> * <span class="fl">4</span> / <span class="fl">12</span>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="co"># 87. For £96.14.9 detained upon interest at 8% for 4 months</span>
+<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">96</span>, <span class="fl">14</span>, <span class="fl">9</span>) <span class="op">*</span> <span class="fl">0.08</span> <span class="op">*</span> <span class="fl">4</span> <span class="op">/</span> <span class="fl">12</span>
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 2:11s:7.12d</span>
-<span class="co">#&gt; # Bases: 20s 12d</span></pre></body></html></div>
+<span class="co">#&gt; # Bases: 20s 12d</span>
+</pre></div>
 </div>
 <div id="weights-and-value-of-salespurchases" class="section level3">
 <h3 class="hasAnchor">
@@ -209,81 +217,91 @@
 </tbody>
 </table>
 <p>To find the total net weight of the kettles, the gross and tare weights can be found and then subtracted to find the net weight. This can be done by transforming the gross and tare values to <code>deb_lsd</code> vectors with bases of 4 and 28.</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="co"># 3. Gross weight</span>
-(<span class="no">kettles_gross</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="kw">l</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">1</span>),
-                          <span class="kw">s</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">3</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">3</span>),
-                          <span class="kw">d</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">26</span>, <span class="fl">18</span>, <span class="fl">21</span>, <span class="fl">17</span>, <span class="fl">5</span>),
-                          <span class="kw">bases</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">4</span>, <span class="fl">28</span>)))
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="co"># 3. Gross weight</span>
+(<span class="kw">kettles_gross</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(l = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">1</span>),
+                          s = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">3</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">3</span>),
+                          d = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">26</span>, <span class="fl">18</span>, <span class="fl">21</span>, <span class="fl">17</span>, <span class="fl">5</span>),
+                          bases = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">4</span>, <span class="fl">28</span>)))
 <span class="co">#&gt; &lt;deb_lsd[5]&gt;</span>
 <span class="co">#&gt; [1] 2:3s:26d 2:2s:18d 2:1s:21d 2:0s:17d 1:3s:5d </span>
 <span class="co">#&gt; # Bases: 4s 28d</span>
 
 <span class="co"># Tare</span>
-(<span class="no">kettles_tare</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="kw">l</span> <span class="kw">=</span> <span class="fl">0</span>,
-                         <span class="kw">s</span> <span class="kw">=</span> <span class="fl">0</span>,
-                         <span class="kw">d</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">23</span>, <span class="fl">21</span>, <span class="fl">22</span>, <span class="fl">19</span>, <span class="fl">17</span>),
-                         <span class="kw">bases</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">4</span>, <span class="fl">28</span>)))
+(<span class="kw">kettles_tare</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(l = <span class="fl">0</span>,
+                         s = <span class="fl">0</span>,
+                         d = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">23</span>, <span class="fl">21</span>, <span class="fl">22</span>, <span class="fl">19</span>, <span class="fl">17</span>),
+                         bases = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">4</span>, <span class="fl">28</span>)))
 <span class="co">#&gt; &lt;deb_lsd[5]&gt;</span>
 <span class="co">#&gt; [1] 0:0s:23d 0:0s:21d 0:0s:22d 0:0s:19d 0:0s:17d</span>
 <span class="co">#&gt; # Bases: 4s 28d</span>
 
 <span class="co"># Net weight</span>
-(<span class="no">kettles_net</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">kettles_gross</span>) - <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">kettles_tare</span>))
+(<span class="kw">kettles_net</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="kw">kettles_gross</span>) <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="kw">kettles_tare</span>))
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 11:0s:13d</span>
-<span class="co">#&gt; # Bases: 4s 28d</span></pre></body></html></div>
+<span class="co">#&gt; # Bases: 4s 28d</span>
+</pre></div>
 <p>Transaction 3 notes that the kettles were valued at £4 19s. per hundredweight. The two values cannot be multiplied, as multiplication between two <code>deb_lsd</code> vectors is not implemented, nor would it be possible to do so since the two vectors have different <code>bases</code>. Instead, the price can be multiplied by the decimalized weight created by casting <code>kettles_net</code> to a <code>numeric</code> vector of the correct unit — here, the libra unit.</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="co"># 3. Decimalize hundredweight</span>
-(<span class="no">kettles_num</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="no">kettles_net</span>))
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="co"># 3. Decimalize hundredweight</span>
+(<span class="kw">kettles_num</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="kw">kettles_net</span>))
 <span class="co">#&gt; [1] 11.11607</span>
 
 <span class="co"># Value of the kettles</span>
-(<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">4</span>, <span class="fl">19</span>, <span class="fl">0</span>) * <span class="no">kettles_num</span>)
+(<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">4</span>, <span class="fl">19</span>, <span class="fl">0</span>) <span class="op">*</span> <span class="kw">kettles_num</span>)
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 55:0s:5.893d</span>
-<span class="co">#&gt; # Bases: 20s 12d</span></pre></body></html></div>
+<span class="co">#&gt; # Bases: 20s 12d</span>
+</pre></div>
 <p>This method of multiplying the price by the decimalized weight of a set of goods can be used in a variety of circumstances. For instance, it is possible to follow the purchase and sale of sugar from Lisbon in the journal through this method. In transaction 54 from 21 March 1633 the bookkeeper recorded an agreement to purchase ten chests of sugar from Lisbon weighing 51 hundredweight 3 quarters 4 pounds at the price of 13d. per pound from James Wilkinson. Because the price is given in terms of the pound unit, the <code>deb_lsd</code> vector is cast to a <code>deb_decimal</code> vector in terms of the pence or <code>denarius</code> unit before being cast to <code>numeric</code>.</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="co"># 54. 51 hundredweight 3 quarters 4 pounds of sugar at 13d. per pound</span>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="co"># 54. 51 hundredweight 3 quarters 4 pounds of sugar at 13d. per pound</span>
 <span class="co"># Weight in decimalized pounds</span>
-<span class="no">sugar_lbs</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">51</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="kw">bases</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">4</span>, <span class="fl">28</span>)) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/cast-decimal.html">deb_as_decimal</a></span>(<span class="kw">unit</span> <span class="kw">=</span> <span class="st">"d"</span>) <span class="kw">%&gt;%</span>
+<span class="kw">sugar_lbs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">51</span>, <span class="fl">3</span>, <span class="fl">4</span>, bases = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">4</span>, <span class="fl">28</span>)) <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/cast-decimal.html">deb_as_decimal</a></span>(unit = <span class="st">"d"</span>) <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>()
 
 <span class="co"># Price</span>
-<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">13</span>) * <span class="no">sugar_lbs</span>
+<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">13</span>) <span class="op">*</span> <span class="kw">sugar_lbs</span>
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 314:3s:4d</span>
-<span class="co">#&gt; # Bases: 20s 12d</span></pre></body></html></div>
+<span class="co">#&gt; # Bases: 20s 12d</span>
+</pre></div>
 <p>By May, the merchant had found a willing buyer for the sugar at the price of 14d. per pound in the person of George Pinchback. However, when the sugar arrived from Lisbon, there was actually 15 chests weighing 77 hundredweight 2 quarters 20 pounds. All of the merchants involved agreed to the same prices. Transactions 102 and 103 record the purchase price of the sugar and the profits resulting from the 1d. price difference.</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="co"># 102. 77 hundredweight 2 quarters 20 pounds of sugar</span>
-<span class="no">sugar_lbs2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">77</span>, <span class="fl">2</span>, <span class="fl">20</span>, <span class="kw">bases</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">4</span>, <span class="fl">28</span>)) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/cast-decimal.html">deb_as_decimal</a></span>(<span class="kw">unit</span> <span class="kw">=</span> <span class="st">"d"</span>) <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="co"># 102. 77 hundredweight 2 quarters 20 pounds of sugar</span>
+<span class="kw">sugar_lbs2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">77</span>, <span class="fl">2</span>, <span class="fl">20</span>, bases = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">4</span>, <span class="fl">28</span>)) <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/cast-decimal.html">deb_as_decimal</a></span>(unit = <span class="st">"d"</span>) <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>()
 
 <span class="co"># purchase price of the sugar</span>
-(<span class="no">sugar_purchase</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">13</span>) * <span class="no">sugar_lbs2</span>)
+(<span class="kw">sugar_purchase</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">13</span>) <span class="op">*</span> <span class="kw">sugar_lbs2</span>)
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 471:5s:0d</span>
 <span class="co">#&gt; # Bases: 20s 12d</span>
 
 <span class="co"># 103. profits from the sugar</span>
-<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>) * <span class="no">sugar_lbs2</span>
+<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>) <span class="op">*</span> <span class="kw">sugar_lbs2</span>
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 36:5s:0d</span>
-<span class="co">#&gt; # Bases: 20s 12d</span></pre></body></html></div>
+<span class="co">#&gt; # Bases: 20s 12d</span>
+</pre></div>
 <p>To complete the deal, Wilkinson needed to be paid for the sugar. Transaction 105 shows that he was paid in the form of 8 silver bars weighing 1733 ounces that were values at 6s. 7.5d. per ounce. However, the bars had a higher value than the sugar, and so transaction 106 shows Wilkinson making a payment to the cash register to even out the payments for the £471 5s. purchase price of the sugar. There is a discrepancy of one-half of a penny, but Dafforne ignored this.</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="co"># 105. Payment for sugar</span>
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="co"># 105. Payment for sugar</span>
 <span class="co"># Value of the 8 silver bars</span>
-<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">0</span>, <span class="fl">6</span>, <span class="fl">7.5</span>) * <span class="fl">1733</span>
+<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">0</span>, <span class="fl">6</span>, <span class="fl">7.5</span>) <span class="op">*</span> <span class="fl">1733</span>
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 574:1s:1.5d</span>
 <span class="co">#&gt; # Bases: 20s 12d</span>
 
 <span class="co"># 106. Value of sugar at 13d. plus payment of cash</span>
-<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">sugar_purchase</span>, <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">102</span>, <span class="fl">16</span>, <span class="fl">1</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="kw">sugar_purchase</span>, <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">102</span>, <span class="fl">16</span>, <span class="fl">1</span>))
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 574:1s:1d</span>
-<span class="co">#&gt; # Bases: 20s 12d</span></pre></body></html></div>
+<span class="co">#&gt; # Bases: 20s 12d</span>
+</pre></div>
 <p>Going through the calculations for this purchase and sale of sugar helps to better understand how Dafforne wanted a merchant to keep his accounts. Though no goods or money had changed hands at the time of transaction 54, Dafforne advised merchants to record any promise of payments in an account that he labeled promise reckoning (account 31 in <code>dafforne_accounts</code>). Dafforne shows the same being done for the agreement to sell the sugar. When the goods arrived, the weight of the sugar had increased. Therefore, the merchant had to even out the the promised amounts for the purchase and sale of the sugar at the previous weight, which is done in transactions 107 and 104 respectively, and calculate the new values as shown above.</p>
 </div>
 </div>
@@ -295,121 +313,135 @@
 <h3 class="hasAnchor">
 <a href="#holland-guilders-and-flemish-pounds" class="anchor"></a>Holland guilders and Flemish pounds</h3>
 <p>Unsurprisingly much of the trade activity that Dafforne placed in his practice journal occurred in or funneled through Amsterdam and thus involved values recorded in guilders, stuivers, and penningen. Guilders possessed a different base from pounds sterling, and to complicate matters further, the exchange rate between guilders and pounds sterling often went through pounds Flemish. Pounds Flemish was tied to guilders at a rate of 6 guilders to £1 Flemish, and Dafforne listed the established exchange rate between pounds sterling and pounds Flemish as £1 sterling to 33s. 4d. Flemish. Though Dafforne provides the exchange rate to pounds Flemish, the transactions in the journal proceed from pounds Flemish to pounds sterling, so the inverse rate has to be calculated. Dividing £1 by the rate inverts the rate and has the added benefit of coercing the value to numeric, which can be used as the multiplier for the exchange. It may also be useful to know the inverse rate expressed as a <code>deb_lsd</code> value, which could be done by casting the inverse rate from <code>numeric</code> to <code>deb_lsd</code> or taking 1 over the original <code>deb_lsd</code> rate.</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="co"># Rate for sterling to Flemish</span>
-<span class="no">sterling_to_flemish</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">0</span>, <span class="fl">33</span>, <span class="fl">4</span>)
+<div class="sourceCode" id="cb10"><pre class="downlit">
+<span class="co"># Rate for sterling to Flemish</span>
+<span class="kw">sterling_to_flemish</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">0</span>, <span class="fl">33</span>, <span class="fl">4</span>)
 
 <span class="co"># Decimalized Flemish to sterling rate</span>
 
-<span class="co"># Divide deb_lsd objects</span>
-(<span class="no">flemish_to_sterling</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>) / <span class="no">sterling_to_flemish</span>)
+<span class="co"># Divide deb_lsd vectors</span>
+(<span class="kw">flemish_to_sterling</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>) <span class="op">/</span> <span class="kw">sterling_to_flemish</span>)
 <span class="co">#&gt; [1] 0.6</span>
 
 <span class="co"># Numeric method</span>
-<span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="no">sterling_to_flemish</span>) ^ -<span class="fl">1</span>
+<span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="kw">sterling_to_flemish</span>) <span class="op">^</span> <span class="op">-</span><span class="fl">1</span>
 <span class="co">#&gt; [1] 0.6</span>
 
 <span class="co"># See the rate as a deb_lsd vector</span>
-<span class="fl">1</span> / <span class="no">sterling_to_flemish</span>
+<span class="fl">1</span> <span class="op">/</span> <span class="kw">sterling_to_flemish</span>
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 0:12s:0d</span>
-<span class="co">#&gt; # Bases: 20s 12d</span></pre></body></html></div>
+<span class="co">#&gt; # Bases: 20s 12d</span>
+</pre></div>
 <p>Transaction 5 provides a good example of the workflow to transform guilders to pounds sterling. The transaction tells that Jacob Symonson possessed 2,290 guilders of the bookkeeper’s capital deriving from a company that they had together. The transaction specifies that this capital was calculated at the general course of 33s. 4d. Flemish. The exchange involves two steps: from guilders to pounds Flemish at the rate of 6 to 1 and then from pounds Flemish to pounds sterling at the listed exchange rate.</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="co"># 5. Guilders to Flemish</span>
-<span class="no">tr5_guilders</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">2290</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="kw">bases</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>, <span class="fl">16</span>))
-<span class="no">tr5_flemish</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/convert-bases.html">deb_convert_bases</a></span>(<span class="no">tr5_guilders</span>, <span class="kw">to</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>, <span class="fl">12</span>)) / <span class="fl">6</span>
+<div class="sourceCode" id="cb11"><pre class="downlit">
+<span class="co"># 5. Guilders to Flemish</span>
+<span class="kw">tr5_guilders</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">2290</span>, <span class="fl">0</span>, <span class="fl">0</span>, bases = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>, <span class="fl">16</span>))
+<span class="kw">tr5_flemish</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/convert-bases.html">deb_convert_bases</a></span>(<span class="kw">tr5_guilders</span>, to = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>, <span class="fl">12</span>)) <span class="op">/</span> <span class="fl">6</span>
 
 <span class="co"># Flemish to sterling</span>
-<span class="no">tr5_flemish</span> * <span class="no">flemish_to_sterling</span>
+<span class="kw">tr5_flemish</span> <span class="op">*</span> <span class="kw">flemish_to_sterling</span>
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 229:0s:0d</span>
-<span class="co">#&gt; # Bases: 20s 12d</span></pre></body></html></div>
+<span class="co">#&gt; # Bases: 20s 12d</span>
+</pre></div>
 <p>Transaction 33 presents a slightly more complex example. It involves 1,224 guilders 19s. 8d. that Jacob Symonson received through a bill of exchange at an exchange rate different from the general course. Unlike the inverted rate for 33s. 4d. Flemish, the given rate of 36s. 10d. does not easily reduce itself. It is noteworthy that despite this complexity, Dafforne’s calculation is the same as done here if the pence were rounded at the end of the calculations.</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="co"># 33. 1224 guilders 19s. 8d. through bills of exchange</span>
+<div class="sourceCode" id="cb12"><pre class="downlit">
+<span class="co"># 33. 1224 guilders 19s. 8d. through bills of exchange</span>
 <span class="co"># Inverse rate</span>
-<span class="no">tr33_rate</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>) / <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">0</span>, <span class="fl">36</span>, <span class="fl">10</span>)
+<span class="kw">tr33_rate</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>) <span class="op">/</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">0</span>, <span class="fl">36</span>, <span class="fl">10</span>)
 
 <span class="co"># Convert bases and do exchange</span>
-<span class="no">tr33_guilders</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">1224</span>, <span class="fl">19</span>, <span class="fl">8</span>, <span class="kw">bases</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>, <span class="fl">16</span>))
-<span class="no">tr33_flemish</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/convert-bases.html">deb_convert_bases</a></span>(<span class="no">tr33_guilders</span>, <span class="kw">to</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>, <span class="fl">12</span>)) / <span class="fl">6</span>
-<span class="no">tr33_flemish</span> * <span class="no">tr33_rate</span>
+<span class="kw">tr33_guilders</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">1224</span>, <span class="fl">19</span>, <span class="fl">8</span>, bases = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>, <span class="fl">16</span>))
+<span class="kw">tr33_flemish</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/convert-bases.html">deb_convert_bases</a></span>(<span class="kw">tr33_guilders</span>, to = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>, <span class="fl">12</span>)) <span class="op">/</span> <span class="fl">6</span>
+<span class="kw">tr33_flemish</span> <span class="op">*</span> <span class="kw">tr33_rate</span>
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 110:17s:1.792d</span>
-<span class="co">#&gt; # Bases: 20s 12d</span></pre></body></html></div>
+<span class="co">#&gt; # Bases: 20s 12d</span>
+</pre></div>
 <p>A final example for the conversion between guilders and pounds sterling is provided by transaction 40, which records the sale of 60 Leeds dozens or broadcloths in Amsterdam by Jacob Symonson. Thirty pieces of cloth were sold at 45 guilders 7s. 8d. per piece, and the remaining thirty were sold at 50 guilders per piece. The total proceeds from the sales had to be calculated and then converted to pounds sterling at the normal rate of 33s. 4d. Flemish.</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="co"># 40. Proceeds from the two sales</span>
-(<span class="no">tr40_sale</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">45</span>, <span class="fl">7</span>, <span class="fl">8</span>, <span class="kw">bases</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>, <span class="fl">16</span>)) * <span class="fl">30</span>,
-                  <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">50</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="kw">bases</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>, <span class="fl">16</span>)) * <span class="fl">30</span>))
+<div class="sourceCode" id="cb13"><pre class="downlit">
+<span class="co"># 40. Proceeds from the two sales</span>
+(<span class="kw">tr40_sale</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">45</span>, <span class="fl">7</span>, <span class="fl">8</span>, bases = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>, <span class="fl">16</span>)) <span class="op">*</span> <span class="fl">30</span>, 
+                  <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">50</span>, <span class="fl">0</span>, <span class="fl">0</span>, bases = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>, <span class="fl">16</span>)) <span class="op">*</span> <span class="fl">30</span>))
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 2861:5s:0d</span>
 <span class="co">#&gt; # Bases: 20s 16d</span>
 
 <span class="co"># Sum of proceeds and conversion from guilders to Flemish</span>
-<span class="no">tr40_flemish</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/convert-bases.html">deb_convert_bases</a></span>(<span class="no">tr40_sale</span>, <span class="kw">to</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>, <span class="fl">12</span>)) / <span class="fl">6</span>
+<span class="kw">tr40_flemish</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/convert-bases.html">deb_convert_bases</a></span>(<span class="kw">tr40_sale</span>, to = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>, <span class="fl">12</span>)) <span class="op">/</span> <span class="fl">6</span>
 
 <span class="co"># To sterling</span>
-<span class="no">tr40_flemish</span> * <span class="no">flemish_to_sterling</span>
+<span class="kw">tr40_flemish</span> <span class="op">*</span> <span class="kw">flemish_to_sterling</span>
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 286:2s:6d</span>
-<span class="co">#&gt; # Bases: 20s 12d</span></pre></body></html></div>
+<span class="co">#&gt; # Bases: 20s 12d</span>
+</pre></div>
 </div>
 <div id="french-crowns" class="section level3">
 <h3 class="hasAnchor">
 <a href="#french-crowns" class="anchor"></a>French crowns</h3>
 <p>Dafforne’s journal contains many transactions with a factor in Rouen named Jean du Boys who used the French crown of 60 sous as his money of account. The exchange rate between French crowns and pounds sterling differed by transaction, but all were listed in terms of deniers per pound sterling. This rate can be decimalized by casting to <code>numeric</code> or through a longer process using a <code>deb_decimal</code> vector. Thus, in transaction 20 Jean du Boys was remitted £2,148 50s. 6d. French crowns at the rate of £1 French crown to 63d. sterling.</p>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="co"># 20. For £2148 50s. 6d. French crowns at 63d. sterling</span>
+<div class="sourceCode" id="cb14"><pre class="downlit">
+<span class="co"># 20. For £2148 50s. 6d. French crowns at 63d. sterling</span>
 <span class="co"># Rate</span>
 <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">63</span>))
 <span class="co">#&gt; [1] 0.2625</span>
 
 <span class="co"># or with deb_decimal</span>
-<span class="fu"><a href="../reference/deb_decimal.html">deb_decimal</a></span>(<span class="fl">63</span>, <span class="kw">unit</span> <span class="kw">=</span> <span class="st">"d"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/deb_convert_unit.html">deb_convert_unit</a></span>(<span class="kw">to</span> <span class="kw">=</span> <span class="st">"l"</span>) <span class="kw">%&gt;%</span>
+<span class="fu"><a href="../reference/deb_decimal.html">deb_decimal</a></span>(<span class="fl">63</span>, unit = <span class="st">"d"</span>) <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/deb_convert_unit.html">deb_convert_unit</a></span>(to = <span class="st">"l"</span>) <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>()
 <span class="co">#&gt; [1] 0.2625</span>
 
-<span class="no">tr20_crowns</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">2148</span>, <span class="fl">50</span>, <span class="fl">6</span>, <span class="kw">bases</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">60</span>, <span class="fl">12</span>))
+<span class="kw">tr20_crowns</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">2148</span>, <span class="fl">50</span>, <span class="fl">6</span>, bases = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">60</span>, <span class="fl">12</span>))
 
-<span class="fu"><a href="../reference/convert-bases.html">deb_convert_bases</a></span>(<span class="no">tr20_crowns</span>, <span class="kw">to</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>, <span class="fl">12</span>)) * <span class="fl">0.2625</span>
+<span class="fu"><a href="../reference/convert-bases.html">deb_convert_bases</a></span>(<span class="kw">tr20_crowns</span>, to = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>, <span class="fl">12</span>)) <span class="op">*</span> <span class="fl">0.2625</span>
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 564:1s:5.025d</span>
-<span class="co">#&gt; # Bases: 20s 12d</span></pre></body></html></div>
+<span class="co">#&gt; # Bases: 20s 12d</span>
+</pre></div>
 <p>A merchant involved in long-distance trade often had to record the value of transactions that occurred in currencies that differed from the money of account used in the account book. Such a situation appeared in transaction 58 in which Jacob Symonson in Amsterdam received a bill of exchange from Jean du Boys in Rouen that consisted of capital for a company involving the bookkeeper and Randoll Rice. Jean du Boys sent Symonson £1,140 17s. 8d. French crowns at the rate of 123d. Flemish, and this transaction was calculated at the rate of 72d. sterling for the purposes of accounting in terms of pounds sterling. In this case, a bookkeeper needed to know the amount of guilders received by Symonson, which was calculated through pounds Flemish, as well as the value in pounds sterling.</p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="co"># 58. Crowns to Flemish to guilders</span>
-<span class="no">crowns_to_flemish</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">123</span>))
-<span class="no">tr58_crowns</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">1140</span>, <span class="fl">17</span>, <span class="fl">8</span>, <span class="kw">bases</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">60</span>, <span class="fl">12</span>))
-<span class="no">tr58_flemish</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/convert-bases.html">deb_convert_bases</a></span>(<span class="no">tr58_crowns</span>,
-                                  <span class="kw">to</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>, <span class="fl">12</span>)) * <span class="no">crowns_to_flemish</span>
-<span class="fu"><a href="../reference/convert-bases.html">deb_convert_bases</a></span>(<span class="no">tr58_flemish</span>, <span class="kw">to</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>, <span class="fl">16</span>)) * <span class="fl">6</span>
+<div class="sourceCode" id="cb15"><pre class="downlit">
+<span class="co"># 58. Crowns to Flemish to guilders</span>
+<span class="kw">crowns_to_flemish</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">123</span>))
+<span class="kw">tr58_crowns</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">1140</span>, <span class="fl">17</span>, <span class="fl">8</span>, bases = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">60</span>, <span class="fl">12</span>))
+<span class="kw">tr58_flemish</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/convert-bases.html">deb_convert_bases</a></span>(<span class="kw">tr58_crowns</span>,
+                                  to = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>, <span class="fl">12</span>)) <span class="op">*</span> <span class="kw">crowns_to_flemish</span>
+<span class="fu"><a href="../reference/convert-bases.html">deb_convert_bases</a></span>(<span class="kw">tr58_flemish</span>, to = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>, <span class="fl">16</span>)) <span class="op">*</span> <span class="fl">6</span>
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 3506:8s:1.733d</span>
 <span class="co">#&gt; # Bases: 20s 16d</span>
 
 <span class="co"># Crowns to sterling</span>
-<span class="no">crowns_to_sterling</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">72</span>))
-<span class="fu"><a href="../reference/convert-bases.html">deb_convert_bases</a></span>(<span class="no">tr58_crowns</span>, <span class="kw">to</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>, <span class="fl">12</span>)) * <span class="no">crowns_to_sterling</span>
+<span class="kw">crowns_to_sterling</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">72</span>))
+<span class="fu"><a href="../reference/convert-bases.html">deb_convert_bases</a></span>(<span class="kw">tr58_crowns</span>, to = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>, <span class="fl">12</span>)) <span class="op">*</span> <span class="kw">crowns_to_sterling</span>
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 342:1s:9.2d</span>
-<span class="co">#&gt; # Bases: 20s 12d</span></pre></body></html></div>
+<span class="co">#&gt; # Bases: 20s 12d</span>
+</pre></div>
 </div>
 <div id="polish-florins" class="section level3">
 <h3 class="hasAnchor">
 <a href="#polish-florins" class="anchor"></a>Polish florins</h3>
-<p>The above examples all involved single pounds, shillings, and pence values even if multiple values went into the calculation. This is hardly accidental. Dafforne advised that every transfer of value between accounts should be listed separately.<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a> However, transactions 64 and 65 present an opportunity to show calculations made on multiple values at the same time. On 7 April 1634, the bookkeeper sent two bills of exchange to Arthur Mumperson in Danzig on behalf of Jacob Symonson. The money of account used by Mumperson in Danzig was the Polish florin of 30 gros and gros of 18 denar, and the exchange rate was again calculated in terms of pounds Flemish. In this case, both bills of exchange were sent at the rate of 232 gros per £1 Flemish, though the calculation requires the inverse rate. There are again a couple of ways to calculate the rate for the exchange, but here a <code>deb_lsd</code> vector is created with the value, the inverse is found, and then this is cast to <code>numeric</code>. In this example, the Exchange between florins to Flemish to sterling is done using the <a href="https://magrittr.tidyverse.org/index.html">magrittr</a> pipe (<code><a href="../reference/pipe.html">%&gt;%</a></code>) and the prefix form of the multiplication operation.</p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="co"># 64 and 65. Bills of exchange to Danzig</span>
+<p>The above examples all involved single pounds, shillings, and pence values even if multiple values went into the calculation. This is hardly accidental. Dafforne advised that every transfer of value between accounts should be listed separately.<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a> However, transactions 64 and 65 present an opportunity to show calculations made on multiple values at the same time. On 7 April 1634, the bookkeeper sent two bills of exchange to Arthur Mumperson in Danzig on behalf of Jacob Symonson. The money of account used by Mumperson in Danzig was the Polish florin of 30 gros and gros of 18 denar, and the exchange rate was again calculated in terms of pounds Flemish. In this case, both bills of exchange were sent at the rate of 232 gros per £1 Flemish, though the calculation requires the inverse rate. There are again a couple of ways to calculate the rate for the exchange, but here a <code>deb_lsd</code> vector is created with the value, the inverse is found, and then this is cast to <code>numeric</code>. In this example, the Exchange between florins to Flemish to sterling is done using the <a href="https://magrittr.tidyverse.org/index.html">magrittr</a> pipe (<code><a href="../reference/%&gt;%.html">%&gt;%</a></code>) and the prefix form of the multiplication operation.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit">
+<span class="co"># 64 and 65. Bills of exchange to Danzig</span>
 <span class="co"># Rate of 232 gros per £1 Flemish</span>
-<span class="no">tr64_rate</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fl">1</span> / <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">0</span>, <span class="fl">232</span>, <span class="fl">0</span>, <span class="kw">bases</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">30</span>, <span class="fl">18</span>)))
+<span class="kw">tr64_rate</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fl">1</span> <span class="op">/</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">0</span>, <span class="fl">232</span>, <span class="fl">0</span>, bases = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">30</span>, <span class="fl">18</span>)))
 
 <span class="co"># Convert florins to sterling through pounds Flemish using the pipe</span>
-<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="kw">l</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">3987</span>, <span class="fl">1907</span>),
-        <span class="kw">s</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">16</span>, <span class="fl">26</span>),
-        <span class="kw">d</span> <span class="kw">=</span> <span class="fl">0</span>,
-        <span class="kw">bases</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">30</span>, <span class="fl">18</span>)) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/convert-bases.html">deb_convert_bases</a></span>(<span class="kw">to</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>, <span class="fl">12</span>)) <span class="kw">%&gt;%</span>
-  <span class="fu">`*`</span>(<span class="no">tr64_rate</span>) <span class="kw">%&gt;%</span>
-  <span class="fu">`*`</span>(<span class="no">flemish_to_sterling</span>)
+<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(l = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">3987</span>, <span class="fl">1907</span>),
+        s = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">16</span>, <span class="fl">26</span>),
+        d = <span class="fl">0</span>,
+        bases = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">30</span>, <span class="fl">18</span>)) <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/convert-bases.html">deb_convert_bases</a></span>(to = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>, <span class="fl">12</span>)) <span class="op">%&gt;%</span> 
+  <span class="fu">`*`</span>(<span class="kw">tr64_rate</span>) <span class="op">%&gt;%</span> 
+  <span class="fu">`*`</span>(<span class="kw">flemish_to_sterling</span>)
 <span class="co">#&gt; &lt;deb_lsd[2]&gt;</span>
 <span class="co">#&gt; [1] 309:7s:6.621d 148:0s:5.793d</span>
-<span class="co">#&gt; # Bases: 20s 12d</span></pre></body></html></div>
+<span class="co">#&gt; # Bases: 20s 12d</span>
+</pre></div>
 </div>
 <div id="portuguese-real" class="section level3">
 <h3 class="hasAnchor">
@@ -417,23 +449,25 @@
 <p>The final currency dealt with in Dafforne’s practice journal is the Portuguese real, which came about from trade conducted by Diego del Varino in Lisbon. The Portuguese real as used in the Dafforne journal presents a money of account quite different from all others in the journal. Not only is the base of 1,000 réis to the milréis of a very different magnitude from the pound sterling of 20 shillings, but the real only has two units instead of the three units of the pounds, shillings, and pence monies of account. <code>debkeepr</code> can accommodate this type of money of account, but a placeholder value must be provided for the denarius unit, because neither of the two values passed to <code>bases</code> can be zero or missing.</p>
 <p>The other issue with the real is that the exchange rate is given as 400 réis for 5s. sterling, complicating the calculation of the exchange rate. One way to find the ratio is to multiply the réis value by four to get réis equivalent to £1 sterling and then finding the inverse. Another way is to multiply the shillings by 2.5 to find shillings per 1 milréis, converting the <code>unit</code> to libra, and then casting to <code>numeric</code>.</p>
 <p>Transaction 51 shows the purchase of 1,576 pieces of figs by Diego del Varino for a company with the bookkeeper and Randoll Rice. The figs were purchased for the price of 681 milréis 960 réis with the exchange rate, as noted above, of 400 réis for 5s. sterling.</p>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="co"># 51. purchase of 1576 pieces of figs for 681 milréis 960 réis</span>
-<span class="no">tr51_reis</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">681</span>, <span class="fl">960</span>, <span class="fl">0</span>, <span class="kw">bases</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1000</span>, <span class="fl">12</span>))
-<span class="no">tr51_converted</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/convert-bases.html">deb_convert_bases</a></span>(<span class="no">tr51_reis</span>, <span class="kw">to</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>, <span class="fl">12</span>))
+<div class="sourceCode" id="cb17"><pre class="downlit">
+<span class="co"># 51. purchase of 1576 pieces of figs for 681 milréis 960 réis</span>
+<span class="kw">tr51_reis</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">681</span>, <span class="fl">960</span>, <span class="fl">0</span>, bases = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1000</span>, <span class="fl">12</span>))
+<span class="kw">tr51_converted</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/convert-bases.html">deb_convert_bases</a></span>(<span class="kw">tr51_reis</span>, to = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>, <span class="fl">12</span>))
 
 <span class="co"># Method 1: multiply rate of réis by 4 and invert rate</span>
-<span class="no">tr51_converted</span> / <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">0</span>, <span class="fl">400</span>, <span class="fl">0</span>, <span class="kw">bases</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1000</span>, <span class="fl">10</span>)) * <span class="fl">4</span>)
+<span class="kw">tr51_converted</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">0</span>, <span class="fl">400</span>, <span class="fl">0</span>, bases = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1000</span>, <span class="fl">10</span>)) <span class="op">*</span> <span class="fl">4</span>)
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 426:4s:6d</span>
 <span class="co">#&gt; # Bases: 20s 12d</span>
 
 <span class="co"># Method 2: multiply rate of shillings by 2.5 and convert to decimalized pounds</span>
-<span class="no">tr51_rate</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/deb_decimal.html">deb_decimal</a></span>(<span class="fl">5</span> * <span class="fl">2.5</span>, <span class="st">"s"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/deb_convert_unit.html">deb_convert_unit</a></span>(<span class="kw">to</span> <span class="kw">=</span> <span class="st">"l"</span>)
-<span class="no">tr51_converted</span> * <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="no">tr51_rate</span>)
+<span class="kw">tr51_rate</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/deb_decimal.html">deb_decimal</a></span>(<span class="fl">5</span> <span class="op">*</span> <span class="fl">2.5</span>, <span class="st">"s"</span>) <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/deb_convert_unit.html">deb_convert_unit</a></span>(to = <span class="st">"l"</span>)
+<span class="kw">tr51_converted</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="kw">tr51_rate</span>)
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 426:4s:6d</span>
-<span class="co">#&gt; # Bases: 20s 12d</span></pre></body></html></div>
+<span class="co">#&gt; # Bases: 20s 12d</span>
+</pre></div>
 </div>
 </div>
 <div id="conclusion" class="section level2">
