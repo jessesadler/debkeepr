@@ -14,9 +14,9 @@ LazyData: true
 Depends:
     R (>= 3.2)
 Imports:
-    dplyr (>= 0.8.1),
+    dplyr (>= 1.0.0),
     magrittr,
-    rlang (>= 0.4.5),
+    rlang (>= 0.4.6),
     vctrs (>= 0.3.0),
     zeallot,
     tibble,

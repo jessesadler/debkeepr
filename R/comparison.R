@@ -3,7 +3,7 @@
 # deb_decimal gets this for free because it is based on double()
 
 #' Equality and comparison
-#' @param x A deb_lsd object.
+#' @param x A deb_lsd vector.
 #' @param ... Arguments passed on to further methods.
 #' @name comparison
 NULL

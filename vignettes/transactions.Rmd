@@ -160,7 +160,7 @@ sterling_to_flemish <- deb_lsd(0, 33, 4)
 
 # Decimalized Flemish to sterling rate
 
-# Divide deb_lsd objects
+# Divide deb_lsd vectors
 (flemish_to_sterling <- deb_lsd(1, 0, 0) / sterling_to_flemish)
 
 # Numeric method

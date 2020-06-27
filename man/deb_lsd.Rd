@@ -19,10 +19,10 @@ conforms to the most widely used system of 1 pound = 20 shillings and
 1 shilling = 12 pence.}
 }
 \value{
-Returns an object of class \code{deb_lsd}.
+Returns a vector of class \code{deb_lsd}.
 }
 \description{
-Create an object of class \code{deb_lsd} to integrate non-decimal currencies
+Create a vector of class \code{deb_lsd} to integrate non-decimal currencies
 into standardized forms of analysis provided by R.
 }
 \details{
@@ -38,7 +38,7 @@ coins in dozens (solidi) and scores of dozens (librae) spread throughout the
 Carolingian Empire and became engrained in much of Europe. However, a
 variety of accounting systems arose at different times that used
 \href{https://en.wikipedia.org/wiki/Non-decimal_currency}{other bases} for the
-solidus and denarius units. The \code{bases} attribute of \code{deb_lsd} objects
+solidus and denarius units. The \code{bases} attribute of \code{deb_lsd} vectors
 makes it possible to specify alternative bases for the solidus and denarius
 units.
 
@@ -61,14 +61,14 @@ deb_lsd(l = c(10, 8, 5),
         s = c(6, 13, 8),
         d = 0)
 
-# Set the bases of the object
+# Set the bases of the deb_lsd vector
 deb_lsd(5, 3, 8, bases = c(60, 16))
 deb_lsd(l = c(10, 28, 5),
         s = c(6, 33, 13),
         d = c(8, 42, 10),
         bases = c(60, 16))
 
-# Create a prototype or object of length 0
+# Create a prototype or vector of length 0
 deb_lsd()
 }
 \seealso{

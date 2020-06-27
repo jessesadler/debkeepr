@@ -1,16 +1,16 @@
 ## Transform deb_lsd and deb_decimal to text for labels ##
 
-#' Format `deb_lsd` and `deb_decimal` objects as text
+#' Format `deb_lsd` and `deb_decimal` vectors as text
 #'
-#' Flexible way to nicely format `deb_lsd` and `deb_decimal` objects for
+#' Flexible way to nicely format `deb_lsd` and `deb_decimal` vectors for
 #' use as labels or texts.
 #'
 #' @details
 #' `deb_text` is similar to `as.character()` in that both return a character
 #' vector of the values of `deb_lsd` and `deb_decimal` vectors. However,
-#' `as.character()` uses the normal printing method for these objects.
+#' `as.character()` uses the normal printing method for these vectors.
 #' `deb_text()` provides a convenient way to nicely format `deb_lsd` and
-#' `deb_decimal` objects for use as text or labels with options for
+#' `deb_decimal` vectors for use as text or labels with options for
 #' customization.
 #'
 #' `deb_text()` uses `formatC()` to format the numeric values of `x`. Numbers
@@ -20,7 +20,7 @@
 #'
 #' @seealso [`formatC()`] for further options passed to `...`.
 #'
-#' @param x An object of class `deb_lsd` or `deb_decimal`.
+#' @param x A vector of class `deb_lsd` or `deb_decimal`.
 #' @param digits Desired number of digits after the decimal mark to which to
 #'   round the numeric values. Default is `0`.
 #' @param currency Character used for the currency mark. Default is pound sign.
@@ -71,8 +71,7 @@ deb_text <- function(x, ...) {
 #' @rdname text
 #' @export
 deb_text.default <- function(x, ...) {
-  stop(call. = FALSE,
-       "`x` must be a <deb_lsd> or <deb_decimal> vector.")
+  rlang::abort("`x` must be a <deb_lsd> or <deb_decimal> vector.")
 }
 
 #' @rdname text

@@ -1,5 +1,8 @@
 ## Transaction functions ##
 
+# Note that all functions except deb_account() cast deb_lsd() columns to
+# deb_decimal(). This is faster than going through the process with deb_lsd().
+
 #' Analysis of double-entry bookkeeping
 #'
 #' @description
@@ -192,16 +195,18 @@ deb_account_summary <- function(df,
   lsd_vctr <- rlang::eval_tidy(lsd_quo, df)
   deb_ptype_check(lsd_vctr)
 
-  # Turn deb_lsd to deb_decimal until dplyr works with rcrd
+  # Turn deb_lsd to deb_decimal for speed
   if (deb_is_lsd(lsd_vctr)) {
     df <- dplyr::mutate(df, !! cn := deb_as_decimal({{ lsd }}))
   }
 
   pos <- dplyr::group_by(df, {{ credit }}) %>%
-    dplyr::summarise(!! cn := sum({{ lsd }}, na.rm = na.rm)) %>%
+    dplyr::summarise(!! cn := sum({{ lsd }}, na.rm = na.rm),
+                     .groups = "drop") %>%
     dplyr::rename(account_id = {{ credit }}, credit = {{ lsd }})
   neg <- dplyr::group_by(df, {{ debit }}) %>%
-    dplyr::summarise(!! cn := sum({{ lsd }}, na.rm = na.rm)) %>%
+    dplyr::summarise(!! cn := sum({{ lsd }}, na.rm = na.rm),
+                     .groups = "drop") %>%
     dplyr::rename(account_id = {{ debit }}, debit = {{ lsd }})
 
   # If statements to ensure NAs from above not turned into 0s.
@@ -250,9 +255,10 @@ deb_account_summary <- function(df,
 
   # Return deb_decimal back to deb_lsd
   if (deb_is_lsd(lsd_vctr)) {
-    ret[["credit"]] <- deb_as_lsd(ret[["credit"]])
-    ret[["debit"]] <- deb_as_lsd(ret[["debit"]])
-    ret[["current"]] <- deb_as_lsd(ret[["current"]])
+    ret <- ret %>%
+      dplyr::mutate(credit = deb_as_lsd(credit),
+                    debit = deb_as_lsd(debit),
+                    current = deb_as_lsd(current))
   }
 
   ret
@@ -279,13 +285,14 @@ deb_credit <- function(df,
   lsd_vctr <- rlang::eval_tidy(lsd_quo, df)
   deb_ptype_check(lsd_vctr)
 
-  # Turn deb_lsd to deb_decimal until dplyr works with rcrd
+  # Turn deb_lsd to deb_decimal for speed
   if (deb_is_lsd(lsd_vctr)) {
     df <- dplyr::mutate(df, !! cn := deb_as_decimal({{ lsd }}))
   }
 
   pos <- dplyr::group_by(df, {{ credit }}) %>%
-    dplyr::summarise(!! cn := sum({{ lsd }}, na.rm = na.rm)) %>%
+    dplyr::summarise(!! cn := sum({{ lsd }}, na.rm = na.rm),
+                     .groups = "drop") %>%
     dplyr::rename(account_id = {{ credit }})
   neg <- dplyr::distinct(df, {{ debit }})
 
@@ -335,13 +342,14 @@ deb_debit <- function(df,
   lsd_vctr <- rlang::eval_tidy(lsd_quo, df)
   deb_ptype_check(lsd_vctr)
 
-  # Turn deb_lsd to deb_decimal until dplyr works with rcrd
+  # Turn deb_lsd to deb_decimal for speed
   if (deb_is_lsd(lsd_vctr)) {
     df <- dplyr::mutate(df, !! cn := deb_as_decimal({{ lsd }}))
   }
 
   neg <- dplyr::group_by(df, {{ debit }}) %>%
-    dplyr::summarise(!! cn := sum({{ lsd }}, na.rm = na.rm)) %>%
+    dplyr::summarise(!! cn := sum({{ lsd }}, na.rm = na.rm),
+                     .groups = "drop") %>%
     dplyr::rename(account_id = {{ debit }})
   pos <- dplyr::distinct(df, {{ credit }})
 

@@ -7,6 +7,7 @@
 \alias{deb_as_decimal.deb_lsd}
 \alias{deb_as_decimal.numeric}
 \alias{deb_as_decimal.logical}
+\alias{deb_as_decimal.list}
 \title{Cast to \code{deb_decimal}}
 \usage{
 deb_as_decimal(x, ...)
@@ -18,6 +19,8 @@ deb_as_decimal(x, ...)
 \method{deb_as_decimal}{numeric}(x, unit = c("l", "s", "d"), bases = c(20, 12), ...)
 
 \method{deb_as_decimal}{logical}(x, unit = c("l", "s", "d"), bases = c(20, 12), ...)
+
+\method{deb_as_decimal}{list}(x, unit = c("l", "s", "d"), bases = c(20, 12), ...)
 }
 \arguments{
 \item{x}{An object to coerce to \code{deb_decimal}.}
@@ -34,14 +37,19 @@ conforms to the most widely used system of 1 pound = 20 shillings and
 1 shilling = 12 pence.}
 }
 \value{
-A \code{deb_decimal} object.
+A \code{deb_decimal} vector.
 }
 \description{
 Cast \code{x} to a \code{deb_decimal} vector.
 }
+\details{
+Like \code{\link[=deb_as_lsd]{deb_as_lsd()}}, \code{deb_as_decimal()} provides a method to
+cast a list of numeric vectors of length 3 to \code{deb_decimal}. This may be
+helpful because the data is input by the value instead of by the unit.
+}
 \examples{
 
-# Cast a deb_lsd object to deb_decimal
+# Cast a deb_lsd vector to deb_decimal
 x <- deb_lsd(l = c(5, 3, 7),
              s = c(16, 5, 6),
              d = c(6, 0, 8))
@@ -63,4 +71,15 @@ deb_as_decimal(y)
 # the unit and apply non-default bases
 deb_as_decimal(y, unit = "s", bases = c(60, 16))
 
+# Cast a list to deb_lsd provides an alternate
+# to deb_lsd() \%>\% deb_decimal()
+
+list(c(5, 12, 3),
+     c(13, 8, 11),
+     c(7, 16, 0)) \%>\%
+  deb_as_decimal()
+
+}
+\seealso{
+\code{\link[=deb_as_lsd]{deb_as_lsd()}}
 }

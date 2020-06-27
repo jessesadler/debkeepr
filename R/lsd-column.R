@@ -96,25 +96,19 @@ deb_gather_lsd <- function(df,
                            bases = c(20, 12),
                            lsd_col = lsd,
                            replace = FALSE) {
-
-  l <- rlang::enquo(l)
-  s <- rlang::enquo(s)
-  d <- rlang::enquo(d)
-  cn <- rlang::as_name(rlang::enquo(lsd_col))
-
-  df[[cn]] <- deb_lsd(l = rlang::eval_tidy(l, df),
-                      s = rlang::eval_tidy(s, df),
-                      d = rlang::eval_tidy(d, df),
-                      bases = bases)
+  df <- dplyr::mutate(df, "{{lsd_col}}" := deb_lsd(l = {{ l }},
+                                                   s = {{ s }},
+                                                   d = {{ d }},
+                                                   bases = bases))
   if (replace == TRUE) {
-    df <- dplyr::select(df, -(!! l), -(!! s), -(!! d))
+    df <- dplyr::select(df, -{{ l }}, -{{ s }}, -{{ d }})
   }
   df
 }
 
-
 #' @rdname lsd-column
 #' @export
+
 deb_spread_lsd <- function(df,
                            lsd = lsd,
                            l_col = l,
@@ -122,22 +116,16 @@ deb_spread_lsd <- function(df,
                            d_col = d,
                            replace = FALSE) {
 
-  lsd <- rlang::enquo(lsd)
-  ln <- rlang::enquo(l_col)
-  sn <- rlang::enquo(s_col)
-  dn <- rlang::enquo(d_col)
-
-  if (!deb_is_lsd(rlang::eval_tidy(lsd, df))) {
-    stop(call. = FALSE, "`lsd` must be a <deb_lsd> object.")
+  if (!deb_is_lsd(rlang::eval_tidy(rlang::enquo(lsd), df))) {
+    rlang::abort("`lsd` must be of type <deb_lsd>.")
   }
 
-  ret <- dplyr::mutate(df,
-                       !! ln := field(!! lsd, "l"),
-                       !! sn := field(!! lsd, "s"),
-                       !! dn := field(!! lsd, "d"))
+  df <- dplyr::mutate(df,
+                      "{{l_col}}" := field({{ lsd }}, "l"),
+                      "{{s_col}}" := field({{ lsd }}, "s"),
+                      "{{d_col}}" := field({{ lsd }}, "d"))
   if (replace == TRUE) {
-    ret <- dplyr::select(ret, -(!! lsd))
+    df <- dplyr::select(df, -{{ lsd }})
   }
-  ret
-
+  df
 }

@@ -8,7 +8,7 @@
 #' that `bases` is an `integer()` of length 2. Creates the object through
 #' `new_vctr()`.
 #'
-#' @return An object of class `deb_decimal`.
+#' @return A vector of class `deb_decimal`.
 #' @keywords internal
 
 new_decimal <- function(x = double(),
@@ -31,7 +31,7 @@ new_decimal <- function(x = double(),
 
 #' A decimalized class for pounds, shillings, and pence values
 #'
-#' Create an object of class `deb_decimal` to integrate non-decimal currencies
+#' Create a vector of class `deb_decimal` to integrate non-decimal currencies
 #' into standardized forms of analysis provided by R.
 #'
 #' @details
@@ -47,7 +47,7 @@ new_decimal <- function(x = double(),
 #' Carolingian Empire and became engrained in much of Europe. However, a
 #' variety of accounting systems arose at different times that used
 #' [other bases](https://en.wikipedia.org/wiki/Non-decimal_currency) for the
-#' solidus and denarius units. The `bases` attribute of `deb_decimal` objects
+#' solidus and denarius units. The `bases` attribute of `deb_decimal` vectors
 #' makes it possible to specify alternative bases for the solidus and denarius
 #' units, while the `unit` attribute identifies the decimalized unit: either
 #' libra, solidus, or denarius.
@@ -64,20 +64,20 @@ new_decimal <- function(x = double(),
 #'   or `"d"` (denarius).
 #' @inheritParams deb_lsd
 #'
-#' @return Returns an object of class `deb_decimal`.
+#' @return Returns a vector of class `deb_decimal`.
 #' @export
 #' @examples
 #'
 #' deb_decimal(c(5.25, 3.825, 8.5))
 #'
-#' # Set the unit of the object
+#' # Set the unit of the deb_decimal vector
 #' deb_decimal(c(105, 76.5, 170), unit = "s")
 #' deb_decimal(c(1260, 918, 240), unit = "d")
 #'
-#' # Set the bases of the object
+#' # Set the bases of the deb_decimal vector
 #' deb_decimal(c(5.25, 3.825, 8.5), bases = c(60, 16))
 #'
-#' # Create a prototype or object of length 0
+#' # Create a prototype or vector of length 0
 #' deb_decimal()
 
 deb_decimal <- function(x = double(),
@@ -100,7 +100,7 @@ methods::setOldClass(c("deb_decimal", "vctrs_vctr"))
 
 # Attribute access --------------------------------------------------------
 
-#' Access the unit attribute of a `deb_decimal` object.
+#' Access the unit attribute of a `deb_decimal` vector
 #'
 #' @keywords internal
 
@@ -130,11 +130,8 @@ deb_is_decimal <- function(x) inherits(x, "deb_decimal")
 # Format method -----------------------------------------------------------
 # No format.deb_decimal to keep default vector printing
 
-# Add footer with attribute data
-
-#' Print full name of unit in footer
+#' Full name of unit for footer
 #'
-#' @param x A deb_decimal object.
 #' @keywords internal
 
 unit_word <- function(x) {
@@ -148,7 +145,11 @@ unit_word <- function(x) {
   unit
 }
 
+#' Print footer with unit and bases
+#'
+#' @keywords internal
 #' @export
+
 obj_print_footer.deb_decimal <- function(x, ...) {
   # Use full name of unit
   unit <- unit_word(x)
@@ -161,7 +162,11 @@ obj_print_footer.deb_decimal <- function(x, ...) {
 
 # Abbreviated name type ---------------------------------------------------
 
+#' Abbreviated name for tibble columns
+#'
+#' @keywords internal
 #' @export
+
 vec_ptype_abbr.deb_decimal <- function(x) {
   paste0(attr(x, "unit"), "[",
          attr(x, "bases")[[1]], "s:",

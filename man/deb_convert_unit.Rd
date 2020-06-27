@@ -2,27 +2,27 @@
 % Please edit documentation in R/conversion.R
 \name{deb_convert_unit}
 \alias{deb_convert_unit}
-\title{Convert the unit of \code{deb_decimal} objects}
+\title{Convert the unit of \code{deb_decimal} vectors}
 \usage{
 deb_convert_unit(x, to = c("l", "s", "d"))
 }
 \arguments{
-\item{x}{An object of class \code{deb_decimal}.}
+\item{x}{A vector of class \code{deb_decimal}.}
 
 \item{to}{A character vector of length one indicating the unit to be
 converted to. Choice of \code{"l"} (libra, the default), \code{"s"} (solidus),
 or \code{"d"} (denarius).}
 }
 \value{
-A \code{deb_decimal} object with a converted \code{unit} attribute.
+A \code{deb_decimal} vector with a converted \code{unit} attribute.
 }
 \description{
-Convert the \code{unit} attribute of \code{deb_decimal} objects.
+Convert the \code{unit} attribute of \code{deb_decimal} vectors.
 }
 \details{
-\code{deb_convert_unit()} converts the \code{unit} of a \code{deb_decimal} object to
+\code{deb_convert_unit()} converts the \code{unit} of a \code{deb_decimal} vector to
 either \code{"l"}, \code{"s"}, or \code{"d"}. This changes the representation of the
-object, but the value remains equivalent.
+vector, but the value remains equivalent.
 }
 \examples{
 

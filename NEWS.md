@@ -1,8 +1,9 @@
 # debkeepr 0.0.5
 
 - Changes for vctrs 0.3.0.
+- Adopt dplyr 1.0.0 as minimum version. This enables dplyr methods with record-style vectors such as `deb_lsd`.
 - Rewrite coercion and casting methods for 0.3.0.
-- Change style of exporting methods.
+- Change documentation style of exporting methods.
 
 # debkeepr 0.0.4
 

@@ -114,7 +114,7 @@ c(deb_decimal(x = 1360, unit = "d"), dec)
 c(deb_decimal(x = 340 / 3, unit = "s"), dec)
 ```
 
-Care needs to be taken when combining `deb_lsd` and/or `deb_decimal` vectors with a base R class using `c()`; `c(deb_lsd(), numeric())` is not equal to `c(numeric(), deb_lsd())`. `c()` does not find the common class for the objects if the first element is a base class. Instead, it forces vectors to conform to its internal hierarchy by stripping attributes. Thus, `c(numeric(), deb_lsd())` results in a list with the underlying data of `deb_lsd()`, and `c(numeric(), deb_decimal())` produces a numeric vector. This can be avoided with the use of `vec_c()` from the `vctrs` package, which first finds the common class for all elements.[^7]
+Care needs to be taken when combining `deb_lsd` and/or `deb_decimal` vectors with a base R class using `c()`; `c(deb_lsd(), numeric())` is not equal to `c(numeric(), deb_lsd())`. `c()` does not find the common class for the vectors if the first element is a base class. Instead, it forces vectors to conform to its internal hierarchy by stripping attributes. Thus, `c(numeric(), deb_lsd())` results in a list with the underlying data of `deb_lsd()`, and `c(numeric(), deb_decimal())` produces a numeric vector. This can be avoided with the use of `vec_c()` from the `vctrs` package, which first finds the common class for all elements.[^7]
 
 ```{r c-vs-vec_c}
 # Incorrect results with base class as first element
@@ -308,7 +308,7 @@ lsd == deb_convert_bases(lsd, to = c(20, 16))
 
 ## Data frames: `deb_lsd` and `deb_decimal` columns
 
-Thus far this vignette has only dealt with `debkeepr` objects as vectors, but, of course, these vectors also work as columns in data frames. `deb_lsd` and `deb_decimal` columns are essential to achieve `debkeepr`'s goal of facilitating reproducible analysis and visualization of larger sets of values found in account books. This section discusses how to create and manipulate data frames with `debkeepr` columns, the current differences between `deb_lsd` and `deb_decimal` columns in `dplyr`, and the process of visualizing the values with `ggplot2`.
+Thus far this vignette has only dealt with `debkeepr` types as vectors, but, of course, these vectors also work as columns in data frames. `deb_lsd` and `deb_decimal` columns are essential to achieve `debkeepr`'s goal of facilitating reproducible analysis and visualization of larger sets of values found in account books. This section discusses how to create and manipulate data frames with `debkeepr` columns, the current differences between `deb_lsd` and `deb_decimal` columns in `dplyr`, and the process of visualizing the values with `ggplot2`.
 
 ```{r packages, message = FALSE}
 # load packages

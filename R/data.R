@@ -20,14 +20,14 @@
 #'
 #' @section Variables:
 #'
-#'   * `id`: Numeric id for each account. The ids correspond to the ids in the
+#'   - `id`: Numeric id for each account. The ids correspond to the ids in the
 #'     `credit` and `debit` variables in `dafforne_transactions`.
-#'   * `account`: Name of the account.
-#'   * `ledger`: Page on which the account appears in the ledger.
-#'   * `investor`: The investor or the person’s whose capital is involved in
+#'   - `account`: Name of the account.
+#'   - `ledger`: Page on which the account appears in the ledger.
+#'   - `investor`: The investor or the person’s whose capital is involved in
 #'     the account. Accounts that only deal with the bookkeeper's capital are
 #'     listed as "ego".
-#'   * `description`: Short description of each account.
+#'   - `description`: Short description of each account.
 #'
 #' @source Richard Dafforne, *The Merchant's Mirrour, Or Directions for the*
 #'   *Perfect Ordering and Keeping of His Accounts*, Third Edition, (London,
@@ -54,24 +54,24 @@
 #'
 #' @section Variables:
 #'
-#'   * `id`: Numeric id for each transaction.
-#'   * `credit`: Account id for the credit account in the transactions. The
+#'   - `id`: Numeric id for each transaction.
+#'   - `credit`: Account id for the credit account in the transactions. The
 #'     accounts that discharges the transactional value or from which the
 #'     value derives. The account ids correspond to the `id` variable in
 #'     `dafforne_accounts`.
-#'   * `debit`: Account id for the debit account in the transactions. The
+#'   - `debit`: Account id for the debit account in the transactions. The
 #'     accounts that receive the transactional value. The account ids
 #'     correspond to the `id` variable in `dafforne_accounts`.
-#'   * `date`: Date on which the transaction was entered into the journal. Date
+#'   - `date`: Date on which the transaction was entered into the journal. Date
 #'     conforms to the Anglican calendar that used the old Julian calendar with
-#'     the new year on 25 March. Encoded as a date object.
-#'   * `lsd`: Column of class `deb_lsd` with pounds, shillings, and pence
+#'     the new year on 25 March. Encoded as a date vector.
+#'   - `lsd`: Column of class `deb_lsd` with pounds, shillings, and pence
 #'     values. Bases for shillings and pence are 20 and 12 respectively.
-#'   * `journal`: Page on which the transaction is recorded in the journal.
-#'   * `ledger`: The pages on which the transaction is recorded in the ledger.
+#'   - `journal`: Page on which the transaction is recorded in the journal.
+#'   - `ledger`: The pages on which the transaction is recorded in the ledger.
 #'     The number before the slash is the page on which the debit is recorded.
 #'     The number after the slash is the page on which the credit is recorded.
-#'   * `description`: Description of the transaction as recorded in the
+#'   - `description`: Description of the transaction as recorded in the
 #'     journal.
 #'
 #' @source Richard Dafforne, *The Merchant's Mirrour, Or Directions for the*

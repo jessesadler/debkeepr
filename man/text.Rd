@@ -6,7 +6,7 @@
 \alias{deb_text.default}
 \alias{deb_text.deb_lsd}
 \alias{deb_text.deb_decimal}
-\title{Format \code{deb_lsd} and \code{deb_decimal} objects as text}
+\title{Format \code{deb_lsd} and \code{deb_decimal} vectors as text}
 \usage{
 deb_text(x, ...)
 
@@ -36,7 +36,7 @@ deb_text(x, ...)
 )
 }
 \arguments{
-\item{x}{An object of class \code{deb_lsd} or \code{deb_decimal}.}
+\item{x}{A vector of class \code{deb_lsd} or \code{deb_decimal}.}
 
 \item{...}{Arguments passed on to further methods.}
 
@@ -65,15 +65,15 @@ mark. Default is \code{","} with default \code{big.interval} of \code{3}.}
 A Character vector of formatted values.
 }
 \description{
-Flexible way to nicely format \code{deb_lsd} and \code{deb_decimal} objects for
+Flexible way to nicely format \code{deb_lsd} and \code{deb_decimal} vectors for
 use as labels or texts.
 }
 \details{
 \code{deb_text} is similar to \code{as.character()} in that both return a character
 vector of the values of \code{deb_lsd} and \code{deb_decimal} vectors. However,
-\code{as.character()} uses the normal printing method for these objects.
+\code{as.character()} uses the normal printing method for these vectors.
 \code{deb_text()} provides a convenient way to nicely format \code{deb_lsd} and
-\code{deb_decimal} objects for use as text or labels with options for
+\code{deb_decimal} vectors for use as text or labels with options for
 customization.
 
 \code{deb_text()} uses \code{formatC()} to format the numeric values of \code{x}. Numbers

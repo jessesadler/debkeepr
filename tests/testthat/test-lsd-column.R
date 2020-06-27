@@ -3,21 +3,22 @@
 libra <- c(3, 5, 6, 2)
 solidus <- c(10, 18, 11, 16)
 denarius <- c(9, 11, 10, 5)
+accounts <- 1:4
 
-x <- data.frame(accounts = c(1, 2, 3, 4),
+x <- data.frame(accounts = accounts,
                 l = libra,
                 s = solidus,
                 d = denarius)
-y <- data.frame(accounts = c(1, 2, 3, 4),
+y <- data.frame(accounts = accounts,
                 lsd = deb_lsd(libra, solidus, denarius))
 x_tbl <- tibble::as_tibble(x)
 y_tbl <- tibble::as_tibble(y)
 
-x2 <- data.frame(accounts = c(1, 2, 3, 4),
+x2 <- data.frame(accounts = accounts,
                  libra = libra,
                  solidus = solidus,
                  denarius = denarius)
-y2 <- data.frame(accounts = c(1, 2, 3, 4),
+y2 <- data.frame(accounts = accounts,
                  data = deb_lsd(libra, solidus, denarius))
 
 test_that("deb_gather_lsd works", {
@@ -37,8 +38,7 @@ test_that("deb_gather_lsd works", {
 
 test_that("deb_spread_lsd works", {
   # Error
-  expect_error(deb_spread_lsd(x, lsd = l),
-               "`lsd` must be a <deb_lsd> object.")
+  expect_error(deb_spread_lsd(x, lsd = l), "`lsd` must be of type <deb_lsd>.")
   # defaults
   expect_equal(ncol(deb_spread_lsd(y)), 5)
   expect_equal(deb_spread_lsd(y)[[3]], libra)

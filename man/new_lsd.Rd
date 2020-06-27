@@ -11,6 +11,6 @@ An object of class \code{deb_lsd}.
 }
 \description{
 Asserts that \code{l}, \code{s} and \code{d} are of type \code{double()} and that \code{bases} is an
-\code{integer()} of length 2. Creates the object through \code{new_rcrd()}.
+\code{integer()} of length 2. Creates the vector through \code{new_rcrd()}.
 }
 \keyword{internal}

@@ -20,7 +20,7 @@ dec2 <- deb_decimal(c(1.8375, NA, 5.225, 3.2875, 1.1125))
 dec3 <- deb_decimal(c(1.8375, 5.225, 3.2875, 1.1125))
 
 bases_error <- paste0("`bases` attributes must be equal to combine ",
-                      "<deb_lsd> or <deb_decimal> objects.")
+                      "<deb_lsd> or <deb_decimal> vectors.")
 
 
 # vec_math ----------------------------------------------------------------
@@ -63,7 +63,7 @@ test_that("sum and mean work with deb_decimal", {
   expect_equal(mean(dec2, na.rm = TRUE), deb_decimal(2.865625))
 })
 
-test_that("sum works with deb-style objects and numeric", {
+test_that("sum works with deb-style vectors and numeric", {
   expect_equal(sum(lsd1, dec_l), deb_lsd(3, 13, 6))
   expect_equal(sum(lsd1, dec_l), sum(lsd1, dec_s))
   expect_equal(sum(lsd3, 1.8375, 3, na.rm = TRUE), deb_lsd(23, 8, 2))
@@ -121,13 +121,13 @@ test_that("round family works with deb_lsd", {
   expect_equal(trunc(multi_decimal), trunc(deb_normalize(multi_decimal)))
 })
 
-test_that("abs works with deb_lsd objects", {
+test_that("abs works with deb_lsd vectors", {
   expect_equal(abs(lsd_round), lsd_round)
   expect_equal(abs(neg_round), lsd_round)
 })
 
 # deb_lsd arithmetic operators --------------------------------------------
-test_that("Arithmetic operators work with two deb_lsd objects", {
+test_that("Arithmetic operators work with two deb_lsd vectors", {
   # plus
   expect_equal(lsd1 + lsd2, deb_lsd(7, 3, 5))
   expect_equal(lsd_bases + deb_lsd(2, 10, 5, bases2),
@@ -159,7 +159,7 @@ test_that("Arithmetic operators work with deb_lsd and numeric", {
 
 # deb_decimal arithmetic operators ----------------------------------------
 
-test_that("Arithmetic operators work with two deb_decimal objects", {
+test_that("Arithmetic operators work with two deb_decimal vectors", {
   expect_equal(dec_l + deb_decimal(1.5), deb_decimal(3.3375))
   expect_equal(dec_l - deb_decimal(1.5), deb_decimal(0.3375))
   expect_equal(deb_decimal(3.25) / deb_decimal(6.5), 0.5)

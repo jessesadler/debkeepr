@@ -5,7 +5,7 @@
 #' Internal constructor to create deb_lsd type
 #'
 #' Asserts that `l`, `s` and `d` are of type `double()` and that `bases` is an
-#' `integer()` of length 2. Creates the object through `new_rcrd()`.
+#' `integer()` of length 2. Creates the vector through `new_rcrd()`.
 #'
 #' @return An object of class `deb_lsd`.
 #' @keywords internal
@@ -31,7 +31,7 @@ new_lsd <- function(l = double(),
 
 #' A class for pounds, shillings and pence values
 #'
-#' Create an object of class `deb_lsd` to integrate non-decimal currencies
+#' Create a vector of class `deb_lsd` to integrate non-decimal currencies
 #' into standardized forms of analysis provided by R.
 #'
 #' @details
@@ -47,7 +47,7 @@ new_lsd <- function(l = double(),
 #' Carolingian Empire and became engrained in much of Europe. However, a
 #' variety of accounting systems arose at different times that used
 #' [other bases](https://en.wikipedia.org/wiki/Non-decimal_currency) for the
-#' solidus and denarius units. The `bases` attribute of `deb_lsd` objects
+#' solidus and denarius units. The `bases` attribute of `deb_lsd` vectors
 #' makes it possible to specify alternative bases for the solidus and denarius
 #' units.
 #'
@@ -71,7 +71,7 @@ new_lsd <- function(l = double(),
 #'   conforms to the most widely used system of 1 pound = 20 shillings and
 #'   1 shilling = 12 pence.
 #'
-#' @return Returns an object of class `deb_lsd`.
+#' @return Returns a vector of class `deb_lsd`.
 #' @export
 #' @examples
 #'
@@ -85,14 +85,14 @@ new_lsd <- function(l = double(),
 #'         s = c(6, 13, 8),
 #'         d = 0)
 #'
-#' # Set the bases of the object
+#' # Set the bases of the deb_lsd vector
 #' deb_lsd(5, 3, 8, bases = c(60, 16))
 #' deb_lsd(l = c(10, 28, 5),
 #'         s = c(6, 33, 13),
 #'         d = c(8, 42, 10),
 #'         bases = c(60, 16))
 #'
-#' # Create a prototype or object of length 0
+#' # Create a prototype or vector of length 0
 #' deb_lsd()
 
 deb_lsd <- function(l = double(),
@@ -120,7 +120,7 @@ methods::setOldClass(c("deb_lsd", "vctrs_rcrd", "vctrs_vctr"))
 
 # Attribute access --------------------------------------------------------
 
-#' Access the bases attribute of a `deb_lsd` object.
+#' Access the bases attribute of a `deb_lsd` vector
 #'
 #' @keywords internal
 
@@ -149,7 +149,11 @@ deb_is_lsd <- function(x) inherits(x, "deb_lsd")
 
 # Format method -----------------------------------------------------------
 
+#' deb_lsd format method for object printing
+#'
+#' @keywords internal
 #' @export
+
 format.deb_lsd <- function(x, ...) {
   l <- round(field(x, "l"), 3) # only print 3 decimals
   s <- round(field(x, "s"), 3)
@@ -160,7 +164,11 @@ format.deb_lsd <- function(x, ...) {
   out
 }
 
+#' Print footer with bases
+#'
+#' @keywords internal
 #' @export
+
 obj_print_footer.deb_lsd <- function(x, ...) {
   s <- format(attr(x, "bases")[[1]])
   d <- format(attr(x, "bases")[[2]])
@@ -170,7 +178,11 @@ obj_print_footer.deb_lsd <- function(x, ...) {
 
 # Abbreviated name type ---------------------------------------------------
 
+#' Abbreviated name for tibble columns
+#'
+#' @keywords internal
 #' @export
+
 vec_ptype_abbr.deb_lsd <- function(x) {
   paste0("lsd[", attr(x, "bases")[[1]], "s:", attr(x, "bases")[[2]], "d]")
 }

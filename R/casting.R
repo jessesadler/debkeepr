@@ -26,15 +26,25 @@ vec_cast.double.deb_lsd <- function(x, to, ...) {
 
 #' @export
 vec_cast.deb_lsd.double <- function(x, to, ...) {
-  lsd <- deb_lsd(x, 0, 0, bases = deb_bases(to))
-  deb_normalize(lsd)
+# If statements enables casting from a numeric prototype:
+  if (vec_size(x) == 0) {
+    deb_lsd(bases = deb_bases(to))
+  } else {
+    lsd <- deb_lsd(x, 0, 0, bases = deb_bases(to))
+    deb_normalize(lsd)
+  }
 }
 
 # integer to deb_lsd
 
 #' @export
 vec_cast.deb_lsd.integer <- function(x, to, ...) {
-  deb_lsd(x, 0, 0, bases = deb_bases(to))
+  # If statements enables casting from a numeric prototype:
+  if (vec_size(x) == 0) {
+    deb_lsd(bases = deb_bases(to))
+  } else {
+    lsd <- deb_lsd(x, 0, 0, bases = deb_bases(to))
+  }
 }
 
 # deb_lsd to character
@@ -48,6 +58,7 @@ vec_cast.character.deb_lsd <- function(x, to, ...) {
 # deb_decimal -------------------------------------------------------------
 
 # deb_decimal to deb_decimal
+# Logic to convert between units
 
 #' @export
 vec_cast.deb_decimal.deb_decimal <- function(x, to, ...) {
@@ -100,7 +111,91 @@ vec_cast.character.deb_decimal <- function(x, to, ...) {
   as.character(vec_data(x))
 }
 
+# lsd and list ------------------------------------------------------------
+
+# list to deb_lsd
+# Use base methods to not depend on purrr
+# Based on compat-purrr.R in rlang
+
+#' @export
+vec_cast.deb_lsd.list <- function(x, to, ...) {
+  list_check(x)
+
+  deb_lsd(l = vapply(x, `[[`, i = 1, double(1)),
+          s = vapply(x, `[[`, i = 2, double(1)),
+          d = vapply(x, `[[`, i = 3, double(1)),
+          bases = deb_bases(to))
+}
+
+# list to deb_decimal
+
+#' @export
+vec_cast.deb_decimal.list <- function(x, to, ...) {
+  list_check(x)
+
+  lsd <- vec_cast(x, to = deb_lsd(bases = deb_bases(to)))
+
+  lsd_to_decimal(lsd, to)
+}
+
+# deb_lsd to list of deb_lsd values
+
+#' @export
+vec_cast.list.deb_lsd <- function(x, to, ...) {
+  # unclass deb_lsd vector and create list of list
+  # seq_along x to get i
+  fields <- seq_along(x)
+  inside_out <- lapply(fields, function(i) {
+    lapply(unclass(x), .subset2, i)
+  })
+  # Flatten list
+  lapply(inside_out, unlist, use.names = FALSE)
+}
+
+# Cast deb_lsd to list
+
+#' Cast `deb_lsd` to a list of lsd values
+#'
+#' Cast a `deb_lsd` vector to a list of numeric vectors containing lsd values.
+#'
+#' @details
+#' `deb_as_list()` turns a `deb_lsd` vector into a list of numeric vectors of
+#' length 3. It is the inverse of `deb_as_lsd()`. Compare to `as.list()`,
+#' which creates a list of `deb_lsd` vectors or `unclass()`, which creates a
+#' list of length 3 with numeric vectors for pounds, shillings, and pence.
+#'
+#' @param x A `deb_lsd` vector to cast to a list of lsd values.
+#' @param ... Arguments passed on to further methods.
+#'
+#' @seealso [`deb_as_lsd()`] for the inverse of `deb_as_list()`.
+#' @return A list of numeric vectors of length 3, corresponding to lsd values.
+#' @examples
+#'
+#' # deb_lsd vector
+#' x <- deb_lsd(l = 0:3, s = 4:7, d = 8:11)
+#'
+#' deb_as_list(x)
+#'
+#' # This is the inverse of `deb_as_lsd()` of a list of lsd values
+#' y <- deb_as_list(x)
+#'
+#' identical(x, deb_as_lsd(y))
+#'
+#' @export
+
+deb_as_list <- function(x, ...) {
+  if (!deb_is_lsd(x)) {
+    rlang::abort("`x` must be a <deb_lsd> vector.")
+  }
+  vec_cast(x, list())
+}
+
 # deb_decimal to deb_lsd --------------------------------------------------
+
+#' deb_decimal to deb_lsd utility
+#'
+#' Find unit and normalize
+#' @keywords internal
 
 decimal_to_lsd <- function(x) {
   bases <- deb_bases(x)
@@ -124,6 +219,11 @@ vec_cast.deb_lsd.deb_decimal <- function(x, to, ...) {
 }
 
 # deb_lsd to deb_decimal --------------------------------------------------
+
+#' deb_lsd to deb_decimal utility
+#'
+#' Arithmetic based on the unit
+#' @keywords internal
 
 lsd_to_decimal <- function(x, to) {
   l <- field(x, "l")
@@ -158,6 +258,11 @@ vec_cast.deb_decimal.deb_lsd <- function(x, to, ...) {
 #'
 #' Cast `x` to a `deb_lsd` vector.
 #'
+#' @details Casting a list of numeric vectors of length 3 to `deb_lsd`
+#' provides an alternate way to create a `deb_lsd` vector than [`deb_lsd()`].
+#' This method may be helpful because the data is input by the value instead
+#' of by the unit.
+#'
 #' @param x An object to coerce to `deb_lsd`.
 #' @param ... Arguments passed on to further methods.
 #' @param bases Numeric vector of length 2 used to specify the bases for the
@@ -165,11 +270,12 @@ vec_cast.deb_decimal.deb_lsd <- function(x, to, ...) {
 #'   conforms to the most widely used system of 1 pound = 20 shillings and
 #'   1 shilling = 12 pence.
 #'
-#' @return A `deb_lsd` object.
+#' @return A `deb_lsd` vector.
+#' @seealso [`deb_as_decimal()`]
 #'
 #' @examples
 #'
-#' # Cast a deb_decimal object to deb_lsd
+#' # Cast a deb_decimal vector to deb_lsd
 #' x <- c(5.825, 3.25, 22/3)
 #' d1 <- deb_decimal(x)
 #' deb_as_lsd(d1)
@@ -184,6 +290,18 @@ vec_cast.deb_decimal.deb_lsd <- function(x, to, ...) {
 #'
 #' # Use the bases argument to apply non-default bases
 #' deb_as_lsd(x, bases = c(60, 16))
+#'
+#' # Cast a list to deb_lsd provides an alternate to deb_lsd()
+#' # This can be helpful for legibility. Compare:
+#'
+#' list(c(5, 12, 3),
+#'      c(13, 8, 11),
+#'      c(7, 16, 0)) %>%
+#'   deb_as_lsd()
+#'
+#' deb_lsd(l = c(5, 13, 7),
+#'         s = c(12, 8, 16),
+#'         d = c(3, 11, 0))
 #'
 #' @name cast-lsd
 NULL
@@ -216,11 +334,21 @@ deb_as_lsd.logical <- function(x, bases = c(20, 12), ...) {
   vec_cast(x, to = deb_lsd(bases = bases))
 }
 
+#' @rdname cast-lsd
+#' @export
+deb_as_lsd.list <- function(x, bases = c(20, 12), ...) {
+  vec_cast(x, to = deb_lsd(bases = bases))
+}
+
 # deb_decimal casting methods ---------------------------------------------
 
 #' Cast to `deb_decimal`
 #'
 #' Cast `x` to a `deb_decimal` vector.
+#'
+#' @details Like [`deb_as_lsd()`], `deb_as_decimal()` provides a method to
+#' cast a list of numeric vectors of length 3 to `deb_decimal`. This may be
+#' helpful because the data is input by the value instead of by the unit.
 #'
 #' @param x An object to coerce to `deb_decimal`.
 #' @param ... Arguments passed on to further methods.
@@ -232,11 +360,12 @@ deb_as_lsd.logical <- function(x, bases = c(20, 12), ...) {
 #'   conforms to the most widely used system of 1 pound = 20 shillings and
 #'   1 shilling = 12 pence.
 #'
-#' @return A `deb_decimal` object.
+#' @return A `deb_decimal` vector.
+#' @seealso [`deb_as_lsd()`]
 #'
 #' @examples
 #'
-#' # Cast a deb_lsd object to deb_decimal
+#' # Cast a deb_lsd vector to deb_decimal
 #' x <- deb_lsd(l = c(5, 3, 7),
 #'              s = c(16, 5, 6),
 #'              d = c(6, 0, 8))
@@ -257,6 +386,14 @@ deb_as_lsd.logical <- function(x, bases = c(20, 12), ...) {
 #' # Use the unit and bases arguments to specify
 #' # the unit and apply non-default bases
 #' deb_as_decimal(y, unit = "s", bases = c(60, 16))
+#'
+#' # Cast a list to deb_lsd provides an alternate
+#' # to deb_lsd() %>% deb_decimal()
+#'
+#' list(c(5, 12, 3),
+#'      c(13, 8, 11),
+#'      c(7, 16, 0)) %>%
+#'   deb_as_decimal()
 #'
 #' @name cast-decimal
 NULL
@@ -291,5 +428,13 @@ deb_as_decimal.numeric <- function(x,
 deb_as_decimal.logical <- function(x,
                                    unit = c("l", "s", "d"),
                                    bases = c(20, 12), ...) {
+  vec_cast(x, to = deb_decimal(unit = unit, bases = bases))
+}
+
+#' @rdname cast-decimal
+#' @export
+deb_as_decimal.list <- function(x,
+                                unit = c("l", "s", "d"),
+                                bases = c(20, 12), ...) {
   vec_cast(x, to = deb_decimal(unit = unit, bases = bases))
 }

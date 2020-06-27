@@ -2,11 +2,11 @@
 % Please edit documentation in R/decimal-class.R
 \name{deb_unit}
 \alias{deb_unit}
-\title{Access the unit attribute of a \code{deb_decimal} object.}
+\title{Access the unit attribute of a \code{deb_decimal} vector}
 \usage{
 deb_unit(x)
 }
 \description{
-Access the unit attribute of a \code{deb_decimal} object.
+Access the unit attribute of a \code{deb_decimal} vector
 }
 \keyword{internal}
