@@ -58,6 +58,7 @@ vec_cast.character.deb_lsd <- function(x, to, ...) {
 # deb_decimal -------------------------------------------------------------
 
 # deb_decimal to deb_decimal
+# Logic to convert between units
 
 #' @export
 vec_cast.deb_decimal.deb_decimal <- function(x, to, ...) {
@@ -113,6 +114,8 @@ vec_cast.character.deb_decimal <- function(x, to, ...) {
 # lsd and list ------------------------------------------------------------
 
 # list to deb_lsd
+# Use base methods to not depend on purrr
+# Based on compat-purrr.R in rlang
 
 #' @export
 vec_cast.deb_lsd.list <- function(x, to, ...) {
@@ -145,7 +148,6 @@ vec_cast.list.deb_lsd <- function(x, to, ...) {
   inside_out <- lapply(fields, function(i) {
     lapply(unclass(x), .subset2, i)
   })
-
   # Flatten list
   lapply(inside_out, unlist, use.names = FALSE)
 }
@@ -162,7 +164,7 @@ vec_cast.list.deb_lsd <- function(x, to, ...) {
 #' which creates a list of `deb_lsd` vectors or `unclass()`, which creates a
 #' list of length 3 with numeric vectors for pounds, shillings, and pence.
 #'
-#' @param x A `deb_lsd` object to cast to a list of lsd values.
+#' @param x A `deb_lsd` vector to cast to a list of lsd values.
 #' @param ... Arguments passed on to further methods.
 #'
 #' @seealso [`deb_as_lsd()`] for the inverse of `deb_as_list()`.
@@ -190,6 +192,11 @@ deb_as_list <- function(x, ...) {
 
 # deb_decimal to deb_lsd --------------------------------------------------
 
+#' deb_decimal to deb_lsd utility
+#'
+#' Find unit and normalize
+#' @keywords internal
+
 decimal_to_lsd <- function(x) {
   bases <- deb_bases(x)
   unit <- deb_unit(x)
@@ -212,6 +219,11 @@ vec_cast.deb_lsd.deb_decimal <- function(x, to, ...) {
 }
 
 # deb_lsd to deb_decimal --------------------------------------------------
+
+#' deb_lsd to deb_decimal utility
+#'
+#' Arithmetic based on the unit
+#' @keywords internal
 
 lsd_to_decimal <- function(x, to) {
   l <- field(x, "l")
@@ -258,12 +270,12 @@ vec_cast.deb_decimal.deb_lsd <- function(x, to, ...) {
 #'   conforms to the most widely used system of 1 pound = 20 shillings and
 #'   1 shilling = 12 pence.
 #'
-#' @return A `deb_lsd` object.
+#' @return A `deb_lsd` vector.
 #' @seealso [`deb_as_decimal()`]
 #'
 #' @examples
 #'
-#' # Cast a deb_decimal object to deb_lsd
+#' # Cast a deb_decimal vector to deb_lsd
 #' x <- c(5.825, 3.25, 22/3)
 #' d1 <- deb_decimal(x)
 #' deb_as_lsd(d1)
@@ -348,12 +360,12 @@ deb_as_lsd.list <- function(x, bases = c(20, 12), ...) {
 #'   conforms to the most widely used system of 1 pound = 20 shillings and
 #'   1 shilling = 12 pence.
 #'
-#' @return A `deb_decimal` object.
+#' @return A `deb_decimal` vector.
 #' @seealso [`deb_as_lsd()`]
 #'
 #' @examples
 #'
-#' # Cast a deb_lsd object to deb_decimal
+#' # Cast a deb_lsd vector to deb_decimal
 #' x <- deb_lsd(l = c(5, 3, 7),
 #'              s = c(16, 5, 6),
 #'              d = c(6, 0, 8))

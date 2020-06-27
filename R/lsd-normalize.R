@@ -1,5 +1,12 @@
 ## Normalize lsd values ##
 
+#' Check for non-whole numbers in libra and solidus units
+#'
+#' Move any decimals in libra and solidus units to the denarius unit.
+#' The function uses the utility `should_be_int()` to deal with floating
+#' point problems.
+#'
+#' @keywords internal
 decimal_check <- function(lsd) {
   l <- field(lsd, "l")
   s <- field(lsd, "s")
@@ -18,13 +25,18 @@ decimal_check <- function(lsd) {
   lsd
 }
 
-
+#' Check whether lsd value is positive or negative
+#' @keywords internal
 is_negative <- function(x) {
   field(x, "l") +
     field(x, "s") / deb_bases(x)[[1]] +
     field(x, "d") / prod(deb_bases(x)) < 0
 }
 
+#' Normalization function
+#'
+#' Function that actually performs the normalization of lsd value
+#' @keywords internal
 normalize <- function(l, s, d, bases) {
   new_lsd(l = l + ((s + d %/% bases[[2]]) %/% bases[[1]]),
           s = (s + d %/% bases[[2]]) %% bases[[1]],
@@ -32,6 +44,8 @@ normalize <- function(l, s, d, bases) {
           bases = bases)
 }
 
+#' Normalization path for positive values
+#' @keywords internal
 lsd_normalize <- function(lsd) {
   l <- field(lsd, "l")
   s <- field(lsd, "s")
@@ -43,6 +57,8 @@ lsd_normalize <- function(lsd) {
   ret
 }
 
+#' Normalization path for negative values
+#' @keywords internal
 lsd_normalize_neg <- function(lsd) {
   l <- -field(lsd, "l")
   s <- -field(lsd, "s")
@@ -62,7 +78,7 @@ lsd_normalize_neg <- function(lsd) {
 #' Normalize pounds, shillings, and pence values to given bases of solidus
 #' and denarius units.
 #'
-#' @param x Either an object of class `deb_lsd` or a numeric vector of
+#' @param x Either an vector of class `deb_lsd` or a numeric vector of
 #'   length 3 representing the values to be normalized.
 #' @param bases Used only if `x` is a numeric vector. A Numeric vector of
 #'   length 2 used to specify the bases for the shillings or s and pence or
@@ -70,11 +86,11 @@ lsd_normalize_neg <- function(lsd) {
 #'   system of 1 pound = 20 shillings and 1 shilling = 12 pence.
 #' @param ... Arguments passed on to further methods.
 #'
-#' @return Returns an object of class `deb_lsd` with normalized solidus and
+#' @return Returns a vector of class `deb_lsd` with normalized solidus and
 #'   denarius units.
 #' @examples
 #'
-#' # Normalize a deb_lsd object
+#' # Normalize a deb_lsd vector
 #' x <- deb_lsd(12, 93, 78)
 #' y <- deb_lsd(12, 93, 78, bases = c(60, 16))
 #' deb_normalize(x)

@@ -2,14 +2,11 @@
 % Please edit documentation in R/decimal-class.R
 \name{unit_word}
 \alias{unit_word}
-\title{Print full name of unit in footer}
+\title{Full name of unit for footer}
 \usage{
 unit_word(x)
 }
-\arguments{
-\item{x}{A deb_decimal object.}
-}
 \description{
-Print full name of unit in footer
+Full name of unit for footer
 }
 \keyword{internal}

@@ -2,6 +2,14 @@
 
 # lsd and bases checks ----------------------------------------------------
 
+#' Checks for deb_lsd functions
+#'
+#' @description
+#' Checks made:
+#' - That `l`, `s`, and `d` are numeric
+#' - That they are the same length, length 1, or all length 0
+#' @keywords internal
+
 lsd_check <- function(l, s, d) {
   # Check that l, s, and d are numeric
   if (!all(rlang::are_na(l))) {
@@ -40,11 +48,15 @@ lsd_check <- function(l, s, d) {
   }
 }
 
-# Check that bases are natural number: whole number greater than 0
-# From integer docs and SO: https://stackoverflow.com/a/4562291
-is_natural <- function(x, tol = .Machine$double.eps^0.5) {
-  x > tol & abs(x - round(x)) < tol
-}
+#' Checks for bases attribute
+#'
+#' @description
+#' Check that:
+#'
+#' - Bases are numeric vector of length 2
+#' - Cannot have NA values
+#' - Must be natural (whole) numbers greater that 0
+#' @keywords internal
 
 bases_check <- function(bases) {
   if (!is.numeric(bases) || vec_size(bases) != 2L || is.null(bases)) {
@@ -58,9 +70,20 @@ bases_check <- function(bases) {
   }
 }
 
+#' Check that object is of type deb_lsd or deb_decimal
+#' @keywords internal
+deb_ptype_check <- function(x) {
+  if (!deb_is_lsd(x) && !deb_is_decimal(x)) {
+    rlang::abort("`lsd` must be either of type <deb_lsd> or <deb_decimal>.")
+  }
+}
 
 # Bases assert ------------------------------------------------------------
 
+#' Bases assert
+#'
+#' Remove any names of bases and then add unit names
+#' @keywords internal
 bases_assert <- function(bases) {
   bases <- rlang::set_names(bases, NULL) # vec_assert has error if named
   vec_assert(bases, ptype = integer(), size = 2)
@@ -69,18 +92,26 @@ bases_assert <- function(bases) {
 
 # Bases equivalent --------------------------------------------------------
 
-# Check that bases are equal for two deb-style objects
+#' Check that bases are equal for two deb-style vectors
+#'
+#' Used to ensure that deb_lsd and deb_decimal vectors with different bases
+#' cannot be combined except explicitly with `deb_convert_bases()`.
+#' @keywords internal
 bases_equal <- function(x, y) {
   if (!identical(deb_bases(x), deb_bases(y))) {
     rlang::abort(
       paste0("`bases` attributes must be equal to combine <deb_lsd> ",
-             "or <deb_decimal> objects."))
+             "or <deb_decimal> vectors."))
   }
 }
 
 
 # list check --------------------------------------------------------------
 
+#' List check
+#'
+#' Ensure that lists only include numeric vectors of length 3
+#' @keywords internal
 list_check <- function(x) {
   if (any(vapply(x, rlang::is_null, logical(1)))) {
     x <- Filter(length, x)
@@ -98,6 +129,18 @@ list_check <- function(x) {
 
 # Transaction checks ------------------------------------------------------
 
+#' Transaction functions checks
+#'
+#' @description
+#' Check that:
+#'
+#' - `df` is a dataframe
+#' - `lsd`-column is provided
+#' - `credit` and `debit` columns are provided
+#' - `credit` and `debit` columns must be of the same type
+#' - `account_id` in `deb_account()` must be in credit or debit columns
+#'
+#' @keywords internal
 transaction_check <- function(df,
                               cn,
                               credit,
@@ -131,11 +174,5 @@ transaction_check <- function(df,
       rlang::abort(
         "`account_id` must be a value present in `credit` and/or `debit`.")
     }
-  }
-}
-
-deb_ptype_check <- function(x) {
-  if (!deb_is_lsd(x) && !deb_is_decimal(x)) {
-    rlang::abort("`lsd` must be either a <deb_lsd> or a <deb_decimal> object.")
   }
 }
