@@ -7,6 +7,7 @@
 lsd_normalize(lsd)
 }
 \description{
-Normalization path for positive values
+Separate normalization functions for positive and negative values to be
+used in \code{dplyr::if_else()}. Making them functions simplifies the process.
 }
 \keyword{internal}

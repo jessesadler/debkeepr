@@ -7,6 +7,6 @@
 lsd_normalize_neg(lsd)
 }
 \description{
-Normalization path for negative values
+Turn values positive and then return to negative value.
 }
 \keyword{internal}

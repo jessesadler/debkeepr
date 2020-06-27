@@ -45,27 +45,28 @@ normalize <- function(l, s, d, bases) {
 }
 
 #' Normalization path for positive values
+#'
+#' Separate normalization functions for positive and negative values to be
+#' used in `dplyr::if_else()`. Making them functions simplifies the process.
 #' @keywords internal
 lsd_normalize <- function(lsd) {
-  l <- field(lsd, "l")
-  s <- field(lsd, "s")
-  d <- field(lsd, "d")
-  bases <- deb_bases(lsd)
 
-  ret <- normalize(l = l, s = s, d = d, bases = bases)
-
-  ret
+  normalize(l = field(lsd, "l"),
+            s = field(lsd, "s"),
+            d = field(lsd, "d"),
+            bases = deb_bases(lsd))
 }
 
 #' Normalization path for negative values
+#'
+#' Turn values positive and then return to negative value.
 #' @keywords internal
 lsd_normalize_neg <- function(lsd) {
-  l <- -field(lsd, "l")
-  s <- -field(lsd, "s")
-  d <- -field(lsd, "d")
-  bases <- deb_bases(lsd)
 
-  ret <- normalize(l = l, s = s, d = d, bases = bases)
+  ret <- normalize(l = -field(lsd, "l"),
+                   s = -field(lsd, "s"),
+                   d = -field(lsd, "d"),
+                   bases = deb_bases(lsd))
 
   -ret
 }
@@ -119,10 +120,10 @@ deb_normalize.default <- function(x, ...) {
 #' @rdname normalize
 #' @export
 deb_normalize.deb_lsd <- function(x, ...) {
-  decimals <- decimal_check(x)
+  checked <- decimal_check(x)
   dplyr::if_else(is_negative(x),
-                 lsd_normalize_neg(decimals),
-                 lsd_normalize(decimals))
+                 lsd_normalize_neg(checked),
+                 lsd_normalize(checked))
 }
 
 #' @rdname normalize
