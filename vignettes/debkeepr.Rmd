@@ -14,13 +14,13 @@ knitr::opts_chunk$set(
 )
 ```
 
-The `debkeepr` package provides an interface for working with non-decimal currencies that use the tripartite system of pounds, shillings, and pence. `debkeepr` makes it easier to perform arithmetic operations on non-decimal monetary values and facilitates the analysis and visualization of larger sets of non-decimal values such as those found in historical account books. This is accomplished through the implementation of the `deb_lsd` and `deb_decimal` classes of vectors, which are based on the infrastructure provided by the [vctrs package](https://vctrs.r-lib.org/). `deb_lsd` and `deb_decimal` vectors possess additional metadata to allow them to behave like numeric vectors in many circumstances, while also conforming to the workings of non-decimal currencies.
+The `debkeepr` package provides an interface for working with non-decimal currencies that use the tripartite system of pounds, shillings, and pence. `debkeepr` makes it easier to perform arithmetic operations on non-decimal monetary values and facilitates the analysis and visualization of larger sets of non-decimal values such as those found in historical account books. This is accomplished through the implementation of the `deb_lsd` and `deb_decimal` vector classes or types, which are based on the infrastructure provided by the [vctrs package](https://vctrs.r-lib.org/). `deb_lsd` and `deb_decimal` vectors possess additional metadata to allow them to behave like numeric vectors in many circumstances, while also conforming to the workings of non-decimal currencies.
 
-This vignette lays out the behavior of the `deb_lsd` and `deb_decimal` classes, showing where they overlap, how they can work together, and where they diverge. After a short discussion of the historical background of non-decimal currencies, the basic behavior of the two vector classes is laid out. The vignette then covers the workings of the two classes as columns in data frames, including visualizing a small set of example accounts with [ggplot2](https://ggplot2.tidyverse.org). The overview presented here is extended in two other vignettes that use the data sets that come with the package. For more in depth examples on performing financial calculations on a variety of non-decimal currencies, see the [Transactions in Richard Dafforne's Journal vignette](https://jessesadler.github.io/debkeepr/articles/transactions.html). For a deeper dive into an analysis of a historical account book using `debkeepr`, see the [Analysis of Richard Dafforne’s Journal and Ledger vignette](https://jessesadler.github.io/debkeepr/articles/ledger.html).
+This vignette lays out the behavior of `deb_lsd` and `deb_decimal` vectors, showing where they overlap, how they can work together, and where they diverge. After a short discussion of the historical background of non-decimal currencies, the basic behavior of the two vector classes is laid out. The vignette then covers the workings of the two classes as columns in data frames, including visualizing a small set of example accounts with [ggplot2](https://ggplot2.tidyverse.org). The overview presented here is extended in two other vignettes that use the data sets included in the package. For more in depth examples on performing financial calculations in a variety of non-decimal currencies, see the [Transactions in Richard Dafforne's Journal vignette](https://jessesadler.github.io/debkeepr/articles/transactions.html). For a deeper dive into an analysis of a historical account book using `debkeepr`, see the [Analysis of Richard Dafforne’s Journal and Ledger vignette](https://jessesadler.github.io/debkeepr/articles/ledger.html).
 
 ### Overview
 
-- All of the functions in `debkeepr` begin with the prefix `deb_`, which is short for double-entry bookkeeping.
+- All of the functions in `debkeepr` begin with the prefix `deb_`, which is short for [double-entry bookkeeping](https://en.wikipedia.org/wiki/Double-entry_bookkeeping_system).
 - The nomenclature used throughout the package follows the [original Latin terms](https://en.wikipedia.org/wiki/%C2%A3sd) in using l, s, and d to represent the libra, solidus, and denarius units respectively. These terms were translated into the various European languages.
     - English: pounds, shillings, pence
     - French: livres, sols or sous, deniers
@@ -33,17 +33,17 @@ This vignette lays out the behavior of the `deb_lsd` and `deb_decimal` classes, 
 
 ## Historical background
 
-The tripartite non-decimal system of pounds, shillings, and pence dates back to the Carolingian Empire. The primary coin used in the Late Roman Empire was the golden [solidus](https://en.wikipedia.org/wiki/Solidus_(coin)), introduced by Constantine in 309. However, the shrinking of the economy and the political splintering that occurred after the fall of the western Roman Empire diminished the need for gold coins. In the 6th century, the Frankish rulers who took over the Roman mints reacted by creating [triens or tremissis](https://en.wikipedia.org/wiki/Tremissis), smaller gold coins worth one-third of a solidus. From this point, the solidus was no longer produced as a coin in the western kingdoms. Instead, it continued as a [unit of account](https://en.wikipedia.org/wiki/Unit_of_account) equivalent to three trientes. In the 7th century even devalued golden trientes proved to be too valuable for the economic needs of the time. Frankish rulers began to produce silver coins based on the size and weight of the triens. The new silver penny was called a [denarius](https://en.wikipedia.org/wiki/Denarius), linking it to the old silver coin used in the Roman Republic. The silver penny provided the basis for the monetary system of Western Europe until the revival of gold coins in the 14th century.
+The tripartite non-decimal system of pounds, shillings, and pence dates back to the Carolingian Empire of Charlemagne. The primary coin used in the Late Roman Empire was the golden [solidus](https://en.wikipedia.org/wiki/Solidus_(coin)), introduced by Constantine in 309. However, the shrinking of the economy and the political splintering that occurred after the fall of the western Roman Empire diminished the need for gold coins. In the 6th century, the Frankish rulers who took over the Roman mints reacted by creating [triens or tremissis](https://en.wikipedia.org/wiki/Tremissis), smaller gold coins worth one-third of a solidus. From this point, the solidus was no longer produced as a coin in the western kingdoms. Instead, it continued as a [unit of account](https://en.wikipedia.org/wiki/Unit_of_account) equivalent to three trientes. In the 7th century even devalued golden trientes proved to be too valuable for the economic needs of the time. Frankish rulers began to produce silver coins based on the size and weight of the triens. The new silver penny was called a [denarius](https://en.wikipedia.org/wiki/Denarius), linking it to the old silver coin used in the Roman Republic. The silver penny provided the basis for the monetary system of Western Europe until the revival of gold coins in the 14th century.
 
-As the silver denarius overtook the golden triens, the triens became a unit of account equivalent to four denarii. In this way the solidus transformed into a unit of account representing 12 denarii, even if 12 silver denarii of the 8th century would not have been equivalent to the pure gold solidus of the Late Roman Empire. The use of the [libra](https://en.wikipedia.org/wiki/Ancient_Roman_units_of_measurement#Weight) as a third unit of account derived from the number of silver denarii struck from a pound, or libra, of silver. Though the actual number of coins made from a pound of silver differed over time, the rate of 240 coins from a libra lasted long enough to become fossilized in much of Europe.[^1] The custom of counting coins in dozens (solidi) and scores of dozens (librae) spread throughout the Carolingian Empire and became engrained in much of Europe. However, by the time that Richard Dafforne wrote on the practice of double-entry bookkeeping in the middle of the seventeenth century, a huge variety of monies of accounts had developed across Europe and beyond, and though many used the 1:20:240 ratios, others used a diversity of bases to represent the shillings and pence units.[^2]
+As the silver denarius overtook the golden triens, the triens became a unit of account equivalent to four denarii. In this way the solidus transformed into a unit of account representing 12 denarii, even if 12 silver denarii of the 8th century would not have been equivalent to the pure gold solidus of the Late Roman Empire. The use of the [libra](https://en.wikipedia.org/wiki/Ancient_Roman_units_of_measurement#Weight) as a third unit of account derived from the number of silver denarii struck from a pound, or libra, of silver. Though the actual number of coins made from a pound of silver differed over time, the rate of 240 coins struck from a libra lasted long enough to become fossilized in much of Europe.[^1] The custom of counting coins in dozens (solidi) and scores of dozens (librae) spread throughout the Carolingian Empire and became ingrained in much of Europe. However, by the time that Richard Dafforne wrote on the practice of double-entry bookkeeping in the middle of the seventeenth century, a huge variety of monies of accounts had developed across Europe and beyond, and though many used the 1:20:240 ratios, others used a diversity of bases to represent the solidus and denarius units.[^2]
 
-## Introducing the `deb_lsd` and `deb_decimal` classes
+## Introducing the `deb_lsd` and `deb_decimal` types
 
-`debkeepr` introduces two classes to help deal with two interrelated problems inherent in historical currencies. Historical currencies consisted of three separate non-decimal units, and the [bases of the shillings and pence units](https://en.wikipedia.org/wiki/Non-decimal_currency) differed by region, coinage, and era. In other words, the actual value represented by say £3 13s. 4d. cannot be determined without knowing the bases of the shillings and pence units.[^3] The `deb_lsd` class maintains the tripartite structure of non-decimal currencies and provides a `bases` attribute to record the bases for the shillings and pence units. The `deb_decimal` class represents the currencies in decimalized form. However, it differs from simply converting the value to a `numeric` vector by tracking the shillings and pence bases and the unit represented in decimalized form (libra, solidus, or denarius) through the `bases` and `unit` attributes. Thus, though `deb_lsd` and `deb_decimal` vectors of any of the three units will be nominally different, they can represent the same values and currency if the `bases` are equivalent.[^4] The print methods for both classes show the `bases` attribute, and `deb_decimal` vectors include the `unit`.
+`debkeepr` introduces two vector types to help deal with two interrelated problems inherent in historical currencies. Firstly, historical currencies consisted of three separate non-decimal units: pounds, shillings, and pence. Secondly, the [bases of the shillings and pence units](https://en.wikipedia.org/wiki/Non-decimal_currency) differed by region, coinage, and era. In other words, the actual value represented by say £3 13s. 4d. cannot be determined without knowing the bases of the shillings and pence units.[^3] The `deb_lsd` type maintains the tripartite structure of non-decimal currencies and provides a `bases` attribute to record the bases for the shillings and pence units. The `deb_decimal` type represents the currencies in decimalized form. However, it differs from simply converting the value to a `numeric` vector by tracking the shillings and pence bases and the unit represented in decimalized form (libra, solidus, or denarius) through the `bases` and `unit` attributes. Thus, though `deb_lsd` and `deb_decimal` vectors of any of the three units will be nominally different, they can represent the same values and currency if the `bases` are equivalent.[^4] The print methods for both types show the `bases` attribute, and `deb_decimal` vectors include the `unit`.
 
 `deb_lsd` and `deb_decimal` vectors can be created with the `deb_lsd()` and `deb_decimal()` functions respectively. In addition to arguments for the pounds, shillings, and pence values, `deb_lsd()` has an argument for the `bases` of the shillings and pence units, which defaults to the most common bases of 20 shillings to the pound and 12 pence to the shilling: `c(20, 12)`. `deb_decimal()` has the same argument and default for the `bases` and an additional argument to choose the `unit` for the decimalized values that defaults to the pounds unit: `"l"`.
 
-```{r intro-to-classes}
+```{r intro-to-types}
 library(debkeepr)
 
 # Create deb_lsd vector of length 3 with default bases
@@ -59,7 +59,7 @@ library(debkeepr)
 (dec_d <- deb_decimal(x = c(3798, 4620, 2307), unit = "d"))
 ```
 
-The `bases` argument makes it possible to create `deb_lsd` and `deb_decimal` vectors that represent currencies that use non-standard bases for the shillings and pence units such as the Polish florin found in Dafforne's practice journal in which a florin consisted of 30 gros of 18 denars.
+The `bases` argument makes it possible to create `deb_lsd` and `deb_decimal` vectors that represent currencies that use non-standard bases for the shillings and pence units such as the Polish florin found in Dafforne's practice journal of 30 gros of 18 denars.
 
 ````{r polish-florin}
 # Create deb_lsd vector of length 3 with bases of Polish florin
@@ -74,18 +74,18 @@ The `bases` argument makes it possible to create `deb_lsd` and `deb_decimal` vec
 ```
 
 ### Advantages and disadvantages of the `deb_lsd` and `deb_decimal` classes
-Why two different classes to represent the same basic information? The goal of `debkeepr` is to integrate tripartite non-decimal currencies into the decimalized world of R. The `deb_lsd` class does this while maintaining the tripartite structure of historical non-decimal currencies, but there remain certain limitations to such an approach. The `deb_decimal` class helps to minimize these limitations. The following list provides an overview of the differences of the two classes that are discussed in further detail in the rest of the vignette.
+Why two different classes to represent the same basic information? The goal of `debkeepr` is to integrate tripartite non-decimal currencies into the decimalized world of R. The `deb_lsd` type does this while maintaining the tripartite structure of historical non-decimal currencies, but there remain certain limitations to such an approach. The `deb_decimal` class helps to minimize these limitations. The following list provides an overview of the differences of the two classes that are discussed in further detail in the rest of the vignette.
 
-- The `deb_lsd` class has the advantage of maintaining the structure and values used by non-decimal currencies, making it easier to identify and present such values.
+- The `deb_lsd` type has the advantage of maintaining the structure and values used by non-decimal currencies, making it easier to identify and present such values.
 - `deb_decimal` implements a wider array of mathematical functions and arithmetic operations than `deb_lsd`.
-- Until [dplyr](https://dplyr.tidyverse.org) integrates record-style vectors based on the `vctrs` package more fully — which should happen with version 0.9.0 — `deb_lsd` vectors do not work with the `dplyr` functions `mutate()`, `summarise()`, and `arrange()`. However, the full complement of `dplyr` functions work with `deb_decimal` vectors.
-- [ggplot2](https://ggplot2.tidyverse.org) does not know how to pick a scale for `deb_lsd` vectors. However, `deb_decimal` vectors work properly with `ggplot2`, though explicitly identifying the scale as continuous — with `scale_y_continuous()` or `scale_x_continuous()` — is needed to avoid the appearance of a message.
-- Casting methods between the two classes with `deb_as_lsd()` and `deb_as_decimal()` make it possible to move between the two classes without losing any data.
-- `deb_lsd` and `deb_decimal` vectors cannot be combined in a single function if they have different `bases`. The only way to transform the bases of `deb_lsd` and `deb_decimal` vectors is explicitly with `deb_convert_bases()`.
+- You can move between the two types without losing any data through `deb_as_lsd()` and `deb_as_decimal()` casting methods.
+- Because `deb_lsd` and `deb_decimal` are based on the [vctrs](https://vctrs.r-lib.org/) package, both act as expected in data frames or [tibbles](https://tibble.tidyverse.org) columns. From [dplyr 1.0.0](https://www.tidyverse.org/blog/2020/06/dplyr-1-0-0/) — which is the minimal version used by debkeepr — all dplyr functions work on both `debkeepr` types.
+- [ggplot2](https://ggplot2.tidyverse.org) does not know how to pick a scale for `deb_lsd` vectors. In contrast, `deb_decimal` vectors work properly with `ggplot2`, though explicitly identifying the scale as continuous — with `scale_y_continuous()` or `scale_x_continuous()` — is needed to avoid the appearance of a message.
+- `deb_lsd` and `deb_decimal` vectors cannot be combined in a single function if their `bases` differ. The only way to transform the bases of `deb_lsd` and `deb_decimal` vectors is explicitly with `deb_convert_bases()`. This prevents mistakenly combining two different currencies together without properly converting their values.
 
 ## Coercion and casting
 
-One of the most basic activities when working with vectors is combining vectors of the same or similar classes or converting a vector from one class to another. Coercion occurs when vectors are converted implicitly, such as with `c()`. Casting denotes explicit conversion with functions that usually begin with `as`, such as `as.numeric()` or `as.character()`. The `debkeepr` classes follow a hierarchy in which `numeric()` coerces to `deb_decimal()` coerces to `deb_lsd()`. Coercion with any other type of vector fails.[^5] `debkeepr` also implements casting methods between `deb_lsd` and `deb_decimal` vectors, to and from `numeric` vectors, and to `character` vectors.
+One of the most basic activities when working with vectors is combining vectors of the same or similar classes or converting a vector from one class to another. Coercion occurs when vectors are converted implicitly, such as with `c()`. Casting denotes explicit conversion with functions that usually begin with `as`, such as `as.numeric()` or `as.character()`. The `debkeepr` classes follow a hierarchy in which `numeric()` coerces to `deb_decimal()` coerces to `deb_lsd()`. Coercion with any other type of vector fails.[^5] `debkeepr` also implements casting methods between `deb_lsd` and `deb_decimal` vectors, to and from `numeric` vectors and lists of `numeric` vectors, and to `character` vectors.
 
 ### Coercion
 Coercion hierarchy: `numeric()` -> `deb_decimal()` -> `deb_lsd()`.
@@ -137,11 +137,12 @@ c(dec, dec_polish)
 ```
 
 ### Casting
-Whereas coercion occurs implicitly, casting explicitly changes the class of a vector. `deb_lsd` and `deb_decimal` vectors can be cast to and from each other, to and from `numeric` vectors, and to `character` vectors. Because `deb_lsd` and `deb_decimal` vectors have different capabilities, casting between the classes without any loss of metadata is important. The ability to cast `deb_lsd` and `deb_decimal` vectors to and from `numeric` vectors provides an outlet for any missing functionality in the two `debkeepr` classes. The drawback to casting between `debkeepr` classes and `numeric` is that the user needs to keep track of the `bases` and `unit` on their own. Finally, casting to a character vector provides a simple outlet to print values, but, for presentation of the data, `deb_text()` provides a more flexible manner to nicely format `deb_lsd` and `deb_decimal` vectors.
+Whereas coercion occurs implicitly, casting explicitly changes the class of a vector. `deb_lsd` and `deb_decimal` vectors can be cast to and from each other, to and from `numeric` vectors, and to `character` vectors. A `list` of `numeric` vectors of length three can also be cast to `deb_lsd` and `deb_decimal`, while a `deb_lsd` can be cast back to a list of `numeric` vectors.  Because `deb_lsd` and `deb_decimal` vectors have different capabilities, casting between the classes without any loss of metadata is important. The ability to cast `deb_lsd` and `deb_decimal` vectors to and from `numeric` vectors, or lists of `numeric` vectors provides an outlet for any missing functionality in the two `debkeepr` types. The drawback to casting between `debkeepr` classes and `numeric` is that the user needs to keep track of the `bases` and `unit` on their own. Finally, casting to a character vector provides a simple outlet to print values, but, for presentation of the data, `deb_text()` provides a more flexible manner to nicely format `deb_lsd` and `deb_decimal` vectors.
 
 - `deb_lsd()` to ...
     - `deb_decimal()`: `deb_as_decimal()`
     - `numeric()`: `as.numeric()` and `as.double()`
+    - `list()`: `deb_as_list()`
     - `character()`: `as.character()`
 
 - `deb_decimal()` to ...
@@ -150,6 +151,10 @@ Whereas coercion occurs implicitly, casting explicitly changes the class of a ve
     - `character()`: `as.character()`
 
 - `numeric()` to ...
+    - `deb_lsd()`: `deb_as_lsd()`
+    - `deb_decimal()`: `deb_as_decimal()`
+
+- `list()` of `numeric()` vectors of length 3 to ...
     - `deb_lsd()`: `deb_as_lsd()`
     - `deb_decimal()`: `deb_as_decimal()`
 
@@ -177,9 +182,30 @@ as.character(lsd)
 as.character(dec)
 ```
 
+Casting to and from lists of `numeric` vectors of length three provides an alternate method to creating `deb_lsd` or `deb_decimal` vectors that might be more readable. Think of the difference between [`tibble::tibble()`](https://tibble.tidyverse.org/reference/tibble.html) and [`tibble::tribble()`](https://tibble.tidyverse.org/reference/tribble.html). Whereas `deb_lsd()` is written in terms of units, using a `list` of `numeric` vectors of length three keeps the three units of a single value together. Compare:
+
+```{r casting with lists}
+# deb_lsd()
+deb_lsd(l = c(17, 32, 18),
+        s = c(13, 11, 10),
+        d = c(11, 8, 5))
+
+# Cast from list to deb_lsd()
+list(c(17, 13, 11),
+     c(32, 11, 8),
+     c(18, 10, 5)) %>% 
+  deb_as_lsd()
+```
+
+Notice that the input structure of the `list` more closely aligns with the output. This makes casting `lists` of `numeric` vectors to `deb_lsd` or `deb_decimal` types a nice alternative if you need to input data manually.
+
 ## Normalization
 
 At the heart of `debkeepr`'s attempt to simplify calculations of non-decimal currencies and integrate them into the structure of R is the concept of normalization. [Normalization](https://en.wikipedia.org/wiki/Arithmetic#Compound_unit_arithmetic) is the process of converting a set of compound units to a standard form consistent with the bases for each unit in a manner similar to "carrying over" digits in decimal arithmetic. Even the simplest arithmetic operations can be tricky with non-decimal currencies, especially for those schooled in decimal arithmetic. For example, adding together a set of values by hand might result in the non-standard form of £132 53s. 35d. in a currency with the standard bases of 20 shillings per pound and 12 pence per shilling. Normalizing the value by performing integer division on the shillings and pence values by their respective bases, keeping the remainder, and carrying over the quotient to the next unit results in the standardized value of £134 15s. 11d. The process is not difficult, but it is cumbersome and error prone.
+
+```{r echo = FALSE, out.width = "50%"}
+knitr::include_graphics("../man/figures/compound-arithmetic.png", dpi = 300)
+```
 
 `debkeepr` simplifies the procedure with the `deb_normalize()` function and implements normalization on all mathematical operations with `deb_lsd` vectors, ensuring that normalized values are always returned. For one off calculations, `deb_normalize()` also accepts `numeric` vectors of length three, which is essentially a short cut for `deb_normalize(deb_lsd(l, s, d))`.
 
@@ -199,7 +225,7 @@ deb_lsd(132, 53, 35, bases = c(30, 18)) %>%
 
 ## Arithmetic
 
-`debkeepr` implements a wide array of mathematical functions and arithmetic operations for the `deb_lsd` and `deb_decimal` classes. The `deb_decimal` class implements methods for the full range of the Summary and Math group generics, while `deb_lsd` does so for a select subset of these functions. The primary functions that are not implemented for either class include `median()`, `quantile()`, and `summary()`. `deb_lsd`, `deb_decimal`, and `numeric` vectors can be combined in mathematical functions and follow the same hierarchy as coercion: `numeric()` -> `deb_decimal()` -> `deb_lsd()`. Most of the mathematical functions act as expected with `deb_lsd` vectors. One exception is the round family of functions, which act on the denarius unit. As always, `deb_lsd` and `deb_decimal` vectors with different `bases` cannot be combined in either mathematical functions or arithmetic operations.
+`debkeepr` implements a wide array of mathematical functions and arithmetic operations for the `deb_lsd` and `deb_decimal` types. The `deb_decimal` type implements methods for the full range of the Summary and Math group generics, while `deb_lsd` does so for a select subset of these functions. The primary functions that are not implemented for either class include `median()`, `quantile()`, and `summary()`. `deb_lsd`, `deb_decimal`, and `numeric` vectors can be combined in mathematical functions and follow the same coercion hierarchy: `numeric()` -> `deb_decimal()` -> `deb_lsd()`. Most of the mathematical functions act as expected with `deb_lsd` vectors. One exception is the round family of functions, which act on the denarius unit. As always, `deb_lsd` and `deb_decimal` vectors with different `bases` cannot be combined in either mathematical functions or arithmetic operations.
 
 ### Implemented mathematical functions for `deb_lsd` vectors
 - Summary group: `sum()`, `any()`, and `all()`.
@@ -221,68 +247,61 @@ round(deb_lsd(9, 19, 11.825))
 `deb_lsd`, `deb_decimal`, and `numeric` vectors can be combined in various ways in arithmetic operations, producing different results depending on the input types and the operation performed. Note in particular that a wider range of operators can be used with `deb_decimal` and `numeric` vectors than `deb_lsd` and `numeric` vectors.[^8]
 
 - `deb_lsd()` and `deb_lsd()`: `+`, `-`, and `/`
-    - The first two return a `deb_lsd` vector; the last returns a `numeric` vector.
+    - The first two return `deb_lsd()`; the last returns `numeric()`.
 - `deb_lsd()` and `numeric()`: `*` and `/`
-    - Both return a `deb_lsd` vector.
+    - Both return `deb_lsd()`.
 - `numeric()` and `deb_lsd()`: `*` and `/`
-    - Returns a `deb_lsd` vector.
+    - Returns `deb_lsd()`.
 - `deb_decimal()` and `deb_decimal()`: `+`, `-`, and `/`
-    - The first two return a `deb_lsd` vector; the last returns a `numeric` vector.
+    - The first two return `deb_lsd()`; the last returns `numeric()`.
 - `deb_decimal()` and `numeric()`: `+`, `-`, `/`, `*`, `^`, `%%`, and `%/%`
-    - All return a `deb_decimal` vector.
+    - All return `deb_decimal()`.
 - `numeric()` and `deb_decimal()`: `+`, `-`, `*` and `/`
-    - All return a`deb_decimal` vector.
+    - All return `deb_decimal()`.
 - `deb_lsd()` and `deb_decimal()`: `+`, `-`, and `/`
-    - The first two return a `deb_lsd` vector; the last returns a `numeric` vector.
+    - The first two return `deb_lsd()`; the last returns `numeric()`.
 - `deb_decimal()` and `deb_lsd()`: `+`, `-`, and `/`
-    - The first two return a `deb_lsd` vector; the last returns a `numeric` vector.
+    - The first two return `deb_lsd()`; the last returns `numeric()`.
 
 ```{r arithmetic}
-# deb_lsd and deb_decimal vectors
-lsd1 <- deb_lsd(15, 15, 9)
-lsd2 <- deb_lsd(6, 13, 4)
-dec1 <- deb_decimal(15.7875)
-dec2 <- deb_decimal(20 / 3)
-
 # deb_lsd and deb_lsd
-lsd1 + lsd2
-lsd1 / lsd2
+deb_lsd(15, 15, 9) + deb_lsd(6, 13, 4)
+deb_lsd(15, 15, 9) / deb_lsd(6, 13, 4)
 
 # deb_decimal and deb_decimal
-dec1 - dec2
+deb_decimal(15.7875) - deb_decimal(20 / 3)
 
 # deb_lsd, deb_decimal, and numeric
-lsd2 / 2
-dec1 + 5.25
-18 - dec2
-dec1 * 3
+deb_lsd(6, 13, 4) / 2
+deb_decimal(15.7875) + 5.25
+18 - deb_decimal(20 / 3)
+deb_decimal(15.7875) * 3
 
 # deb_lsd and deb_decimal
-lsd1 + dec2
-lsd1 / dec1
+deb_lsd(15, 15, 9) + deb_decimal(20 / 3)
+deb_lsd(15, 15, 9) / deb_decimal(15.7875)
 ```
 
 ### Equality and comparison
-Closely related to mathematical functions and arithmetic operations is the task of testing equality and comparison. `debkeepr` permits testing equality and comparison between `deb_lsd`, `deb_decimal`, and `numeric` vectors. It is possible to compare `deb_decimal` vectors with different `unit`s, but doing so with vectors of different `bases` will throw an error.
+Closely related to mathematical functions and arithmetic operations is the task of testing equality and comparing different vectors. `debkeepr` permits testing equality and comparison between `deb_lsd`, `deb_decimal`, and `numeric` vectors. It is possible to compare `deb_decimal` vectors with different `unit`s, but doing so with vectors of different `bases` will throw an error.
 
 ```{r comparison, error = TRUE}
 # Comparison
-lsd1 < lsd2
-lsd1 == dec1
-lsd2 > 23.5
-dec1 < deb_decimal(3390, unit = "d")
+deb_lsd(15, 15, 9) < deb_lsd(6, 13, 4)
+deb_lsd(15, 15, 9) == deb_decimal(15.7875)
+deb_lsd(6, 13, 4) > 23.5
+deb_decimal(15.7875) < deb_decimal(3390, unit = "d")
 
 # Cannot compare vectors with different bases
-lsd1 > lsd_polish
+deb_lsd(15, 15, 9) > lsd_polish
 
 # Maximum and minimum
 max(lsd)
 min(dec_polish)
 
 # Checking for unique values takes into account normalization
-unique(c(lsd1, deb_lsd(12, 71, 57)))
+unique(c(deb_lsd(15, 15, 9), deb_lsd(12, 71, 57)))
 ```
-
 
 ## Conversion
 
@@ -290,7 +309,7 @@ As introduced above, all functions that take two `debkeepr` vectors check to ens
 
 With these constraints, `debkeepr` has two ways to explicitly convert the `bases` and `unit` of `deb_lsd` and `deb_decimal` vectors: `deb_convert_bases()` and `deb_convert_unit()`. `deb_convert_bases()` takes a `deb_lsd` or `deb_decimal` vector and converts the value to the `bases` contained in the `to` argument. This will likely be done alongside multiplication of an exchange rate between the two currencies. The [Transactions in Richard Dafforne's Journal vignette](https://jessesadler.github.io/debkeepr/articles/transactions.html) has a number of examples of this process. `deb_convert_unit()` is simpler in that it uses the `bases` of a `deb_decimal` vector to calculate the conversion to a different `unit`.
 
-A fairly simple example is an exchange between pounds Flemish and guilders from Holland. The two currencies had different bases; guilders possessed the non-standard base of 16 for the denarius unit. However, the currencies were tied together at a rate of six guilders to the £1 Flemish.
+A fairly simple example is an exchange between pounds Flemish and guilders from Holland. The two currencies had different bases; guilders possessed the non-standard base of 16 for the denarius unit. However, the currencies were tied together at a rate of six guilders to £1 Flemish.
 
 ```{r conversion, error = TRUE}
 # Convert pounds Flemish to guilders
@@ -305,10 +324,9 @@ dec == deb_convert_unit(dec, to = "d")
 lsd == deb_convert_bases(lsd, to = c(20, 16))
 ```
 
-
 ## Data frames: `deb_lsd` and `deb_decimal` columns
 
-Thus far this vignette has only dealt with `debkeepr` types as vectors, but, of course, these vectors also work as columns in data frames. `deb_lsd` and `deb_decimal` columns are essential to achieve `debkeepr`'s goal of facilitating reproducible analysis and visualization of larger sets of values found in account books. This section discusses how to create and manipulate data frames with `debkeepr` columns, the current differences between `deb_lsd` and `deb_decimal` columns in `dplyr`, and the process of visualizing the values with `ggplot2`.
+Thus far this vignette has only dealt with `debkeepr` types as vectors, but, of course, these vectors also work as columns in data frames and tibbles. `deb_lsd` and `deb_decimal` columns are essential to achieve `debkeepr`'s goal of facilitating reproducible analysis and visualization of larger sets of values found in account books. This section discusses how to create and manipulate data frames with `debkeepr` columns and the process of visualizing the values with `ggplot2`.
 
 ```{r packages, message = FALSE}
 # load packages
@@ -326,38 +344,29 @@ tibble(id = 1:3, lsd = lsd)
 # Data frame from separate unit columns with randomly created data
 set.seed(240)
 raw_data <- tibble(id = 1:10,
+                   group = rep(1:5, 2),
                    pounds = sample(20:100, 10, replace = TRUE),
                    shillings = sample(1:19, 10, replace = TRUE),
                    pence = sample(1:11, 10, replace = TRUE))
 
-(lsd_tbl <- deb_gather_lsd(raw_data, l = pounds, s = shillings, d = pence,
+(lsd_tbl <- deb_gather_lsd(raw_data,
+                           l = pounds, s = shillings, d = pence,
                            replace = TRUE))
 ```
 
-### `deb_lsd` and `deb_decimal` columns with `dplyr`
-Currently, `deb_lsd` vectors are not fully integrated into `dplyr`, and so functions such as `summarise()`, `mutate()`, and `arrange()` do not work with `deb_lsd` columns. It is possible to get around this temporary limitation by mutating a `deb_lsd` column to `deb_decimal`, which largely behaves as a normal `numeric` variable. An equivalent `deb_lsd` column can always be created from a `deb_decimal` column with base R commands.
+Because `deb_lsd` and `deb_decimal` are based on the [vctrs](https://vctrs.r-lib.org/) package, both types act as expected in data frames. From [dplyr 1.0.0](https://www.tidyverse.org/blog/2020/06/dplyr-1-0-0/) — which is the minimal version used by debkeepr — all dplyr functions work on both `debkeepr` types.
 
-```{r dplyr, error = TRUE}
-# filter() works on a deb_lsd column
+```{r dplyr}
+# deb_lsd work in dplyr pipelines
 lsd_tbl %>% 
-  filter(lsd > 75)
-
-# mutate() does not
-lsd_tbl %>% 
-  mutate(lsd2 = lsd * 2)
-
-# Fix this by creating a deb_decimal column
-(lsd2_tbl <- lsd_tbl %>% 
-  mutate(dec = deb_as_decimal(lsd),
-         dec2 = dec * 2))
-
-# Recreate modified deb_lsd column
-lsd2_tbl[["lsd2"]] <- deb_as_lsd(lsd2_tbl[["dec2"]])
-lsd2_tbl
+  filter(lsd > 50) %>% 
+  group_by(group) %>% 
+  summarise(sum = sum(lsd), .groups = "drop") %>% 
+  mutate(dec = deb_as_decimal(sum))
 ```
 
 ### Transactions data frames
-`debkeepr` has a family of functions designed to work with a specific type of data frame that `debkeepr` refers to as a transactions data frame that has a structure similar to an account book. Transactions data frames possess at minimum "credit" and "debit" variables to record the creditor and debtor accounts of each transaction — the accounts from which a value is taken and to which it is given — and the value of the transactions in a `deb_lsd` or `deb_decimal` column. For a full explanation of how this family of functions works, see `?deb_account` and the [Analysis of Richard Dafforne’s Journal and Ledger vignette](https://jessesadler.github.io/debkeepr/articles/ledger.html). It is possible to create a simple transactions data frame from `lsd_tbl` by adding "credit" and "debit" variables. For instance, a merchant might trade in three commodities that each have their own account (let's say wheat, silk, and linen) and a cash account.
+`debkeepr` has a family of functions designed to work with a specific type of data frame that `debkeepr` refers to as transactions data frames that have a structure similar to an account book. Transactions data frames possess at minimum "credit" and "debit" variables to record the creditor and debtor accounts of each transaction — the accounts from which a value is taken and to which it is given — and the value of the transactions in a `deb_lsd` or `deb_decimal` column. For a full explanation of how this family of functions work, see `?deb_account` and the [Analysis of Richard Dafforne’s Journal and Ledger vignette](https://jessesadler.github.io/debkeepr/articles/ledger.html). It is possible to create a simple transactions data frame from `lsd_tbl` by adding "credit" and "debit" variables. For instance, a merchant might trade in three commodities that each have their own account (let's say wheat, silk, and linen) and a cash account.
 
 ```{r transaction-df}
 # Create transactions data frame
@@ -366,7 +375,7 @@ set.seed(24)
 (transactions <- lsd_tbl %>% 
   add_column(credit = sample(accounts, 10, replace = TRUE),
              debit = sample(accounts, 10, replace = TRUE),
-             .before = 2))
+             .before = 3))
 ```
 
 With the properly structured data frame, `debkeepr` makes it easy to find information about the accounts. For example, `deb_account_summary()` finds the total credit, total debit, and current value of each account. Note that the account family of functions can take either a `deb_lsd` or a `deb_decimal` column.
@@ -377,12 +386,12 @@ With the properly structured data frame, `debkeepr` makes it easy to find inform
 ```
 
 ### Visualizing non-decimal currencies with `ggplot2`
-`deb_account_summary()` provides a good basis for a visual overview of the accounts in a transactions data frame. However, alterations to `trans_summary` have to be made to prepare it for plotting with `ggplot()`. `ggplot2` does not know how to pick a scale for `deb_lsd` vectors, but `deb_decimal` vectors work as expected.[^9] It is therefore necessary to cast the `deb_lsd` variables to `deb_decimal`, either before or within the `ggplot()` call. The only context in which casting to `deb_decimal` results in any loss of information is in labelling the plotted values. However, this can be rectified through the `deb_text()` function, which provides a flexible way to format `deb_lsd` and `deb_decimal` vectors as text. The following command makes these changes while also converting the "debit" column to negative values for the purpose of distinguishing them from the credit values.
+`deb_account_summary()` provides a good basis for a visual overview of the accounts in a transactions data frame. However, alterations to `trans_summary` have to be made to prepare it for plotting with `ggplot()`. [`ggplot2`](https://ggplot2.tidyverse.org) does not know how to pick a scale for `deb_lsd` vectors, but `deb_decimal` vectors work as expected.[^9] It is therefore necessary to cast the `deb_lsd` variables to `deb_decimal`, either before or within the `ggplot()` call. The only context in which casting to `deb_decimal` results in any loss of information is in labeling the plotted values. However, this can be rectified through the `deb_text()` function, which provides a flexible way to format `deb_lsd` and `deb_decimal` vectors as text. The following command makes these changes while also converting the "debit" column to negative values for the purpose of distinguishing them from the credit values.
 
 ```{r prep-ggplot}
 dec_summary <- trans_summary %>% 
-  mutate_if(deb_is_lsd, deb_as_decimal) %>% 
-  mutate(debit = -debit,
+  mutate(across(where(deb_is_lsd), deb_as_decimal),
+         debit = -debit,
          current_text = deb_text(deb_as_lsd(current)))
 ```
 
@@ -405,7 +414,7 @@ ggplot(data = dec_summary) +
 
 ## Conclusion
 
-This vignette has gone through the basic structures and workings of `debkeepr` and the `deb_lsd` and `deb_decimal` classes. It has outlined the difficulties inherent in working with non-decimal currencies in decimalized computing environments and the ways that `debkeepr` seeks to overcome these problems to integrate the study and analysis of historical non-decimal currencies into the methodologies of Digital Humanities and the practices of [reproducible research](http://ropensci.github.io/reproducibility-guide/). For further examples of the use cases of `debkeepr` and how the package promotes practices of reproducible research that involves historical non-decimal currencies, see the [Transactions in Richard Dafforne's Journal](https://jessesadler.github.io/debkeepr/articles/transactions.html) and [Analysis of Richard Dafforne’s Journal and Ledger](https://jessesadler.github.io/debkeepr/articles/ledger.html) vignettes.
+This vignette has gone through the basic structures and workings of the `debkeepr` package and the `deb_lsd` and `deb_decimal` types. It has outlined the difficulties inherent in working with non-decimal currencies in decimalized computing environments and the ways that `debkeepr` seeks to overcome these problems to integrate the study and analysis of historical non-decimal currencies into the methodologies of Digital Humanities and the practices of [reproducible research](http://ropensci.github.io/reproducibility-guide/). For further examples of the use cases for `debkeepr` and how the package promotes practices of reproducible research, see the [Transactions in Richard Dafforne's Journal](https://jessesadler.github.io/debkeepr/articles/transactions.html) and [Analysis of Richard Dafforne’s Journal and Ledger](https://jessesadler.github.io/debkeepr/articles/ledger.html) vignettes.
 
 ## Useful works on monetary systems and the history of accounting
 
@@ -418,7 +427,7 @@ This vignette has gone through the basic structures and workings of `debkeepr` a
 
 [^2]: For more information about the development of the system of pounds, shillings, and pence and medieval monetary systems more generally see Peter Spufford, *Money and its Use in Medieval Europe* (Cambridge: Cambridge University Press, 1988).
 
-[^3]: Does 13s. 4d. represent 2/3 of £1, as is the case with the standard bases of 20s. 12d., or it might represent about 0.44 of £1 with the Polish florin from Dafforne's journal that has units of 30s. 18d.
+[^3]: Does 13s. 4d. represent 2/3 of £1, as is the case with the standard bases of 20s. 12d.? Or 13s. 4d. might represent less than half of £1 with the Polish florin from Dafforne's journal that used units of 30s. 18d.
 
 [^4]: It is for this reason that any function call that combines `debkeepr` vectors with different `bases` throws an error, while `deb_decimal` vectors with a different `unit` can be safely combined. The nominal difference between the three units is contained in the bases of the shillings and pence units.
 
