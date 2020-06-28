@@ -104,13 +104,13 @@
 
     
     
-<p>The <code>debkeepr</code> package provides an interface for working with non-decimal currencies that use the tripartite system of pounds, shillings, and pence. <code>debkeepr</code> makes it easier to perform arithmetic operations on non-decimal monetary values and facilitates the analysis and visualization of larger sets of non-decimal values such as those found in historical account books. This is accomplished through the implementation of the <code>deb_lsd</code> and <code>deb_decimal</code> classes of vectors, which are based on the infrastructure provided by the <a href="https://vctrs.r-lib.org/">vctrs package</a>. <code>deb_lsd</code> and <code>deb_decimal</code> vectors possess additional metadata to allow them to behave like numeric vectors in many circumstances, while also conforming to the workings of non-decimal currencies.</p>
-<p>This vignette lays out the behavior of the <code>deb_lsd</code> and <code>deb_decimal</code> classes, showing where they overlap, how they can work together, and where they diverge. After a short discussion of the historical background of non-decimal currencies, the basic behavior of the two vector classes is laid out. The vignette then covers the workings of the two classes as columns in data frames, including visualizing a small set of example accounts with <a href="https://ggplot2.tidyverse.org">ggplot2</a>. The overview presented here is extended in two other vignettes that use the data sets that come with the package. For more in depth examples on performing financial calculations on a variety of non-decimal currencies, see the <a href="https://jessesadler.github.io/debkeepr/articles/transactions.html">Transactions in Richard Dafforne’s Journal vignette</a>. For a deeper dive into an analysis of a historical account book using <code>debkeepr</code>, see the <a href="https://jessesadler.github.io/debkeepr/articles/ledger.html">Analysis of Richard Dafforne’s Journal and Ledger vignette</a>.</p>
+<p>The <code>debkeepr</code> package provides an interface for working with non-decimal currencies that use the tripartite system of pounds, shillings, and pence. <code>debkeepr</code> makes it easier to perform arithmetic operations on non-decimal monetary values and facilitates the analysis and visualization of larger sets of non-decimal values such as those found in historical account books. This is accomplished through the implementation of the <code>deb_lsd</code> and <code>deb_decimal</code> vector classes or types, which are based on the infrastructure provided by the <a href="https://vctrs.r-lib.org/">vctrs package</a>. <code>deb_lsd</code> and <code>deb_decimal</code> vectors possess additional metadata to allow them to behave like numeric vectors in many circumstances, while also conforming to the workings of non-decimal currencies.</p>
+<p>This vignette lays out the behavior of <code>deb_lsd</code> and <code>deb_decimal</code> vectors, showing where they overlap, how they can work together, and where they diverge. After a short discussion of the historical background of non-decimal currencies, the basic behavior of the two vector classes is laid out. The vignette then covers the workings of the two classes as columns in data frames, including visualizing a small set of example accounts with <a href="https://ggplot2.tidyverse.org">ggplot2</a>. The overview presented here is extended in two other vignettes that use the data sets included in the package. For more in depth examples on performing financial calculations in a variety of non-decimal currencies, see the <a href="https://jessesadler.github.io/debkeepr/articles/transactions.html">Transactions in Richard Dafforne’s Journal vignette</a>. For a deeper dive into an analysis of a historical account book using <code>debkeepr</code>, see the <a href="https://jessesadler.github.io/debkeepr/articles/ledger.html">Analysis of Richard Dafforne’s Journal and Ledger vignette</a>.</p>
 <div id="overview" class="section level3">
 <h3 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h3>
 <ul>
-<li>All of the functions in <code>debkeepr</code> begin with the prefix <code>deb_</code>, which is short for double-entry bookkeeping.</li>
+<li>All of the functions in <code>debkeepr</code> begin with the prefix <code>deb_</code>, which is short for <a href="https://en.wikipedia.org/wiki/Double-entry_bookkeeping_system">double-entry bookkeeping</a>.</li>
 <li>The nomenclature used throughout the package follows the <a href="https://en.wikipedia.org/wiki/%C2%A3sd">original Latin terms</a> in using l, s, and d to represent the libra, solidus, and denarius units respectively. These terms were translated into the various European languages.
 <ul>
 <li>English: pounds, shillings, pence</li>
@@ -134,13 +134,13 @@
 <div id="historical-background" class="section level2">
 <h2 class="hasAnchor">
 <a href="#historical-background" class="anchor"></a>Historical background</h2>
-<p>The tripartite non-decimal system of pounds, shillings, and pence dates back to the Carolingian Empire. The primary coin used in the Late Roman Empire was the golden <a href="https://en.wikipedia.org/wiki/Solidus_(coin)">solidus</a>, introduced by Constantine in 309. However, the shrinking of the economy and the political splintering that occurred after the fall of the western Roman Empire diminished the need for gold coins. In the 6th century, the Frankish rulers who took over the Roman mints reacted by creating <a href="https://en.wikipedia.org/wiki/Tremissis">triens or tremissis</a>, smaller gold coins worth one-third of a solidus. From this point, the solidus was no longer produced as a coin in the western kingdoms. Instead, it continued as a <a href="https://en.wikipedia.org/wiki/Unit_of_account">unit of account</a> equivalent to three trientes. In the 7th century even devalued golden trientes proved to be too valuable for the economic needs of the time. Frankish rulers began to produce silver coins based on the size and weight of the triens. The new silver penny was called a <a href="https://en.wikipedia.org/wiki/Denarius">denarius</a>, linking it to the old silver coin used in the Roman Republic. The silver penny provided the basis for the monetary system of Western Europe until the revival of gold coins in the 14th century.</p>
-<p>As the silver denarius overtook the golden triens, the triens became a unit of account equivalent to four denarii. In this way the solidus transformed into a unit of account representing 12 denarii, even if 12 silver denarii of the 8th century would not have been equivalent to the pure gold solidus of the Late Roman Empire. The use of the <a href="https://en.wikipedia.org/wiki/Ancient_Roman_units_of_measurement#Weight">libra</a> as a third unit of account derived from the number of silver denarii struck from a pound, or libra, of silver. Though the actual number of coins made from a pound of silver differed over time, the rate of 240 coins from a libra lasted long enough to become fossilized in much of Europe.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> The custom of counting coins in dozens (solidi) and scores of dozens (librae) spread throughout the Carolingian Empire and became engrained in much of Europe. However, by the time that Richard Dafforne wrote on the practice of double-entry bookkeeping in the middle of the seventeenth century, a huge variety of monies of accounts had developed across Europe and beyond, and though many used the 1:20:240 ratios, others used a diversity of bases to represent the shillings and pence units.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
+<p>The tripartite non-decimal system of pounds, shillings, and pence dates back to the Carolingian Empire of Charlemagne. The primary coin used in the Late Roman Empire was the golden <a href="https://en.wikipedia.org/wiki/Solidus_(coin)">solidus</a>, introduced by Constantine in 309. However, the shrinking of the economy and the political splintering that occurred after the fall of the western Roman Empire diminished the need for gold coins. In the 6th century, the Frankish rulers who took over the Roman mints reacted by creating <a href="https://en.wikipedia.org/wiki/Tremissis">triens or tremissis</a>, smaller gold coins worth one-third of a solidus. From this point, the solidus was no longer produced as a coin in the western kingdoms. Instead, it continued as a <a href="https://en.wikipedia.org/wiki/Unit_of_account">unit of account</a> equivalent to three trientes. In the 7th century even devalued golden trientes proved to be too valuable for the economic needs of the time. Frankish rulers began to produce silver coins based on the size and weight of the triens. The new silver penny was called a <a href="https://en.wikipedia.org/wiki/Denarius">denarius</a>, linking it to the old silver coin used in the Roman Republic. The silver penny provided the basis for the monetary system of Western Europe until the revival of gold coins in the 14th century.</p>
+<p>As the silver denarius overtook the golden triens, the triens became a unit of account equivalent to four denarii. In this way the solidus transformed into a unit of account representing 12 denarii, even if 12 silver denarii of the 8th century would not have been equivalent to the pure gold solidus of the Late Roman Empire. The use of the <a href="https://en.wikipedia.org/wiki/Ancient_Roman_units_of_measurement#Weight">libra</a> as a third unit of account derived from the number of silver denarii struck from a pound, or libra, of silver. Though the actual number of coins made from a pound of silver differed over time, the rate of 240 coins struck from a libra lasted long enough to become fossilized in much of Europe.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> The custom of counting coins in dozens (solidi) and scores of dozens (librae) spread throughout the Carolingian Empire and became ingrained in much of Europe. However, by the time that Richard Dafforne wrote on the practice of double-entry bookkeeping in the middle of the seventeenth century, a huge variety of monies of accounts had developed across Europe and beyond, and though many used the 1:20:240 ratios, others used a diversity of bases to represent the solidus and denarius units.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
 </div>
-<div id="introducing-the-deb_lsd-and-deb_decimal-classes" class="section level2">
+<div id="introducing-the-deb_lsd-and-deb_decimal-types" class="section level2">
 <h2 class="hasAnchor">
-<a href="#introducing-the-deb_lsd-and-deb_decimal-classes" class="anchor"></a>Introducing the <code>deb_lsd</code> and <code>deb_decimal</code> classes</h2>
-<p><code>debkeepr</code> introduces two classes to help deal with two interrelated problems inherent in historical currencies. Historical currencies consisted of three separate non-decimal units, and the <a href="https://en.wikipedia.org/wiki/Non-decimal_currency">bases of the shillings and pence units</a> differed by region, coinage, and era. In other words, the actual value represented by say £3 13s. 4d. cannot be determined without knowing the bases of the shillings and pence units.<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> The <code>deb_lsd</code> class maintains the tripartite structure of non-decimal currencies and provides a <code>bases</code> attribute to record the bases for the shillings and pence units. The <code>deb_decimal</code> class represents the currencies in decimalized form. However, it differs from simply converting the value to a <code>numeric</code> vector by tracking the shillings and pence bases and the unit represented in decimalized form (libra, solidus, or denarius) through the <code>bases</code> and <code>unit</code> attributes. Thus, though <code>deb_lsd</code> and <code>deb_decimal</code> vectors of any of the three units will be nominally different, they can represent the same values and currency if the <code>bases</code> are equivalent.<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> The print methods for both classes show the <code>bases</code> attribute, and <code>deb_decimal</code> vectors include the <code>unit</code>.</p>
+<a href="#introducing-the-deb_lsd-and-deb_decimal-types" class="anchor"></a>Introducing the <code>deb_lsd</code> and <code>deb_decimal</code> types</h2>
+<p><code>debkeepr</code> introduces two vector types to help deal with two interrelated problems inherent in historical currencies. Firstly, historical currencies consisted of three separate non-decimal units: pounds, shillings, and pence. Secondly, the <a href="https://en.wikipedia.org/wiki/Non-decimal_currency">bases of the shillings and pence units</a> differed by region, coinage, and era. In other words, the actual value represented by say £3 13s. 4d. cannot be determined without knowing the bases of the shillings and pence units.<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> The <code>deb_lsd</code> type maintains the tripartite structure of non-decimal currencies and provides a <code>bases</code> attribute to record the bases for the shillings and pence units. The <code>deb_decimal</code> type represents the currencies in decimalized form. However, it differs from simply converting the value to a <code>numeric</code> vector by tracking the shillings and pence bases and the unit represented in decimalized form (libra, solidus, or denarius) through the <code>bases</code> and <code>unit</code> attributes. Thus, though <code>deb_lsd</code> and <code>deb_decimal</code> vectors of any of the three units will be nominally different, they can represent the same values and currency if the <code>bases</code> are equivalent.<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> The print methods for both types show the <code>bases</code> attribute, and <code>deb_decimal</code> vectors include the <code>unit</code>.</p>
 <p><code>deb_lsd</code> and <code>deb_decimal</code> vectors can be created with the <code><a href="../reference/deb_lsd.html">deb_lsd()</a></code> and <code><a href="../reference/deb_decimal.html">deb_decimal()</a></code> functions respectively. In addition to arguments for the pounds, shillings, and pence values, <code><a href="../reference/deb_lsd.html">deb_lsd()</a></code> has an argument for the <code>bases</code> of the shillings and pence units, which defaults to the most common bases of 20 shillings to the pound and 12 pence to the shilling: <code><a href="https://rdrr.io/r/base/c.html">c(20, 12)</a></code>. <code><a href="../reference/deb_decimal.html">deb_decimal()</a></code> has the same argument and default for the <code>bases</code> and an additional argument to choose the <code>unit</code> for the decimalized values that defaults to the pounds unit: <code>"l"</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/jessesadler/debkeepr">debkeepr</a></span>)
@@ -172,7 +172,7 @@
 <span class="co">#&gt; # Unit: denarius</span>
 <span class="co">#&gt; # Bases: 20s 12d</span>
 </pre></div>
-<p>The <code>bases</code> argument makes it possible to create <code>deb_lsd</code> and <code>deb_decimal</code> vectors that represent currencies that use non-standard bases for the shillings and pence units such as the Polish florin found in Dafforne’s practice journal in which a florin consisted of 30 gros of 18 denars.</p>
+<p>The <code>bases</code> argument makes it possible to create <code>deb_lsd</code> and <code>deb_decimal</code> vectors that represent currencies that use non-standard bases for the shillings and pence units such as the Polish florin found in Dafforne’s practice journal of 30 gros of 18 denars.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="co"># Create deb_lsd vector of length 3 with bases of Polish florin</span>
 (<span class="kw">lsd_polish</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(l = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">32</span>, <span class="fl">12</span>, <span class="fl">26</span>),
@@ -194,24 +194,24 @@
 <div id="advantages-and-disadvantages-of-the-deb_lsd-and-deb_decimal-classes" class="section level3">
 <h3 class="hasAnchor">
 <a href="#advantages-and-disadvantages-of-the-deb_lsd-and-deb_decimal-classes" class="anchor"></a>Advantages and disadvantages of the <code>deb_lsd</code> and <code>deb_decimal</code> classes</h3>
-<p>Why two different classes to represent the same basic information? The goal of <code>debkeepr</code> is to integrate tripartite non-decimal currencies into the decimalized world of R. The <code>deb_lsd</code> class does this while maintaining the tripartite structure of historical non-decimal currencies, but there remain certain limitations to such an approach. The <code>deb_decimal</code> class helps to minimize these limitations. The following list provides an overview of the differences of the two classes that are discussed in further detail in the rest of the vignette.</p>
+<p>Why two different classes to represent the same basic information? The goal of <code>debkeepr</code> is to integrate tripartite non-decimal currencies into the decimalized world of R. The <code>deb_lsd</code> type does this while maintaining the tripartite structure of historical non-decimal currencies, but there remain certain limitations to such an approach. The <code>deb_decimal</code> class helps to minimize these limitations. The following list provides an overview of the differences of the two classes that are discussed in further detail in the rest of the vignette.</p>
 <ul>
-<li>The <code>deb_lsd</code> class has the advantage of maintaining the structure and values used by non-decimal currencies, making it easier to identify and present such values.</li>
+<li>The <code>deb_lsd</code> type has the advantage of maintaining the structure and values used by non-decimal currencies, making it easier to identify and present such values.</li>
 <li>
 <code>deb_decimal</code> implements a wider array of mathematical functions and arithmetic operations than <code>deb_lsd</code>.</li>
-<li>Until <a href="https://dplyr.tidyverse.org">dplyr</a> integrates record-style vectors based on the <code>vctrs</code> package more fully — which should happen with version 0.9.0 — <code>deb_lsd</code> vectors do not work with the <code>dplyr</code> functions <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise()</a></code>, and <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code>. However, the full complement of <code>dplyr</code> functions work with <code>deb_decimal</code> vectors.</li>
+<li>You can move between the two types without losing any data through <code><a href="../reference/cast-lsd.html">deb_as_lsd()</a></code> and <code><a href="../reference/cast-decimal.html">deb_as_decimal()</a></code> casting methods.</li>
+<li>Because <code>deb_lsd</code> and <code>deb_decimal</code> are based on the <a href="https://vctrs.r-lib.org/">vctrs</a> package, both act as expected in data frames or <a href="https://tibble.tidyverse.org">tibbles</a> columns. From <a href="https://www.tidyverse.org/blog/2020/06/dplyr-1-0-0/">dplyr 1.0.0</a> — which is the minimal version used by debkeepr — all dplyr functions work on both <code>debkeepr</code> types.</li>
 <li>
-<a href="https://ggplot2.tidyverse.org">ggplot2</a> does not know how to pick a scale for <code>deb_lsd</code> vectors. However, <code>deb_decimal</code> vectors work properly with <code>ggplot2</code>, though explicitly identifying the scale as continuous — with <code><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous()</a></code> or <code><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous()</a></code> — is needed to avoid the appearance of a message.</li>
-<li>Casting methods between the two classes with <code><a href="../reference/cast-lsd.html">deb_as_lsd()</a></code> and <code><a href="../reference/cast-decimal.html">deb_as_decimal()</a></code> make it possible to move between the two classes without losing any data.</li>
+<a href="https://ggplot2.tidyverse.org">ggplot2</a> does not know how to pick a scale for <code>deb_lsd</code> vectors. In contrast, <code>deb_decimal</code> vectors work properly with <code>ggplot2</code>, though explicitly identifying the scale as continuous — with <code><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous()</a></code> or <code><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous()</a></code> — is needed to avoid the appearance of a message.</li>
 <li>
-<code>deb_lsd</code> and <code>deb_decimal</code> vectors cannot be combined in a single function if they have different <code>bases</code>. The only way to transform the bases of <code>deb_lsd</code> and <code>deb_decimal</code> vectors is explicitly with <code><a href="../reference/convert-bases.html">deb_convert_bases()</a></code>.</li>
+<code>deb_lsd</code> and <code>deb_decimal</code> vectors cannot be combined in a single function if their <code>bases</code> differ. The only way to transform the bases of <code>deb_lsd</code> and <code>deb_decimal</code> vectors is explicitly with <code><a href="../reference/convert-bases.html">deb_convert_bases()</a></code>. This prevents mistakenly combining two different currencies together without properly converting their values.</li>
 </ul>
 </div>
 </div>
 <div id="coercion-and-casting" class="section level2">
 <h2 class="hasAnchor">
 <a href="#coercion-and-casting" class="anchor"></a>Coercion and casting</h2>
-<p>One of the most basic activities when working with vectors is combining vectors of the same or similar classes or converting a vector from one class to another. Coercion occurs when vectors are converted implicitly, such as with <code><a href="https://rdrr.io/r/base/c.html">c()</a></code>. Casting denotes explicit conversion with functions that usually begin with <code>as</code>, such as <code><a href="https://rdrr.io/r/base/numeric.html">as.numeric()</a></code> or <code><a href="https://rdrr.io/r/base/character.html">as.character()</a></code>. The <code>debkeepr</code> classes follow a hierarchy in which <code><a href="https://rdrr.io/r/base/numeric.html">numeric()</a></code> coerces to <code><a href="../reference/deb_decimal.html">deb_decimal()</a></code> coerces to <code><a href="../reference/deb_lsd.html">deb_lsd()</a></code>. Coercion with any other type of vector fails.<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a> <code>debkeepr</code> also implements casting methods between <code>deb_lsd</code> and <code>deb_decimal</code> vectors, to and from <code>numeric</code> vectors, and to <code>character</code> vectors.</p>
+<p>One of the most basic activities when working with vectors is combining vectors of the same or similar classes or converting a vector from one class to another. Coercion occurs when vectors are converted implicitly, such as with <code><a href="https://rdrr.io/r/base/c.html">c()</a></code>. Casting denotes explicit conversion with functions that usually begin with <code>as</code>, such as <code><a href="https://rdrr.io/r/base/numeric.html">as.numeric()</a></code> or <code><a href="https://rdrr.io/r/base/character.html">as.character()</a></code>. The <code>debkeepr</code> classes follow a hierarchy in which <code><a href="https://rdrr.io/r/base/numeric.html">numeric()</a></code> coerces to <code><a href="../reference/deb_decimal.html">deb_decimal()</a></code> coerces to <code><a href="../reference/deb_lsd.html">deb_lsd()</a></code>. Coercion with any other type of vector fails.<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a> <code>debkeepr</code> also implements casting methods between <code>deb_lsd</code> and <code>deb_decimal</code> vectors, to and from <code>numeric</code> vectors and lists of <code>numeric</code> vectors, and to <code>character</code> vectors.</p>
 <div id="coercion" class="section level3">
 <h3 class="hasAnchor">
 <a href="#coercion" class="anchor"></a>Coercion</h3>
@@ -306,7 +306,7 @@
 <div id="casting" class="section level3">
 <h3 class="hasAnchor">
 <a href="#casting" class="anchor"></a>Casting</h3>
-<p>Whereas coercion occurs implicitly, casting explicitly changes the class of a vector. <code>deb_lsd</code> and <code>deb_decimal</code> vectors can be cast to and from each other, to and from <code>numeric</code> vectors, and to <code>character</code> vectors. Because <code>deb_lsd</code> and <code>deb_decimal</code> vectors have different capabilities, casting between the classes without any loss of metadata is important. The ability to cast <code>deb_lsd</code> and <code>deb_decimal</code> vectors to and from <code>numeric</code> vectors provides an outlet for any missing functionality in the two <code>debkeepr</code> classes. The drawback to casting between <code>debkeepr</code> classes and <code>numeric</code> is that the user needs to keep track of the <code>bases</code> and <code>unit</code> on their own. Finally, casting to a character vector provides a simple outlet to print values, but, for presentation of the data, <code><a href="../reference/text.html">deb_text()</a></code> provides a more flexible manner to nicely format <code>deb_lsd</code> and <code>deb_decimal</code> vectors.</p>
+<p>Whereas coercion occurs implicitly, casting explicitly changes the class of a vector. <code>deb_lsd</code> and <code>deb_decimal</code> vectors can be cast to and from each other, to and from <code>numeric</code> vectors, and to <code>character</code> vectors. A <code>list</code> of <code>numeric</code> vectors of length three can also be cast to <code>deb_lsd</code> and <code>deb_decimal</code>, while a <code>deb_lsd</code> can be cast back to a list of <code>numeric</code> vectors. Because <code>deb_lsd</code> and <code>deb_decimal</code> vectors have different capabilities, casting between the classes without any loss of metadata is important. The ability to cast <code>deb_lsd</code> and <code>deb_decimal</code> vectors to and from <code>numeric</code> vectors, or lists of <code>numeric</code> vectors provides an outlet for any missing functionality in the two <code>debkeepr</code> types. The drawback to casting between <code>debkeepr</code> classes and <code>numeric</code> is that the user needs to keep track of the <code>bases</code> and <code>unit</code> on their own. Finally, casting to a character vector provides a simple outlet to print values, but, for presentation of the data, <code><a href="../reference/text.html">deb_text()</a></code> provides a more flexible manner to nicely format <code>deb_lsd</code> and <code>deb_decimal</code> vectors.</p>
 <ul>
 <li>
 <code><a href="../reference/deb_lsd.html">deb_lsd()</a></code> to …
@@ -316,6 +316,9 @@
 </li>
 <li>
 <code><a href="https://rdrr.io/r/base/numeric.html">numeric()</a></code>: <code><a href="https://rdrr.io/r/base/numeric.html">as.numeric()</a></code> and <code><a href="https://rdrr.io/r/base/double.html">as.double()</a></code>
+</li>
+<li>
+<code><a href="https://rdrr.io/r/base/list.html">list()</a></code>: <code><a href="../reference/deb_as_list.html">deb_as_list()</a></code>
 </li>
 <li>
 <code><a href="https://rdrr.io/r/base/character.html">character()</a></code>: <code><a href="https://rdrr.io/r/base/character.html">as.character()</a></code>
@@ -338,6 +341,17 @@
 </li>
 <li>
 <code><a href="https://rdrr.io/r/base/numeric.html">numeric()</a></code> to …
+<ul>
+<li>
+<code><a href="../reference/deb_lsd.html">deb_lsd()</a></code>: <code><a href="../reference/cast-lsd.html">deb_as_lsd()</a></code>
+</li>
+<li>
+<code><a href="../reference/deb_decimal.html">deb_decimal()</a></code>: <code><a href="../reference/cast-decimal.html">deb_as_decimal()</a></code>
+</li>
+</ul>
+</li>
+<li>
+<code><a href="https://rdrr.io/r/base/list.html">list()</a></code> of <code><a href="https://rdrr.io/r/base/numeric.html">numeric()</a></code> vectors of length 3 to …
 <ul>
 <li>
 <code><a href="../reference/deb_lsd.html">deb_lsd()</a></code>: <code><a href="../reference/cast-lsd.html">deb_as_lsd()</a></code>
@@ -400,14 +414,35 @@
 <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(<span class="kw">dec</span>)
 <span class="co">#&gt; [1] "15.825" "19.25"  "9.6125"</span>
 </pre></div>
+<p>Casting to and from lists of <code>numeric</code> vectors of length three provides an alternate method to creating <code>deb_lsd</code> or <code>deb_decimal</code> vectors that might be more readable. Think of the difference between <a href="https://tibble.tidyverse.org/reference/tibble.html"><code>tibble::tibble()</code></a> and <a href="https://tibble.tidyverse.org/reference/tribble.html"><code>tibble::tribble()</code></a>. Whereas <code><a href="../reference/deb_lsd.html">deb_lsd()</a></code> is written in terms of units, using a <code>list</code> of <code>numeric</code> vectors of length three keeps the three units of a single value together. Compare:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="co"># deb_lsd()</span>
+<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(l = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">17</span>, <span class="fl">32</span>, <span class="fl">18</span>),
+        s = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">13</span>, <span class="fl">11</span>, <span class="fl">10</span>),
+        d = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">11</span>, <span class="fl">8</span>, <span class="fl">5</span>))
+<span class="co">#&gt; &lt;deb_lsd[3]&gt;</span>
+<span class="co">#&gt; [1] 17:13s:11d 32:11s:8d  18:10s:5d </span>
+<span class="co">#&gt; # Bases: 20s 12d</span>
+
+<span class="co"># Cast from list to deb_lsd()</span>
+<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">17</span>, <span class="fl">13</span>, <span class="fl">11</span>),
+     <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">32</span>, <span class="fl">11</span>, <span class="fl">8</span>),
+     <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">18</span>, <span class="fl">10</span>, <span class="fl">5</span>)) <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/cast-lsd.html">deb_as_lsd</a></span>()
+<span class="co">#&gt; &lt;deb_lsd[3]&gt;</span>
+<span class="co">#&gt; [1] 17:13s:11d 32:11s:8d  18:10s:5d </span>
+<span class="co">#&gt; # Bases: 20s 12d</span>
+</pre></div>
+<p>Notice that the input structure of the <code>list</code> more closely aligns with the output. This makes casting <code>lists</code> of <code>numeric</code> vectors to <code>deb_lsd</code> or <code>deb_decimal</code> types a nice alternative if you need to input data manually.</p>
 </div>
 </div>
 <div id="normalization" class="section level2">
 <h2 class="hasAnchor">
 <a href="#normalization" class="anchor"></a>Normalization</h2>
 <p>At the heart of <code>debkeepr</code>’s attempt to simplify calculations of non-decimal currencies and integrate them into the structure of R is the concept of normalization. <a href="https://en.wikipedia.org/wiki/Arithmetic#Compound_unit_arithmetic">Normalization</a> is the process of converting a set of compound units to a standard form consistent with the bases for each unit in a manner similar to “carrying over” digits in decimal arithmetic. Even the simplest arithmetic operations can be tricky with non-decimal currencies, especially for those schooled in decimal arithmetic. For example, adding together a set of values by hand might result in the non-standard form of £132 53s. 35d. in a currency with the standard bases of 20 shillings per pound and 12 pence per shilling. Normalizing the value by performing integer division on the shillings and pence values by their respective bases, keeping the remainder, and carrying over the quotient to the next unit results in the standardized value of £134 15s. 11d. The process is not difficult, but it is cumbersome and error prone.</p>
+<p><img src="../man/figures/compound-arithmetic.png" width="50%"></p>
 <p><code>debkeepr</code> simplifies the procedure with the <code><a href="../reference/normalize.html">deb_normalize()</a></code> function and implements normalization on all mathematical operations with <code>deb_lsd</code> vectors, ensuring that normalized values are always returned. For one off calculations, <code><a href="../reference/normalize.html">deb_normalize()</a></code> also accepts <code>numeric</code> vectors of length three, which is essentially a short cut for <code><a href="../reference/normalize.html">deb_normalize(deb_lsd(l, s, d))</a></code>.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
+<div class="sourceCode" id="cb9"><pre class="downlit">
 <span class="co"># Normalize £132 53s. 35d.</span>
 <span class="kw">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">132</span>, <span class="fl">53</span>, <span class="fl">35</span>)
 <span class="fu"><a href="../reference/normalize.html">deb_normalize</a></span>(<span class="kw">x</span>)
@@ -433,7 +468,7 @@
 <div id="arithmetic" class="section level2">
 <h2 class="hasAnchor">
 <a href="#arithmetic" class="anchor"></a>Arithmetic</h2>
-<p><code>debkeepr</code> implements a wide array of mathematical functions and arithmetic operations for the <code>deb_lsd</code> and <code>deb_decimal</code> classes. The <code>deb_decimal</code> class implements methods for the full range of the Summary and Math group generics, while <code>deb_lsd</code> does so for a select subset of these functions. The primary functions that are not implemented for either class include <code><a href="https://rdrr.io/r/stats/median.html">median()</a></code>, <code><a href="https://rdrr.io/r/stats/quantile.html">quantile()</a></code>, and <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code>. <code>deb_lsd</code>, <code>deb_decimal</code>, and <code>numeric</code> vectors can be combined in mathematical functions and follow the same hierarchy as coercion: <code><a href="https://rdrr.io/r/base/numeric.html">numeric()</a></code> -&gt; <code><a href="../reference/deb_decimal.html">deb_decimal()</a></code> -&gt; <code><a href="../reference/deb_lsd.html">deb_lsd()</a></code>. Most of the mathematical functions act as expected with <code>deb_lsd</code> vectors. One exception is the round family of functions, which act on the denarius unit. As always, <code>deb_lsd</code> and <code>deb_decimal</code> vectors with different <code>bases</code> cannot be combined in either mathematical functions or arithmetic operations.</p>
+<p><code>debkeepr</code> implements a wide array of mathematical functions and arithmetic operations for the <code>deb_lsd</code> and <code>deb_decimal</code> types. The <code>deb_decimal</code> type implements methods for the full range of the Summary and Math group generics, while <code>deb_lsd</code> does so for a select subset of these functions. The primary functions that are not implemented for either class include <code><a href="https://rdrr.io/r/stats/median.html">median()</a></code>, <code><a href="https://rdrr.io/r/stats/quantile.html">quantile()</a></code>, and <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code>. <code>deb_lsd</code>, <code>deb_decimal</code>, and <code>numeric</code> vectors can be combined in mathematical functions and follow the same coercion hierarchy: <code><a href="https://rdrr.io/r/base/numeric.html">numeric()</a></code> -&gt; <code><a href="../reference/deb_decimal.html">deb_decimal()</a></code> -&gt; <code><a href="../reference/deb_lsd.html">deb_lsd()</a></code>. Most of the mathematical functions act as expected with <code>deb_lsd</code> vectors. One exception is the round family of functions, which act on the denarius unit. As always, <code>deb_lsd</code> and <code>deb_decimal</code> vectors with different <code>bases</code> cannot be combined in either mathematical functions or arithmetic operations.</p>
 <div id="implemented-mathematical-functions-for-deb_lsd-vectors" class="section level3">
 <h3 class="hasAnchor">
 <a href="#implemented-mathematical-functions-for-deb_lsd-vectors" class="anchor"></a>Implemented mathematical functions for <code>deb_lsd</code> vectors</h3>
@@ -442,7 +477,7 @@
 <li>Math group: <code><a href="https://rdrr.io/r/base/MathFun.html">abs()</a></code>, <code><a href="https://rdrr.io/r/base/Round.html">round()</a></code>, <code><a href="https://rdrr.io/r/base/Round.html">signif()</a></code>, <code><a href="https://rdrr.io/r/base/Round.html">ceiling()</a></code>, <code><a href="https://rdrr.io/r/base/Round.html">floor()</a></code>, <code><a href="https://rdrr.io/r/base/Round.html">trunc()</a></code>, <code><a href="https://rdrr.io/r/base/cumsum.html">cummax()</a></code>, <code><a href="https://rdrr.io/r/base/cumsum.html">cummin()</a></code>, and <code><a href="https://rdrr.io/r/base/cumsum.html">cumsum()</a></code>.</li>
 <li>Additional generics: <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code>, <code><a href="https://rdrr.io/r/base/is.finite.html">is.nan()</a></code>, <code><a href="https://rdrr.io/r/base/is.finite.html">is.finite()</a></code>, and <code><a href="https://rdrr.io/r/base/is.finite.html">is.infinite()</a></code>.</li>
 </ul>
-<div class="sourceCode" id="cb9"><pre class="downlit">
+<div class="sourceCode" id="cb10"><pre class="downlit">
 <span class="co"># Mathematical functions</span>
 <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="kw">lsd</span>)
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
@@ -477,121 +512,115 @@
 <li>
 <code><a href="../reference/deb_lsd.html">deb_lsd()</a></code> and <code><a href="../reference/deb_lsd.html">deb_lsd()</a></code>: <code><a href="https://rdrr.io/r/base/Arithmetic.html">+</a></code>, <code><a href="https://rdrr.io/r/base/Arithmetic.html">-</a></code>, and <code><a href="https://rdrr.io/r/base/Arithmetic.html">/</a></code>
 <ul>
-<li>The first two return a <code>deb_lsd</code> vector; the last returns a <code>numeric</code> vector.</li>
+<li>The first two return <code><a href="../reference/deb_lsd.html">deb_lsd()</a></code>; the last returns <code><a href="https://rdrr.io/r/base/numeric.html">numeric()</a></code>.</li>
 </ul>
 </li>
 <li>
 <code><a href="../reference/deb_lsd.html">deb_lsd()</a></code> and <code><a href="https://rdrr.io/r/base/numeric.html">numeric()</a></code>: <code><a href="https://rdrr.io/r/base/Arithmetic.html">*</a></code> and <code><a href="https://rdrr.io/r/base/Arithmetic.html">/</a></code>
 <ul>
-<li>Both return a <code>deb_lsd</code> vector.</li>
+<li>Both return <code><a href="../reference/deb_lsd.html">deb_lsd()</a></code>.</li>
 </ul>
 </li>
 <li>
 <code><a href="https://rdrr.io/r/base/numeric.html">numeric()</a></code> and <code><a href="../reference/deb_lsd.html">deb_lsd()</a></code>: <code><a href="https://rdrr.io/r/base/Arithmetic.html">*</a></code> and <code><a href="https://rdrr.io/r/base/Arithmetic.html">/</a></code>
 <ul>
-<li>Returns a <code>deb_lsd</code> vector.</li>
+<li>Returns <code><a href="../reference/deb_lsd.html">deb_lsd()</a></code>.</li>
 </ul>
 </li>
 <li>
 <code><a href="../reference/deb_decimal.html">deb_decimal()</a></code> and <code><a href="../reference/deb_decimal.html">deb_decimal()</a></code>: <code><a href="https://rdrr.io/r/base/Arithmetic.html">+</a></code>, <code><a href="https://rdrr.io/r/base/Arithmetic.html">-</a></code>, and <code><a href="https://rdrr.io/r/base/Arithmetic.html">/</a></code>
 <ul>
-<li>The first two return a <code>deb_lsd</code> vector; the last returns a <code>numeric</code> vector.</li>
+<li>The first two return <code><a href="../reference/deb_lsd.html">deb_lsd()</a></code>; the last returns <code><a href="https://rdrr.io/r/base/numeric.html">numeric()</a></code>.</li>
 </ul>
 </li>
 <li>
 <code><a href="../reference/deb_decimal.html">deb_decimal()</a></code> and <code><a href="https://rdrr.io/r/base/numeric.html">numeric()</a></code>: <code><a href="https://rdrr.io/r/base/Arithmetic.html">+</a></code>, <code><a href="https://rdrr.io/r/base/Arithmetic.html">-</a></code>, <code><a href="https://rdrr.io/r/base/Arithmetic.html">/</a></code>, <code><a href="https://rdrr.io/r/base/Arithmetic.html">*</a></code>, <code><a href="https://rdrr.io/r/base/Arithmetic.html">^</a></code>, <code><a href="https://rdrr.io/r/base/Arithmetic.html">%%</a></code>, and <code><a href="https://rdrr.io/r/base/Arithmetic.html">%/%</a></code>
 <ul>
-<li>All return a <code>deb_decimal</code> vector.</li>
+<li>All return <code><a href="../reference/deb_decimal.html">deb_decimal()</a></code>.</li>
 </ul>
 </li>
 <li>
 <code><a href="https://rdrr.io/r/base/numeric.html">numeric()</a></code> and <code><a href="../reference/deb_decimal.html">deb_decimal()</a></code>: <code><a href="https://rdrr.io/r/base/Arithmetic.html">+</a></code>, <code><a href="https://rdrr.io/r/base/Arithmetic.html">-</a></code>, <code><a href="https://rdrr.io/r/base/Arithmetic.html">*</a></code> and <code><a href="https://rdrr.io/r/base/Arithmetic.html">/</a></code>
 <ul>
-<li>All return a<code>deb_decimal</code> vector.</li>
+<li>All return <code><a href="../reference/deb_decimal.html">deb_decimal()</a></code>.</li>
 </ul>
 </li>
 <li>
 <code><a href="../reference/deb_lsd.html">deb_lsd()</a></code> and <code><a href="../reference/deb_decimal.html">deb_decimal()</a></code>: <code><a href="https://rdrr.io/r/base/Arithmetic.html">+</a></code>, <code><a href="https://rdrr.io/r/base/Arithmetic.html">-</a></code>, and <code><a href="https://rdrr.io/r/base/Arithmetic.html">/</a></code>
 <ul>
-<li>The first two return a <code>deb_lsd</code> vector; the last returns a <code>numeric</code> vector.</li>
+<li>The first two return <code><a href="../reference/deb_lsd.html">deb_lsd()</a></code>; the last returns <code><a href="https://rdrr.io/r/base/numeric.html">numeric()</a></code>.</li>
 </ul>
 </li>
 <li>
 <code><a href="../reference/deb_decimal.html">deb_decimal()</a></code> and <code><a href="../reference/deb_lsd.html">deb_lsd()</a></code>: <code><a href="https://rdrr.io/r/base/Arithmetic.html">+</a></code>, <code><a href="https://rdrr.io/r/base/Arithmetic.html">-</a></code>, and <code><a href="https://rdrr.io/r/base/Arithmetic.html">/</a></code>
 <ul>
-<li>The first two return a <code>deb_lsd</code> vector; the last returns a <code>numeric</code> vector.</li>
+<li>The first two return <code><a href="../reference/deb_lsd.html">deb_lsd()</a></code>; the last returns <code><a href="https://rdrr.io/r/base/numeric.html">numeric()</a></code>.</li>
 </ul>
 </li>
 </ul>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="co"># deb_lsd and deb_decimal vectors</span>
-<span class="kw">lsd1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">15</span>, <span class="fl">15</span>, <span class="fl">9</span>)
-<span class="kw">lsd2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">6</span>, <span class="fl">13</span>, <span class="fl">4</span>)
-<span class="kw">dec1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/deb_decimal.html">deb_decimal</a></span>(<span class="fl">15.7875</span>)
-<span class="kw">dec2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/deb_decimal.html">deb_decimal</a></span>(<span class="fl">20</span> <span class="op">/</span> <span class="fl">3</span>)
-
+<div class="sourceCode" id="cb11"><pre class="downlit">
 <span class="co"># deb_lsd and deb_lsd</span>
-<span class="kw">lsd1</span> <span class="op">+</span> <span class="kw">lsd2</span>
+<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">15</span>, <span class="fl">15</span>, <span class="fl">9</span>) <span class="op">+</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">6</span>, <span class="fl">13</span>, <span class="fl">4</span>)
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 22:9s:1d</span>
 <span class="co">#&gt; # Bases: 20s 12d</span>
-<span class="kw">lsd1</span> <span class="op">/</span> <span class="kw">lsd2</span>
+<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">15</span>, <span class="fl">15</span>, <span class="fl">9</span>) <span class="op">/</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">6</span>, <span class="fl">13</span>, <span class="fl">4</span>)
 <span class="co">#&gt; [1] 2.368125</span>
 
 <span class="co"># deb_decimal and deb_decimal</span>
-<span class="kw">dec1</span> <span class="op">-</span> <span class="kw">dec2</span>
+<span class="fu"><a href="../reference/deb_decimal.html">deb_decimal</a></span>(<span class="fl">15.7875</span>) <span class="op">-</span> <span class="fu"><a href="../reference/deb_decimal.html">deb_decimal</a></span>(<span class="fl">20</span> <span class="op">/</span> <span class="fl">3</span>)
 <span class="co">#&gt; &lt;deb_decimal[1]&gt;</span>
 <span class="co">#&gt; [1] 9.120833</span>
 <span class="co">#&gt; # Unit: libra</span>
 <span class="co">#&gt; # Bases: 20s 12d</span>
 
 <span class="co"># deb_lsd, deb_decimal, and numeric</span>
-<span class="kw">lsd2</span> <span class="op">/</span> <span class="fl">2</span>
+<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">6</span>, <span class="fl">13</span>, <span class="fl">4</span>) <span class="op">/</span> <span class="fl">2</span>
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 3:6s:8d</span>
 <span class="co">#&gt; # Bases: 20s 12d</span>
-<span class="kw">dec1</span> <span class="op">+</span> <span class="fl">5.25</span>
+<span class="fu"><a href="../reference/deb_decimal.html">deb_decimal</a></span>(<span class="fl">15.7875</span>) <span class="op">+</span> <span class="fl">5.25</span>
 <span class="co">#&gt; &lt;deb_decimal[1]&gt;</span>
 <span class="co">#&gt; [1] 21.0375</span>
 <span class="co">#&gt; # Unit: libra</span>
 <span class="co">#&gt; # Bases: 20s 12d</span>
-<span class="fl">18</span> <span class="op">-</span> <span class="kw">dec2</span>
+<span class="fl">18</span> <span class="op">-</span> <span class="fu"><a href="../reference/deb_decimal.html">deb_decimal</a></span>(<span class="fl">20</span> <span class="op">/</span> <span class="fl">3</span>)
 <span class="co">#&gt; &lt;deb_decimal[1]&gt;</span>
 <span class="co">#&gt; [1] 11.33333</span>
 <span class="co">#&gt; # Unit: libra</span>
 <span class="co">#&gt; # Bases: 20s 12d</span>
-<span class="kw">dec1</span> <span class="op">*</span> <span class="fl">3</span>
+<span class="fu"><a href="../reference/deb_decimal.html">deb_decimal</a></span>(<span class="fl">15.7875</span>) <span class="op">*</span> <span class="fl">3</span>
 <span class="co">#&gt; &lt;deb_decimal[1]&gt;</span>
 <span class="co">#&gt; [1] 47.3625</span>
 <span class="co">#&gt; # Unit: libra</span>
 <span class="co">#&gt; # Bases: 20s 12d</span>
 
 <span class="co"># deb_lsd and deb_decimal</span>
-<span class="kw">lsd1</span> <span class="op">+</span> <span class="kw">dec2</span>
+<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">15</span>, <span class="fl">15</span>, <span class="fl">9</span>) <span class="op">+</span> <span class="fu"><a href="../reference/deb_decimal.html">deb_decimal</a></span>(<span class="fl">20</span> <span class="op">/</span> <span class="fl">3</span>)
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 22:9s:1d</span>
 <span class="co">#&gt; # Bases: 20s 12d</span>
-<span class="kw">lsd1</span> <span class="op">/</span> <span class="kw">dec1</span>
+<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">15</span>, <span class="fl">15</span>, <span class="fl">9</span>) <span class="op">/</span> <span class="fu"><a href="../reference/deb_decimal.html">deb_decimal</a></span>(<span class="fl">15.7875</span>)
 <span class="co">#&gt; [1] 1</span>
 </pre></div>
 </div>
 <div id="equality-and-comparison" class="section level3">
 <h3 class="hasAnchor">
 <a href="#equality-and-comparison" class="anchor"></a>Equality and comparison</h3>
-<p>Closely related to mathematical functions and arithmetic operations is the task of testing equality and comparison. <code>debkeepr</code> permits testing equality and comparison between <code>deb_lsd</code>, <code>deb_decimal</code>, and <code>numeric</code> vectors. It is possible to compare <code>deb_decimal</code> vectors with different <code>unit</code>s, but doing so with vectors of different <code>bases</code> will throw an error.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
+<p>Closely related to mathematical functions and arithmetic operations is the task of testing equality and comparing different vectors. <code>debkeepr</code> permits testing equality and comparison between <code>deb_lsd</code>, <code>deb_decimal</code>, and <code>numeric</code> vectors. It is possible to compare <code>deb_decimal</code> vectors with different <code>unit</code>s, but doing so with vectors of different <code>bases</code> will throw an error.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit">
 <span class="co"># Comparison</span>
-<span class="kw">lsd1</span> <span class="op">&lt;</span> <span class="kw">lsd2</span>
+<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">15</span>, <span class="fl">15</span>, <span class="fl">9</span>) <span class="op">&lt;</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">6</span>, <span class="fl">13</span>, <span class="fl">4</span>)
 <span class="co">#&gt; [1] FALSE</span>
-<span class="kw">lsd1</span> <span class="op">==</span> <span class="kw">dec1</span>
+<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">15</span>, <span class="fl">15</span>, <span class="fl">9</span>) <span class="op">==</span> <span class="fu"><a href="../reference/deb_decimal.html">deb_decimal</a></span>(<span class="fl">15.7875</span>)
 <span class="co">#&gt; [1] TRUE</span>
-<span class="kw">lsd2</span> <span class="op">&gt;</span> <span class="fl">23.5</span>
+<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">6</span>, <span class="fl">13</span>, <span class="fl">4</span>) <span class="op">&gt;</span> <span class="fl">23.5</span>
 <span class="co">#&gt; [1] FALSE</span>
-<span class="kw">dec1</span> <span class="op">&lt;</span> <span class="fu"><a href="../reference/deb_decimal.html">deb_decimal</a></span>(<span class="fl">3390</span>, unit = <span class="st">"d"</span>)
+<span class="fu"><a href="../reference/deb_decimal.html">deb_decimal</a></span>(<span class="fl">15.7875</span>) <span class="op">&lt;</span> <span class="fu"><a href="../reference/deb_decimal.html">deb_decimal</a></span>(<span class="fl">3390</span>, unit = <span class="st">"d"</span>)
 <span class="co">#&gt; [1] FALSE</span>
 
 <span class="co"># Cannot compare vectors with different bases</span>
-<span class="kw">lsd1</span> <span class="op">&gt;</span> <span class="kw">lsd_polish</span>
+<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">15</span>, <span class="fl">15</span>, <span class="fl">9</span>) <span class="op">&gt;</span> <span class="kw">lsd_polish</span>
 <span class="co">#&gt; Error: `bases` attributes must be equal to combine &lt;deb_lsd&gt; or &lt;deb_decimal&gt; vectors.</span>
 
 <span class="co"># Maximum and minimum</span>
@@ -606,7 +635,7 @@
 <span class="co">#&gt; # Bases: 30s 18d</span>
 
 <span class="co"># Checking for unique values takes into account normalization</span>
-<span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">lsd1</span>, <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">12</span>, <span class="fl">71</span>, <span class="fl">57</span>)))
+<span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">15</span>, <span class="fl">15</span>, <span class="fl">9</span>), <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">12</span>, <span class="fl">71</span>, <span class="fl">57</span>)))
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 15:15s:9d</span>
 <span class="co">#&gt; # Bases: 20s 12d</span>
@@ -618,8 +647,8 @@
 <a href="#conversion" class="anchor"></a>Conversion</h2>
 <p>As introduced above, all functions that take two <code>debkeepr</code> vectors check to ensure that the <code>bases</code> of the vectors are equivalent. Any function call that combines vectors with different <code>bases</code> throws an error. <code>debkeepr</code> is less strict with <code>deb_decimal</code> vectors that have a different <code>unit</code> since a <code>unit</code> is a nominal representation whose relationship to the other units is known through the <code>bases</code>. In contrast, <code>bases</code> directly affect the underlying value, and the relationship between currencies of different bases cannot be determined through the objects themselves.</p>
 <p>With these constraints, <code>debkeepr</code> has two ways to explicitly convert the <code>bases</code> and <code>unit</code> of <code>deb_lsd</code> and <code>deb_decimal</code> vectors: <code><a href="../reference/convert-bases.html">deb_convert_bases()</a></code> and <code><a href="../reference/deb_convert_unit.html">deb_convert_unit()</a></code>. <code><a href="../reference/convert-bases.html">deb_convert_bases()</a></code> takes a <code>deb_lsd</code> or <code>deb_decimal</code> vector and converts the value to the <code>bases</code> contained in the <code>to</code> argument. This will likely be done alongside multiplication of an exchange rate between the two currencies. The <a href="https://jessesadler.github.io/debkeepr/articles/transactions.html">Transactions in Richard Dafforne’s Journal vignette</a> has a number of examples of this process. <code><a href="../reference/deb_convert_unit.html">deb_convert_unit()</a></code> is simpler in that it uses the <code>bases</code> of a <code>deb_decimal</code> vector to calculate the conversion to a different <code>unit</code>.</p>
-<p>A fairly simple example is an exchange between pounds Flemish and guilders from Holland. The two currencies had different bases; guilders possessed the non-standard base of 16 for the denarius unit. However, the currencies were tied together at a rate of six guilders to the £1 Flemish.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit">
+<p>A fairly simple example is an exchange between pounds Flemish and guilders from Holland. The two currencies had different bases; guilders possessed the non-standard base of 16 for the denarius unit. However, the currencies were tied together at a rate of six guilders to £1 Flemish.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit">
 <span class="co"># Convert pounds Flemish to guilders</span>
 <span class="fu"><a href="../reference/convert-bases.html">deb_convert_bases</a></span>(<span class="kw">lsd</span>, to = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>, <span class="fl">16</span>)) <span class="op">*</span> <span class="fl">6</span>
 <span class="co">#&gt; &lt;deb_lsd[3]&gt;</span>
@@ -648,15 +677,15 @@
 <div id="data-frames-deb_lsd-and-deb_decimal-columns" class="section level2">
 <h2 class="hasAnchor">
 <a href="#data-frames-deb_lsd-and-deb_decimal-columns" class="anchor"></a>Data frames: <code>deb_lsd</code> and <code>deb_decimal</code> columns</h2>
-<p>Thus far this vignette has only dealt with <code>debkeepr</code> types as vectors, but, of course, these vectors also work as columns in data frames. <code>deb_lsd</code> and <code>deb_decimal</code> columns are essential to achieve <code>debkeepr</code>’s goal of facilitating reproducible analysis and visualization of larger sets of values found in account books. This section discusses how to create and manipulate data frames with <code>debkeepr</code> columns, the current differences between <code>deb_lsd</code> and <code>deb_decimal</code> columns in <code>dplyr</code>, and the process of visualizing the values with <code>ggplot2</code>.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit">
+<p>Thus far this vignette has only dealt with <code>debkeepr</code> types as vectors, but, of course, these vectors also work as columns in data frames and tibbles. <code>deb_lsd</code> and <code>deb_decimal</code> columns are essential to achieve <code>debkeepr</code>’s goal of facilitating reproducible analysis and visualization of larger sets of values found in account books. This section discusses how to create and manipulate data frames with <code>debkeepr</code> columns and the process of visualizing the values with <code>ggplot2</code>.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit">
 <span class="co"># load packages</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://tibble.tidyverse.org">tibble</a></span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org">dplyr</a></span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span>)
 </pre></div>
 <p>The first task is to create a <code>deb_lsd</code> or <code>deb_decimal</code> column. Such a column can be created with a normal call to <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code> or <code><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble()</a></code> and a <code>deb_lsd</code> or <code>deb_decimal</code> vector. However, larger sets of non-decimal values will often be created through the process of transcribing historical data into a spreadsheet of some form. It is recommended to enter the different units into separate columns. The data can then be read into R and the separate variables transformed into a <code>deb_lsd</code> column with <code><a href="../reference/lsd-column.html">deb_gather_lsd()</a></code>. This is the process used to create the <code>dafforne_transactions</code> data that comes with the <code>debkeepr</code> package. To restore the data to its original form with three columns for the three units the <code><a href="../reference/lsd-column.html">deb_spread_lsd()</a></code> function can be used.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit">
+<div class="sourceCode" id="cb15"><pre class="downlit">
 <span class="co"># Create data frame with deb_lsd vector</span>
 <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span>(id = <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, lsd = <span class="kw">lsd</span>)
 <span class="co">#&gt; # A tibble: 3 x 2</span>
@@ -669,123 +698,73 @@
 <span class="co"># Data frame from separate unit columns with randomly created data</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">240</span>)
 <span class="kw">raw_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span>(id = <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,
+                   group = <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">2</span>),
                    pounds = <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="fl">20</span><span class="op">:</span><span class="fl">100</span>, <span class="fl">10</span>, replace = <span class="fl">TRUE</span>),
                    shillings = <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="fl">1</span><span class="op">:</span><span class="fl">19</span>, <span class="fl">10</span>, replace = <span class="fl">TRUE</span>),
                    pence = <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="fl">1</span><span class="op">:</span><span class="fl">11</span>, <span class="fl">10</span>, replace = <span class="fl">TRUE</span>))
 
-(<span class="kw">lsd_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lsd-column.html">deb_gather_lsd</a></span>(<span class="kw">raw_data</span>, l = <span class="kw">pounds</span>, s = <span class="kw">shillings</span>, d = <span class="kw">pence</span>,
+(<span class="kw">lsd_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lsd-column.html">deb_gather_lsd</a></span>(<span class="kw">raw_data</span>,
+                           l = <span class="kw">pounds</span>, s = <span class="kw">shillings</span>, d = <span class="kw">pence</span>,
                            replace = <span class="fl">TRUE</span>))
-<span class="co">#&gt; # A tibble: 10 x 2</span>
-<span class="co">#&gt;       id            lsd</span>
-<span class="co">#&gt;    &lt;int&gt; &lt;lsd[20s:12d]&gt;</span>
-<span class="co">#&gt;  1     1      24:10s:9d</span>
-<span class="co">#&gt;  2     2      34:14s:4d</span>
-<span class="co">#&gt;  3     3       83:4s:4d</span>
-<span class="co">#&gt;  4     4      41:13s:2d</span>
-<span class="co">#&gt;  5     5      99:8s:11d</span>
-<span class="co">#&gt;  6     6      92:14s:7d</span>
-<span class="co">#&gt;  7     7       57:6s:5d</span>
-<span class="co">#&gt;  8     8      48:12s:2d</span>
-<span class="co">#&gt;  9     9      53:11s:2d</span>
-<span class="co">#&gt; 10    10       56:9s:7d</span>
-</pre></div>
-<div id="deb_lsd-and-deb_decimal-columns-with-dplyr" class="section level3">
-<h3 class="hasAnchor">
-<a href="#deb_lsd-and-deb_decimal-columns-with-dplyr" class="anchor"></a><code>deb_lsd</code> and <code>deb_decimal</code> columns with <code>dplyr</code>
-</h3>
-<p>Currently, <code>deb_lsd</code> vectors are not fully integrated into <code>dplyr</code>, and so functions such as <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code>, and <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code> do not work with <code>deb_lsd</code> columns. It is possible to get around this temporary limitation by mutating a <code>deb_lsd</code> column to <code>deb_decimal</code>, which largely behaves as a normal <code>numeric</code> variable. An equivalent <code>deb_lsd</code> column can always be created from a <code>deb_decimal</code> column with base R commands.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit">
-<span class="co"># filter() works on a deb_lsd column</span>
-<span class="kw">lsd_tbl</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">lsd</span> <span class="op">&gt;</span> <span class="fl">75</span>)
-<span class="co">#&gt; # A tibble: 3 x 2</span>
-<span class="co">#&gt;      id            lsd</span>
-<span class="co">#&gt;   &lt;int&gt; &lt;lsd[20s:12d]&gt;</span>
-<span class="co">#&gt; 1     3       83:4s:4d</span>
-<span class="co">#&gt; 2     5      99:8s:11d</span>
-<span class="co">#&gt; 3     6      92:14s:7d</span>
-
-<span class="co"># mutate() does not</span>
-<span class="kw">lsd_tbl</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(lsd2 = <span class="kw">lsd</span> <span class="op">*</span> <span class="fl">2</span>)
 <span class="co">#&gt; # A tibble: 10 x 3</span>
-<span class="co">#&gt;       id            lsd           lsd2</span>
-<span class="co">#&gt;    &lt;int&gt; &lt;lsd[20s:12d]&gt; &lt;lsd[20s:12d]&gt;</span>
-<span class="co">#&gt;  1     1      24:10s:9d       49:1s:6d</span>
-<span class="co">#&gt;  2     2      34:14s:4d       69:8s:8d</span>
-<span class="co">#&gt;  3     3       83:4s:4d      166:8s:8d</span>
-<span class="co">#&gt;  4     4      41:13s:2d       83:6s:4d</span>
-<span class="co">#&gt;  5     5      99:8s:11d    198:17s:10d</span>
-<span class="co">#&gt;  6     6      92:14s:7d      185:9s:2d</span>
-<span class="co">#&gt;  7     7       57:6s:5d    114:12s:10d</span>
-<span class="co">#&gt;  8     8      48:12s:2d       97:4s:4d</span>
-<span class="co">#&gt;  9     9      53:11s:2d      107:2s:4d</span>
-<span class="co">#&gt; 10    10       56:9s:7d     112:19s:2d</span>
-
-<span class="co"># Fix this by creating a deb_decimal column</span>
-(<span class="kw">lsd2_tbl</span> <span class="op">&lt;-</span> <span class="kw">lsd_tbl</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(dec = <span class="fu"><a href="../reference/cast-decimal.html">deb_as_decimal</a></span>(<span class="kw">lsd</span>),
-         dec2 = <span class="kw">dec</span> <span class="op">*</span> <span class="fl">2</span>))
-<span class="co">#&gt; # A tibble: 10 x 4</span>
-<span class="co">#&gt;       id            lsd          dec         dec2</span>
-<span class="co">#&gt;    &lt;int&gt; &lt;lsd[20s:12d]&gt; &lt;l[20s:12d]&gt; &lt;l[20s:12d]&gt;</span>
-<span class="co">#&gt;  1     1      24:10s:9d     24.53750     49.07500</span>
-<span class="co">#&gt;  2     2      34:14s:4d     34.71667     69.43333</span>
-<span class="co">#&gt;  3     3       83:4s:4d     83.21667    166.43333</span>
-<span class="co">#&gt;  4     4      41:13s:2d     41.65833     83.31667</span>
-<span class="co">#&gt;  5     5      99:8s:11d     99.44583    198.89167</span>
-<span class="co">#&gt;  6     6      92:14s:7d     92.72917    185.45833</span>
-<span class="co">#&gt;  7     7       57:6s:5d     57.32083    114.64167</span>
-<span class="co">#&gt;  8     8      48:12s:2d     48.60833     97.21667</span>
-<span class="co">#&gt;  9     9      53:11s:2d     53.55833    107.11667</span>
-<span class="co">#&gt; 10    10       56:9s:7d     56.47917    112.95833</span>
-
-<span class="co"># Recreate modified deb_lsd column</span>
-<span class="kw">lsd2_tbl</span>[[<span class="st">"lsd2"</span>]] <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cast-lsd.html">deb_as_lsd</a></span>(<span class="kw">lsd2_tbl</span>[[<span class="st">"dec2"</span>]])
-<span class="kw">lsd2_tbl</span>
-<span class="co">#&gt; # A tibble: 10 x 5</span>
-<span class="co">#&gt;       id            lsd          dec         dec2           lsd2</span>
-<span class="co">#&gt;    &lt;int&gt; &lt;lsd[20s:12d]&gt; &lt;l[20s:12d]&gt; &lt;l[20s:12d]&gt; &lt;lsd[20s:12d]&gt;</span>
-<span class="co">#&gt;  1     1      24:10s:9d     24.53750     49.07500       49:1s:6d</span>
-<span class="co">#&gt;  2     2      34:14s:4d     34.71667     69.43333       69:8s:8d</span>
-<span class="co">#&gt;  3     3       83:4s:4d     83.21667    166.43333      166:8s:8d</span>
-<span class="co">#&gt;  4     4      41:13s:2d     41.65833     83.31667       83:6s:4d</span>
-<span class="co">#&gt;  5     5      99:8s:11d     99.44583    198.89167    198:17s:10d</span>
-<span class="co">#&gt;  6     6      92:14s:7d     92.72917    185.45833      185:9s:2d</span>
-<span class="co">#&gt;  7     7       57:6s:5d     57.32083    114.64167    114:12s:10d</span>
-<span class="co">#&gt;  8     8      48:12s:2d     48.60833     97.21667       97:4s:4d</span>
-<span class="co">#&gt;  9     9      53:11s:2d     53.55833    107.11667      107:2s:4d</span>
-<span class="co">#&gt; 10    10       56:9s:7d     56.47917    112.95833     112:19s:2d</span>
+<span class="co">#&gt;       id group            lsd</span>
+<span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;lsd[20s:12d]&gt;</span>
+<span class="co">#&gt;  1     1     1      24:10s:9d</span>
+<span class="co">#&gt;  2     2     2      34:14s:4d</span>
+<span class="co">#&gt;  3     3     3       83:4s:4d</span>
+<span class="co">#&gt;  4     4     4      41:13s:2d</span>
+<span class="co">#&gt;  5     5     5      99:8s:11d</span>
+<span class="co">#&gt;  6     6     1      92:14s:7d</span>
+<span class="co">#&gt;  7     7     2       57:6s:5d</span>
+<span class="co">#&gt;  8     8     3      48:12s:2d</span>
+<span class="co">#&gt;  9     9     4      53:11s:2d</span>
+<span class="co">#&gt; 10    10     5       56:9s:7d</span>
 </pre></div>
-</div>
+<p>Because <code>deb_lsd</code> and <code>deb_decimal</code> are based on the <a href="https://vctrs.r-lib.org/">vctrs</a> package, both types act as expected in data frames. From <a href="https://www.tidyverse.org/blog/2020/06/dplyr-1-0-0/">dplyr 1.0.0</a> — which is the minimal version used by debkeepr — all dplyr functions work on both <code>debkeepr</code> types.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit">
+<span class="co"># deb_lsd work in dplyr pipelines</span>
+<span class="kw">lsd_tbl</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">lsd</span> <span class="op">&gt;</span> <span class="fl">50</span>) <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(<span class="kw">group</span>) <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span>(sum = <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="kw">lsd</span>), .groups = <span class="st">"drop"</span>) <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(dec = <span class="fu"><a href="../reference/cast-decimal.html">deb_as_decimal</a></span>(<span class="kw">sum</span>))
+<span class="co">#&gt; # A tibble: 5 x 3</span>
+<span class="co">#&gt;   group            sum          dec</span>
+<span class="co">#&gt;   &lt;int&gt; &lt;lsd[20s:12d]&gt; &lt;l[20s:12d]&gt;</span>
+<span class="co">#&gt; 1     1      92:14s:7d     92.72917</span>
+<span class="co">#&gt; 2     2       57:6s:5d     57.32083</span>
+<span class="co">#&gt; 3     3       83:4s:4d     83.21667</span>
+<span class="co">#&gt; 4     4      53:11s:2d     53.55833</span>
+<span class="co">#&gt; 5     5     155:18s:6d    155.92500</span>
+</pre></div>
 <div id="transactions-data-frames" class="section level3">
 <h3 class="hasAnchor">
 <a href="#transactions-data-frames" class="anchor"></a>Transactions data frames</h3>
-<p><code>debkeepr</code> has a family of functions designed to work with a specific type of data frame that <code>debkeepr</code> refers to as a transactions data frame that has a structure similar to an account book. Transactions data frames possess at minimum “credit” and “debit” variables to record the creditor and debtor accounts of each transaction — the accounts from which a value is taken and to which it is given — and the value of the transactions in a <code>deb_lsd</code> or <code>deb_decimal</code> column. For a full explanation of how this family of functions works, see <code><a href="../reference/transactions.html">?deb_account</a></code> and the <a href="https://jessesadler.github.io/debkeepr/articles/ledger.html">Analysis of Richard Dafforne’s Journal and Ledger vignette</a>. It is possible to create a simple transactions data frame from <code>lsd_tbl</code> by adding “credit” and “debit” variables. For instance, a merchant might trade in three commodities that each have their own account (let’s say wheat, silk, and linen) and a cash account.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit">
+<p><code>debkeepr</code> has a family of functions designed to work with a specific type of data frame that <code>debkeepr</code> refers to as transactions data frames that have a structure similar to an account book. Transactions data frames possess at minimum “credit” and “debit” variables to record the creditor and debtor accounts of each transaction — the accounts from which a value is taken and to which it is given — and the value of the transactions in a <code>deb_lsd</code> or <code>deb_decimal</code> column. For a full explanation of how this family of functions work, see <code><a href="../reference/transactions.html">?deb_account</a></code> and the <a href="https://jessesadler.github.io/debkeepr/articles/ledger.html">Analysis of Richard Dafforne’s Journal and Ledger vignette</a>. It is possible to create a simple transactions data frame from <code>lsd_tbl</code> by adding “credit” and “debit” variables. For instance, a merchant might trade in three commodities that each have their own account (let’s say wheat, silk, and linen) and a cash account.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit">
 <span class="co"># Create transactions data frame</span>
 <span class="kw">accounts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"wheat"</span>, <span class="st">"silk"</span>, <span class="st">"linen"</span>, <span class="st">"cash"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">24</span>)
 (<span class="kw">transactions</span> <span class="op">&lt;-</span> <span class="kw">lsd_tbl</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://tibble.tidyverse.org/reference/add_column.html">add_column</a></span>(credit = <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="kw">accounts</span>, <span class="fl">10</span>, replace = <span class="fl">TRUE</span>),
              debit = <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="kw">accounts</span>, <span class="fl">10</span>, replace = <span class="fl">TRUE</span>),
-             .before = <span class="fl">2</span>))
-<span class="co">#&gt; # A tibble: 10 x 4</span>
-<span class="co">#&gt;       id credit debit            lsd</span>
-<span class="co">#&gt;    &lt;int&gt; &lt;chr&gt;  &lt;chr&gt; &lt;lsd[20s:12d]&gt;</span>
-<span class="co">#&gt;  1     1 linen  silk       24:10s:9d</span>
-<span class="co">#&gt;  2     2 linen  wheat      34:14s:4d</span>
-<span class="co">#&gt;  3     3 cash   cash        83:4s:4d</span>
-<span class="co">#&gt;  4     4 linen  wheat      41:13s:2d</span>
-<span class="co">#&gt;  5     5 silk   cash       99:8s:11d</span>
-<span class="co">#&gt;  6     6 linen  linen      92:14s:7d</span>
-<span class="co">#&gt;  7     7 wheat  cash        57:6s:5d</span>
-<span class="co">#&gt;  8     8 silk   wheat      48:12s:2d</span>
-<span class="co">#&gt;  9     9 cash   wheat      53:11s:2d</span>
-<span class="co">#&gt; 10    10 silk   cash        56:9s:7d</span>
+             .before = <span class="fl">3</span>))
+<span class="co">#&gt; # A tibble: 10 x 5</span>
+<span class="co">#&gt;       id group credit debit            lsd</span>
+<span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;chr&gt; &lt;lsd[20s:12d]&gt;</span>
+<span class="co">#&gt;  1     1     1 linen  silk       24:10s:9d</span>
+<span class="co">#&gt;  2     2     2 linen  wheat      34:14s:4d</span>
+<span class="co">#&gt;  3     3     3 cash   cash        83:4s:4d</span>
+<span class="co">#&gt;  4     4     4 linen  wheat      41:13s:2d</span>
+<span class="co">#&gt;  5     5     5 silk   cash       99:8s:11d</span>
+<span class="co">#&gt;  6     6     1 linen  linen      92:14s:7d</span>
+<span class="co">#&gt;  7     7     2 wheat  cash        57:6s:5d</span>
+<span class="co">#&gt;  8     8     3 silk   wheat      48:12s:2d</span>
+<span class="co">#&gt;  9     9     4 cash   wheat      53:11s:2d</span>
+<span class="co">#&gt; 10    10     5 silk   cash        56:9s:7d</span>
 </pre></div>
 <p>With the properly structured data frame, <code>debkeepr</code> makes it easy to find information about the accounts. For example, <code><a href="../reference/transactions.html">deb_account_summary()</a></code> finds the total credit, total debit, and current value of each account. Note that the account family of functions can take either a <code>deb_lsd</code> or a <code>deb_decimal</code> column.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit">
+<div class="sourceCode" id="cb18"><pre class="downlit">
 (<span class="kw">trans_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/transactions.html">deb_account_summary</a></span>(<span class="kw">transactions</span>, lsd = <span class="kw">lsd</span>,
                                       credit = <span class="kw">credit</span>, debit = <span class="kw">debit</span>))
 <span class="co">#&gt; # A tibble: 4 x 4</span>
@@ -801,15 +780,15 @@
 <h3 class="hasAnchor">
 <a href="#visualizing-non-decimal-currencies-with-ggplot2" class="anchor"></a>Visualizing non-decimal currencies with <code>ggplot2</code>
 </h3>
-<p><code><a href="../reference/transactions.html">deb_account_summary()</a></code> provides a good basis for a visual overview of the accounts in a transactions data frame. However, alterations to <code>trans_summary</code> have to be made to prepare it for plotting with <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot()</a></code>. <code>ggplot2</code> does not know how to pick a scale for <code>deb_lsd</code> vectors, but <code>deb_decimal</code> vectors work as expected.<a href="#fn9" class="footnote-ref" id="fnref9"><sup>9</sup></a> It is therefore necessary to cast the <code>deb_lsd</code> variables to <code>deb_decimal</code>, either before or within the <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot()</a></code> call. The only context in which casting to <code>deb_decimal</code> results in any loss of information is in labelling the plotted values. However, this can be rectified through the <code><a href="../reference/text.html">deb_text()</a></code> function, which provides a flexible way to format <code>deb_lsd</code> and <code>deb_decimal</code> vectors as text. The following command makes these changes while also converting the “debit” column to negative values for the purpose of distinguishing them from the credit values.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit">
+<p><code><a href="../reference/transactions.html">deb_account_summary()</a></code> provides a good basis for a visual overview of the accounts in a transactions data frame. However, alterations to <code>trans_summary</code> have to be made to prepare it for plotting with <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot()</a></code>. <a href="https://ggplot2.tidyverse.org"><code>ggplot2</code></a> does not know how to pick a scale for <code>deb_lsd</code> vectors, but <code>deb_decimal</code> vectors work as expected.<a href="#fn9" class="footnote-ref" id="fnref9"><sup>9</sup></a> It is therefore necessary to cast the <code>deb_lsd</code> variables to <code>deb_decimal</code>, either before or within the <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot()</a></code> call. The only context in which casting to <code>deb_decimal</code> results in any loss of information is in labeling the plotted values. However, this can be rectified through the <code><a href="../reference/text.html">deb_text()</a></code> function, which provides a flexible way to format <code>deb_lsd</code> and <code>deb_decimal</code> vectors as text. The following command makes these changes while also converting the “debit” column to negative values for the purpose of distinguishing them from the credit values.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit">
 <span class="kw">dec_summary</span> <span class="op">&lt;-</span> <span class="kw">trans_summary</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_if</a></span>(<span class="kw">deb_is_lsd</span>, <span class="kw">deb_as_decimal</span>) <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(debit = <span class="op">-</span><span class="kw">debit</span>,
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span>(<span class="fu">where</span>(<span class="kw">deb_is_lsd</span>), <span class="kw">deb_as_decimal</span>),
+         debit = <span class="op">-</span><span class="kw">debit</span>,
          current_text = <span class="fu"><a href="../reference/text.html">deb_text</a></span>(<span class="fu"><a href="../reference/cast-lsd.html">deb_as_lsd</a></span>(<span class="kw">current</span>)))
 </pre></div>
 <p>At this point, the data can be plotted as if the <code>deb_decimal</code> values are <code>numeric</code>. The only notable difference is the need to explicitly call <code><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous()</a></code> to avoid a message, but, in this case, <code><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous()</a></code> is also used to label the axis with the pound sign.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit">
+<div class="sourceCode" id="cb20"><pre class="downlit">
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(data = <span class="kw">dec_summary</span>) <span class="op">+</span> 
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_linerange.html">geom_linerange</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(x = <span class="kw">account_id</span>, ymin = <span class="kw">debit</span>, ymax = <span class="kw">credit</span>)) <span class="op">+</span> 
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(x = <span class="kw">account_id</span>, y = <span class="kw">current</span>)) <span class="op">+</span> 
@@ -828,7 +807,7 @@
 <div id="conclusion" class="section level2">
 <h2 class="hasAnchor">
 <a href="#conclusion" class="anchor"></a>Conclusion</h2>
-<p>This vignette has gone through the basic structures and workings of <code>debkeepr</code> and the <code>deb_lsd</code> and <code>deb_decimal</code> classes. It has outlined the difficulties inherent in working with non-decimal currencies in decimalized computing environments and the ways that <code>debkeepr</code> seeks to overcome these problems to integrate the study and analysis of historical non-decimal currencies into the methodologies of Digital Humanities and the practices of <a href="http://ropensci.github.io/reproducibility-guide/">reproducible research</a>. For further examples of the use cases of <code>debkeepr</code> and how the package promotes practices of reproducible research that involves historical non-decimal currencies, see the <a href="https://jessesadler.github.io/debkeepr/articles/transactions.html">Transactions in Richard Dafforne’s Journal</a> and <a href="https://jessesadler.github.io/debkeepr/articles/ledger.html">Analysis of Richard Dafforne’s Journal and Ledger</a> vignettes.</p>
+<p>This vignette has gone through the basic structures and workings of the <code>debkeepr</code> package and the <code>deb_lsd</code> and <code>deb_decimal</code> types. It has outlined the difficulties inherent in working with non-decimal currencies in decimalized computing environments and the ways that <code>debkeepr</code> seeks to overcome these problems to integrate the study and analysis of historical non-decimal currencies into the methodologies of Digital Humanities and the practices of <a href="http://ropensci.github.io/reproducibility-guide/">reproducible research</a>. For further examples of the use cases for <code>debkeepr</code> and how the package promotes practices of reproducible research, see the <a href="https://jessesadler.github.io/debkeepr/articles/transactions.html">Transactions in Richard Dafforne’s Journal</a> and <a href="https://jessesadler.github.io/debkeepr/articles/ledger.html">Analysis of Richard Dafforne’s Journal and Ledger</a> vignettes.</p>
 </div>
 <div id="useful-works-on-monetary-systems-and-the-history-of-accounting" class="section level2">
 <h2 class="hasAnchor">
@@ -845,7 +824,7 @@
 <ol>
 <li id="fn1"><p>Using the bases of 20 and 12 also had certain <a href="https://en.wikipedia.org/wiki/Duodecimal">arithmetic advantages</a>.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
 <li id="fn2"><p>For more information about the development of the system of pounds, shillings, and pence and medieval monetary systems more generally see Peter Spufford, <em>Money and its Use in Medieval Europe</em> (Cambridge: Cambridge University Press, 1988).<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
-<li id="fn3"><p>Does 13s. 4d. represent 2/3 of £1, as is the case with the standard bases of 20s. 12d., or it might represent about 0.44 of £1 with the Polish florin from Dafforne’s journal that has units of 30s. 18d.<a href="#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>Does 13s. 4d. represent 2/3 of £1, as is the case with the standard bases of 20s. 12d.? Or 13s. 4d. might represent less than half of £1 with the Polish florin from Dafforne’s journal that used units of 30s. 18d.<a href="#fnref3" class="footnote-back">↩︎</a></p></li>
 <li id="fn4"><p>It is for this reason that any function call that combines <code>debkeepr</code> vectors with different <code>bases</code> throws an error, while <code>deb_decimal</code> vectors with a different <code>unit</code> can be safely combined. The nominal difference between the three units is contained in the bases of the shillings and pence units.<a href="#fnref4" class="footnote-back">↩︎</a></p></li>
 <li id="fn5"><p>See the <a href="https://vctrs.r-lib.org/articles/s3-vector.html#casting-and-coercion">S3 vectors vignette</a> in the <code>vctrs</code> package for a fuller explanation of these terms. For a discussion of the goals of type stability for coercion, see the <a href="https://vctrs.r-lib.org/articles/stability.html">Type and size stability vignette</a> in the same package.<a href="#fnref5" class="footnote-back">↩︎</a></p></li>
 <li id="fn6"><p>Coercion of <code>deb_decimal</code> vectors with different <code>unit</code>s is implemented because, like <code>deb_lsd</code> and <code>deb_decimal</code> vectors, <code>deb_decimal</code> vectors with different <code>unit</code>s differ nominally, but, so long as they have equivalent <code>bases</code>, they represent values of the same currency.<a href="#fnref6" class="footnote-back">↩︎</a></p></li>

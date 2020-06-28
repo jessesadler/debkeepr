@@ -144,7 +144,7 @@
 <li>Historical currencies consist of three separate non-decimal <strong>units</strong>: pounds, shillings, and pence.</li>
 <li>The <strong>bases</strong> of the shillings and pence units differed by region, coinage, and era.</li>
 </ol>
-<p>The <code>deb_lsd</code> class maintains the tripartite structure of non-decimal currencies and provides a <code>bases</code> attribute to record the bases for the shillings and pence units. The <code>deb_decimal</code> class also contains a <code>bases</code> attribute, as well as a <code>unit</code> attribute to track which unit the decimalized value represents (pounds, shillings, or pence). The print methods for both classes show the <code>bases</code> attribute, and <code>deb_decimal</code> vectors include the <code>unit</code>.</p>
+<p>The <code>deb_lsd</code> type maintains the tripartite structure of non-decimal currencies and provides a <code>bases</code> attribute to record the bases for the shillings and pence units. The <code>deb_decimal</code> type also contains a <code>bases</code> attribute, as well as a <code>unit</code> attribute to track which unit the decimalized value represents (pounds, shillings, or pence). The print methods for both types show the <code>bases</code> attribute, and <code>deb_decimal</code> vectors include the <code>unit</code>.</p>
 <p>Let’s see how this works in practice, beginning with <code>deb_lsd</code> vectors. Note that all of the functions in <code>debkeepr</code> begin with the prefix <code>deb_</code>, which is short for double-entry bookkeeping.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/jessesadler/debkeepr">debkeepr</a></span>)
@@ -183,7 +183,7 @@
 <span class="co">#&gt; [1] 134:15s:11d</span>
 <span class="co">#&gt; # Bases: 20s 12d</span>
 </pre></div>
-<p>Both types allow the user to define the solidus and denarius units of values, enabling integration of currencies that do not use the standardized bases of 20 shillings to the pound and 12 pence to the shilling. An example of non-standard <a href="https://en.wikipedia.org/wiki/Unit_of_account">money of account</a> is the Polish florin found in Dafforne’s practice journal in which a florin consisted of 30 gros of 18 denars.</p>
+<p>Both types allow the user to define the solidus and denarius units of values, enabling integration of currencies that do not use the standardized bases. For example, the Polish florin found in Dafforne’s practice journal used the non-standard bases of 30 gros of 18 denars.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
 <span class="co"># Create deb_lsd vector with standard bases of 20s. 12d.</span>
 (<span class="kw">lsd3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/deb_lsd.html">deb_lsd</a></span>(l = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">28</span>, <span class="fl">32</span>, <span class="fl">54</span>, <span class="fl">18</span>),
@@ -242,7 +242,7 @@
 <span class="fu"><a href="reference/deb_lsd.html">deb_lsd</a></span>(<span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">6</span>) <span class="op">==</span> <span class="fu"><a href="reference/deb_decimal.html">deb_decimal</a></span>(<span class="fl">1326</span>, unit = <span class="st">"d"</span>)
 <span class="co">#&gt; [1] TRUE</span>
 </pre></div>
-<p>When working with decimalized data is preferable, the <code>deb_decimal</code> type makes casting from and to <code>deb_lsd</code> possible without losing any metadata about the <code>bases</code> and therefore the actual value being represented. <code>deb_lsd</code> and <code>deb_decimal</code> vectors can also be combined with numeric vectors or cast from and to numeric vectors. <code>debkeepr</code> uses an internal <a href="https://www.youtube.com/watch?v=8_QoT3ygdI4">conversion hierarchy</a> of <code><a href="https://rdrr.io/r/base/numeric.html">numeric()</a></code> -&gt; <code><a href="reference/deb_decimal.html">deb_decimal()</a></code> -&gt; <code><a href="reference/deb_lsd.html">deb_lsd()</a></code>.</p>
+<p>When working with decimalized data is preferable, the <code>deb_decimal</code> type makes casting from and to <code>deb_lsd</code> possible without losing any metadata about the <code>bases</code> and therefore the actual value being represented. <code>deb_lsd</code> and <code>deb_decimal</code> vectors can also be combined with numeric vectors or cast from and to numeric vectors. <code>debkeepr</code> uses an internal <a href="https://vctrs.r-lib.org/articles/type-size.html">conversion hierarchy</a> of <code><a href="https://rdrr.io/r/base/numeric.html">numeric()</a></code> -&gt; <code><a href="reference/deb_decimal.html">deb_decimal()</a></code> -&gt; <code><a href="reference/deb_lsd.html">deb_lsd()</a></code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
 <span class="co"># Combining deb_lsd and deb_decimal gives a deb_lsd vector</span>
 <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">dec1</span>, <span class="kw">lsd1</span>, <span class="kw">lsd2</span>)
@@ -301,7 +301,7 @@
 <li>
 <code>deb_decimal</code> implements a wider array of mathematical functions and arithmetic operations than <code>deb_lsd</code>.</li>
 <li>You can move between the two types without losing any data through <code><a href="reference/cast-lsd.html">deb_as_lsd()</a></code> and <code><a href="reference/cast-decimal.html">deb_as_decimal()</a></code> casting methods.</li>
-<li>Because <code>deb_lsd</code> and <code>deb_decimal</code> are based on the <a href="https://vctrs.r-lib.org/">vctrs</a> package, both act as expected in data frames or <a href="https://tibble.tidyverse.org">tibbles</a> columns. From <a href="https://www.tidyverse.org/blog/2020/06/dplyr-1-0-0/">dplyr 1.0.0</a> — which is the minimal version used by debkeepr — all dplyr functions work on both <code>debkeepr</code> types.</li>
+<li>Because <code>deb_lsd</code> and <code>deb_decimal</code> are based on the <a href="https://vctrs.r-lib.org/">vctrs</a> package, both types act as expected in data frames or <a href="https://tibble.tidyverse.org">tibbles</a> columns. From <a href="https://www.tidyverse.org/blog/2020/06/dplyr-1-0-0/">dplyr 1.0.0</a> — which is the minimal version used by debkeepr — all dplyr functions work on both <code>debkeepr</code> types.</li>
 <li>
 <a href="https://ggplot2.tidyverse.org">ggplot2</a> does not know how to pick a scale for <code>deb_lsd</code> vectors. In contrast, <code>deb_decimal</code> vectors work properly with <code>ggplot2</code>, though explicitly identifying the scale as continuous — with <code>scale_y_continuous()</code> or <code>scale_x_continuous()</code> — is needed to avoid the appearance of a message.</li>
 <li>
