@@ -100,12 +100,12 @@ interrelated problems inherent in historical currencies.
 2.  The **bases** of the shillings and pence units differed by region,
     coinage, and era.
 
-The `deb_lsd` class maintains the tripartite structure of non-decimal
+The `deb_lsd` type maintains the tripartite structure of non-decimal
 currencies and provides a `bases` attribute to record the bases for the
-shillings and pence units. The `deb_decimal` class also contains a
+shillings and pence units. The `deb_decimal` type also contains a
 `bases` attribute, as well as a `unit` attribute to track which unit the
 decimalized value represents (pounds, shillings, or pence). The print
-methods for both classes show the `bases` attribute, and `deb_decimal`
+methods for both types show the `bases` attribute, and `deb_decimal`
 vectors include the `unit`.
 
 Let’s see how this works in practice, beginning with `deb_lsd` vectors.
@@ -163,11 +163,8 @@ deb_normalize(deb_lsd(132, 53, 35))
 
 Both types allow the user to define the solidus and denarius units of
 values, enabling integration of currencies that do not use the
-standardized bases of 20 shillings to the pound and 12 pence to the
-shilling. An example of non-standard [money of
-account](https://en.wikipedia.org/wiki/Unit_of_account) is the Polish
-florin found in Dafforne’s practice journal in which a florin consisted
-of 30 gros of 18 denars.
+standardized bases. For example, the Polish florin found in Dafforne’s
+practice journal used the non-standard bases of 30 gros of 18 denars.
 
 ``` r
 # Create deb_lsd vector with standard bases of 20s. 12d.
@@ -239,8 +236,8 @@ makes casting from and to `deb_lsd` possible without losing any metadata
 about the `bases` and therefore the actual value being represented.
 `deb_lsd` and `deb_decimal` vectors can also be combined with numeric
 vectors or cast from and to numeric vectors. `debkeepr` uses an internal
-[conversion hierarchy](https://www.youtube.com/watch?v=8_QoT3ygdI4) of
-`numeric()` -\> `deb_decimal()` -\> `deb_lsd()`.
+[conversion hierarchy](https://vctrs.r-lib.org/articles/type-size.html)
+of `numeric()` -\> `deb_decimal()` -\> `deb_lsd()`.
 
 ``` r
 # Combining deb_lsd and deb_decimal gives a deb_lsd vector
@@ -306,8 +303,9 @@ the two types.
   - You can move between the two types without losing any data through
     `deb_as_lsd()` and `deb_as_decimal()` casting methods.
   - Because `deb_lsd` and `deb_decimal` are based on the
-    [vctrs](https://vctrs.r-lib.org/) package, both act as expected in
-    data frames or [tibbles](https://tibble.tidyverse.org) columns. From
+    [vctrs](https://vctrs.r-lib.org/) package, both types act as
+    expected in data frames or [tibbles](https://tibble.tidyverse.org)
+    columns. From
     [dplyr 1.0.0](https://www.tidyverse.org/blog/2020/06/dplyr-1-0-0/) —
     which is the minimal version used by debkeepr — all dplyr functions
     work on both `debkeepr` types.
