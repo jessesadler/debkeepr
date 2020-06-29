@@ -19,7 +19,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Jesse Sadler \email{jsadler@ucla.edu} (\href{https://orcid.org/0000-0001-6081-9681}{ORCID})
+\strong{Maintainer}: Jesse Sadler \email{jrsadler@icloud.com} (\href{https://orcid.org/0000-0001-6081-9681}{ORCID})
 
 }
 \keyword{internal}

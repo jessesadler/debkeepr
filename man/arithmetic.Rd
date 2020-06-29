@@ -16,7 +16,7 @@
 \alias{vec_arith.deb_decimal.MISSING}
 \alias{vec_arith.deb_lsd.deb_decimal}
 \alias{vec_arith.deb_decimal.deb_lsd}
-\title{Arithmetic operations for debvctrs}
+\title{Arithmetic operations for debkeepr}
 \usage{
 \method{vec_arith}{deb_lsd}(op, x, y)
 
@@ -52,5 +52,5 @@
 \item{x, y}{Vectors.}
 }
 \description{
-Arithmetic operations for debvctrs
+Arithmetic operations for debkeepr
 }
