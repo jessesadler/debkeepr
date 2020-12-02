@@ -22,7 +22,7 @@ Imports:
     tibble,
     methods
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.1.9000
 Suggests: 
     covr,
     knitr,
