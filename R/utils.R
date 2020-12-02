@@ -15,6 +15,7 @@ should_be_int <- function(x, tol = .Machine$double.eps^0.5) {
 #' Check that bases are natural numbers (whole number greater than 0).
 #' From integer docs and SO: https://stackoverflow.com/a/4562291
 #' @keywords internal
+
 is_natural <- function(x, tol = .Machine$double.eps^0.5) {
   x > tol & abs(x - round(x)) < tol
 }

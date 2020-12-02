@@ -52,7 +52,6 @@ lsd_check <- function(l, s, d) {
 #'
 #' @description
 #' Check that:
-#'
 #' - Bases are numeric vector of length 2
 #' - Cannot have NA values
 #' - Must be natural (whole) numbers greater that 0
@@ -84,6 +83,7 @@ deb_ptype_check <- function(x) {
 #'
 #' Remove any names of bases and then add unit names
 #' @keywords internal
+
 bases_assert <- function(bases) {
   bases <- rlang::set_names(bases, NULL) # vec_assert has error if named
   vec_assert(bases, ptype = integer(), size = 2)
@@ -97,6 +97,7 @@ bases_assert <- function(bases) {
 #' Used to ensure that deb_lsd and deb_decimal vectors with different bases
 #' cannot be combined except explicitly with `deb_convert_bases()`.
 #' @keywords internal
+
 bases_equal <- function(x, y) {
   if (!identical(deb_bases(x), deb_bases(y))) {
     rlang::abort(

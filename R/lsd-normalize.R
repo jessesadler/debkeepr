@@ -7,6 +7,7 @@
 #' point problems.
 #'
 #' @keywords internal
+
 decimal_check <- function(lsd) {
   l <- field(lsd, "l")
   s <- field(lsd, "s")
@@ -27,6 +28,7 @@ decimal_check <- function(lsd) {
 
 #' Check whether lsd value is positive or negative
 #' @keywords internal
+
 is_negative <- function(x) {
   field(x, "l") +
     field(x, "s") / deb_bases(x)[[1]] +
@@ -37,6 +39,7 @@ is_negative <- function(x) {
 #'
 #' Function that actually performs the normalization of lsd value
 #' @keywords internal
+
 normalize <- function(l, s, d, bases) {
   new_lsd(l = l + ((s + d %/% bases[[2]]) %/% bases[[1]]),
           s = (s + d %/% bases[[2]]) %% bases[[1]],
@@ -49,6 +52,7 @@ normalize <- function(l, s, d, bases) {
 #' Separate normalization functions for positive and negative values to be
 #' used in `dplyr::if_else()`. Making them functions simplifies the process.
 #' @keywords internal
+
 lsd_normalize <- function(lsd) {
 
   normalize(l = field(lsd, "l"),

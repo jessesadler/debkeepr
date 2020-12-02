@@ -3,7 +3,7 @@ Type: Package
 Title: Analysis of Non-Decimal Currencies and Double-Entry Bookkeeping
 Version: 0.0.5.9000
 Authors@R: person("Jesse", "Sadler",
-    email = "jsadler@ucla.edu",
+    email = "jrsadler@icloud.com",
     role = c("aut", "cre"),
     comment = c(ORCID = "0000-0001-6081-9681"))
 Description: Analysis of historical non-decimal currencies that use the
@@ -22,7 +22,7 @@ Imports:
     tibble,
     methods
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1.9000
 Suggests: 
     covr,
     knitr,
