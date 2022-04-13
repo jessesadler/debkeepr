@@ -1,5 +1,8 @@
 url: https://jessesadler.github.io/debkeepr/
 template:
+  bootstrap: 5
+  bslib:
+    primary: "#036684"
   params:
     ganalytics: UA-126059158-1
 authors:
