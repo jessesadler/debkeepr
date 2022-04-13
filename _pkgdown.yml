@@ -52,7 +52,7 @@ reference:
     contents:
     - dafforne_accounts
     - dafforne_transactions
-  title: internal
+  - title: internal
     contents:
     - arithmetic
     - comparison
