@@ -61,7 +61,7 @@ library(debkeepr)
 
 The `bases` argument makes it possible to create `deb_lsd` and `deb_decimal` vectors that represent currencies that use non-standard bases for the shillings and pence units such as the Polish florin found in Dafforne's practice journal of 30 gros of 18 denars.
 
-````{r polish-florin}
+```{r polish-florin}
 # Create deb_lsd vector of length 3 with bases of Polish florin
 (lsd_polish <- deb_lsd(l = c(32, 12, 26),
                        s = c(15, 1, 20),
