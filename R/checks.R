@@ -48,7 +48,59 @@ lsd_check <- function(l, s, d) {
   }
 }
 
-#' Checks for bases attribute
+#' Checks for deb_tetra functions
+#'
+#' @description
+#' Checks made:
+#' - That `l`, `s`, `d`, and `f` are numeric
+#' - That they are the same length, length 1, or all length 0
+#' @keywords internal
+
+tetra_check <- function(l, s, d, f) {
+  # Check that l, s, d, and f are numeric
+  if (!all(rlang::are_na(l))) {
+    if (!is.numeric(l)) {
+      rlang::abort("`l` must be a numeric vector.")
+    }
+  }
+
+  if (!all(rlang::are_na(s))) {
+    if (!is.numeric(s)) {
+      rlang::abort("`s` must be a numeric vector.")
+    }
+  }
+
+  if (!all(rlang::are_na(d))) {
+    if (!is.numeric(d)) {
+      rlang::abort("`d` must be a numeric vector.")
+    }
+  }
+
+  if (!all(rlang::are_na(f))) {
+    if (!is.numeric(f)) {
+      rlang::abort("`f` must be a numeric vector.")
+    }
+  }
+
+  # Check that l, s, d, and f are same length, length 1, or all length 0
+  lengths <- c(vec_size(l), vec_size(s), vec_size(d), vec_size(f))
+
+  # Must be either all zero length or no zero length
+  if (sum(lengths) == 1L || sum(lengths) == 2L) {
+    rlang::abort(
+      paste0("`l`, `s`, `d`, and `f` must all have values. ",
+             "You may have forgotten a value or need to use 0."))
+  }
+
+  # Must be only one length other than scalar
+  non_scalar <- lengths[lengths != 1L]
+  if (length(unique(non_scalar)) > 1L) {
+    rlang::abort(
+      "`l`, `s`, `d`, and `f` must be vectors of equal length or length 1.")
+  }
+}
+
+#' Checks for lsd bases attribute
 #'
 #' @description
 #' Check that:
@@ -57,9 +109,53 @@ lsd_check <- function(l, s, d) {
 #' - Must be natural (whole) numbers greater that 0
 #' @keywords internal
 
-bases_check <- function(bases) {
+lsd_bases_check <- function(bases) {
   if (!is.numeric(bases) || vec_size(bases) != 2L || is.null(bases)) {
     rlang::abort("`bases` must be a numeric vector of length 2.")
+  }
+  if (any(rlang::are_na(bases))) {
+    rlang::abort("`bases` cannot be `NA`.")
+  }
+  if (!all(is_natural(bases))) {
+    rlang::abort("`bases` must be natural numbers greater than zero.")
+  }
+}
+
+#' Checks for tetra bases attribute
+#'
+#' @description
+#' Check that:
+#' - Bases are numeric vector of length 3
+#' - Cannot have NA values
+#' - Must be natural (whole) numbers greater that 0
+#' @keywords internal
+
+tetra_bases_check <- function(bases) {
+  if (!is.numeric(bases) || vec_size(bases) != 3L || is.null(bases)) {
+    rlang::abort("`bases` must be a numeric vector of length 3.")
+  }
+  if (any(rlang::are_na(bases))) {
+    rlang::abort("`bases` cannot be `NA`.")
+  }
+  if (!all(is_natural(bases))) {
+    rlang::abort("`bases` must be natural numbers greater than zero.")
+  }
+}
+
+#' Checks for decimal bases attribute
+#'
+#' @description
+#' Check that:
+#' - Bases are numeric vector of length 2 or 3
+#' - Cannot have NA values
+#' - Must be natural (whole) numbers greater that 0
+#' @keywords internal
+
+dec_bases_check <- function(bases) {
+  if (!is.numeric(bases) || vec_size(bases) != 2L && vec_size(bases) != 3L ||
+      is.null(bases)) {
+    rlang::abort(
+      "`bases` must be a numeric vector of length 2 for lsd or 3 for tetra.")
   }
   if (any(rlang::are_na(bases))) {
     rlang::abort("`bases` cannot be `NA`.")
@@ -136,7 +232,7 @@ list_check <- function(x) {
 #' Check that:
 #'
 #' - `df` is a dataframe
-#' - `lsd`-column is provided
+#' - `lsd`column is provided
 #' - `credit` and `debit` columns are provided
 #' - `credit` and `debit` columns must be of the same type
 #' - `account_id` in `deb_account()` must be in credit or debit columns

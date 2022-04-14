@@ -39,7 +39,7 @@ deb_convert_bases.default <- function(x, to) {
 #' @rdname convert-bases
 #' @export
 deb_convert_bases.deb_lsd <- function(x, to) {
-  bases_check(to)
+  lsd_bases_check(to)
 
   from <- deb_bases(x)
   to <- vec_cast(to, to = integer())
@@ -61,7 +61,7 @@ deb_convert_bases.deb_lsd <- function(x, to) {
 #' @rdname convert-bases
 #' @export
 deb_convert_bases.deb_decimal <- function(x, to) {
-  bases_check(to)
+  lsd_bases_check(to)
 
   from <- deb_bases(x)
   to <- vec_cast(to, to = integer())

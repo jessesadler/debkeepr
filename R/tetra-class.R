@@ -21,8 +21,10 @@ new_tetra <- function(l = double(),
   vec_assert(d, ptype = double())
   vec_assert(f, ptype = double())
 
-  # Redo bases
-  # To do: bases <- bases_assert(bases)
+  # Bases assert
+  bases <- rlang::set_names(bases, NULL) # vec_assert has error if named
+  vec_assert(bases, ptype = integer(), size = 3)
+  bases <- rlang::set_names(bases, c("s", "d", "f"))
 
   new_rcrd(list(l = l, s = s, d = d, f = f),
            bases = bases,
@@ -100,8 +102,8 @@ deb_tetra <- function(l = double(),
                       f = double(),
                       bases = c(20, 12, 4)) {
   # Need to figure out checks
-  # To do: lsd_check(l, s, d)
-  # To do: bases_check(bases)
+  tetra_check(l, s, d, f)
+  tetra_bases_check(bases)
 
   c(l, s, d, f) %<-% vec_cast_common(l, s, d, f, .to = double())
   c(l, s, d, f) %<-% vec_recycle_common(l, s, d, f)

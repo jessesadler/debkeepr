@@ -101,7 +101,7 @@ deb_lsd <- function(l = double(),
                     bases = c(20, 12)) {
   # checks
   lsd_check(l, s, d)
-  bases_check(bases)
+  lsd_bases_check(bases)
 
   c(l, s, d) %<-% vec_cast_common(l, s, d, .to = double())
   c(l, s, d) %<-% vec_recycle_common(l, s, d)

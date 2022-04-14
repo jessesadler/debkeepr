@@ -28,7 +28,7 @@ test_that("deb_tetra works", {
   expect_equal(vctrs::field(x, "f"), c(2, 4, 6))
   expect_equal(deb_bases(x), c(s = 20L, d = 12L, f = 4L))
   expect_equal(deb_bases(deb_tetra(1, 2, 3, 4, bases = c(60, 16, 8))),
-               c(s = 60L, d = 16L, 8L))
+               c(s = 60L, d = 16L, f = 8L))
 })
 
 test_that("deb_lsd prints", {

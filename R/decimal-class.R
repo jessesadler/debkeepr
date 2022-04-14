@@ -84,7 +84,7 @@ deb_decimal <- function(x = double(),
                         unit = c("l", "s", "d"),
                         bases = c(20, 12)) {
   unit <- rlang::arg_match(unit)
-  bases_check(bases)
+  lsd_bases_check(bases)
 
   x <- vec_cast(x, to = double())
   bases <- vec_cast(bases, to = integer())

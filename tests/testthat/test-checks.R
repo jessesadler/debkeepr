@@ -57,25 +57,25 @@ test_that("length of l, s, and d are same length, length 1, or length 0", {
 })
 
 
-# bases_check -------------------------------------------------------------
+# lsd_bases_check -------------------------------------------------------------
 test_that("bases is numeric vector of length 2", {
   # Successful
-  expect_invisible(bases_check(c(20, 12)))
-  expect_error(bases_check(TRUE), bases_error2)
-  expect_error(bases_check(c("hello", "goodbye")), bases_error2)
-  expect_error(bases_check(1), bases_error2)
-  expect_error(bases_check(c(1, 3, 4)), bases_error2)
+  expect_invisible(lsd_bases_check(c(20, 12)))
+  expect_error(lsd_bases_check(TRUE), bases_error2)
+  expect_error(lsd_bases_check(c("hello", "goodbye")), bases_error2)
+  expect_error(lsd_bases_check(1), bases_error2)
+  expect_error(lsd_bases_check(c(1, 3, 4)), bases_error2)
 })
 
 test_that("bases does not have any missing values", {
-  expect_error(bases_check(c(NA, 3)), bases_error3)
-  expect_error(bases_check(c(3, NA)), bases_error3)
+  expect_error(lsd_bases_check(c(NA, 3)), bases_error3)
+  expect_error(lsd_bases_check(c(3, NA)), bases_error3)
 })
 
 test_that("bases are natural numbers", {
-  expect_error(bases_check(c(-12, -3)), bases_error4)
-  expect_error(bases_check(c(20, 0)), bases_error4)
-  expect_error(bases_check(c(20.5, 8.23)), bases_error4)
+  expect_error(lsd_bases_check(c(-12, -3)), bases_error4)
+  expect_error(lsd_bases_check(c(20, 0)), bases_error4)
+  expect_error(lsd_bases_check(c(20.5, 8.23)), bases_error4)
 })
 
 
