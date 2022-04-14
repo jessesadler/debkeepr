@@ -6,8 +6,7 @@
 \alias{debkeepr-package}
 \title{debkeepr: Analysis of Non-Decimal Currencies and Double-Entry Bookkeeping}
 \description{
-Analysis of historical non-decimal currencies that use the
-    tripartite system of pounds, shillings, and pence.
+Analysis of historical non-decimal currencies that use the tripartite system of pounds, shillings, and pence.
 }
 \seealso{
 Useful links:
