@@ -8,31 +8,46 @@
 #'
 #' @keywords internal
 
-decimal_check <- function(lsd) {
-  l <- field(lsd, "l")
-  s <- field(lsd, "s")
-  d <- field(lsd, "d")
+decimal_check <- function(x) {
+  l <- field(x, "l")
+  s <- field(x, "s")
+  d <- field(x, "d")
 
-  field(lsd, "l") <- trunc(l)
-  temp_s <- s + (l - trunc(l)) * deb_bases(lsd)[[1]]
-  field(lsd, "s") <- trunc(temp_s)
-  field(lsd, "d") <- d + (temp_s - trunc(temp_s)) * deb_bases(lsd)[[2]]
+  field(x, "l") <- trunc(l)
+  temp_s <- s + (l - trunc(l)) * deb_bases(x)[[1]]
+  field(x, "s") <- trunc(temp_s)
+  temp_d <- d + (temp_s - trunc(temp_s)) * deb_bases(x)[[2]]
 
-  # Deal with floating point problems potentially introduced by the above
-  field(lsd, "d") <- dplyr::if_else(should_be_int(field(lsd, "d")),
-                                    round(field(lsd, "d")),
-                                    field(lsd, "d"))
+  if (deb_is_lsd(x)) {
+    # Deal with floating point problems potentially introduced by the above
+    field(x, "d") <- dplyr::if_else(should_be_int(temp_d),
+                                    round(temp_d),
+                                    temp_d)
+  } else if (deb_is_tetra(x)) {
 
-  lsd
+    field(x, "d") <- trunc(temp_d)
+    temp_f <- field(x, "f") + (temp_d - trunc(temp_d)) * deb_bases(x)[[3]]
+    field(x, "f") <- dplyr::if_else(should_be_int(temp_f),
+                                    round(temp_f),
+                                    temp_f)
+  }
+  x
 }
 
 #' Check whether lsd value is positive or negative
 #' @keywords internal
 
 is_negative <- function(x) {
-  field(x, "l") +
-    field(x, "s") / deb_bases(x)[[1]] +
-    field(x, "d") / prod(deb_bases(x)) < 0
+  if (deb_is_lsd(x)) {
+    field(x, "l") +
+      field(x, "s") / deb_bases(x)[[1]] +
+      field(x, "d") / prod(deb_bases(x)) < 0
+  } else if (deb_is_tetra(x)) {
+    field(x, "l") +
+      field(x, "s") / deb_bases(x)[[1]] +
+      field(x, "d") / prod(deb_bases(x)[1:2]) +
+      field(x, "f") / prod(deb_bases(x)) < 0
+  }
 }
 
 #' Normalization function
@@ -41,8 +56,12 @@ is_negative <- function(x) {
 #' @keywords internal
 
 normalize <- function(l, s, d, bases) {
-  new_lsd(l = l + ((s + d %/% bases[[2]]) %/% bases[[1]]),
-          s = (s + d %/% bases[[2]]) %% bases[[1]],
+
+  solidus <- s + (d %/% bases[[2]])
+  libra <- l + (solidus %/% bases[[1]])
+
+  new_lsd(l = libra,
+          s = solidus %% bases[[1]],
           d = d %% bases[[2]],
           bases = bases)
 }
@@ -75,6 +94,55 @@ lsd_normalize_neg <- function(lsd) {
   -ret
 }
 
+
+#' Tetra  normalization function
+#'
+#' Function that actually performs the normalization of tetra values
+#' @keywords internal
+
+tetra_normalize <- function(l, s, d, f, bases) {
+
+  denarius <- d + (f %/% bases[[3]])
+  solidus <- s + (denarius %/% bases[[2]])
+  libra <- l + (solidus %/% bases[[1]])
+
+  new_tetra(l = libra,
+            s = solidus %% bases[[1]],
+            d = denarius %% bases[[2]],
+            f = f %% bases[[3]],
+            bases = bases)
+}
+
+#' Normalization path for positive tetra values
+#'
+#' Separate normalization functions for positive and negative values to be
+#' used in `dplyr::if_else()`. Making them functions simplifies the process.
+#' @keywords internal
+
+tetra_normalize_pos <- function(tetra) {
+
+  tetra_normalize(l = field(tetra, "l"),
+                  s = field(tetra, "s"),
+                  d = field(tetra, "d"),
+                  f = field(tetra, "f"),
+                  bases = deb_bases(tetra))
+}
+
+#' Normalization path for negative tetra values
+#'
+#' Turn values positive and then return to negative value.
+#' @keywords internal
+tetra_normalize_neg <- function(tetra) {
+
+  ret <- tetra_normalize(l = -field(tetra, "l"),
+                         s = -field(tetra, "s"),
+                         d = -field(tetra, "d"),
+                         f = -field(tetra, "f"),
+                         bases = deb_bases(tetra))
+
+  # Implement arithmetic
+  ret
+}
 
 # deb_normalize methods ---------------------------------------------------
 
@@ -139,4 +207,13 @@ deb_normalize.numeric <- function(x, bases = c(20, 12), ...) {
 
   lsd <- deb_lsd(x[[1]], x[[2]], x[[3]], bases)
   deb_normalize(lsd)
+}
+
+#' @rdname normalize
+#' @export
+deb_normalize.deb_tetra <- function(x, ...) {
+  checked <- decimal_check(x)
+  dplyr::if_else(is_negative(x),
+                 tetra_normalize_neg(checked),
+                 tetra_normalize_pos(checked))
 }

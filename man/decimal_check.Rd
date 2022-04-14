@@ -4,7 +4,7 @@
 \alias{decimal_check}
 \title{Check for non-whole numbers in libra and solidus units}
 \usage{
-decimal_check(lsd)
+decimal_check(x)
 }
 \description{
 Move any decimals in libra and solidus units to the denarius unit.

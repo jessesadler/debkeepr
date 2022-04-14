@@ -6,6 +6,7 @@
 \alias{deb_normalize.default}
 \alias{deb_normalize.deb_lsd}
 \alias{deb_normalize.numeric}
+\alias{deb_normalize.deb_tetra}
 \title{Normalization function}
 \usage{
 normalize(l, s, d, bases)
@@ -17,6 +18,8 @@ deb_normalize(x, ...)
 \method{deb_normalize}{deb_lsd}(x, ...)
 
 \method{deb_normalize}{numeric}(x, bases = c(20, 12), ...)
+
+\method{deb_normalize}{deb_tetra}(x, ...)
 }
 \arguments{
 \item{bases}{Used only if \code{x} is a numeric vector. A Numeric vector of
