@@ -197,8 +197,8 @@ bases_assert <- function(bases) {
 bases_equal <- function(x, y) {
   if (!identical(deb_bases(x), deb_bases(y))) {
     rlang::abort(
-      paste0("`bases` attributes must be equal to combine <deb_lsd> ",
-             "or <deb_decimal> vectors."))
+      paste0("`bases` attributes must be equal to combine <deb_lsd>, ",
+             "<deb_tetra>, or <deb_decimal> vectors."))
   }
 }
 
