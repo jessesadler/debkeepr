@@ -181,7 +181,6 @@ deb_ptype_check <- function(x) {
 #' @keywords internal
 
 bases_assert <- function(bases) {
-  bases <- rlang::set_names(bases, NULL) # vec_assert has error if named
   vec_assert(bases, ptype = integer(), size = 2)
   rlang::set_names(bases, c("s", "d"))
 }

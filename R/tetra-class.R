@@ -22,7 +22,6 @@ new_tetra <- function(l = double(),
   vec_assert(f, ptype = double())
 
   # Bases assert
-  bases <- rlang::set_names(bases, NULL) # vec_assert has error if named
   vec_assert(bases, ptype = integer(), size = 3)
   bases <- rlang::set_names(bases, c("s", "d", "f"))
 

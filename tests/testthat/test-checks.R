@@ -82,7 +82,7 @@ test_that("bases are natural numbers", {
 # Equivalency -------------------------------------------------------------
 
 test_that("bases assert allows named vector", {
-  expect_equal(bases_assert(c(s = 20L, d = 12L)),
+  expect_equal(bases_assert(c(f = 20L, g = 12L)),
                c(s = 20L, d = 12L))
 })
 
