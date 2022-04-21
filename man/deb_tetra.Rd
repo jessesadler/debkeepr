@@ -56,7 +56,7 @@ deb_tetra(5, 3, 8, 2)
 deb_tetra(l = c(10, 8, 5),
           s = c(6, 13, 8),
           d = c(8, 4, 10),
-          f = c(2, 3, 1, 0))
+          f = c(2, 3, 1))
 
 # Recycle length 1 vector
 deb_tetra(l = c(10, 8, 5),
@@ -68,8 +68,8 @@ deb_tetra(l = c(10, 8, 5),
 deb_tetra(5, 3, 8, 2, bases = c(60, 16, 8))
 deb_tetra(l = c(10, 28, 5),
           s = c(6, 33, 13),
-          d = c(8, 42, 10),
-          f = c(5, 3, 1, 6)
+          d = c(8, 12, 10),
+          f = c(5, 3, 6),
           bases = c(60, 16, 8))
 
 # Create a prototype or vector of length 0
