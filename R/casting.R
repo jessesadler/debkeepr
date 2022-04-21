@@ -73,14 +73,39 @@ vec_cast.deb_decimal.deb_decimal <- function(x, to, ...) {
 
   bases <- deb_bases(x)
 
-  converted <- dplyr::case_when(
-    from_unit == "l" & to_unit == "s" ~ x * bases[[1]],
-    from_unit == "l" & to_unit == "d" ~ x * prod(bases),
-    from_unit == "s" & to_unit == "d" ~ x * bases[[2]],
-    from_unit == "s" & to_unit == "l" ~ x / bases[[1]],
-    from_unit == "d" & to_unit == "l" ~ x / prod(bases),
-    from_unit == "d" & to_unit == "s" ~ x / bases[[2]]
-  )
+  if (to_unit == "f" && vec_size(bases) != 3L) {
+    rlang::abort(
+      "`bases` must be a numeric vector of length 3 to use `'f'` unit.")
+  }
+
+  # Need separate case_when() functions for lsd and tetra bases
+  # to avoid bases[[3]] from being out of bounds.
+  if (vec_size(bases) == 2L) {
+    converted <- dplyr::case_when(
+      from_unit == "l" & to_unit == "s" ~ x * bases[[1]],
+      from_unit == "l" & to_unit == "d" ~ x * prod(bases[1:2]),
+      from_unit == "s" & to_unit == "d" ~ x * bases[[2]],
+      from_unit == "s" & to_unit == "l" ~ x / bases[[1]],
+      from_unit == "d" & to_unit == "l" ~ x / prod(bases[1:2]),
+      from_unit == "d" & to_unit == "s" ~ x / bases[[2]]
+    )
+  } else {
+    converted <- dplyr::case_when(
+      from_unit == "l" & to_unit == "s" ~ x * bases[[1]],
+      from_unit == "l" & to_unit == "d" ~ x * prod(bases[1:2]),
+      from_unit == "s" & to_unit == "d" ~ x * bases[[2]],
+      from_unit == "s" & to_unit == "l" ~ x / bases[[1]],
+      from_unit == "d" & to_unit == "l" ~ x / prod(bases[1:2]),
+      from_unit == "d" & to_unit == "s" ~ x / bases[[2]],
+      # With tetra farthing unit
+      from_unit == "l" & to_unit == "f" ~ x * prod(bases),
+      from_unit == "s" & to_unit == "f" ~ x * prod(bases[2:3]),
+      from_unit == "d" & to_unit == "f" ~ x * bases[[3]],
+      from_unit == "f" & to_unit == "l" ~ x / prod(bases),
+      from_unit == "f" & to_unit == "s" ~ x / prod(bases[2:3]),
+      from_unit == "f" & to_unit == "d" ~ x / bases[[3]]
+    )
+  }
 
   attr(converted, "unit") <- to_unit
 
@@ -474,7 +499,7 @@ deb_as_decimal.deb_lsd <- function(x, unit = c("l", "s", "d"), ...) {
 #' @rdname cast-decimal
 #' @export
 deb_as_decimal.numeric <- function(x,
-                                   unit = c("l", "s", "d"),
+                                   unit = c("l", "s", "d", "f"),
                                    bases = c(20, 12), ...) {
   vec_cast(x, to = deb_decimal(unit = unit, bases = bases))
 }
@@ -482,7 +507,7 @@ deb_as_decimal.numeric <- function(x,
 #' @rdname cast-decimal
 #' @export
 deb_as_decimal.logical <- function(x,
-                                   unit = c("l", "s", "d"),
+                                   unit = c("l", "s", "d", "f"),
                                    bases = c(20, 12), ...) {
   vec_cast(x, to = deb_decimal(unit = unit, bases = bases))
 }
@@ -490,7 +515,7 @@ deb_as_decimal.logical <- function(x,
 #' @rdname cast-decimal
 #' @export
 deb_as_decimal.list <- function(x,
-                                unit = c("l", "s", "d"),
+                                unit = c("l", "s", "d", "f"),
                                 bases = c(20, 12), ...) {
   vec_cast(x, to = deb_decimal(unit = unit, bases = bases))
 }
