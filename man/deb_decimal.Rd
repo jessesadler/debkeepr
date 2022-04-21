@@ -4,7 +4,7 @@
 \alias{deb_decimal}
 \title{A decimalized class for pounds, shillings, and pence values}
 \usage{
-deb_decimal(x = double(), unit = c("l", "s", "d"), bases = c(20, 12))
+deb_decimal(x = double(), unit = c("l", "s", "d", "f"), bases = c(20, 12))
 }
 \arguments{
 \item{x}{A numeric vector representing the decimalized values of a

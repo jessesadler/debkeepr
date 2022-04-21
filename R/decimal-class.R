@@ -12,12 +12,22 @@
 #' @keywords internal
 
 new_decimal <- function(x = double(),
-                        unit = c("l", "s", "d"),
+                        unit = c("l", "s", "d", "f"),
                         bases = c(20L, 12L)) {
   unit <- rlang::arg_match(unit)
 
   vec_assert(x, ptype = double())
-  bases <- bases_assert(bases)
+  vec_assert(bases, ptype = integer())
+
+  # Check size of bases and add names to bases vector
+  if (vec_size(bases) == 2L) {
+    bases <- rlang::set_names(bases, c("s", "d"))
+  } else if (vec_size(bases) == 3L) {
+    bases <- rlang::set_names(bases, c("s", "d", "f"))
+  } else {
+    rlang::abort(
+      "`bases` must be a numeric vector of length 2 for lsd or 3 for tetra.")
+  }
 
   new_vctr(x,
            unit = unit,
@@ -81,10 +91,14 @@ new_decimal <- function(x = double(),
 #' deb_decimal()
 
 deb_decimal <- function(x = double(),
-                        unit = c("l", "s", "d"),
+                        unit = c("l", "s", "d", "f"),
                         bases = c(20, 12)) {
   unit <- rlang::arg_match(unit)
-  lsd_bases_check(bases)
+  if (unit == "f" && vec_size(bases) != 3L) {
+    rlang::abort(
+      "`bases` must be a numeric vector of length 3 to use `'f'` unit.")
+  }
+  dec_bases_check(bases)
 
   x <- vec_cast(x, to = double())
   bases <- vec_cast(bases, to = integer())
@@ -139,8 +153,10 @@ unit_word <- function(x) {
     unit <- "libra"
   } else if (attr(x, "unit") == "s") {
     unit <- "solidus"
-  } else {
+  } else if (attr(x, "unit") == "d") {
     unit <- "denarius"
+  } else {
+    unit <- "farthing"
   }
   unit
 }
@@ -154,10 +170,18 @@ obj_print_footer.deb_decimal <- function(x, ...) {
   # Use full name of unit
   unit <- unit_word(x)
 
-  s <- format(attr(x, "bases")[[1]])
-  d <- format(attr(x, "bases")[[2]])
-  cat("# Unit: ", unit, "\n",
-      "# Bases: ", s, "s ", d, "d", "\n", sep = "")
+  if (vec_size(deb_bases(x)) == 2L) {
+    s <- format(attr(x, "bases")[[1]])
+    d <- format(attr(x, "bases")[[2]])
+    cat("# Unit: ", unit, "\n",
+        "# Bases: ", s, "s ", d, "d", "\n", sep = "")
+  } else {
+    s <- format(attr(x, "bases")[[1]])
+    d <- format(attr(x, "bases")[[2]])
+    f <- format(attr(x, "bases")[[3]])
+    cat("# Unit: ", unit, "\n",
+        "# Bases: ", s, "s ", d, "d ", f, "f", "\n", sep = "")
+  }
 }
 
 # Abbreviated name type ---------------------------------------------------
@@ -168,7 +192,15 @@ obj_print_footer.deb_decimal <- function(x, ...) {
 #' @export
 
 vec_ptype_abbr.deb_decimal <- function(x) {
-  paste0(attr(x, "unit"), "[",
-         attr(x, "bases")[[1]], "s:",
-         attr(x, "bases")[[2]], "d]")
+
+  if (vec_size(deb_bases(x)) == 2L) {
+    paste0(attr(x, "unit"), "[",
+           attr(x, "bases")[[1]], "s:",
+           attr(x, "bases")[[2]], "d]")
+  } else {
+    paste0(attr(x, "unit"), "[",
+           attr(x, "bases")[[1]], "s:",
+           attr(x, "bases")[[2]], "d:",
+           attr(x, "bases")[[3]], "f]")
+  }
 }
