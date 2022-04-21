@@ -1,4 +1,4 @@
-## Casting for deb_lsd and deb_decimal ##
+## Casting for deb_lsd, deb_tetra, and deb_decimal ##
 
 # deb_lsd -----------------------------------------------------------------
 
@@ -109,6 +109,62 @@ vec_cast.deb_decimal.integer  <- function(x, to, ...) {
 #' @export
 vec_cast.character.deb_decimal <- function(x, to, ...) {
   as.character(vec_data(x))
+}
+
+# deb_tetra ---------------------------------------------------------------
+
+# deb_tetra to deb_tetra
+
+#' @export
+vec_cast.deb_tetra.deb_tetra <- function(x, to, ...) {
+  bases_equal(x, to)
+  x
+}
+
+# deb_tetra to double
+
+#' @export
+vec_cast.double.deb_tetra <- function(x, to, ...) {
+  l <- field(x, "l")
+  s <- field(x, "s")
+  d <- field(x, "d")
+  f <- field(x, "f")
+  bases <- deb_bases(x)
+
+  l + s / bases[[1]] + d / prod(bases[1:2]) + f / prod(bases)
+}
+
+# double to deb_tetra
+
+#' @export
+vec_cast.deb_tetra.double <- function(x, to, ...) {
+  # If statements enables casting from a numeric prototype:
+  if (vec_size(x) == 0) {
+    deb_tetra(bases = deb_bases(to))
+  } else {
+    tetra <- deb_tetra(x, 0, 0, 0, bases = deb_bases(to))
+    deb_normalize(tetra)
+  }
+}
+
+# integer to deb_tetra
+
+#' @export
+vec_cast.deb_tetra.integer <- function(x, to, ...) {
+  # If statements enables casting from a numeric prototype:
+  if (vec_size(x) == 0) {
+    deb_tetra(bases = deb_bases(to))
+  } else {
+    tetra <- deb_tetra(x, 0, 0, 0, bases = deb_bases(to))
+  }
+}
+
+# deb_tetra to character
+# Enables View(as.data.frame(deb_tetra))
+
+#' @export
+vec_cast.character.deb_tetra <- function(x, to, ...) {
+  format(x, ...)
 }
 
 # lsd and list ------------------------------------------------------------
