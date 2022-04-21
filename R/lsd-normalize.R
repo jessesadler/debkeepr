@@ -140,8 +140,7 @@ tetra_normalize_neg <- function(tetra) {
                          f = -field(tetra, "f"),
                          bases = deb_bases(tetra))
 
-  # Implement arithmetic
-  ret
+  -ret
 }
 
 # deb_normalize methods ---------------------------------------------------
