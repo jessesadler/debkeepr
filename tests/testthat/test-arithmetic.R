@@ -20,7 +20,7 @@ dec2 <- deb_decimal(c(1.8375, NA, 5.225, 3.2875, 1.1125))
 dec3 <- deb_decimal(c(1.8375, 5.225, 3.2875, 1.1125))
 
 bases_error <- paste0("`bases` attributes must be equal to combine ",
-                      "<deb_lsd> or <deb_decimal> vectors.")
+                      "<deb_lsd>, <deb_tetra>, or <deb_decimal> vectors.")
 
 
 # vec_math ----------------------------------------------------------------
