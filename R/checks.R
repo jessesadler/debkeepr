@@ -202,6 +202,25 @@ bases_equal <- function(x, y) {
 }
 
 
+
+# Mixed bases equivalent --------------------------------------------------
+
+#' Check that s and d bases are equal for deb_lsd and deb_tetra vectors
+#'
+#' Used to ensure that deb_lsd and deb_tetra vectors can only be combined
+#' if they share the same s and d bases. Create a different function from
+#' `bases_equal()` for better error message and to keep simplicity of calling
+#' `deb_bases()` within the function instead of in the variables.
+#' @keywords internal
+
+mixed_bases_equal <- function(x, y) {
+  if (!identical(x, y)) {
+    rlang::abort(
+      paste0("s and d units of the `bases` attributes must be equal to ",
+             "combine <deb_lsd> and <deb_tetra> vectors."))
+  }
+}
+
 # list checks -------------------------------------------------------------
 
 #' lsd list check
