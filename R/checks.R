@@ -202,13 +202,13 @@ bases_equal <- function(x, y) {
 }
 
 
-# list check --------------------------------------------------------------
+# list checks -------------------------------------------------------------
 
-#' List check
+#' lsd list check
 #'
 #' Ensure that lists only include numeric vectors of length 3
 #' @keywords internal
-list_check <- function(x) {
+lsd_list_check <- function(x) {
   if (any(vapply(x, rlang::is_null, logical(1)))) {
     x <- Filter(length, x)
   }
@@ -220,6 +220,25 @@ list_check <- function(x) {
 
   if (!identical(lsd_lengths, 3L)) {
     rlang::abort("`x` must be a list of numeric vectors of length 3.")
+  }
+}
+
+#' tetra list check
+#'
+#' Ensure that lists only include numeric vectors of length 4
+#' @keywords internal
+tetra_list_check <- function(x) {
+  if (any(vapply(x, rlang::is_null, logical(1)))) {
+    x <- Filter(length, x)
+  }
+  if (!all(vapply(x, is.numeric, logical(1)))) {
+    rlang::abort("`x` must be a list of numeric vectors.")
+  }
+
+  lsd_lengths <- unique(list_sizes(x))
+
+  if (!identical(lsd_lengths, 4L)) {
+    rlang::abort("`x` must be a list of numeric vectors of length 4.")
   }
 }
 

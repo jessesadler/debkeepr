@@ -200,7 +200,7 @@ vec_cast.character.deb_tetra <- function(x, to, ...) {
 
 #' @export
 vec_cast.deb_lsd.list <- function(x, to, ...) {
-  list_check(x)
+  lsd_list_check(x)
 
   deb_lsd(l = vapply(x, `[[`, i = 1, double(1)),
           s = vapply(x, `[[`, i = 2, double(1)),
@@ -212,11 +212,24 @@ vec_cast.deb_lsd.list <- function(x, to, ...) {
 
 #' @export
 vec_cast.deb_decimal.list <- function(x, to, ...) {
-  list_check(x)
+  lsd_list_check(x)
 
   lsd <- vec_cast(x, to = deb_lsd(bases = deb_bases(to)))
 
   lsd_to_decimal(lsd, to)
+}
+
+# list to deb_tetra
+
+#' @export
+vec_cast.deb_tetra.list <- function(x, to, ...) {
+  tetra_list_check(x)
+
+  deb_tetra(l = vapply(x, `[[`, i = 1, double(1)),
+            s = vapply(x, `[[`, i = 2, double(1)),
+            d = vapply(x, `[[`, i = 3, double(1)),
+            f = vapply(x, `[[`, i = 4, double(1)),
+            bases = deb_bases(to))
 }
 
 # deb_lsd to list of deb_lsd values
@@ -233,23 +246,41 @@ vec_cast.list.deb_lsd <- function(x, to, ...) {
   lapply(inside_out, unlist, use.names = FALSE)
 }
 
-# Cast deb_lsd to list
+# deb_tetra to list of deb_tetra values
 
-#' Cast `deb_lsd` to a list of lsd values
+#' @export
+vec_cast.list.deb_tetra <- function(x, to, ...) {
+  # unclass deb_tetra vector and create list of list
+  # seq_along x to get i
+  fields <- seq_along(x)
+  inside_out <- lapply(fields, function(i) {
+    lapply(unclass(x), .subset2, i)
+  })
+  # Flatten list
+  lapply(inside_out, unlist, use.names = FALSE)
+}
+
+# Cast deb_lsd or deb_tetra to list
+
+#' Cast `deb_lsd` or `deb_tetra` to a list of values
 #'
-#' Cast a `deb_lsd` vector to a list of numeric vectors containing lsd values.
+#' Cast a `deb_lsd` or `deb_tetra` vector to a list of numeric vectors either
+#' three or four values per list item corresponding to lsd or tetra values.
 #'
 #' @details
-#' `deb_as_list()` turns a `deb_lsd` vector into a list of numeric vectors of
-#' length 3. It is the inverse of `deb_as_lsd()`. Compare to `as.list()`,
-#' which creates a list of `deb_lsd` vectors or `unclass()`, which creates a
-#' list of length 3 with numeric vectors for pounds, shillings, and pence.
+#' `deb_as_list()` turns a `deb_lsd` or `deb_tetra` vector into a list of
+#' numeric vectors of length 3 or 4. It is the inverse of `deb_as_lsd()` and
+#' `deb_as_tetra()`. Compare to `as.list()`, which creates a list of `deb_lsd`
+#' or `deb_tetra` vectors or `unclass()`, which creates a list of length 3 or
+#' 4 with numeric vectors corresponding to the units.
 #'
-#' @param x A `deb_lsd` vector to cast to a list of lsd values.
+#' @param x A `deb_lsd` or `deb_tetra` vector to cast to a list of values.
 #' @param ... Arguments passed on to further methods.
 #'
-#' @seealso [`deb_as_lsd()`] for the inverse of `deb_as_list()`.
-#' @return A list of numeric vectors of length 3, corresponding to lsd values.
+#' @seealso [`deb_as_lsd()`] and [`deb_as_tetra()`] for the inverse of
+#'   `deb_as_list()`.
+#' @return A list of numeric vectors of length 3 or 4, corresponding to lsd
+#'   or tetra values.
 #' @examples
 #'
 #' # deb_lsd vector
@@ -257,17 +288,35 @@ vec_cast.list.deb_lsd <- function(x, to, ...) {
 #'
 #' deb_as_list(x)
 #'
+#' # deb_tetra vector
+#'
+#' y <- deb_tetra(l = 0:3, s = 4:7, d = 8:11, f = 1:4)
+#'
+#' deb_as_list(y)
+#'
 #' # This is the inverse of `deb_as_lsd()` of a list of lsd values
-#' y <- deb_as_list(x)
+#' z <- deb_as_list(x)
 #'
-#' identical(x, deb_as_lsd(y))
+#' identical(x, deb_as_lsd(z))
 #'
-#' @export
+#' @name list-lsd
+NULL
 
-deb_as_list <- function(x, ...) {
-  if (!deb_is_lsd(x)) {
-    rlang::abort("`x` must be a <deb_lsd> vector.")
-  }
+#' @rdname list-lsd
+#' @export
+deb_as_list  <- function(x, ...) {
+  UseMethod("deb_as_list")
+}
+
+#' @rdname list-lsd
+#' @export
+deb_as_list.deb_lsd <- function(x, ...) {
+  vec_cast(x, list())
+}
+
+#' @rdname list-lsd
+#' @export
+deb_as_list.deb_tetra <- function(x, ...) {
   vec_cast(x, list())
 }
 
