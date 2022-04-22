@@ -320,7 +320,8 @@ deb_as_list.deb_tetra <- function(x, ...) {
   vec_cast(x, list())
 }
 
-# deb_decimal to deb_lsd --------------------------------------------------
+
+# To deb_lsd --------------------------------------------------------------
 
 #' deb_decimal to deb_lsd utility
 #'
@@ -348,7 +349,31 @@ vec_cast.deb_lsd.deb_decimal <- function(x, to, ...) {
   decimal_to_lsd(x)
 }
 
-# deb_lsd to deb_decimal --------------------------------------------------
+#' deb_tetra to deb_lsd utility
+#'
+#' Add f / farthing base to d
+#' @keywords internal
+
+tetra_to_lsd <- function(x) {
+  bases <- deb_bases(x)
+
+  lsd <- new_lsd(l = field(x, "l"),
+                 s = field(x, "s"),
+                 d = field(x, "d") + field(x, "f") / bases[[3]],
+                 bases = bases[1:2])
+
+  deb_normalize(lsd)
+}
+
+#' @export
+vec_cast.deb_lsd.deb_tetra <- function(x, to, ...) {
+  mixed_bases_equal(deb_bases(x)[1:2], deb_bases(to))
+
+  tetra_to_lsd(x)
+}
+
+
+# To deb_decimal ----------------------------------------------------------
 
 #' deb_lsd to deb_decimal utility
 #'
@@ -382,6 +407,93 @@ vec_cast.deb_decimal.deb_lsd <- function(x, to, ...) {
 }
 
 
+#' deb_tetra to deb_decimal utility
+#'
+#' Arithmetic based on the unit
+#' @keywords internal
+
+tetra_to_decimal <- function(x, to) {
+  l <- field(x, "l")
+  s <- field(x, "s")
+  d <- field(x, "d")
+  f <- field(x, "f")
+  bases <- deb_bases(x)
+  unit <- deb_unit(to)
+
+  if (unit == "l") {
+    decimalized <- l + s / bases[[1]] + d / prod(bases[1:2]) + f / prod(bases)
+  } else if (unit == "s") {
+    decimalized <- l * bases[[1]] + s + d / bases[[2]] + f / prod(bases[2:3])
+  } else if (unit == "d") {
+    decimalized <- l * prod(bases[1:2]) + s * bases[[2]] + d + f / bases[[3]]
+  } else if (unit == "f") {
+    decimalized <- l * prod(bases) + s * prod(bases[2:3]) + d * bases[[3]] + f
+  }
+  new_decimal(x = decimalized,
+              unit = unit,
+              bases = bases)
+}
+
+#' @export
+vec_cast.deb_decimal.deb_tetra <- function(x, to, ...) {
+  bases_equal(x, to)
+
+  tetra_to_decimal(x, to)
+}
+
+
+# To deb_tetra ------------------------------------------------------------
+
+#' deb_lsd to deb_tetra utility
+#'
+#' Add f unit and normalize
+#' @keywords internal
+
+lsd_to_tetra <- function(x, to) {
+  tetra <- new_tetra(l = field(x, "l"),
+                     s = field(x, "s"),
+                     d = field(x, "d"),
+                     f = 0,
+                     bases = deb_bases(to))
+
+  deb_normalize(tetra)
+}
+
+#' @export
+vec_cast.deb_tetra.deb_lsd <- function(x, to, ...) {
+  mixed_bases_equal(deb_bases(x), deb_bases(to)[1:2])
+
+  lsd_to_tetra(x, to)
+}
+
+#' deb_decimal to deb_tetra utility
+#'
+#' Find unit and normalize
+#' @keywords internal
+
+decimal_to_tetra <- function(x) {
+  bases <- deb_bases(x)
+  unit <- deb_unit(x)
+
+  if (unit == "l") {
+    tetra <- deb_tetra(x, 0, 0, 0, bases = bases)
+  } else if (unit == "s") {
+    tetra <- deb_tetra(0, x, 0, 0, bases = bases)
+  } else if (unit == "d") {
+    tetra <- deb_tetra(0, 0, x, 0, bases = bases)
+  } else if (unit == "f") {
+    tetra <- deb_tetra(0, 0, 0, x, bases = bases)
+  }
+  deb_normalize(tetra)
+}
+
+#' @export
+vec_cast.deb_tetra.deb_decimal <- function(x, to, ...) {
+  bases_equal(x, to)
+
+  decimal_to_tetra(x)
+}
+
 # deb_lsd casting methods -------------------------------------------------
 
 #' Cast to `deb_lsd`
@@ -401,7 +513,7 @@ vec_cast.deb_decimal.deb_lsd <- function(x, to, ...) {
 #'   1 shilling = 12 pence.
 #'
 #' @return A `deb_lsd` vector.
-#' @seealso [`deb_as_decimal()`]
+#' @seealso [`deb_as_decimal()`] and [`deb_as_tetra()`]
 #'
 #' @examples
 #'
@@ -421,7 +533,7 @@ vec_cast.deb_decimal.deb_lsd <- function(x, to, ...) {
 #' # Use the bases argument to apply non-default bases
 #' deb_as_lsd(x, bases = c(60, 16))
 #'
-#' # Cast a list to deb_lsd provides an alternate to deb_lsd()
+#' # Casting a list to deb_lsd provides an alternate to deb_lsd()
 #' # This can be helpful for legibility. Compare:
 #'
 #' list(c(5, 12, 3),
@@ -450,6 +562,12 @@ deb_as_lsd.deb_lsd <- function(x, ...) x
 #' @export
 deb_as_lsd.deb_decimal <- function(x, ...) {
   decimal_to_lsd(x)
+}
+
+#' @rdname cast-lsd
+#' @export
+deb_as_lsd.deb_tetra <- function(x, ...) {
+  tetra_to_lsd(x)
 }
 
 #' @rdname cast-lsd
@@ -491,7 +609,7 @@ deb_as_lsd.list <- function(x, bases = c(20, 12), ...) {
 #'   1 shilling = 12 pence.
 #'
 #' @return A `deb_decimal` vector.
-#' @seealso [`deb_as_lsd()`]
+#' @seealso [`deb_as_lsd()`] and [`deb_as_tetra()`]
 #'
 #' @examples
 #'
@@ -517,7 +635,7 @@ deb_as_lsd.list <- function(x, bases = c(20, 12), ...) {
 #' # the unit and apply non-default bases
 #' deb_as_decimal(y, unit = "s", bases = c(60, 16))
 #'
-#' # Cast a list to deb_lsd provides an alternate
+#' # Casting a list to deb_lsd provides an alternate
 #' # to deb_lsd() %>% deb_decimal()
 #'
 #' list(c(5, 12, 3),
@@ -547,6 +665,15 @@ deb_as_decimal.deb_lsd <- function(x, unit = c("l", "s", "d"), ...) {
 
 #' @rdname cast-decimal
 #' @export
+deb_as_decimal.deb_tetra <- function(x, unit = c("l", "s", "d", "f"), ...) {
+  unit <- rlang::arg_match(unit)
+  # Need to explicitly add bases to deb_decimal() to avoid error of not
+  # having a three unit bases attribute if "f" unit is chosen.
+  tetra_to_decimal(x, to = deb_decimal(unit = unit, bases = deb_bases(x)))
+}
+
+#' @rdname cast-decimal
+#' @export
 deb_as_decimal.numeric <- function(x,
                                    unit = c("l", "s", "d", "f"),
                                    bases = c(20, 12), ...) {
@@ -567,4 +694,111 @@ deb_as_decimal.list <- function(x,
                                 unit = c("l", "s", "d", "f"),
                                 bases = c(20, 12), ...) {
   vec_cast(x, to = deb_decimal(unit = unit, bases = bases))
+}
+
+# deb_tetra casting methods -----------------------------------------------
+
+#' Cast to `deb_tetra`
+#'
+#' Cast `x` to a `deb_tetra` vector.
+#'
+#' @details Casting a list of numeric vectors of length 4 to `deb_tetra`
+#' provides an alternate way to create a `deb_tetra` vector than
+#' [`deb_tetra()`]. This method may be helpful because the data is input
+#' by the value instead of by the unit.
+#'
+#' @param x An object to coerce to `deb_tetra`.
+#' @param ... Arguments passed on to further methods.
+#' @param bases Numeric vector of length 3 used to specify the bases for the
+#'   solidus or s, denarius or d, and farthing or f units. Default is
+#'   `c(20, 12, 4)`, which conforms to the English system of 1 pound =
+#'   20 shillings, 1 shilling = 12 pence, and 1 pence = 4 farthing.
+#'
+#' @return A `deb_tetra` vector.
+#' @seealso [`deb_as_lsd()`] and [`deb_as_decimal()`]
+#'
+#' @examples
+#'
+#' # Cast a deb_decimal vector with four units to deb_tetra
+#' # Bases are automatically applied when casting from
+#' # deb_decimal to deb_tetra.
+#' x <- c(5.825, 3.25, 22/3)
+#' d1 <- deb_decimal(x, bases = c(20, 12, 4))
+#' deb_as_tetra(d1)
+#'
+#' # To cast from deb_lsd to deb_tetra the bases must either be
+#' # supplied, or the s and d bases of the deb_lsd vector must
+#' # conform to the default values of 20 and 12.
+#'
+#' # Compare
+#' lsd1 <- deb_lsd(8, 12, 4)
+#' lsd2 <- deb_lsd(8, 12, 4, bases = c(60, 16))
+#'
+#' deb_as_tetra(lsd1)
+#' deb_as_tetra(lsd2, bases = c(60, 16, 8))
+#'
+#' # Cast a numeric vector to deb_tetra
+#' deb_as_tetra(x)
+#'
+#' # Use the bases argument to apply non-default bases
+#' deb_as_tetra(x, bases = c(60, 16, 8))
+#'
+#' # Casting a list to deb_tetra provides an alternate
+#' # to deb_tetra(). This can be helpful for legibility.
+#' # Compare:
+#'
+#' list(c(5, 12, 3, 2),
+#'      c(13, 8, 11, 1),
+#'      c(7, 16, 0, 3)) %>%
+#'   deb_as_tetra()
+#'
+#' deb_tetra(l = c(5, 13, 7),
+#'           s = c(12, 8, 16),
+#'           d = c(3, 11, 0),
+#'           f = c(2, 1, 3))
+#'
+#' @name cast-tetra
+NULL
+
+#' @rdname cast-tetra
+#' @export
+deb_as_tetra  <- function(x, ...) {
+  UseMethod("deb_as_tetra")
+}
+
+#' @rdname cast-tetra
+#' @export
+deb_as_tetra.deb_tetra <- function(x, ...) x
+
+#' @rdname cast-tetra
+#' @export
+deb_as_tetra.deb_lsd <- function(x, bases = c(20, 12, 4), ...) {
+  vec_cast(x, to = deb_tetra(bases = bases))
+}
+
+#' @rdname cast-tetra
+#' @export
+deb_as_tetra.deb_decimal <- function(x, ...) {
+  # Write informative error message if trying to convert lsd_dec to tetra_dec
+  # Or make it possible to convert lsd_dec to tetra_dec if s and d are equal and
+  # bases are given as with deb_lsd to deb_tetra.
+  decimal_to_tetra(x)
+}
+
+#' @rdname cast-tetra
+#' @export
+deb_as_tetra.numeric <- function(x, bases = c(20, 12, 4), ...) {
+  vec_cast(x, to = deb_tetra(bases = bases))
+}
+
+#' @rdname cast-tetra
+#' @export
+deb_as_tetra.logical <- function(x, bases = c(20, 12, 4), ...) {
+  vec_cast(x, to = deb_tetra(bases = bases))
+}
+
+#' @rdname cast-tetra
+#' @export
+deb_as_tetra.list <- function(x, bases = c(20, 12, 4), ...) {
+  vec_cast(x, to = deb_tetra(bases = bases))
 }

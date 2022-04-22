@@ -5,6 +5,7 @@
 \alias{deb_as_lsd}
 \alias{deb_as_lsd.deb_lsd}
 \alias{deb_as_lsd.deb_decimal}
+\alias{deb_as_lsd.deb_tetra}
 \alias{deb_as_lsd.numeric}
 \alias{deb_as_lsd.logical}
 \alias{deb_as_lsd.list}
@@ -15,6 +16,8 @@ deb_as_lsd(x, ...)
 \method{deb_as_lsd}{deb_lsd}(x, ...)
 
 \method{deb_as_lsd}{deb_decimal}(x, ...)
+
+\method{deb_as_lsd}{deb_tetra}(x, ...)
 
 \method{deb_as_lsd}{numeric}(x, bases = c(20, 12), ...)
 
@@ -62,7 +65,7 @@ deb_as_lsd(x)
 # Use the bases argument to apply non-default bases
 deb_as_lsd(x, bases = c(60, 16))
 
-# Cast a list to deb_lsd provides an alternate to deb_lsd()
+# Casting a list to deb_lsd provides an alternate to deb_lsd()
 # This can be helpful for legibility. Compare:
 
 list(c(5, 12, 3),
@@ -76,5 +79,5 @@ deb_lsd(l = c(5, 13, 7),
 
 }
 \seealso{
-\code{\link[=deb_as_decimal]{deb_as_decimal()}}
+\code{\link[=deb_as_decimal]{deb_as_decimal()}} and \code{\link[=deb_as_tetra]{deb_as_tetra()}}
 }

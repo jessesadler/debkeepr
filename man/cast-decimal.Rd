@@ -5,6 +5,7 @@
 \alias{deb_as_decimal}
 \alias{deb_as_decimal.deb_decimal}
 \alias{deb_as_decimal.deb_lsd}
+\alias{deb_as_decimal.deb_tetra}
 \alias{deb_as_decimal.numeric}
 \alias{deb_as_decimal.logical}
 \alias{deb_as_decimal.list}
@@ -15,6 +16,8 @@ deb_as_decimal(x, ...)
 \method{deb_as_decimal}{deb_decimal}(x, ...)
 
 \method{deb_as_decimal}{deb_lsd}(x, unit = c("l", "s", "d"), ...)
+
+\method{deb_as_decimal}{deb_tetra}(x, unit = c("l", "s", "d", "f"), ...)
 
 \method{deb_as_decimal}{numeric}(x, unit = c("l", "s", "d", "f"), bases = c(20, 12), ...)
 
@@ -71,7 +74,7 @@ deb_as_decimal(y)
 # the unit and apply non-default bases
 deb_as_decimal(y, unit = "s", bases = c(60, 16))
 
-# Cast a list to deb_lsd provides an alternate
+# Casting a list to deb_lsd provides an alternate
 # to deb_lsd() \%>\% deb_decimal()
 
 list(c(5, 12, 3),
@@ -81,5 +84,5 @@ list(c(5, 12, 3),
 
 }
 \seealso{
-\code{\link[=deb_as_lsd]{deb_as_lsd()}}
+\code{\link[=deb_as_lsd]{deb_as_lsd()}} and \code{\link[=deb_as_tetra]{deb_as_tetra()}}
 }
