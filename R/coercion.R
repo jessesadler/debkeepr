@@ -91,15 +91,6 @@ vec_ptype2.deb_lsd.deb_decimal <- function(x, y, ...) x
 vec_ptype2.deb_decimal.deb_lsd <- function(x, y, ...) y
 
 
-# deb_tetra and deb_decimal -------------------------------------------------
-
-#' @export
-vec_ptype2.deb_tetra.deb_decimal <- function(x, y, ...) x
-
-#' @export
-vec_ptype2.deb_decimal.deb_tetra <- function(x, y, ...) y
-
-
 # deb_lsd and deb_tetra ---------------------------------------------------
 
 #' @export
@@ -107,3 +98,12 @@ vec_ptype2.deb_lsd.deb_tetra <- function(x, y, ...) x
 
 #' @export
 vec_ptype2.deb_tetra.deb_lsd <- function(x, y, ...) y
+
+
+# deb_tetra and deb_decimal -------------------------------------------------
+
+#' @export
+vec_ptype2.deb_tetra.deb_decimal <- function(x, y, ...) x
+
+#' @export
+vec_ptype2.deb_decimal.deb_tetra <- function(x, y, ...) y
