@@ -73,11 +73,6 @@ vec_cast.deb_decimal.deb_decimal <- function(x, to, ...) {
 
   bases <- deb_bases(x)
 
-  if (to_unit == "f" && vec_size(bases) != 3L) {
-    rlang::abort(
-      "`bases` must be a numeric vector of length 3 to use `'f'` unit.")
-  }
-
   # Need separate case_when() functions for lsd and tetra bases
   # to avoid bases[[3]] from being out of bounds.
   if (vec_size(bases) == 2L) {
@@ -489,6 +484,15 @@ decimal_to_tetra <- function(x) {
 
 #' @export
 vec_cast.deb_tetra.deb_decimal <- function(x, to, ...) {
+  if (vec_size(deb_bases(x)) == 2L) {
+    rlang::abort(
+      paste0("The `bases` attrbute of a <deb_decimal> vector must have ",
+      "'s', 'd', and 'f' units (length 3) to cast to <deb_tetra>. ",
+      "An alternative is to cast to <deb_lsd> with deb_as_lsd() and ",
+      "then cast to <deb_tetra>.")
+    )
+  }
+
   bases_equal(x, to)
 
   decimal_to_tetra(x)
@@ -779,10 +783,7 @@ deb_as_tetra.deb_lsd <- function(x, bases = c(20, 12, 4), ...) {
 #' @rdname cast-tetra
 #' @export
 deb_as_tetra.deb_decimal <- function(x, ...) {
-  # Write informative error message if trying to convert lsd_dec to tetra_dec
-  # Or make it possible to convert lsd_dec to tetra_dec if s and d are equal and
-  # bases are given as with deb_lsd to deb_tetra.
-  decimal_to_tetra(x)
+  vec_cast(x, to = deb_tetra())
 }
 
 #' @rdname cast-tetra
