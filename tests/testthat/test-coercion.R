@@ -232,10 +232,9 @@ test_that("deb_decimal with four units coerces to deb_tetra", {
   expect_equal(vec_c(deb_decimal(1.5, bases = tetra_bases), tetra),
                deb_tetra(c(1, 1), c(10, 2), c(0, 3), c(0, 4)))
 
-  expect_error(vec_c(tetra, dec), bases_error)
-  expect_error(vec_c(dec, tetra), bases_error)
-  expect_error(vec_c(tetra, deb_decimal(1.5, bases = c(50, 16))),
-               bases_error)
+  expect_error(vec_c(tetra, dec))
+  expect_error(vec_c(dec, tetra))
+  expect_error(vec_c(tetra, deb_decimal(1.5, bases = c(50, 16))))
   expect_error(vec_c(tetra, deb_decimal(1.5, bases = c(20, 12, 8))),
                bases_error)
 })
