@@ -4,9 +4,9 @@
 
 #' Internal constructor to create `deb_decimal` type
 #'
-#' Asserts that `x` is a `double()`, that `unit` is "l", "s", or "d", and
-#' that `bases` is an `integer()` of length 2. Creates the object through
-#' `new_vctr()`.
+#' Asserts that `x` is a `double()`, that `unit` is "l", "s", "d", or "f"
+#' and that `bases` is an `integer()` of length 2 or 3. Creates the object
+#' through `new_vctr()`.
 #'
 #' @return A vector of class `deb_decimal`.
 #' @keywords internal
@@ -39,45 +39,59 @@ new_decimal <- function(x = double(),
 
 # Helper ------------------------------------------------------------------
 
-#' A decimalized class for pounds, shillings, and pence values
+#' A decimalized class for tripartite and tetrapartite values
 #'
 #' Create a vector of class `deb_decimal` to integrate non-decimal currencies
-#' into standardized forms of analysis provided by R.
+#' and other measurements that use tripartite or tetrapartite units into
+#' standardized forms of analysis provided by R.
 #'
 #' @details
 #' The `deb_decimal` class and the `debkeepr` package use the nomenclature of
-#' [l, s, and d](https://en.wikipedia.org/wiki/£sd) to represent pounds,
-#' shillings, and pence units. The abbreviations derive from the Latin terms
-#' [libra](https://en.wikipedia.org/wiki/French_livre),
-#' [solidus](https://en.wikipedia.org/wiki/Solidus_(coin)), and
-#' [denarius](https://en.wikipedia.org/wiki/Denarius). In the 8th century a
-#' solidus came to represent 12 denarii coins, and, for a time at least, 240
-#' denarii were made from one libra or pound of silver. The custom of counting
-#' coins in dozens (solidi) and scores of dozens (librae) spread throughout the
-#' Carolingian Empire and became engrained in much of Europe. However, a
-#' variety of accounting systems arose at different times that used
+#' [l, s, and d](https://en.wikipedia.org/wiki/£sd) to represent the tripartite
+#' system of pounds, shillings, and pence units. The abbreviations derive from
+#' the Latin terms [*libra*](https://en.wikipedia.org/wiki/French_livre),
+#' [*solidus*](https://en.wikipedia.org/wiki/Solidus_(coin)), and
+#' [*denarius*](https://en.wikipedia.org/wiki/Denarius). In the 8th century a
+#' *solidus* came to represent 12 *denarii* coins, and, for a time at least,
+#' 240 *denarii* were made from one *libra* or pound of silver. The custom of
+#' counting coins in dozens (*solidi*) and scores of dozens (*librae*) spread
+#' throughout the Carolingian Empire and became ingrained in much of Europe.
+#' However, a variety of accounting systems arose at different times that used
 #' [other bases](https://en.wikipedia.org/wiki/Non-decimal_currency) for the
-#' solidus and denarius units. The `bases` attribute of `deb_decimal` vectors
-#' makes it possible to specify alternative bases for the solidus and denarius
-#' units, while the `unit` attribute identifies the decimalized unit: either
-#' libra, solidus, or denarius.
+#' *solidus* and *denarius* units. The `bases` attribute of `deb_decimal`
+#' vectors makes it possible to specify alternative bases for the *solidus* and
+#' *denarius* units, while the `unit` attribute identifies the decimalized
+#' unit: either *libra*, *solidus*, or *denarius*.
+#'
+#' Some historic units of measurement, including certain currencies and
+#' weights, added a fourth unit. The `deb_decimal` class integrates these
+#' measurements by optionally adding a fourth unit, named `f` for farthing.
+#' A tetrapartite `deb_decimal` vector is created by providing a numeric
+#' vector of length 3 to the `bases` argument.
 #'
 #' @seealso
-#' The `deb_decimal` class works in concert with the `deb_lsd` class, which
-#' maintains the tripartite unit structure of most non-decimal currencies.
-#' See [`deb_lsd()`].
+#' The `deb_decimal` class works in concert with the `deb_lsd` and `deb_tetra`
+#' classes. These classes maintain the tripartite (`deb_lsd`) and tetrapartite
+#' (`deb_tetra`) unit structure of non-decimal currencies and values.
+#' See [`deb_lsd()`] and [`deb_tetra()`].
 #'
-#' @param x A numeric vector representing the decimalized values of a
-#'   non-decimal currency.
+#' @param x A numeric vector representing the decimalized values of either
+#'   tripartite or tetrapartite values.
 #' @param unit A character vector of length one indicating the unit for the
-#'   decimalized values, either `"l"` (libra, the default), `"s"` (solidus),
-#'   or `"d"` (denarius).
-#' @inheritParams deb_lsd
+#'   decimalized values, either `"l"` (*libra*, the default), `"s"`
+#'   (*solidus*), `"d"` (*denarius*), or `"f"` (farthing). `"f"` is only
+#'   valid if the `bases` argument is a numeric vector of length 3 (a
+#'   tetrapartite value).
+#' @param bases Numeric vector of length 2 or 3 used to specify the bases for
+#'   the solidus or s, denarius or d, and optionally the farthing or f units.
+#'   Default is `c(20, 12)`, which conforms to the most widely used tripartite
+#'   system of 1 pound = 20 shillings and 1 shilling = 12 pence.
 #'
 #' @return Returns a vector of class `deb_decimal`.
 #' @export
 #' @examples
 #'
+#' # deb_decimal with tripartite units
 #' deb_decimal(c(5.25, 3.825, 8.5))
 #'
 #' # Set the unit of the deb_decimal vector
@@ -89,6 +103,14 @@ new_decimal <- function(x = double(),
 #'
 #' # Create a prototype or vector of length 0
 #' deb_decimal()
+#'
+#' # To create a tetrapartite value, provide numeric vector
+#' # of length 3 to bases argument
+#' deb_decimal(c(5.11875, 3.234375, 8.2875),
+#'             bases = c(20, 12, 4))
+#' deb_decimal(c(4914, 3105, 7956),
+#'             unit = "f",
+#'             bases = c(20, 12, 4))
 
 deb_decimal <- function(x = double(),
                         unit = c("l", "s", "d", "f"),
