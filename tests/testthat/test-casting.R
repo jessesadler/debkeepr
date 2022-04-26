@@ -203,6 +203,12 @@ test_that("vec_cast works between deb_lsd and deb_tetra", {
                deb_lsd(1, 2, 4.5))
   expect_equal(vec_cast(deb_lsd(1, 2, 3.75), deb_tetra()),
                deb_tetra(1, 2, 3, 3))
+  # With length more than 1
+  expect_equal(vec_cast(lsd, deb_tetra()),
+               deb_tetra(c(NA, 2, 3),
+                         c(NA, 4, 5),
+                         c(NA, 6, 9),
+                         c(NA, 0, 0)))
   # Alt bases work if provided to prototype
   expect_equal(vec_cast(tetra_alt, deb_lsd(bases = c(50, 16))),
                deb_lsd(1, 2, 3.25, bases = c(50, 16)))
@@ -233,6 +239,10 @@ test_that("vec_cast works between deb_decimal and deb_tetra", {
                tetra1)
   expect_equal(vec_cast(dec_f_tetra, deb_tetra()),
                tetra1)
+  # With length more than 1
+  expect_equal(vec_cast(deb_decimal(c(1.11875, 2.234375, 3.2875), bases = tetra_bases),
+                        deb_tetra()),
+               deb_tetra(1:3, c(2, 4, 5), c(4, 8, 9), c(2, 1, 0)))
   # Error
   expect_error(vec_cast(dec_l, deb_tetra()))
   expect_error(vec_cast(dec_l_tetra, deb_tetra(bases = c(50, 16, 8))),

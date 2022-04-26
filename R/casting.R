@@ -448,7 +448,7 @@ lsd_to_tetra <- function(x, to) {
   tetra <- new_tetra(l = field(x, "l"),
                      s = field(x, "s"),
                      d = field(x, "d"),
-                     f = 0,
+                     f = rep(0, vec_size(x)),
                      bases = deb_bases(to))
 
   deb_normalize(tetra)
