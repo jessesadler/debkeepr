@@ -41,7 +41,7 @@ conventional tripartite system of pounds, shillings, and pence to include a
 fourth unit. \code{deb_tetra} adds a fourth unit, named \code{f} for farthing, to the
 \href{https://en.wikipedia.org/wiki/£sd}{l, s, and d units} used by \code{deb_lsd}.
 The \code{bases} attribute of \code{deb_tetra} vectors makes it possible to specify
-alternative bases for the solidus, denarius, and farthing units.
+alternative bases for the \emph{solidus}, \emph{denarius}, and farthing units.
 
 The length of \code{l}, \code{s}, \code{d}, and \code{f} must either be all equal, or a vector of
 length 1 can be recycled to the length of the other argument(s). See
@@ -76,5 +76,8 @@ deb_tetra(l = c(10, 28, 5),
 deb_tetra()
 }
 \seealso{
-The \code{deb_tetra} class works in concert with the deb_lsd\code{and}deb_decimal\verb{ classes. See [}deb_lsd()\verb{] and [}deb_decimal()`].
+The \code{deb_tetra} class works in concert with the \code{deb_decimal} class,
+which can represent tetrapartite values as decimalized values.See
+\code{\link[=deb_decimal]{deb_decimal()}}. To represent values with tripartite units see
+\code{\link[=deb_lsd]{deb_lsd()}}.
 }

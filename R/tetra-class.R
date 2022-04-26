@@ -46,7 +46,7 @@ new_tetra <- function(l = double(),
 #' fourth unit. `deb_tetra` adds a fourth unit, named `f` for farthing, to the
 #' [l, s, and d units](https://en.wikipedia.org/wiki/£sd) used by `deb_lsd`.
 #' The `bases` attribute of `deb_tetra` vectors makes it possible to specify
-#' alternative bases for the solidus, denarius, and farthing units.
+#' alternative bases for the *solidus*, *denarius*, and farthing units.
 #'
 #' The length of `l`, `s`, `d`, and `f` must either be all equal, or a vector of
 #' length 1 can be recycled to the length of the other argument(s). See
@@ -56,8 +56,10 @@ new_tetra <- function(l = double(),
 #' possess numeric vectors.
 #'
 #' @seealso
-#' The `deb_tetra` class works in concert with the deb_lsd` and `deb_decimal`
-#' classes. See [`deb_lsd()`] and [`deb_decimal()`].
+#' The `deb_tetra` class works in concert with the `deb_decimal` class,
+#' which can represent tetrapartite values as decimalized values.See
+#' [`deb_decimal()`]. To represent values with tripartite units see
+#' [`deb_lsd()`].
 #'
 #' @param l Numeric vector representing the pounds unit.
 #' @param s Numeric vector representing the shillings unit.
