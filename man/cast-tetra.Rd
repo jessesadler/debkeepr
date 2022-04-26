@@ -49,16 +49,9 @@ by the value instead of by the unit.
 }
 \examples{
 
-# Cast a deb_decimal vector with four units to deb_tetra
-# Bases are automatically applied when casting from
-# deb_decimal to deb_tetra.
-x <- c(5.825, 3.25, 22/3)
-d1 <- deb_decimal(x, bases = c(20, 12, 4))
-deb_as_tetra(d1)
-
 # To cast from deb_lsd to deb_tetra the bases must either be
-# supplied, or the s and d bases of the deb_lsd vector must
-# conform to the default values of 20 and 12.
+# supplied, or the 's' and 'd' bases of the deb_lsd vector
+# must conform to the default values of 20 and 12.
 
 # Compare
 lsd1 <- deb_lsd(8, 12, 4)
@@ -66,6 +59,21 @@ lsd2 <- deb_lsd(8, 12, 4, bases = c(60, 16))
 
 deb_as_tetra(lsd1)
 deb_as_tetra(lsd2, bases = c(60, 16, 8))
+
+# Cast a deb_decimal vector with four units to deb_tetra.
+# Bases are automatically applied when casting from
+# deb_decimal to deb_tetra.
+x <- c(5.11875, 3.76875, 25/3)
+d1 <- deb_decimal(x, bases = c(20, 12, 4))
+deb_as_tetra(d1)
+
+# Cannot cast a deb_decimal vector with three units
+# directly to deb_tetra. An alternative is to cast
+# first to deb_lsd and then to deb_tetra.
+d2 <- deb_decimal(x)
+d2 \%>\%
+  deb_as_lsd() \%>\%
+  deb_as_tetra()
 
 # Cast a numeric vector to deb_tetra
 deb_as_tetra(x)
@@ -77,10 +85,11 @@ deb_as_tetra(x, bases = c(60, 16, 8))
 # to deb_tetra(). This can be helpful for legibility.
 # Compare:
 
-list(c(5, 12, 3, 2),
-     c(13, 8, 11, 1),
-     c(7, 16, 0, 3)) \%>\%
-  deb_as_tetra()
+deb_as_tetra(
+  list(c(5, 12, 3, 2),
+       c(13, 8, 11, 1),
+       c(7, 16, 0, 3))
+  )
 
 deb_tetra(l = c(5, 13, 7),
           s = c(12, 8, 16),

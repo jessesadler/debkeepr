@@ -531,6 +531,14 @@ vec_cast.deb_tetra.deb_decimal <- function(x, to, ...) {
 #' d2 <- deb_decimal(x, bases = c(60, 16))
 #' deb_as_lsd(d2)
 #'
+#' # Cast a deb_tetra vector to deb_lsd
+#' # This removes the 'f' or farthings unit.
+#' y <- deb_tetra(l = c(5, 13, 7),
+#'                s = c(12, 8, 16),
+#'                d = c(3, 11, 0),
+#'                f = c(1, 3, 2))
+#' deb_as_lsd(y)
+#'
 #' # Cast a numeric vector to deb_lsd
 #' deb_as_lsd(x)
 #'
@@ -540,10 +548,11 @@ vec_cast.deb_tetra.deb_decimal <- function(x, to, ...) {
 #' # Casting a list to deb_lsd provides an alternate to deb_lsd()
 #' # This can be helpful for legibility. Compare:
 #'
-#' list(c(5, 12, 3),
-#'      c(13, 8, 11),
-#'      c(7, 16, 0)) %>%
-#'   deb_as_lsd()
+#' deb_as_lsd(
+#'   list(c(5, 12, 3),
+#'        c(13, 8, 11),
+#'        c(7, 16, 0))
+#'   )
 #'
 #' deb_lsd(l = c(5, 13, 7),
 #'         s = c(12, 8, 16),
@@ -631,21 +640,29 @@ deb_as_lsd.list <- function(x, bases = c(20, 12), ...) {
 #'               bases = c(60, 16))
 #' deb_as_decimal(x2)
 #'
+#' # Cast a deb_tetra vector to deb_decimal
+#' # Bases are automatically applied, creating
+#' # a deb_decimal vector with three bases units.
+#' y <- deb_tetra(l = c(5, 13, 7),
+#'                s = c(12, 8, 16),
+#'                d = c(3, 11, 0),
+#'                f = c(1, 3, 2))
+#' deb_as_lsd(y)
+#'
 #' # Cast a numeric vector to deb_decimal
-#' y <- c(5.825, 3.25, 22/3)
-#' deb_as_decimal(y)
+#' z <- c(5.825, 3.25, 22/3)
+#' deb_as_decimal(z)
 #'
 #' # Use the unit and bases arguments to specify
 #' # the unit and apply non-default bases
-#' deb_as_decimal(y, unit = "s", bases = c(60, 16))
+#' deb_as_decimal(z, unit = "s", bases = c(60, 16))
 #'
-#' # Casting a list to deb_lsd provides an alternate
-#' # to deb_lsd() %>% deb_decimal()
-#'
-#' list(c(5, 12, 3),
-#'      c(13, 8, 11),
-#'      c(7, 16, 0)) %>%
-#'   deb_as_decimal()
+#' # Casting a list to deb_decimal provides an
+#' # alternative to get lsd values to deb_decimal.
+#' lsd_list <- list(c(5, 12, 3),
+#'                  c(13, 8, 11),
+#'                  c(7, 16, 0))
+#' deb_as_decimal(lsd_list)
 #'
 #' @name cast-decimal
 NULL
@@ -723,16 +740,9 @@ deb_as_decimal.list <- function(x,
 #'
 #' @examples
 #'
-#' # Cast a deb_decimal vector with four units to deb_tetra
-#' # Bases are automatically applied when casting from
-#' # deb_decimal to deb_tetra.
-#' x <- c(5.825, 3.25, 22/3)
-#' d1 <- deb_decimal(x, bases = c(20, 12, 4))
-#' deb_as_tetra(d1)
-#'
 #' # To cast from deb_lsd to deb_tetra the bases must either be
-#' # supplied, or the s and d bases of the deb_lsd vector must
-#' # conform to the default values of 20 and 12.
+#' # supplied, or the 's' and 'd' bases of the deb_lsd vector
+#' # must conform to the default values of 20 and 12.
 #'
 #' # Compare
 #' lsd1 <- deb_lsd(8, 12, 4)
@@ -740,6 +750,21 @@ deb_as_decimal.list <- function(x,
 #'
 #' deb_as_tetra(lsd1)
 #' deb_as_tetra(lsd2, bases = c(60, 16, 8))
+#'
+#' # Cast a deb_decimal vector with four units to deb_tetra.
+#' # Bases are automatically applied when casting from
+#' # deb_decimal to deb_tetra.
+#' x <- c(5.11875, 3.76875, 25/3)
+#' d1 <- deb_decimal(x, bases = c(20, 12, 4))
+#' deb_as_tetra(d1)
+#'
+#' # Cannot cast a deb_decimal vector with three units
+#' # directly to deb_tetra. An alternative is to cast
+#' # first to deb_lsd and then to deb_tetra.
+#' d2 <- deb_decimal(x)
+#' d2 %>%
+#'   deb_as_lsd() %>%
+#'   deb_as_tetra()
 #'
 #' # Cast a numeric vector to deb_tetra
 #' deb_as_tetra(x)
@@ -751,10 +776,11 @@ deb_as_decimal.list <- function(x,
 #' # to deb_tetra(). This can be helpful for legibility.
 #' # Compare:
 #'
-#' list(c(5, 12, 3, 2),
-#'      c(13, 8, 11, 1),
-#'      c(7, 16, 0, 3)) %>%
-#'   deb_as_tetra()
+#' deb_as_tetra(
+#'   list(c(5, 12, 3, 2),
+#'        c(13, 8, 11, 1),
+#'        c(7, 16, 0, 3))
+#'   )
 #'
 #' deb_tetra(l = c(5, 13, 7),
 #'           s = c(12, 8, 16),
