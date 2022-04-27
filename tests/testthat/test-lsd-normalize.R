@@ -13,6 +13,8 @@ decimal_bases <- deb_lsd(5.875, 84.325, 62.0999, bases)
 multi <- c(x, neg, decimal)
 multi_bases <- c(x_bases, neg_bases, decimal_bases)
 
+tetra_bases <- c(20, 12, 4)
+
 test_that("is_negative works", {
   expect_true(is_negative(neg))
   expect_false(is_negative(x))
@@ -51,12 +53,23 @@ test_that("it comes together with deb_normalize", {
 test_that("deb_normalize works with numeric vector", {
   # Errors
   expect_error(deb_normalize(TRUE),
-     "`x` must be a <deb_lsd> vector or a numeric vector of length 3.")
-  expect_error(deb_normalize(4), "`x` must be a numeric vector of length 3.")
-  expect_error(deb_normalize(1:4), "`x` must be a numeric vector of length 3.")
-  # It works
+               paste0("`x` must be a <deb_lsd> or <deb_tetra> vector ",
+                      "or a numeric vector of length 3 or 4."))
+  expect_error(deb_normalize(4),
+               "`x` must be a numeric vector of length 3 or 4.")
+  expect_error(deb_normalize(1:5),
+               "`x` must be a numeric vector of length 3 or 4.")
+  expect_error(deb_normalize(1:4),
+               paste0("`bases` must be a numeric vector of length ",
+                      "3 to normalize a tetrapartite value."))
+  # It works for lsd
   expect_s3_class(deb_normalize(c(5, 82, 56)), "deb_lsd")
   expect_equal(deb_normalize(c(5, 82, 56)), deb_lsd(9, 6, 8))
   expect_equal(deb_normalize(c(-5, -82, -56)), deb_lsd(-9, -6, -8))
   expect_equal(deb_normalize(c(5, 82, 56), bases), deb_lsd(6, 35, 8, bases))
+  # It works for tetra
+  expect_s3_class(deb_normalize(c(5, 82, 55, 7), bases = tetra_bases),
+                  "deb_tetra")
+  expect_equal(deb_normalize(c(5, 82, 55, 7), bases = tetra_bases),
+               deb_tetra(9, 6, 8, 3))
 })

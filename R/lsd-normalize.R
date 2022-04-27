@@ -2,9 +2,10 @@
 
 #' Check for non-whole numbers in libra and solidus units
 #'
-#' Move any decimals in libra and solidus units to the denarius unit.
-#' The function uses the utility `should_be_int()` to deal with floating
-#' point problems.
+#' Move any decimals in libra and solidus units to the denarius unit
+#' for lsd and any decimals is libra, solidus, or denarius to the farthing
+#' unit in tetra. The function uses the utility `should_be_int()` to deal
+#' with floating point problems.
 #'
 #' @keywords internal
 
@@ -145,7 +146,7 @@ tetra_normalize_neg <- function(tetra) {
 
 # deb_normalize methods ---------------------------------------------------
 
-#' Normalize pounds, shillings, and pence values
+#' Normalize tripartite and tetrapartite values
 #'
 #' Normalize pounds, shillings, and pence values to given bases of solidus
 #' and denarius units.
@@ -185,7 +186,8 @@ deb_normalize <- function(x, ...) {
 #' @export
 deb_normalize.default <- function(x, ...) {
   rlang::abort(
-    "`x` must be a <deb_lsd> vector or a numeric vector of length 3.")
+    paste0("`x` must be a <deb_lsd> or <deb_tetra> vector ",
+           "or a numeric vector of length 3 or 4."))
 }
 
 #' @rdname normalize
@@ -200,12 +202,20 @@ deb_normalize.deb_lsd <- function(x, ...) {
 #' @rdname normalize
 #' @export
 deb_normalize.numeric <- function(x, bases = c(20, 12), ...) {
-  if (vec_size(x) != 3L) {
-    rlang::abort("`x` must be a numeric vector of length 3.")
+  if (vec_size(x) == 3L) {
+    lsd <- deb_lsd(x[[1]], x[[2]], x[[3]], bases)
+    ret <- deb_normalize(lsd)
+  } else if (vec_size(x) == 4L) {
+    if (vec_size(bases) != 3L) {
+      rlang::abort(paste0("`bases` must be a numeric vector of length ",
+                          "3 to normalize a tetrapartite value."))
+    }
+    tetra <- deb_tetra(x[[1]], x[[2]], x[[3]], x[[4]], bases)
+    ret <- deb_normalize(tetra)
+  } else {
+    rlang::abort("`x` must be a numeric vector of length 3 or 4.")
   }
-
-  lsd <- deb_lsd(x[[1]], x[[2]], x[[3]], bases)
-  deb_normalize(lsd)
+  ret
 }
 
 #' @rdname normalize
