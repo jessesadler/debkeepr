@@ -7,8 +7,9 @@
 decimal_check(x)
 }
 \description{
-Move any decimals in libra and solidus units to the denarius unit.
-The function uses the utility \code{should_be_int()} to deal with floating
-point problems.
+Move any decimals in libra and solidus units to the denarius unit
+for lsd and any decimals is libra, solidus, or denarius to the farthing
+unit in tetra. The function uses the utility \code{should_be_int()} to deal
+with floating point problems.
 }
 \keyword{internal}
