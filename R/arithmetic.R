@@ -486,3 +486,75 @@ vec_arith.deb_decimal.deb_lsd <- function(op, x, y) {
     stop_incompatible_op(op, x, y)
   )
 }
+
+# Operators with deb_lsd and deb_tetra ------------------------------------
+
+# deb_lsd and deb_tetra
+
+#' @rdname arithmetic
+#' @method vec_arith.deb_lsd deb_tetra
+#' @export
+vec_arith.deb_lsd.deb_tetra <- function(op, x, y) {
+  mixed_bases_equal(deb_bases(x), deb_bases(y)[1:2])
+
+  switch(
+    op,
+    "+" = lsd_plus(x, deb_as_lsd(y)),
+    "-" = lsd_minus(x, deb_as_lsd(y)),
+    "/" = as.double(x) / as.double(y),
+    stop_incompatible_op(op, x, y)
+  )
+}
+
+# deb_tetra and deb_lsd
+
+#' @rdname arithmetic
+#' @method vec_arith.deb_tetra deb_lsd
+#' @export
+vec_arith.deb_tetra.deb_lsd <- function(op, x, y) {
+  mixed_bases_equal(deb_bases(x)[1:2], deb_bases(y))
+
+  switch(
+    op,
+    "+" = lsd_plus(deb_as_lsd(x), y),
+    "-" = lsd_minus(deb_as_lsd(x), y),
+    "/" = as.double(x) / as.double(y),
+    stop_incompatible_op(op, x, y)
+  )
+}
+
+# Operators with deb_tetra and deb_decimal --------------------------------
+
+# deb_tetra and deb_decimal
+
+#' @rdname arithmetic
+#' @method vec_arith.deb_tetra deb_decimal
+#' @export
+vec_arith.deb_tetra.deb_decimal <- function(op, x, y) {
+  bases_equal(x, y)
+
+  switch(
+    op,
+    "+" = tetra_plus(x, deb_as_tetra(y)),
+    "-" = tetra_minus(x, deb_as_tetra(y)),
+    "/" = as.double(x) / vec_data(y),
+    stop_incompatible_op(op, x, y)
+  )
+}
+
+# deb_decimal and deb_tetra
+
+#' @rdname arithmetic
+#' @method vec_arith.deb_decimal deb_tetra
+#' @export
+vec_arith.deb_decimal.deb_tetra <- function(op, x, y) {
+  bases_equal(x, y)
+
+  switch(
+    op,
+    "+" = tetra_plus(deb_as_tetra(x), y),
+    "-" = tetra_minus(deb_as_tetra(x), y),
+    "/" = vec_data(x) / as.double(y),
+    stop_incompatible_op(op, x, y)
+  )
+}
