@@ -1,6 +1,6 @@
 ## Checks ##
 
-# lsd and bases checks ----------------------------------------------------
+# lsd and tetra checks ----------------------------------------------------
 
 #' Checks for deb_lsd functions
 #'
@@ -34,7 +34,7 @@ lsd_check <- function(l, s, d) {
   lengths <- c(vec_size(l), vec_size(s), vec_size(d))
 
   # Must be either all zero length or no zero length
-  if (sum(lengths) == 1L || sum(lengths) == 2L) {
+  if (!all(lengths == 0) && any(lengths == 0)) {
     rlang::abort(
       paste0("`l`, `s`, and `d` must all have values. ",
              "You may have forgotten a value or need to use 0."))
@@ -86,7 +86,7 @@ tetra_check <- function(l, s, d, f) {
   lengths <- c(vec_size(l), vec_size(s), vec_size(d), vec_size(f))
 
   # Must be either all zero length or no zero length
-  if (sum(lengths) == 1L || sum(lengths) == 2L) {
+  if (!all(lengths == 0) && any(lengths == 0)) {
     rlang::abort(
       paste0("`l`, `s`, `d`, and `f` must all have values. ",
              "You may have forgotten a value or need to use 0."))
@@ -99,6 +99,8 @@ tetra_check <- function(l, s, d, f) {
       "`l`, `s`, `d`, and `f` must be vectors of equal length or length 1.")
   }
 }
+
+# Bases checks ------------------------------------------------------------
 
 #' Checks for lsd bases attribute
 #'

@@ -40,6 +40,7 @@ test_that("lsd: length of l, s, and d all have values or are all length 0", {
   expect_invisible(lsd_check(double(), double(), double()))
   expect_error(lsd_check(2, double(), double()), lsd_error1)
   expect_error(lsd_check(2, 3, double()), lsd_error1)
+  expect_error(lsd_check(1:10, 11:20, double()), lsd_error1)
 })
 
 test_that("lsd: length of l, s, and d are same length, length 1, or length 0", {
@@ -89,6 +90,9 @@ test_that("tetra: Multiple NA is not an error", {
 test_that("tetra: length of units all have values or are all length 0", {
   expect_invisible(tetra_check(double(), double(), double(), double()))
   expect_error(tetra_check(2, double(), double(), double()), tetra_error1)
+  expect_error(tetra_check(2, 2, double(), double()), tetra_error1)
+  expect_error(tetra_check(2, 2, 2, double()), tetra_error1)
+  expect_error(tetra_check(1:10, 11:20, 21:30, double()), tetra_error1)
 })
 
 test_that("tetra: length of units are same length, length 1, or length 0", {
