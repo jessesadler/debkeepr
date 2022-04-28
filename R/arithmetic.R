@@ -326,7 +326,7 @@ tetra_minus <- function(x, y) {
   ret <- new_tetra(field(x, "l") - field(y, "l"),
                    field(x, "s") - field(y, "s"),
                    field(x, "d") - field(y, "d"),
-                   field(x, "f") + field(y, "f"),
+                   field(x, "f") - field(y, "f"),
                    bases = deb_bases(x))
 
   deb_normalize(ret)
