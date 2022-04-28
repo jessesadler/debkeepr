@@ -465,7 +465,8 @@ vec_arith.deb_lsd.deb_decimal <- function(op, x, y) {
     op,
     "+" = lsd_plus(x, deb_as_lsd(y)),
     "-" = lsd_minus(x, deb_as_lsd(y)),
-    "/" = as.double(x) / vec_data(y),
+    "/" = as.double(x) / vec_data(vec_cast(y, deb_decimal(unit = "l",
+                                                          bases = deb_bases(y)))),
     stop_incompatible_op(op, x, y)
   )
 }
@@ -482,7 +483,8 @@ vec_arith.deb_decimal.deb_lsd <- function(op, x, y) {
     op,
     "+" = lsd_plus(deb_as_lsd(x), y),
     "-" = lsd_minus(deb_as_lsd(x), y),
-    "/" = vec_data(x) / as.double(y),
+    "/" = vec_data(vec_cast(x, deb_decimal(unit = "l",
+                                  bases = deb_bases(x)))) / as.double(y),
     stop_incompatible_op(op, x, y)
   )
 }
@@ -537,7 +539,8 @@ vec_arith.deb_tetra.deb_decimal <- function(op, x, y) {
     op,
     "+" = tetra_plus(x, deb_as_tetra(y)),
     "-" = tetra_minus(x, deb_as_tetra(y)),
-    "/" = as.double(x) / vec_data(y),
+    "/" = as.double(x) / vec_data(vec_cast(y, deb_decimal(unit = "l",
+                                                          bases = deb_bases(y)))),
     stop_incompatible_op(op, x, y)
   )
 }
@@ -554,7 +557,8 @@ vec_arith.deb_decimal.deb_tetra <- function(op, x, y) {
     op,
     "+" = tetra_plus(deb_as_tetra(x), y),
     "-" = tetra_minus(deb_as_tetra(x), y),
-    "/" = vec_data(x) / as.double(y),
+    "/" = vec_data(vec_cast(x, deb_decimal(unit = "l",
+                                           bases = deb_bases(x)))) / as.double(y),
     stop_incompatible_op(op, x, y)
   )
 }
