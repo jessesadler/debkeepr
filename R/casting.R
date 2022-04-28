@@ -809,7 +809,7 @@ deb_as_tetra.deb_lsd <- function(x, bases = c(20, 12, 4), ...) {
 #' @rdname cast-tetra
 #' @export
 deb_as_tetra.deb_decimal <- function(x, ...) {
-  vec_cast(x, to = deb_tetra())
+  decimal_to_tetra(x)
 }
 
 #' @rdname cast-tetra
