@@ -484,14 +484,6 @@ decimal_to_tetra <- function(x) {
 
 #' @export
 vec_cast.deb_tetra.deb_decimal <- function(x, to, ...) {
-  if (vec_size(deb_bases(x)) == 2L) {
-    rlang::abort(
-      paste0("The `bases` attrbute of a <deb_decimal> vector must have ",
-      "'s', 'd', and 'f' units (length 3) to cast to <deb_tetra>. ",
-      "An alternative is to cast to <deb_lsd> with deb_as_lsd() and ",
-      "then cast to <deb_tetra>.")
-    )
-  }
 
   bases_equal(x, to)
 
@@ -809,6 +801,14 @@ deb_as_tetra.deb_lsd <- function(x, bases = c(20, 12, 4), ...) {
 #' @rdname cast-tetra
 #' @export
 deb_as_tetra.deb_decimal <- function(x, ...) {
+  if (vec_size(deb_bases(x)) == 2L) {
+    rlang::abort(
+      paste0("The `bases` attribute of a <deb_decimal> vector must have ",
+             "'s', 'd', and 'f' units (length 3) to cast to <deb_tetra>. ",
+             "An alternative is to cast to <deb_lsd> with deb_as_lsd() and ",
+             "then cast to <deb_tetra>.")
+    )
+  }
   decimal_to_tetra(x)
 }
 

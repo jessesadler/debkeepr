@@ -302,6 +302,9 @@ test_that("deb_as_tetra works", {
   expect_equal(deb_as_tetra(NA), deb_tetra(NA, NA, NA, NA))
   expect_error(deb_as_tetra(factor("hello")))
   expect_identical(deb_as_tetra(tetra_list), tetra)
+  # Error with deb_decimal with lsd units
+  expect_error(deb_as_tetra(dec_l),
+               paste0("The `bases` attribute"))
 })
 
 # Test assignment subsetting ----------------------------------------------
