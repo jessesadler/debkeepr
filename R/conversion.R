@@ -48,14 +48,9 @@ deb_convert_bases.deb_lsd <- function(x, to) {
   if (identical(from, to)) {
     return(x)
   }
-
-  temp_s <- field(x, "s") * to[[1]] / from[[1]]
-  field(x, "s") <- trunc(temp_s)
-  field(x, "d") <- (temp_s - trunc(temp_s)) * to[[2]] +
-    field(x, "d") * prod(to) / prod(from)
-  attr(x, "bases") <- to
-
-  deb_normalize(x)
+  # Cast to numeric and back to lsd
+  num <- as.numeric(x)
+  deb_as_lsd(num, bases = to)
 }
 
 #' @rdname convert-bases
