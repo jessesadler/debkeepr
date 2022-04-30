@@ -31,7 +31,12 @@ Convert bases of \code{deb_lsd}, \code{deb_tetra}, and \code{deb_decimal} vector
 \details{
 \code{deb_convert_bases()} is the only way to change the bases of the solidus,
 denarius, and farthing units associated with vectors of class \code{deb_lsd},
-\code{deb_tetra}, and \code{deb_decimal}.
+\code{deb_tetra}, and \code{deb_decimal}. It also provides a means to convert
+between tripartite and tetrapartite bases with \code{deb_decimal} vectors.
+
+If \code{x} is a \code{deb_decimal} vector with tetrapartite bases and unit \code{"f"}
+and \code{to} is a numeric vector of length 2, the unit will be converted
+to \code{"d"}.
 }
 \examples{
 
@@ -44,5 +49,9 @@ deb_convert_bases(lsd, to = c(60, 16))
 deb_convert_bases(dec, to = c(60, 16))
 deb_convert_bases(dec_tetra, c(60, 16, 8))
 deb_convert_bases(tetra, to = c(60, 16, 8))
+
+# Convert between tripartite and tetrapartite bases
+deb_convert_bases(dec, bases = c(60, 16, 8))
+deb_convert_bases(dec_tetra, bases = c(20, 12))
 
 }
