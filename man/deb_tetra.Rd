@@ -22,9 +22,9 @@ deb_tetra(
 \item{f}{Numeric vector representing the farthing or fourth unit.}
 
 \item{bases}{Numeric vector of length 3 used to specify the bases for the
-solidus or s and denarius or d units. Default is \code{c(20, 12, 4)}, which
-conforms to the English system of 1 pound = 20 shillings, 1 shilling = 12
-pence, and 1 pence = 4 farthing.}
+solidus or s, denarius or d, and farthing or f units. Default is
+\code{c(20, 12, 4)}, which conforms to the English system of 1 pound =
+20 shillings, 1 shilling = 12 pence, and 1 pence = 4 farthing.}
 }
 \value{
 Returns a vector of class \code{deb_tetra}.
@@ -77,7 +77,7 @@ deb_tetra()
 }
 \seealso{
 The \code{deb_tetra} class works in concert with the \code{deb_decimal} class,
-which can represent tetrapartite values as decimalized values.See
+which can represent tetrapartite values as decimalized values. See
 \code{\link[=deb_decimal]{deb_decimal()}}. To represent values with tripartite units see
 \code{\link[=deb_lsd]{deb_lsd()}}.
 }
