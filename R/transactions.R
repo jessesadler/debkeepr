@@ -145,8 +145,8 @@ deb_account <- function(df, account_id,
     }
 
     current <- cred - deb
-    # deb_decimal
-  } else {
+  # deb_decimal
+  } else if (deb_is_decimal(lsd_vctr)) {
     pos <- dplyr::filter(df, {{ credit }} == account_id)
     if (vec_size(pos) < 1) {
       cred <- deb_decimal(0, bases = bases)
@@ -168,6 +168,23 @@ deb_account <- function(df, account_id,
         current <- round(current)
         }
     }
+  # deb_tetra
+  } else if (deb_is_tetra(lsd_vctr)) {
+    pos <- dplyr::filter(df, {{ credit }} == account_id)
+    if (vec_size(pos) < 1) {
+      cred <- deb_tetra(0, 0, 0, 0, bases = bases)
+    } else {
+      cred <- sum(pos[[cn]], na.rm = na.rm)
+    }
+
+    neg <- dplyr::filter(df, {{ debit }} == account_id)
+    if (vec_size(neg) < 1) {
+      deb <- deb_tetra(0, 0, 0, 0, bases = bases)
+    } else {
+      deb <- sum(neg[[cn]], na.rm = na.rm)
+    }
+
+    current <- cred - deb
   }
 
   tibble::tibble(relation = c("credit", "debit", "current"),

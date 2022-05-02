@@ -22,18 +22,23 @@ b2 <- c(8, 16)
 l <- c(10, 10, 7, 9, 15, 12)
 s <- c(15, 15, 11, 2, 0, 10)
 d <- c(6, 6, 8, 11, 9, 4)
+f = c(3, 3, 1, 0, 3, 2)
 cred <- c("a", "b", "a", "c", "d", "c")
 deb <- c("b", "a", "c", "a", "a", "e")
 lsd_b1 <- deb_lsd(l, s, d)
 lsd_b2 <- deb_lsd(l, s, d, bases = b2)
 dec_b1 <- deb_as_decimal(lsd_b1)
 dec_b2 <- deb_as_decimal(lsd_b2)
+tetra <- deb_tetra(l, s, d, f)
+dec_tetra <- deb_as_decimal(tetra)
 
 # Account d and e only have one type of transaction
 # Tests no NAs path in deb_account_summary
 tbl_b1 <- tibble(credit = cred, debit = deb,
                  lsd = lsd_b1,
-                 dec = dec_b1)
+                 dec = dec_b1,
+                 tetra = tetra,
+                 dec_tetra = dec_tetra)
 df_b1 <- as.data.frame(tbl_b1)
 # Different bases and non-default column names
 tbl_b2 <- tibble(from = cred, to = deb,
@@ -54,7 +59,9 @@ balanced[["dec"]] <- deb_as_decimal(balanced[["lsd"]])
 # Tests else path in deb_account_summary
 tbl_na <- tibble(credit = c(cred, "e", "a"), debit = c(deb, "b", "b"),
                  lsd = c(lsd_b1, NA, NA),
-                 dec = c(dec_b1, NA, NA))
+                 dec = c(dec_b1, NA, NA),
+                 tetra = c(tetra, NA, NA),
+                 dec_tetra = c(dec_tetra, NA, NA))
 # NAs but all accounts have credit and debit
 # Tests all accounts present path in deb_account_summary
 tbl_na2 <- tibble(credit = c("a", "b", "a", "c", "c"),
@@ -239,6 +246,28 @@ test_that("deb_account works", {
                                 d = c(6, NA, NA)))
   res12 <- mut(res11)
   expect_identical(deb_account(tbl_na, "b", lsd = dec, na.rm = FALSE), res12)
+
+  # deb_tetra
+  res13 <- tibble(relation = relation_v,
+                  tetra = deb_tetra(l = c(21, 7, 14),
+                                    s = c(13, 11, 1),
+                                    d = c(3, 8, 7),
+                                    f = c(2, 1, 1)))
+  expect_true(deb_is_tetra(res13[["tetra"]]))
+  expect_equal(deb_account(tbl_b1, "c", lsd = tetra), res13)
+  expect_equal(deb_account(tbl_b1, "c", lsd = dec_tetra)[["dec_tetra"]],
+               deb_as_decimal(res13[["tetra"]]))
+  expect_identical(deb_account(tbl_na, "a", lsd = tetra, na.rm = TRUE),
+                   deb_account(tbl_b1, "a", lsd = tetra))
+  expect_identical(deb_account(tbl_na, "a", lsd = dec_tetra, na.rm = TRUE),
+                   deb_account(tbl_b1, "a", lsd = dec_tetra))
+  # Tetra: only one type of transaction
+  expect_equal(deb_account(tbl_b1, "e", lsd = tetra)[1,][["tetra"]],
+               deb_tetra(0, 0, 0, 0))
+  expect_equal(deb_account(tbl_b1, "d", lsd = tetra)[2,][["tetra"]],
+               deb_tetra(0, 0, 0, 0))
+
+
 })
 
 
