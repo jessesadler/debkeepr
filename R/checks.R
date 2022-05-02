@@ -170,8 +170,9 @@ dec_bases_check <- function(bases) {
 #' Check that object is of type deb_lsd or deb_decimal
 #' @keywords internal
 deb_ptype_check <- function(x) {
-  if (!deb_is_lsd(x) && !deb_is_decimal(x)) {
-    rlang::abort("`lsd` must be either of type <deb_lsd> or <deb_decimal>.")
+  if (!deb_is_lsd(x) && !deb_is_decimal(x) && !deb_is_tetra(x)) {
+    rlang::abort(
+      "`lsd` must be of type <deb_lsd>, <deb_decimal>, or <deb_tetra>.")
   }
 }
 
