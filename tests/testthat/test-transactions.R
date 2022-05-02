@@ -297,6 +297,18 @@ test_that("deb_account_summary works", {
   expect_equal(nrow(deb_account_summary(tbl_na, debit, credit)), 5L)
   expect_identical(deb_account_summary(tbl_na2), s_na2)
   expect_identical(deb_account_summary(tbl_na2, lsd = dec), sdec_na2)
+
+  # tetra
+  expect_true(deb_is_tetra(
+    deb_account_summary(tbl_b1, lsd = tetra)[["credit"]]))
+  expect_equal(deb_bases(
+    deb_account_summary(tbl_b1, lsd = dec_tetra)[["credit"]]),
+    c(s = 20L, d = 12L, f = 4L))
+  # Credit for c is same as deb_account
+  expect_equal(deb_account_summary(tbl_b1, lsd = tetra)[3,][["credit"]],
+               deb_account(tbl_b1, "c", lsd = tetra)[1,][["tetra"]])
+  expect_equal(deb_account_summary(tbl_b1, lsd = dec_tetra)[3,][["credit"]],
+               deb_account(tbl_b1, "c", lsd = dec_tetra)[1,][["dec_tetra"]])
 })
 
 

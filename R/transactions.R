@@ -212,8 +212,8 @@ deb_account_summary <- function(df,
   lsd_vctr <- rlang::eval_tidy(lsd_quo, df)
   deb_ptype_check(lsd_vctr)
 
-  # Turn deb_lsd to deb_decimal for speed
-  if (deb_is_lsd(lsd_vctr)) {
+  # Turn deb_lsd or deb_tetra to deb_decimal for speed
+  if (deb_is_lsd(lsd_vctr) || deb_is_tetra(lsd_vctr)) {
     df <- dplyr::mutate(df, !! cn := deb_as_decimal({{ lsd }}))
   }
 
@@ -238,8 +238,8 @@ deb_account_summary <- function(df,
   # If no NAs, then any NAs from join should be 0s
   } else if (!anyNA(c(pos[[2]], neg[[2]]))) {
     ret <- dplyr::full_join(pos, neg, by = "account_id") %>%
-      dplyr::mutate(credit = dplyr::coalesce(credit, 0), # replace NA with 0
-                    debit = dplyr::coalesce(debit, 0), # replace NA with 0
+      dplyr::mutate(credit  = dplyr::coalesce(credit, 0), # replace NA with 0
+                    debit   = dplyr::coalesce(debit, 0), # replace NA with 0
                     current = credit - debit,
                     # floating point problems
                     current = dplyr::if_else(should_be_int(current),
@@ -270,12 +270,17 @@ deb_account_summary <- function(df,
       dplyr::arrange(.data$account_id)
   }
 
-  # Return deb_decimal back to deb_lsd
+  # Return deb_decimal back to deb_lsd or deb_tetra
   if (deb_is_lsd(lsd_vctr)) {
     ret <- ret %>%
-      dplyr::mutate(credit = deb_as_lsd(credit),
-                    debit = deb_as_lsd(debit),
+      dplyr::mutate(credit  = deb_as_lsd(credit),
+                    debit   = deb_as_lsd(debit),
                     current = deb_as_lsd(current))
+  } else if (deb_is_tetra(lsd_vctr)) {
+    ret <- ret %>%
+      dplyr::mutate(credit  = deb_as_tetra(credit),
+                    debit   = deb_as_tetra(debit),
+                    current = deb_as_tetra(current))
   }
 
   ret
