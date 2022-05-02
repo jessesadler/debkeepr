@@ -266,8 +266,6 @@ test_that("deb_account works", {
                deb_tetra(0, 0, 0, 0))
   expect_equal(deb_account(tbl_b1, "d", lsd = tetra)[2,][["tetra"]],
                deb_tetra(0, 0, 0, 0))
-
-
 })
 
 
@@ -330,6 +328,12 @@ test_that("deb_credit works", {
   expect_identical(deb_credit(tbl_na)[[2]], s_na[[2]])
   expect_identical(deb_credit(tbl_na, debit, credit)[[2]], s_na[[3]])
   expect_identical(deb_credit(tbl_na2)[[2]], s_na2[[2]])
+  # Tetra
+  expect_true(deb_is_tetra(
+    deb_credit(tbl_b1, lsd = tetra)[["tetra"]]))
+  expect_equal(deb_bases(
+    deb_credit(tbl_b1, lsd = dec_tetra)[["dec_tetra"]]),
+    c(s = 20L, d = 12L, f = 4L))
 })
 
 
@@ -350,6 +354,12 @@ test_that("deb_debit works", {
   expect_identical(deb_debit(tbl_na)[[2]], s_na[[3]])
   expect_identical(deb_debit(tbl_na, debit, credit)[[2]], s_na[[2]])
   expect_identical(deb_debit(tbl_na2)[[2]], s_na2[[3]])
+  # Tetra
+  expect_true(deb_is_tetra(
+    deb_debit(tbl_b1, lsd = tetra)[["tetra"]]))
+  expect_equal(deb_bases(
+    deb_debit(tbl_b1, lsd = dec_tetra)[["dec_tetra"]]),
+    c(s = 20L, d = 12L, f = 4L))
 })
 
 test_that("deb_current works", {
@@ -372,6 +382,11 @@ test_that("deb_current works", {
   expect_identical(deb_current(tbl_na, na.rm = TRUE), deb_current(tbl_b1))
   expect_identical(deb_current(tbl_na)[[2]], s_na[[4]])
   expect_identical(deb_current(tbl_na2)[[2]], s_na2[[4]])
+  # tetra
+  expect_equal(deb_current(tbl_b1, lsd = tetra)[[2]],
+               deb_account_summary(tbl_b1, lsd = tetra)[[4]])
+  expect_equal(deb_current(tbl_b1, lsd = dec_tetra)[[2]],
+               deb_account_summary(tbl_b1, lsd = dec_tetra)[[4]])
 })
 
 test_that("deb_open works", {
@@ -391,6 +406,11 @@ test_that("deb_open works", {
   expect_identical(deb_open(tbl_na)[[2]], s_na[[4]])
   expect_identical(deb_open(tbl_na2)[[2]],
                    deb_lsd(c(NA, NA), c(NA, NA), c(NA, NA)))
+  # tetra
+  expect_equal(deb_open(tbl_b1, lsd = tetra)[[2]],
+               deb_account_summary(tbl_b1, lsd = tetra)[[4]][c(1, 3:5)])
+  expect_equal(deb_open(tbl_b1, lsd = dec_tetra)[[2]],
+               deb_account_summary(tbl_b1, lsd = dec_tetra)[[4]][c(1, 3:5)])
 })
 
 
@@ -419,4 +439,9 @@ test_that("deb_balance works", {
   expect_identical(deb_balance(tbl_na, na.rm = TRUE), deb_balance(tbl_b1))
   expect_identical(deb_balance(tbl_na), res2)
   expect_identical(deb_balance(tbl_na2), res2)
+  # Tetra
+  expect_equal(deb_balance(tbl_b1, lsd = tetra)[[2]],
+               deb_tetra(c(29, -29), c(2, -2), c(5, -5), c(0, 0)))
+  expect_equal(deb_bases(deb_balance(tbl_b1, lsd = dec_tetra)[[2]]),
+               c(s = 20L, d = 12L, f = 4L))
 })

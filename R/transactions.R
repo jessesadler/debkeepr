@@ -308,7 +308,7 @@ deb_credit <- function(df,
   deb_ptype_check(lsd_vctr)
 
   # Turn deb_lsd to deb_decimal for speed
-  if (deb_is_lsd(lsd_vctr)) {
+  if (deb_is_lsd(lsd_vctr) || deb_is_tetra(lsd_vctr)) {
     df <- dplyr::mutate(df, !! cn := deb_as_decimal({{ lsd }}))
   }
 
@@ -338,6 +338,8 @@ deb_credit <- function(df,
 
   if (deb_is_lsd(lsd_vctr)) {
     ret[[cn]] <- deb_as_lsd(ret[[cn]])
+  } else if (deb_is_tetra(lsd_vctr)) {
+    ret[[cn]] <- deb_as_tetra(ret[[cn]])
   }
 
   ret
@@ -365,7 +367,7 @@ deb_debit <- function(df,
   deb_ptype_check(lsd_vctr)
 
   # Turn deb_lsd to deb_decimal for speed
-  if (deb_is_lsd(lsd_vctr)) {
+  if (deb_is_lsd(lsd_vctr) || deb_is_tetra(lsd_vctr)) {
     df <- dplyr::mutate(df, !! cn := deb_as_decimal({{ lsd }}))
   }
 
@@ -395,6 +397,8 @@ deb_debit <- function(df,
 
   if (deb_is_lsd(lsd_vctr)) {
     ret[[cn]] <- deb_as_lsd(ret[[cn]])
+  } else if (deb_is_tetra(lsd_vctr)) {
+    ret[[cn]] <- deb_as_tetra(ret[[cn]])
   }
 
   ret
@@ -468,9 +472,13 @@ deb_balance <- function(df,
     if (deb_is_lsd(lsd_vctr)) {
       return(tibble::tibble(relation = c("credit", "debit"),
                !! cn := deb_lsd(c(0, 0), c(0, 0), c(0, 0), bases = bases)))
-    } else {
+    } else if (deb_is_decimal(lsd_vctr)) {
       return(tibble::tibble(relation = c("credit", "debit"),
                !! cn := deb_decimal(c(0, 0), bases = bases)))
+    } else if (deb_is_tetra(lsd_vctr)) {
+      return(tibble::tibble(relation = c("credit", "debit"),
+               !! cn := deb_tetra(c(0, 0, 0), c(0, 0, 0), c(0, 0, 0),
+                                  bases = bases)))
     }
   }
 
