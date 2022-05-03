@@ -52,14 +52,14 @@ from which the values derive. Default is \code{credit}.}
 representing the accounts that receive the transactional values.
 Default is \code{debit}.}
 
-\item{lsd}{Value column: Unquoted name of a variable of class \code{deb_lsd}
-or \code{deb_decimal}. Default is \code{lsd}.}
+\item{lsd}{Value column: Unquoted name of a variable of class \code{deb_lsd},
+\code{deb_decimal}, or \code{deb_tetra}. Default is \code{lsd}.}
 
 \item{na.rm}{Logical. Should missing values (including \code{NaN}) be removed?}
 }
 \value{
 All return a tibble with variables for accounts and values in the same
-class as \code{lsd}:
+class and \code{bases} as \code{lsd}:
 \itemize{
 \item \code{deb_account()} a tibble with three rows showing the credit, debit, and
 current value of the given account.
@@ -79,8 +79,9 @@ remaining in \code{df}.
 }
 }
 \description{
-Family of seven related functions to analyze transactions data frames that
-have credit, debit, and lsd variables, mimicking an account book.
+Family of seven related functions to analyze transactions data frames
+that have credit, debit, and tetrapartite (lsd) or tetrapartite (lsdf)
+variables, mimicking an account book.
 \itemize{
 \item \code{deb_account()} credit, debit, and current value of a single account.
 \item \code{deb_account_summary()} credit, debit, and current value of all accounts.
@@ -99,10 +100,10 @@ Transactions data frames have the structure of an account book. They
 should have a similar arrangement to \code{dafforne_transactions}. Each row is
 a transaction in the book. \code{credit} and \code{debit} variables contain the
 account ids associated with discharging account (credit) and the receiving
-account (debit). The \code{lsd} variable represents the value of each
-transaction. Like \code{dafforne_transactions}, transactions data frames can
-have additional variables with attributes for each transaction such as id
-or date.
+account (debit). The \code{lsd} variable represents the tripartite or
+tetrapartitevalue of each transaction. Like \code{dafforne_transactions},
+transactions data frames can have additional variables with attributes for
+each transaction such as id or date among others.
 }
 
 \examples{

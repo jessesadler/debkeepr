@@ -6,8 +6,9 @@
 #' Analysis of double-entry bookkeeping
 #'
 #' @description
-#' Family of seven related functions to analyze transactions data frames that
-#' have credit, debit, and lsd variables, mimicking an account book.
+#' Family of seven related functions to analyze transactions data frames
+#' that have credit, debit, and tetrapartite (lsd) or tetrapartite (lsdf)
+#' variables, mimicking an account book.
 #'
 #' - `deb_account()` credit, debit, and current value of a single account.
 #' - `deb_account_summary()` credit, debit, and current value of all accounts.
@@ -24,10 +25,10 @@
 #' should have a similar arrangement to `dafforne_transactions`. Each row is
 #' a transaction in the book. `credit` and `debit` variables contain the
 #' account ids associated with discharging account (credit) and the receiving
-#' account (debit). The `lsd` variable represents the value of each
-#' transaction. Like `dafforne_transactions`, transactions data frames can
-#' have additional variables with attributes for each transaction such as id
-#' or date.
+#' account (debit). The `lsd` variable represents the tripartite or
+#' tetrapartitevalue of each transaction. Like `dafforne_transactions`,
+#' transactions data frames can have additional variables with attributes for
+#' each transaction such as id or date among others.
 #'
 #' @param df A data frame with at least credit, debit, and lsd variables.
 #' @param account_id The id of the account to be used to calculate the
@@ -38,13 +39,13 @@
 #' @param debit Debit column: Unquoted name of the debit variable,
 #'   representing the accounts that receive the transactional values.
 #'   Default is `debit`.
-#' @param lsd Value column: Unquoted name of a variable of class `deb_lsd`
-#'   or `deb_decimal`. Default is `lsd`.
+#' @param lsd Value column: Unquoted name of a variable of class `deb_lsd`,
+#'   `deb_decimal`, or `deb_tetra`. Default is `lsd`.
 #' @param na.rm Logical. Should missing values (including `NaN`) be removed?
 #'
 #' @return
 #' All return a tibble with variables for accounts and values in the same
-#' class as `lsd`:
+#' class and `bases` as `lsd`:
 #'
 #' - `deb_account()` a tibble with three rows showing the credit, debit, and
 #'   current value of the given account.
@@ -477,7 +478,7 @@ deb_balance <- function(df,
                !! cn := deb_decimal(c(0, 0), bases = bases)))
     } else if (deb_is_tetra(lsd_vctr)) {
       return(tibble::tibble(relation = c("credit", "debit"),
-               !! cn := deb_tetra(c(0, 0, 0), c(0, 0, 0), c(0, 0, 0),
+               !! cn := deb_tetra(c(0, 0), c(0, 0), c(0, 0), c(0, 0),
                                   bases = bases)))
     }
   }
