@@ -34,8 +34,8 @@
 #' deb_convert_bases(tetra, to = c(60, 16, 8))
 #'
 #' # Convert between tripartite and tetrapartite bases
-#' deb_convert_bases(dec, bases = c(60, 16, 8))
-#' deb_convert_bases(dec_tetra, bases = c(20, 12))
+#' deb_convert_bases(dec, to = c(60, 16, 8))
+#' deb_convert_bases(dec_tetra, to = c(20, 12))
 #'
 #' @name convert-bases
 NULL
