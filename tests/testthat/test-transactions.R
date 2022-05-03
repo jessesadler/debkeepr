@@ -52,8 +52,13 @@ balanced <- tibble(credit = c("a", "b", "a", "c"),
                    debit = c("b", "a", "c", "a"),
                    lsd = deb_lsd(l = c(10, 10, 7, 7),
                                  s = c(15, 15, 11, 11),
-                                 d = c(6, 6, 8, 8)))
+                                 d = c(6, 6, 8, 8)),
+                   tetra = deb_tetra(l = c(10, 10, 7, 7),
+                                     s = c(15, 15, 11, 11),
+                                     d = c(6, 6, 8, 8),
+                                     f = c(2, 2, 3, 3)))
 balanced[["dec"]] <- deb_as_decimal(balanced[["lsd"]])
+balanced[["dec_tetra"]] <- deb_as_decimal(balanced[["tetra"]])
 
 # NA, and account "e's" only credit is NA
 # Tests else path in deb_account_summary
@@ -433,6 +438,18 @@ test_that("deb_balance works", {
   expect_identical(deb_balance(balanced),
                    tibble(relation = rel,
                           lsd = deb_lsd(c(0, 0), c(0, 0), c(0, 0))))
+  expect_identical(deb_balance(balanced, lsd = dec),
+                   tibble(relation = rel,
+                          dec = deb_decimal(c(0, 0))))
+  expect_identical(deb_balance(balanced, lsd = tetra),
+                   tibble(relation = rel,
+                          tetra = deb_tetra(c(0, 0), c(0, 0),
+                                            c(0, 0), c(0, 0))))
+  expect_identical(deb_balance(balanced, lsd = dec_tetra),
+                   tibble(relation = rel,
+                          dec_tetra = deb_decimal(c(0, 0),
+                                                  bases = c(20, 12, 4))))
+
   # Deal with NA values: Any NAs lead to both being NA
   res2 <- tibble(relation = rel,
                  lsd = deb_lsd(c(NA, NA), c(NA, NA), c(NA, NA)))
