@@ -50,10 +50,12 @@
 #'   Default is `tetra`.
 #' @param l_col An unquoted name for the pounds column created by the
 #'   function. Default is `l`.
-#' @param s_col An unquoted name for the shillings column created by
-#'   the function. Default is `s`.
+#' @param s_col An unquoted name for the shillings column created by the
+#'   function. Default is `s`.
 #' @param d_col An unquoted name for the pence column created by the
 #'   function. Default is `d`.
+#' @param f_col An unquoted name for the farthings column created by the
+#'   function. Default is `f`.
 #'
 #' @examples
 #'

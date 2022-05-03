@@ -59,11 +59,14 @@ Default is \code{tetra}.}
 \item{l_col}{An unquoted name for the pounds column created by the
 function. Default is \code{l}.}
 
-\item{s_col}{An unquoted name for the shillings column created by
-the function. Default is \code{s}.}
+\item{s_col}{An unquoted name for the shillings column created by the
+function. Default is \code{s}.}
 
 \item{d_col}{An unquoted name for the pence column created by the
 function. Default is \code{d}.}
+
+\item{f_col}{An unquoted name for the farthings column created by the
+function. Default is \code{f}.}
 }
 \description{
 \itemize{
