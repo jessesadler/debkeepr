@@ -6,7 +6,8 @@
 \alias{deb_text.default}
 \alias{deb_text.deb_lsd}
 \alias{deb_text.deb_decimal}
-\title{Format \code{deb_lsd} and \code{deb_decimal} vectors as text}
+\alias{deb_text.deb_tetra}
+\title{Format \code{deb_lsd}, \code{deb_decimal}, and \code{deb_tetra} vectors as text}
 \usage{
 deb_text(x, ...)
 
@@ -34,9 +35,23 @@ deb_text(x, ...)
   suffix = "",
   ...
 )
+
+\method{deb_text}{deb_tetra}(
+  x,
+  digits = 0,
+  currency = "£",
+  s.mark = "s.",
+  d.mark = "d.",
+  f.mark = "f.",
+  sep = " ",
+  big.mark = ",",
+  decimal.mark = ".",
+  suffix = "",
+  ...
+)
 }
 \arguments{
-\item{x}{A vector of class \code{deb_lsd} or \code{deb_decimal}.}
+\item{x}{A vector of class \code{deb_lsd}, \code{deb_decimal}, or \code{deb_tetra}.}
 
 \item{...}{Arguments passed on to further methods.}
 
@@ -51,8 +66,8 @@ Default is \code{"s."}.}
 \item{d.mark}{Character used following the pence (d) unit.
 Default is \code{"d."}.}
 
-\item{sep}{Character to separate pounds, shillings, and pence units.
-Default is \code{" "}.}
+\item{sep}{Character to separate pounds, shillings, pence, and optionally
+farthing units. Default is \code{" "}.}
 
 \item{big.mark}{Character used to mark intervals to the left of the decimal
 mark. Default is \code{","} with default \code{big.interval} of \code{3}.}
@@ -60,21 +75,24 @@ mark. Default is \code{","} with default \code{big.interval} of \code{3}.}
 \item{decimal.mark}{Character used for decimal mark. Default is \code{"."}.}
 
 \item{suffix}{Character placed after the values. Default is \code{""}.}
+
+\item{f.mark}{Character used following the farthing (f) unit with
+tetrapartite values. Default is \code{"f."}.}
 }
 \value{
 A Character vector of formatted values.
 }
 \description{
-Flexible way to nicely format \code{deb_lsd} and \code{deb_decimal} vectors for
-use as labels or texts.
+Flexible way to format \code{deb_lsd}, \code{deb_decimal}, and \code{deb_tetra} vectors
+for use as labels or texts.
 }
 \details{
 \code{deb_text} is similar to \code{as.character()} in that both return a character
-vector of the values of \code{deb_lsd} and \code{deb_decimal} vectors. However,
-\code{as.character()} uses the normal printing method for these vectors.
-\code{deb_text()} provides a convenient way to nicely format \code{deb_lsd} and
-\code{deb_decimal} vectors for use as text or labels with options for
-customization.
+vector of the values of \code{deb_lsd}, \code{deb_decimal}, and \code{deb_tetra} vectors.
+However, \code{as.character()} uses the normal printing method for these vectors.
+\code{deb_text()} provides a convenient way to nicely format \code{deb_lsd},
+\code{deb_decimal}, and \code{deb_tetra} vectors for use as text or labels with
+options for customization.
 
 \code{deb_text()} uses \code{formatC()} to format the numeric values of \code{x}. Numbers
 are printed in non-scientific format and trailing zeros are dropped.
@@ -86,9 +104,14 @@ lsd <- deb_lsd(l = c(10000, 0, -10000),
                s = c(8, 0, -8),
                d = c(5.8252, 0, -5.8252))
 dec <- deb_decimal(c(10000.8252, 0, -10000.8252))
+tetra <- deb_tetra(l = c(10000, 0, -10000),
+                   s = c(8, 0, -8),
+                   d = c(5, 0, -5),
+                   f = c(2.8252, 0, -2.8252))
 
 deb_text(lsd)
 deb_text(dec)
+deb_text(tetra)
 
 # Compact format for deb_lsd with suffix to distinguish currency
 deb_text(lsd, s.mark = "", d.mark = "",
@@ -97,10 +120,12 @@ deb_text(lsd, s.mark = "", d.mark = "",
 # Control the number of digits
 deb_text(lsd, digits = 3)
 deb_text(dec, digits = 3)
+deb_text(tetra, digits = 3)
 
 # Change big mark and decimal mark
 deb_text(lsd, digits = 4, big.mark = ".", decimal.mark = ",")
 deb_text(dec, digits = 4, big.mark = ".", decimal.mark = ",")
+deb_text(tetra, digits = 4, big.mark = ".", decimal.mark = ",")
 
 }
 \seealso{
