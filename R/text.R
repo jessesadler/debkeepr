@@ -1,4 +1,4 @@
-## Transform deb_lsd and deb_decimal to text for labels ##
+## Transform deb_lsd, deb_decimal, and deb_tetra to text for labels ##
 
 #' Format `deb_lsd`, `deb_decimal`, and `deb_tetra` vectors as text
 #'
@@ -24,6 +24,8 @@
 #' @param digits Desired number of digits after the decimal mark to which to
 #'   round the numeric values. Default is `0`.
 #' @param currency Character used for the currency mark. Default is pound sign.
+#' @param l.mark Character used following the pounds (l) unit.
+#'   Default is `""`.
 #' @param s.mark Character used following the shillings (s) unit.
 #'   Default is `"s."`.
 #' @param d.mark Character used following the pence (d) unit.
@@ -89,6 +91,7 @@ deb_text.default <- function(x, ...) {
 deb_text.deb_lsd <- function(x,
                              digits = 0,
                              currency = "\u00A3",
+                             l.mark = "",
                              s.mark = "s.",
                              d.mark = "d.",
                              sep = " ",
@@ -111,7 +114,7 @@ deb_text.deb_lsd <- function(x,
                big.mark = big.mark, decimal.mark = decimal.mark,
                drop0trailing = TRUE, ...)
 
-  out <- paste0(currency, l, sep, s, s.mark, sep, d, d.mark, suffix)
+  out <- paste0(currency, l, l.mark, sep, s, s.mark, sep, d, d.mark, suffix)
   out[is.na(x)] <- NA
   out
 }
@@ -142,6 +145,7 @@ deb_text.deb_decimal <- function(x,
 deb_text.deb_tetra <- function(x,
                                digits = 0,
                                currency = "\u00A3",
+                               l.mark = "",
                                s.mark = "s.",
                                d.mark = "d.",
                                f.mark = "f.",
@@ -168,7 +172,7 @@ deb_text.deb_tetra <- function(x,
                big.mark = big.mark, decimal.mark = decimal.mark,
                drop0trailing = TRUE, ...)
 
-  out <- paste0(currency, l, sep, s, s.mark, sep,
+  out <- paste0(currency, l, l.mark, sep, s, s.mark, sep,
                 d, d.mark, sep, f, f.mark, suffix)
   out[is.na(x)] <- NA
   out

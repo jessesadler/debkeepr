@@ -17,6 +17,7 @@ deb_text(x, ...)
   x,
   digits = 0,
   currency = "£",
+  l.mark = "",
   s.mark = "s.",
   d.mark = "d.",
   sep = " ",
@@ -40,6 +41,7 @@ deb_text(x, ...)
   x,
   digits = 0,
   currency = "£",
+  l.mark = "",
   s.mark = "s.",
   d.mark = "d.",
   f.mark = "f.",
@@ -59,6 +61,9 @@ deb_text(x, ...)
 round the numeric values. Default is \code{0}.}
 
 \item{currency}{Character used for the currency mark. Default is pound sign.}
+
+\item{l.mark}{Character used following the pounds (l) unit.
+Default is \code{""}.}
 
 \item{s.mark}{Character used following the shillings (s) unit.
 Default is \code{"s."}.}

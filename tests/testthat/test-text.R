@@ -27,6 +27,9 @@ test_that("deb_text properly formats deb_lsd", {
                                 "£0 0s. 0d.", "-£10,000 8s. 6d."))
   expect_equal(deb_text(lsd, sep = ".", s.mark = "", d.mark = ""),
                c("£10,000.8.6", NA, "£0.0.0", "-£10,000.8.6"))
+  expect_equal(deb_text(lsd, l.mark = " lbs", s.mark = " sh", d.mark = " p."),
+               c("£10,000 lbs 8 sh 6 p.", NA,
+                 "£0 lbs 0 sh 0 p.", "-£10,000 lbs 8 sh 6 p."))
   expect_equal(deb_text(lsd, currency = "$", s.mark = "", d.mark = "",
                         sep = ":", digits = 3, big.mark = ".",
                         decimal.mark = ",", suffix = " Flemish"),
