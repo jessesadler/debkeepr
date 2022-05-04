@@ -26,7 +26,7 @@ RoxygenNote: 7.1.2
 Suggests: 
     covr,
     knitr,
-    testthat (>= 2.3.0),
+    testthat (>= 3.0.0),
     rmarkdown,
     ggplot2,
     igraph,
@@ -35,3 +35,4 @@ Suggests:
 URL: https://github.com/jessesadler/debkeepr, https://jessesadler.github.io/debkeepr/
 BugReports: https://github.com/jessesadler/debkeepr/issues
 VignetteBuilder: knitr
+Config/testthat/edition: 3

@@ -31,9 +31,8 @@ test_that("deb_lsd works", {
 })
 
 test_that("deb_lsd prints", {
-  expect_that(print(x), prints_text())
-  expect_that(print(deb_lsd(c(1, 2, 3), c(4, 5, 6), c(7, 8, NA))),
-              prints_text())
+  expect_snapshot_output(print(x))
+  expect_snapshot_output(print(deb_lsd(c(1, 2, 3), c(4, 5, 6), c(7, 8, NA))))
   expect_equal(vctrs::vec_ptype_abbr(x), "lsd[20s:12d]")
   expect_equal(vctrs::vec_ptype_abbr(deb_lsd(1, 2, 3, bases = c(60, 16))),
                "lsd[60s:16d]")

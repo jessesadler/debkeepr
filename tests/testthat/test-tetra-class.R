@@ -32,9 +32,9 @@ test_that("deb_tetra works", {
 })
 
 test_that("deb_lsd prints", {
-  expect_that(print(x), prints_text())
-  expect_that(print(deb_tetra(c(1, 2, 3), c(4, 5, 6), c(7, 8, NA), c(2, 4, 6))),
-              prints_text())
+  expect_snapshot_output(print(x))
+  expect_snapshot_output(
+    print(deb_tetra(c(1, 2, 3), c(4, 5, 6), c(7, 8, NA), c(2, 4, 6))))
   expect_equal(vctrs::vec_ptype_abbr(x), "tetra[20s:12d:4f]")
   expect_equal(vctrs::vec_ptype_abbr(deb_tetra(1, 2, 3, 4, bases = c(60, 16, 8))),
                "tetra[60s:16d:8f]")

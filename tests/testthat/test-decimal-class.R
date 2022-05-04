@@ -47,8 +47,8 @@ test_that("deb_decimal works", {
 })
 
 test_that("deb_decimal prints", {
-  expect_that(print(y), prints_text())
-  expect_that(print(deb_decimal(NA)), prints_text())
+  expect_snapshot_output(print(y))
+  expect_snapshot_output(print(deb_decimal(NA)))
   expect_equal(vctrs::vec_ptype_abbr(y), "l[20s:12d]")
   expect_equal(vctrs::vec_ptype_abbr(deb_decimal(1, unit = "s",
                                                  bases = c(60, 16))),
@@ -56,7 +56,7 @@ test_that("deb_decimal prints", {
   expect_equal(unit_word(deb_decimal(1, "s")), "solidus")
   expect_equal(unit_word(deb_decimal(1, "d")), "denarius")
   # With tetra
-  expect_that(print(deb_decimal(x, bases = tetra)), prints_text())
+  expect_snapshot_output(print(deb_decimal(x, bases = tetra)))
   expect_equal(unit_word(deb_decimal(1, "f", tetra)), "farthing")
   expect_equal(vctrs::vec_ptype_abbr(deb_decimal(1, bases = tetra)),
                "l[20s:12d:4f]")
