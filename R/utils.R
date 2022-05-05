@@ -30,8 +30,10 @@ unit_hierarchy <- function(x, y) {
     deb_unit(x)
   } else if (any(c(deb_unit(x), deb_unit(y)) == "l")) {
     "l"
-  } else {
+  } else if (any(c(deb_unit(x), deb_unit(y)) == "s")) {
     "s"
+  } else {
+    "d"
   }
 }
 

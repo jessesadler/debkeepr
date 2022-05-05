@@ -1,6 +1,10 @@
-## Test coercion with deb_lsd and deb_decimal ##
+## Test coercion with deb_lsd, deb_decimal, and deb_tetra ##
 
 library(vctrs)
+
+bases2 <- c(50, 16)
+bases3 <- c(20, 12, 4)
+bases4 <- c(50, 16, 8)
 
 lsd <- deb_lsd(1, 2, 3)
 lsd2 <- deb_lsd(4, 5, 6)
@@ -17,7 +21,9 @@ dec_d3 <- deb_decimal(c(324, 600, 780), unit = "d")
 
 tetra <- deb_tetra(1, 2, 3, 4)
 tetra2 <- deb_tetra(5, 6, 7, 8)
-tetra_bases <- c(20, 12, 4)
+
+dec_tetra_d <- deb_decimal(441.75, unit = "d", bases = bases3)
+dec_tetra_f <- deb_decimal(1767, unit = "f", bases = bases3)
 
 bases_error <- paste0("`bases` attributes must be equal to combine ",
                       "<deb_lsd>, <deb_tetra>, or <deb_decimal> vectors.")
@@ -33,9 +39,9 @@ test_that("deb_lsd coerces to itself", {
   expect_equal(length(c(lsd, lsd2)), 2)
   expect_equal(c(lsd, lsd2), deb_lsd(c(1, 4), c(2, 5), c(3, 6)))
   # Errors
-  expect_error(vec_c(lsd, deb_lsd(1, 2, 3, bases = c(50, 16))),
+  expect_error(vec_c(lsd, deb_lsd(1, 2, 3, bases = bases2)),
                bases_error)
-  expect_error(c(lsd, deb_lsd(1, 2, 3, bases = c(50, 16))),
+  expect_error(c(lsd, deb_lsd(1, 2, 3, bases = bases2)),
                bases_error)
 })
 
@@ -84,9 +90,9 @@ test_that("deb_decimal coerces to itself", {
   expect_equal(c(dec_s, dec_s2), dec_s3)
   expect_equal(c(dec_d, dec_d2), dec_d3)
   # Tetra
-  expect_equal(vec_c(deb_decimal(1.5, bases = tetra_bases),
-                     deb_decimal(3.5, bases = tetra_bases)),
-               deb_decimal(c(1.5, 3.5), bases = tetra_bases))
+  expect_equal(vec_c(deb_decimal(1.5, bases = bases3),
+                     deb_decimal(3.5, bases = bases3)),
+               deb_decimal(c(1.5, 3.5), bases = bases3))
 
   # With different units: follows hierarchy
   expect_equal(deb_unit(c(dec, dec_s)), deb_unit(c(dec_s, dec)))
@@ -95,13 +101,14 @@ test_that("deb_decimal coerces to itself", {
   expect_equal(c(dec_s, dec2), dec3)
   expect_equal(c(dec_d, dec2), dec3)
   expect_equal(c(dec_d, dec_s2), dec_s3)
+  expect_equal(c(dec_tetra_d, dec_tetra_f), c(dec_tetra_d, dec_tetra_d))
 
   # Errors
-  expect_error(vec_c(dec, deb_decimal(4.5, bases = c(50, 16))),
+  expect_error(vec_c(dec, deb_decimal(4.5, bases = bases2)),
                bases_error)
-  expect_error(c(dec, deb_decimal(4.5, bases = c(50, 16))),
+  expect_error(c(dec, deb_decimal(4.5, bases = bases2)),
                bases_error)
-  expect_error(vec_c(dec, deb_decimal(1.5, bases = c(20, 12, 4))),
+  expect_error(vec_c(dec, deb_decimal(1.5, bases = bases3)),
                bases_error)
 })
 
@@ -146,9 +153,9 @@ test_that("deb_tetra coerces to itself", {
   expect_equal(c(tetra, tetra2),
                deb_tetra(c(1, 5), c(2, 6), c(3, 7), c(4, 8)))
   # Errors
-  expect_error(vec_c(tetra, deb_tetra(1, 2, 3, 4, bases = c(50, 16, 8))),
+  expect_error(vec_c(tetra, deb_tetra(1, 2, 3, 4, bases = bases4)),
                bases_error)
-  expect_error(c(tetra, deb_tetra(1, 2, 3, 4, bases = c(50, 16, 8))),
+  expect_error(c(tetra, deb_tetra(1, 2, 3, 4, bases = bases4)),
                bases_error)
 })
 
@@ -196,9 +203,9 @@ test_that("deb_decimal coerces to deb_lsd", {
   expect_equal(c(lsd, dec2), deb_lsd(c(1, 3), c(2, 5), c(3, 0)))
   expect_equal(vec_c(dec2, lsd), deb_lsd(c(3, 1), c(5, 2), c(0, 3)))
   # Errors
-  expect_error(vec_c(lsd, deb_decimal(5.5, bases = c(50, 16))),
+  expect_error(vec_c(lsd, deb_decimal(5.5, bases = bases2)),
                bases_error)
-  expect_error(vec_c(dec, deb_lsd(1, 2, 3, bases = c(50, 16))),
+  expect_error(vec_c(dec, deb_lsd(1, 2, 3, bases = bases2)),
                bases_error)
 })
 
@@ -213,10 +220,10 @@ test_that("deb_tetra coerces to deb_lsd", {
   expect_equal(vec_c(tetra, lsd),
                deb_lsd(c(1, 1), c(2, 2), c(4, 3)))
 
-  expect_error(vec_c(lsd, deb_tetra(1, 2, 3, 4, bases = c(50, 16, 8))),
+  expect_error(vec_c(lsd, deb_tetra(1, 2, 3, 4, bases = bases4)),
                paste0("s and d units of the `bases` attributes must be ",
                "equal to combine <deb_lsd> and <deb_tetra> vectors."))
-  expect_error(vec_c(tetra, deb_lsd(1, 2, 3, bases = c(50, 16))),
+  expect_error(vec_c(tetra, deb_lsd(1, 2, 3, bases = bases2)),
                paste0("s and d units of the `bases` attributes must be ",
                       "equal to combine <deb_lsd> and <deb_tetra> vectors."))
 })
@@ -225,16 +232,16 @@ test_that("deb_tetra coerces to deb_lsd", {
 # deb_tetra and deb_decimal coercion --------------------------------------
 
 test_that("deb_decimal with four units coerces to deb_tetra", {
-  expect_equal(vec_c(tetra, deb_decimal(1.5, bases = tetra_bases)),
+  expect_equal(vec_c(tetra, deb_decimal(1.5, bases = bases3)),
                deb_tetra(c(1, 1), c(2, 10), c(3, 0), c(4, 0)))
-  expect_equal(c(tetra, deb_decimal(1.5, bases = tetra_bases)),
+  expect_equal(c(tetra, deb_decimal(1.5, bases = bases3)),
                deb_tetra(c(1, 1), c(2, 10), c(3, 0), c(4, 0)))
-  expect_equal(vec_c(deb_decimal(1.5, bases = tetra_bases), tetra),
+  expect_equal(vec_c(deb_decimal(1.5, bases = bases3), tetra),
                deb_tetra(c(1, 1), c(10, 2), c(0, 3), c(0, 4)))
 
   expect_error(vec_c(tetra, dec))
   expect_error(vec_c(dec, tetra))
-  expect_error(vec_c(tetra, deb_decimal(1.5, bases = c(50, 16))))
+  expect_error(vec_c(tetra, deb_decimal(1.5, bases = bases2)))
   expect_error(vec_c(tetra, deb_decimal(1.5, bases = c(20, 12, 8))),
                bases_error)
 })
