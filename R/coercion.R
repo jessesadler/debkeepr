@@ -32,10 +32,10 @@ vec_ptype2.integer.deb_lsd <- function(x, y, ...) y
 
 #' @export
 vec_ptype2.deb_decimal.deb_decimal <- function(x, y, ...) {
-  bases_equal(x, y)
+  bases <- bases_hierarchy(x, y)
   unit <- unit_hierarchy(x, y)
 
-  new_decimal(bases = deb_bases(x), unit = unit)
+  new_decimal(bases = bases, unit = unit)
 }
 
 # deb_decimal and double

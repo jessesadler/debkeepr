@@ -22,7 +22,7 @@ is_natural <- function(x, tol = .Machine$double.eps^0.5) {
 
 #' Coercion hierarchy for deb_decimal units
 #'
-#' Hierarchy: d -> s -> l
+#' Hierarchy: f -> d -> s -> l
 #' @keywords internal
 
 unit_hierarchy <- function(x, y) {
@@ -34,6 +34,32 @@ unit_hierarchy <- function(x, y) {
     "s"
   } else {
     "d"
+  }
+}
+
+#' Coercion hierarchy for deb_decimal bases
+#'
+#' Hierarchy: tetra -> lsd
+#' Check for equality of bases or mixed bases equality
+#' @return bases attribute. If equal length, bases is returned.
+#'   If unequal length, lsd bases is returned, removing f unit.
+#' @keywords internal
+
+bases_hierarchy <- function(x, y) {
+  # Both lsd or both tetra
+  if (vec_size(deb_bases(x)) == vec_size(deb_bases(y))) {
+    bases_equal(x, y)
+    deb_bases(x)
+
+    # x is lsd; y is tetra
+  } else if (vec_size(deb_bases(x)) == 2L) {
+    mixed_bases_equal(x, y)
+    deb_bases(x)
+
+    # y is lsd, x is tetra
+  } else {
+    mixed_bases_equal(y, x)
+    deb_bases(y)
   }
 }
 

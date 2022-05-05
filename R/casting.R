@@ -62,8 +62,24 @@ vec_cast.character.deb_lsd <- function(x, to, ...) {
 
 #' @export
 vec_cast.deb_decimal.deb_decimal <- function(x, to, ...) {
-
-  bases_equal(x, to)
+  # Deal with possibility of mixed bases: tetra becomes lsd
+  # Both lsd or both tetra
+  if (vec_size(deb_bases(x)) == vec_size(deb_bases(to))) {
+    bases_equal(x, to)
+    bases <- deb_bases(x)
+  # to is lsd; x is tetra
+  } else if (vec_size(deb_bases(to)) == 2L) {
+    mixed_bases_equal(to, x)
+    bases <- deb_bases(to)
+    # If unit of x is f, convert to d
+    if (deb_unit(x) == "f") {
+      x <- deb_convert_unit(x, "d")
+    }
+  # to is tetra; x is lsd
+  } else {
+    mixed_bases_equal(x, to)
+    bases <- deb_bases(to)
+  }
 
   from_unit <- deb_unit(x)
   to_unit <- deb_unit(to)
@@ -71,9 +87,7 @@ vec_cast.deb_decimal.deb_decimal <- function(x, to, ...) {
   if (from_unit == to_unit) {
     return(x)
   }
-
-  bases <- deb_bases(x)
-
+  # Deal with conversion of units
   # Need separate case_when() functions for lsd and tetra bases
   # to avoid bases[[3]] from being out of bounds.
   if (vec_size(bases) == 2L) {
@@ -104,6 +118,7 @@ vec_cast.deb_decimal.deb_decimal <- function(x, to, ...) {
   }
 
   attr(converted, "unit") <- to_unit
+  attr(converted, "bases") <- bases
 
   converted
 }
