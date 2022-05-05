@@ -22,11 +22,17 @@ dec_d3 <- deb_decimal(c(324, 600, 780), unit = "d")
 tetra <- deb_tetra(1, 2, 3, 4)
 tetra2 <- deb_tetra(5, 6, 7, 8)
 
+dec_tetra_l <- deb_decimal(1.840625, bases = bases3)
+dec_tetra_s <- deb_decimal(36.8125, unit = "s", bases = bases3)
 dec_tetra_d <- deb_decimal(441.75, unit = "d", bases = bases3)
 dec_tetra_f <- deb_decimal(1767, unit = "f", bases = bases3)
+dec_tetra_l_alt <- deb_decimal(1.5, bases = bases4)
+dec_tetra_f_alt <- deb_decimal(7708, unit = "f", bases = bases4)
 
 bases_error <- paste0("`bases` attributes must be equal to combine ",
                       "<deb_lsd>, <deb_tetra>, or <deb_decimal> vectors.")
+mixed_error <- paste0("s and d units of the `bases` attributes must be ",
+                      "equal to combine <deb_lsd> and <deb_tetra> vectors.")
 
 # deb_lsd coercion --------------------------------------------------------
 
@@ -102,14 +108,29 @@ test_that("deb_decimal coerces to itself", {
   expect_equal(c(dec_d, dec2), dec3)
   expect_equal(c(dec_d, dec_s2), dec_s3)
   expect_equal(c(dec_tetra_d, dec_tetra_f), c(dec_tetra_d, dec_tetra_d))
+  expect_equal(c(dec_tetra_f, dec_tetra_d), c(dec_tetra_d, dec_tetra_d))
+  expect_equal(c(dec_tetra_f, dec_tetra_s), c(dec_tetra_s, dec_tetra_s))
+  expect_equal(c(dec_tetra_f, dec_tetra_l), c(dec_tetra_l, dec_tetra_l))
+
+  # With mixed tetra and lsd bases
+  expect_equal(deb_bases(c(dec, dec_tetra_l)), deb_bases(c(dec_tetra_l, dec)))
+  expect_equal(deb_bases(c(dec, dec_tetra_s)), deb_bases(c(dec_tetra_s, dec)))
+  expect_equal(deb_bases(c(dec, dec_tetra_l)), c(s = 20L, d = 12L))
+  expect_equal(deb_bases(c(dec_tetra_l, dec)), c(s = 20L, d = 12L))
+  expect_equal(c(dec, dec_tetra_f), c(dec, 1.840625))
+  expect_equal(c(dec_s, dec_tetra_f), c(dec_s, 36.8125))
+  expect_equal(c(dec_d, dec_tetra_f), c(dec_d, 441.75))
 
   # Errors
   expect_error(vec_c(dec, deb_decimal(4.5, bases = bases2)),
                bases_error)
   expect_error(c(dec, deb_decimal(4.5, bases = bases2)),
                bases_error)
-  expect_error(vec_c(dec, deb_decimal(1.5, bases = bases3)),
+  expect_error(vec_c(deb_decimal(1.5, bases = bases4), deb_decimal(1.5, bases = bases3)),
                bases_error)
+  expect_error(c(dec, dec_tetra_l_alt), mixed_error)
+  expect_error(c(dec_tetra_l_alt, dec), mixed_error)
+
 })
 
 test_that("double coerces to deb_decimal", {

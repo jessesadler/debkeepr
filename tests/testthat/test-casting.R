@@ -87,6 +87,15 @@ test_that("vec_cast works for deb_decimal", {
   expect_equal(vec_cast(dec_s, deb_decimal(unit = "d")), dec_d)
   expect_equal(vec_cast(dec_d, deb_decimal()), dec_l)
   expect_equal(vec_cast(dec_d, deb_decimal(unit = "s")), dec_s)
+  # Convert mixed bases
+  expect_equal(vec_cast(dec_l, deb_decimal(bases = bases3)),
+               deb_decimal(1.1125, bases = bases3))
+  expect_equal(vec_cast(dec_s_tetra, deb_decimal(unit = "s")),
+               deb_decimal(22.375, unit = "s"))
+  expect_equal(vec_cast(dec_s_tetra, deb_decimal()),
+               deb_decimal(1.11875, unit = "l"))
+  expect_error(vec_cast(dec_l, deb_decimal(bases = bases4)), mixed_error)
+  expect_error(vec_cast(dec_s_tetra_alt, deb_decimal()), mixed_error)
 
   # deb_decimal with double and integer
   expect_equal(vec_cast(dec, numeric()), c(NA, 2.225, 3.2875))

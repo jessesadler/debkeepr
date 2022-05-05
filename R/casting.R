@@ -84,12 +84,16 @@ vec_cast.deb_decimal.deb_decimal <- function(x, to, ...) {
   from_unit <- deb_unit(x)
   to_unit <- deb_unit(to)
 
+  # If unit is the same return x, but make sure bases are changed
+  # if there are mixed bases.
   if (from_unit == to_unit) {
+    attr(x, "bases") <- bases
     return(x)
   }
   # Deal with conversion of units
   # Need separate case_when() functions for lsd and tetra bases
   # to avoid bases[[3]] from being out of bounds.
+
   if (vec_size(bases) == 2L) {
     converted <- dplyr::case_when(
       from_unit == "l" & to_unit == "s" ~ x * bases[[1]],
