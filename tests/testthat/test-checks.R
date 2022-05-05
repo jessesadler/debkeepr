@@ -196,7 +196,8 @@ test_that("bases tests equivalency", {
 })
 
 test_that("mixed bases equality", {
-  expect_error(mixed_bases_equal(c(20, 12), c(60, 16)),
+  expect_error(mixed_bases_equal(deb_tetra(1, 2, 3, 4),
+                                 deb_lsd(1, 2, 3, c(50, 16))),
                paste0("s and d units of the `bases` attributes must be equal to ",
                       "combine <deb_lsd> and <deb_tetra> vectors."))
 })

@@ -497,7 +497,7 @@ vec_arith.deb_decimal.deb_lsd <- function(op, x, y) {
 #' @method vec_arith.deb_lsd deb_tetra
 #' @export
 vec_arith.deb_lsd.deb_tetra <- function(op, x, y) {
-  mixed_bases_equal(deb_bases(x), deb_bases(y)[1:2])
+  mixed_bases_equal(x, y)
 
   switch(
     op,
@@ -514,7 +514,7 @@ vec_arith.deb_lsd.deb_tetra <- function(op, x, y) {
 #' @method vec_arith.deb_tetra deb_lsd
 #' @export
 vec_arith.deb_tetra.deb_lsd <- function(op, x, y) {
-  mixed_bases_equal(deb_bases(x)[1:2], deb_bases(y))
+  mixed_bases_equal(y, x)
 
   switch(
     op,

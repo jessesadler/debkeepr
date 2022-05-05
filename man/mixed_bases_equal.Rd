@@ -6,10 +6,14 @@
 \usage{
 mixed_bases_equal(x, y)
 }
+\arguments{
+\item{x}{Object with 2 bases.}
+
+\item{y}{Object with 3 bases.}
+}
 \description{
 Used to ensure that deb_lsd and deb_tetra vectors can only be combined
 if they share the same s and d bases. Create a different function from
-\code{bases_equal()} for better error message and to keep simplicity of calling
-\code{deb_bases()} within the function instead of in the variables.
+\code{bases_equal()} for better error message and to keep simplicity.
 }
 \keyword{internal}

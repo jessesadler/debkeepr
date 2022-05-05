@@ -62,6 +62,7 @@ vec_cast.character.deb_lsd <- function(x, to, ...) {
 
 #' @export
 vec_cast.deb_decimal.deb_decimal <- function(x, to, ...) {
+
   bases_equal(x, to)
 
   from_unit <- deb_unit(x)
@@ -362,7 +363,7 @@ tetra_to_lsd <- function(x) {
 
 #' @export
 vec_cast.deb_lsd.deb_tetra <- function(x, to, ...) {
-  mixed_bases_equal(deb_bases(x)[1:2], deb_bases(to))
+  mixed_bases_equal(to, x)
 
   tetra_to_lsd(x)
 }
@@ -456,7 +457,7 @@ lsd_to_tetra <- function(x, to) {
 
 #' @export
 vec_cast.deb_tetra.deb_lsd <- function(x, to, ...) {
-  mixed_bases_equal(deb_bases(x), deb_bases(to)[1:2])
+  mixed_bases_equal(x, to)
 
   lsd_to_tetra(x, to)
 }
