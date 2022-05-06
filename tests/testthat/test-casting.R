@@ -22,10 +22,12 @@ dec_d2 <- deb_decimal(c(NA, 180, 300), unit = "d")
 dec_d3 <- deb_decimal(c(267, 180, 300), unit = "d")
 dec3 <- deb_decimal(c(1.1125, 2.225, 3.2875))
 
+tetra <- deb_tetra(c(NA, 1), c(NA, 2), c(NA, 4), c(NA, 2))
 tetra1 <- deb_tetra(1, 2, 4, 2)
-tetra2 <- deb_tetra(c(NA, 1), c(NA, 2), c(NA, 4), c(NA, 2))
 tetra_alt <- deb_tetra(1, 10, 3, 4, bases = bases4)
 
+dec_tetra <- deb_decimal(c(1.840625, 1.11875), bases = bases3)
+dec_tetra_alt <- deb_decimal(c(60.21875, 85.9375), bases = bases4)
 dec_l_tetra <- deb_decimal(1.11875, bases = bases3)
 dec_s_tetra <- deb_decimal(22.375, unit = "s", bases = bases3)
 dec_d_tetra <- deb_decimal(268.5, unit = "d", bases = bases3)
@@ -43,7 +45,7 @@ y <- list(c(0, 4, 8),
           c(2, 6, 10),
           c(3, 7, 11))
 
-tetra <- deb_tetra(l = 0:3, s = 4:7, d = 8:11, f = 1:4)
+z <- deb_tetra(l = 0:3, s = 4:7, d = 8:11, f = 1:4)
 tetra_list <- list(c(0, 4, 8, 1),
                    c(1, 5, 9, 2),
                    c(2, 6, 10, 3),
@@ -161,7 +163,7 @@ test_that("vec_cast works for deb_tetra", {
   expect_equal(vec_cast(numeric(), deb_tetra()), deb_tetra())
   expect_equal(vec_cast(integer(), deb_tetra()), deb_tetra())
   # deb_tetra to character
-  expect_equal(vec_cast(tetra2, character()), c(NA, "1:2s:4d:2f"))
+  expect_equal(vec_cast(tetra, character()), c(NA, "1:2s:4d:2f"))
   # NA and incompatible cast from boilerplate
   expect_equal(vec_cast(NA, deb_tetra()), deb_tetra(NA, NA, NA, NA))
   expect_error(vec_cast(factor("hello"), deb_tetra()))
@@ -177,17 +179,17 @@ test_that("vec_cast works with lists",{
   expect_equal(vec_cast(y, deb_decimal()), deb_as_decimal(x))
   expect_error(vec_cast(c(y, 5), deb_decimal()))
   # list to deb_tetra
-  expect_identical(vec_cast(tetra_list, deb_tetra()), tetra)
+  expect_identical(vec_cast(tetra_list, deb_tetra()), z)
   expect_error(vec_cast(c(tetra_list, 5), deb_tetra()),
                "`x` must be a list of numeric vectors of length 4.")
   # deb_lsd to list
   expect_identical(vec_cast(x, list()), y)
   # deb_tetra to list
-  expect_identical(vec_cast(tetra, list()), tetra_list)
+  expect_identical(vec_cast(z, list()), tetra_list)
   # deb_as_list
   expect_error(deb_as_list(dec))
   expect_identical(deb_as_list(x), y)
-  expect_identical(deb_as_list(tetra), tetra_list)
+  expect_identical(deb_as_list(z), tetra_list)
 })
 
 test_that("vec_cast works between deb_lsd and deb_decimal", {
@@ -202,12 +204,26 @@ test_that("vec_cast works between deb_lsd and deb_decimal", {
   expect_equal(vec_cast(lsd_alt, deb_decimal(bases = bases2)),
                dec_bases)
   expect_equal(vec_cast(dec_s, deb_decimal(unit = "s")), dec_s)
+  # deb_decimal with tetra bases to lsd
+  expect_equal(vec_cast(dec_l_tetra, deb_lsd()), deb_lsd(1, 2, 4.5))
+  expect_equal(vec_cast(dec_s_tetra, deb_lsd()), deb_lsd(1, 2, 4.5))
+  expect_equal(vec_cast(dec_d_tetra, deb_lsd()), deb_lsd(1, 2, 4.5))
+  expect_equal(vec_cast(dec_f_tetra, deb_lsd()), deb_lsd(1, 2, 4.5))
+  expect_equal(vec_cast(dec_s_tetra_alt, deb_lsd(bases = bases2)),
+               deb_lsd(1, 10, 3.5, bases2))
+  # deb_lsd to deb_decimal with tetra bases
+  expect_equal(vec_cast(lsd1, deb_decimal(bases = bases3)),
+               deb_decimal(1.1125, bases = bases3))
+  expect_equal(vec_cast(lsd1, deb_decimal(unit = "f", bases = bases3)),
+               deb_decimal(1068, "f", bases3))
 
-  # Errors when x has different bases or units than default if not changed
+  # Errors when x has different bases or units and default if not changed
   expect_error(vec_cast(lsd_alt, deb_lsd()), bases_error)
   expect_error(vec_cast(dec_bases, deb_decimal()), bases_error)
   expect_error(vec_cast(dec_bases, deb_lsd()), bases_error)
   expect_error(vec_cast(lsd_alt, deb_decimal()), bases_error)
+  expect_error(vec_cast(dec_s_tetra_alt, deb_lsd()), mixed_error)
+  expect_error(vec_cast(lsd1, deb_decimal(bases = bases4)), mixed_error)
 })
 
 test_that("vec_cast works between deb_lsd and deb_tetra", {
@@ -244,20 +260,25 @@ test_that("vec_cast works between deb_decimal and deb_tetra", {
                dec_d_tetra)
   expect_equal(vec_cast(tetra1, deb_decimal(unit = "f", bases = bases3)),
                dec_f_tetra)
-  expect_equal(vec_cast(dec_l_tetra, deb_tetra()),
-               tetra1)
-  expect_equal(vec_cast(dec_s_tetra, deb_tetra()),
-               tetra1)
-  expect_equal(vec_cast(dec_d_tetra, deb_tetra()),
-               tetra1)
-  expect_equal(vec_cast(dec_f_tetra, deb_tetra()),
-               tetra1)
+  expect_equal(vec_cast(dec_l_tetra, deb_tetra()), tetra1)
+  expect_equal(vec_cast(dec_s_tetra, deb_tetra()), tetra1)
+  expect_equal(vec_cast(dec_d_tetra, deb_tetra()), tetra1)
+  expect_equal(vec_cast(dec_f_tetra, deb_tetra()), tetra1)
   # With length more than 1
   expect_equal(vec_cast(deb_decimal(c(1.11875, 2.234375, 3.2875), bases = bases3),
                         deb_tetra()),
                deb_tetra(1:3, c(2, 4, 5), c(4, 8, 9), c(2, 1, 0)))
+  # deb_decimal with lsd bases to tetra
+  expect_equal(vec_cast(dec_l, deb_tetra()), deb_tetra(1, 2, 3, 0))
+  expect_equal(vec_cast(dec_s, deb_tetra()), deb_tetra(1, 2, 3, 0))
+  expect_equal(vec_cast(dec_d, deb_tetra()), deb_tetra(1, 2, 3, 0))
+  expect_equal(vec_cast(dec_bases, deb_tetra(bases = bases4)),
+               deb_tetra(1, 25, 4, 0, bases4))
+  # deb_tetra to deb_decimal with lsd bases
+  expect_equal(vec_cast(tetra1, deb_decimal()), deb_decimal(1.11875))
+
   # Error
-  expect_error(vec_cast(dec_l, deb_tetra()))
+  expect_error(vec_cast(dec_bases, deb_tetra()), mixed_error)
   expect_error(vec_cast(dec_l_tetra, deb_tetra(bases = bases4)),
                bases_error)
 })
@@ -270,6 +291,9 @@ test_that("deb_as_lsd works", {
   expect_equal(deb_as_lsd(dec_d), lsd1)
   expect_equal(deb_as_lsd(deb_decimal(75.25, unit = "s", bases = bases2)),
                lsd_alt)
+  expect_equal(deb_as_lsd(dec_l_tetra), deb_lsd(1, 2, 4.5))
+  expect_equal(deb_as_lsd(dec_f_tetra), deb_lsd(1, 2, 4.5))
+  expect_equal(deb_as_lsd(dec_s_tetra_alt), deb_lsd(1, 10, 3.5, bases2))
   expect_equal(deb_as_lsd(tetra1), deb_lsd(1, 2, 4.5))
   expect_equal(deb_as_lsd(1.1125), lsd1)
   expect_equal(deb_as_lsd(1.505, bases = bases2), lsd_alt)
@@ -310,7 +334,7 @@ test_that("deb_as_tetra works", {
                tetra_alt)
   expect_equal(deb_as_tetra(NA), deb_tetra(NA, NA, NA, NA))
   expect_error(deb_as_tetra(factor("hello")))
-  expect_identical(deb_as_tetra(tetra_list), tetra)
+  expect_identical(deb_as_tetra(tetra_list), z)
   # Error with deb_decimal with lsd units
   expect_error(deb_as_tetra(dec_l),
                paste0("The `bases` attribute"))
@@ -344,27 +368,64 @@ test_that("assignment subsetting works", {
   expect_equal(dec_s2, dec_s3)
   dec_s2[[1]] <- dec_d
   expect_equal(dec_s2, dec_s3)
-
   dec_d2[[1]] <- dec_l
   expect_equal(dec_d2, dec_d3)
   dec_d2[[1]] <- dec_s
   expect_equal(dec_d2, dec_d3)
 
+  # deb_decimal with tetra bases
+  dec_tetra[[1]] <- dec_l_tetra
+  expect_equal(dec_tetra, c(dec_l_tetra, dec_l_tetra))
+  dec_tetra[[1]] <- dec_s_tetra
+  expect_equal(dec_tetra, c(dec_l_tetra, dec_l_tetra))
+  dec_tetra[[1]] <- dec_d_tetra
+  expect_equal(dec_tetra, c(dec_l_tetra, dec_l_tetra))
+  dec_tetra[[1]] <- dec_f_tetra
+  expect_equal(dec_tetra, c(dec_l_tetra, dec_l_tetra))
+
+  # deb_decimal with mixed bases
+  dec[[1]] <- dec_f_tetra
+  expect_equal(dec, deb_decimal(c(1.11875, 2.225, 3.2875)))
+  dec_tetra[[1]] <- dec_d
+  expect_equal(dec_tetra, deb_decimal(c(1.1125, 1.11875), bases = bases3))
+
   # deb_tetra
   tetra[[1]] <- tetra1
-  expect_equal(tetra, c(tetra1, tetra[2:4]))
+  expect_equal(tetra, c(tetra1, tetra1))
   tetra[[1]] <- 1.11875
-  expect_equal(tetra, c(tetra1, tetra[2:4]))
+  expect_equal(tetra, c(tetra1, tetra1))
   tetra[[1]] <- NA
-  expect_equal(tetra, vec_c(NA, tetra[2:4]))
+  expect_equal(tetra, vec_c(NA, tetra1))
 
-  # Successful deb_lsd and deb_decimal
+  # deb_lsd and deb_decimal
   lsd[[1]] <- dec_l
   expect_equal(lsd, lsd3)
   lsd[[1]] <- dec_s
   expect_equal(lsd, lsd3)
   dec[[1]] <- lsd1
   expect_equal(dec, dec3)
+  lsd[[1]] <- dec_l_tetra
+  expect_equal(lsd, c(deb_lsd(1, 2, 4.5), lsd[2:3]))
+  dec_tetra[[1]] <- lsd1
+  expect_equal(dec_tetra, deb_decimal(c(1.1125, 1.11875), bases = bases3))
+
+  # deb_lsd and deb_tetra
+  lsd[[1]] <- tetra1
+  expect_equal(lsd, c(deb_lsd(1, 2, 4.5), lsd[2:3]))
+  tetra[[1]] <- lsd1
+  expect_equal(tetra, c(deb_tetra(1, 2, 3, 0), tetra1))
+
+  # deb_decimal and deb_tetra
+  tetra[[1]] <- dec_l_tetra
+  expect_equal(tetra, c(tetra1, tetra1))
+  tetra[[1]] <- dec_s_tetra
+  expect_equal(tetra, c(tetra1, tetra1))
+  tetra[[1]] <- dec_d_tetra
+  expect_equal(tetra, c(tetra1, tetra1))
+  tetra[[1]] <- dec_f_tetra
+  expect_equal(tetra, c(tetra1, tetra1))
+  dec_tetra[[1]] <- tetra1
+  expect_equal(dec_tetra, c(dec_l_tetra, dec_l_tetra))
 
   # Errors due to attribute mismatches
   expect_error(lsd[[1]] <- lsd_alt, bases_error)
@@ -372,4 +433,12 @@ test_that("assignment subsetting works", {
   expect_error(dec[[1]] <- dec_bases, bases_error)
   expect_error(dec[[1]] <- lsd_alt, bases_error)
   expect_error(tetra[[1]] <- tetra_alt, bases_error)
+
+  # Mixed bases errors
+  expect_error(lsd[[1]] <- tetra_alt, mixed_error)
+  expect_error(tetra_alt[[1]] <- lsd, mixed_error)
+  expect_error(dec[[1]] <- dec_s_tetra_alt, mixed_error)
+  expect_error(dec_tetra_alt[[1]] <- dec_l, mixed_error)
+  expect_error(lsd[[1]] <- dec_s_tetra_alt, mixed_error)
+  expect_error(dec_tetra_alt[[1]] <- lsd1, mixed_error)
 })

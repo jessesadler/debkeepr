@@ -67,18 +67,18 @@ vec_cast.deb_decimal.deb_decimal <- function(x, to, ...) {
   if (vec_size(deb_bases(x)) == vec_size(deb_bases(to))) {
     bases_equal(x, to)
     bases <- deb_bases(x)
-  # to is lsd; x is tetra
-  } else if (vec_size(deb_bases(to)) == 2L) {
+  # x is lsd; y is tetra
+  } else if (vec_size(deb_bases(x)) == 2L) {
+    mixed_bases_equal(x, to)
+    bases <- deb_bases(to)
+  # x is tetra; to is lsd
+  } else {
     mixed_bases_equal(to, x)
     bases <- deb_bases(to)
     # If unit of x is f, convert to d
     if (deb_unit(x) == "f") {
       x <- deb_convert_unit(x, "d")
     }
-  # to is tetra; x is lsd
-  } else {
-    mixed_bases_equal(x, to)
-    bases <- deb_bases(to)
   }
 
   from_unit <- deb_unit(x)
@@ -347,6 +347,16 @@ decimal_to_lsd <- function(x) {
   bases <- deb_bases(x)
   unit <- deb_unit(x)
 
+  if (vec_size(bases) == 3L) {
+    # If unit of x is f, convert to d
+    if (deb_unit(x) == "f") {
+      x <- deb_convert_unit(x, "d")
+      unit <- "d"
+    }
+    # Convert bases to lsd bases
+    bases <- bases[1:2]
+  }
+
   if (unit == "l") {
     lsd <- deb_lsd(x, 0, 0, bases = bases)
   } else if (unit == "s") {
@@ -359,7 +369,12 @@ decimal_to_lsd <- function(x) {
 
 #' @export
 vec_cast.deb_lsd.deb_decimal <- function(x, to, ...) {
-  bases_equal(x, to)
+  # Distinguish between tetra and lsd bases
+  if (vec_size(deb_bases(x)) == 2L) {
+    bases_equal(x, to)
+  } else {
+    mixed_bases_equal(to, x)
+  }
 
   decimal_to_lsd(x)
 }
@@ -402,12 +417,18 @@ lsd_to_decimal <- function(x, to) {
   bases <- deb_bases(x)
   unit <- deb_unit(to)
 
+  if (vec_size(deb_bases(to)) == 3L) {
+    bases <- deb_bases(to)
+  }
+
   if (unit == "l") {
-    decimalized <- l + s / bases[[1]] + d / prod(bases)
+    decimalized <- l + s / bases[[1]] + d / prod(bases[1:2])
   } else if (unit == "s") {
     decimalized <- l * bases[[1]] + s + d / bases[[2]]
   } else if (unit == "d") {
-    decimalized <- l * prod(bases) + s * bases[[2]] + d
+    decimalized <- l * prod(bases[1:2]) + s * bases[[2]] + d
+  } else if (unit == "f") {
+    decimalized <- l * prod(bases) + s * prod(bases[2:3]) + d * bases[[3]]
   }
   new_decimal(x = decimalized,
               unit = unit,
@@ -416,7 +437,13 @@ lsd_to_decimal <- function(x, to) {
 
 #' @export
 vec_cast.deb_decimal.deb_lsd <- function(x, to, ...) {
-  bases_equal(x, to)
+  # Distinguish between tetra and lsd bases
+  # lsd casts to tetra deb_decimal only with subassignment
+  if (vec_size(deb_bases(to)) == 2L) {
+    bases_equal(x, to)
+  } else {
+    mixed_bases_equal(x, to)
+  }
 
   lsd_to_decimal(x, to)
 }
@@ -444,6 +471,11 @@ tetra_to_decimal <- function(x, to) {
   } else if (unit == "f") {
     decimalized <- l * prod(bases) + s * prod(bases[2:3]) + d * bases[[3]] + f
   }
+  # Allow cast to lsd deb_decimal
+  if (vec_size(deb_bases(to)) == 2L) {
+    bases <- deb_bases(to)
+  }
+
   new_decimal(x = decimalized,
               unit = unit,
               bases = bases)
@@ -451,7 +483,11 @@ tetra_to_decimal <- function(x, to) {
 
 #' @export
 vec_cast.deb_decimal.deb_tetra <- function(x, to, ...) {
-  bases_equal(x, to)
+  if (vec_size(deb_bases(to)) == 3L) {
+    bases_equal(x, to)
+  } else {
+    mixed_bases_equal(to, x)
+  }
 
   tetra_to_decimal(x, to)
 }
@@ -486,9 +522,16 @@ vec_cast.deb_tetra.deb_lsd <- function(x, to, ...) {
 #' Find unit and normalize
 #' @keywords internal
 
-decimal_to_tetra <- function(x) {
+decimal_to_tetra <- function(x, to) {
   bases <- deb_bases(x)
   unit <- deb_unit(x)
+
+  # To allow deb_decimal with lsd bases
+  if (vec_size(deb_bases(x)) == 3L) {
+    bases <- deb_bases(x)
+  } else {
+    bases <- deb_bases(to)
+  }
 
   if (unit == "l") {
     tetra <- deb_tetra(x, 0, 0, 0, bases = bases)
@@ -504,10 +547,14 @@ decimal_to_tetra <- function(x) {
 
 #' @export
 vec_cast.deb_tetra.deb_decimal <- function(x, to, ...) {
+  # Distinguish between tetra and lsd bases
+  if (vec_size(deb_bases(x)) == 3L) {
+    bases_equal(x, to)
+  } else {
+    mixed_bases_equal(x, to)
+  }
 
-  bases_equal(x, to)
-
-  decimal_to_tetra(x)
+  decimal_to_tetra(x, to)
 }
 
 # deb_lsd casting methods -------------------------------------------------

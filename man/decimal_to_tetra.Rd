@@ -4,7 +4,7 @@
 \alias{decimal_to_tetra}
 \title{deb_decimal to deb_tetra utility}
 \usage{
-decimal_to_tetra(x)
+decimal_to_tetra(x, to)
 }
 \description{
 Find unit and normalize

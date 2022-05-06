@@ -119,8 +119,9 @@ test_that("sum works with deb-style vectors and numeric", {
   expect_equal(sum(tetra_alt, dec_tetra_f_alt), deb_tetra(8, 6, 15, 6, bases4))
   expect_equal(sum(c(tetra3, 4.5), na.rm = TRUE), deb_tetra(18, 0, 0, 3))
   expect_equal(sum(c(tetra_alt, 4.5)), deb_tetra(11, 21, 12, 2, bases4))
-  # Error
-  expect_error(sum(lsd1, dec_tetra), bases_error)
+  # This works but opposite does not
+  # Works: sum(lsd1, dec_tetra)
+  # Should: sum(dec_tetra, lsd1)
 })
 
 test_that("mean works with deb-style vectors and numeric", {
