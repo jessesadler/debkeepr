@@ -42,16 +42,19 @@ counting coins in dozens (\emph{solidi}) and scores of dozens (\emph{librae}) sp
 throughout the Carolingian Empire and became ingrained in much of Europe.
 However, a variety of accounting systems arose at different times that used
 \href{https://en.wikipedia.org/wiki/Non-decimal_currency}{other bases} for the
-\emph{solidus} and \emph{denarius} units. The \code{bases} attribute of \code{deb_decimal}
-vectors makes it possible to specify alternative bases for the \emph{solidus} and
-\emph{denarius} units, while the \code{unit} attribute identifies the decimalized
-unit: either \emph{libra}, \emph{solidus}, or \emph{denarius}.
+\emph{solidus} and \emph{denarius} units and even additional units. The \code{deb_decimal}
+class decimalizes either tripartite or tetrapartite values. The \code{bases}
+attribute makes it possible to specify the bases for the \emph{solidus},
+\emph{denarius}, and optionally farthing units. The \code{unit} attribute identifies
+the decimalized unit: either \emph{libra}, \emph{solidus}, \emph{denarius}, or farthing.
 
-Some historic units of measurement, including certain currencies and
-weights, added a fourth unit. The \code{deb_decimal} class integrates these
-measurements by optionally adding a fourth unit, named \code{f} for farthing.
-A tetrapartite \code{deb_decimal} vector is created by providing a numeric
-vector of length 3 to the \code{bases} argument.
+\code{deb_decimal} vectors can either be tripartite, like \code{deb_lsd}, or
+tetrapartite, like \code{deb_tetra}. These two kinds of \code{deb_decimal} vectors
+are distinguished by the length of \code{bases} attribute (2 for tripartite and
+3 for tetrapartite) and the addition of the farthing unit for tetrapartite.
+If the \emph{solidus} and \emph{denarius} bases are equal, tripartite and tetrapartite
+\code{deb_decimal} vectors can be combined. The result is a \code{deb_decimal} vector
+with tripartite bases.
 }
 \examples{
 

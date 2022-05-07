@@ -58,16 +58,19 @@ new_decimal <- function(x = double(),
 #' throughout the Carolingian Empire and became ingrained in much of Europe.
 #' However, a variety of accounting systems arose at different times that used
 #' [other bases](https://en.wikipedia.org/wiki/Non-decimal_currency) for the
-#' *solidus* and *denarius* units. The `bases` attribute of `deb_decimal`
-#' vectors makes it possible to specify alternative bases for the *solidus* and
-#' *denarius* units, while the `unit` attribute identifies the decimalized
-#' unit: either *libra*, *solidus*, or *denarius*.
+#' *solidus* and *denarius* units and even additional units. The `deb_decimal`
+#' class decimalizes either tripartite or tetrapartite values. The `bases`
+#' attribute makes it possible to specify the bases for the *solidus*,
+#' *denarius*, and optionally farthing units. The `unit` attribute identifies
+#' the decimalized unit: either *libra*, *solidus*, *denarius*, or farthing.
 #'
-#' Some historic units of measurement, including certain currencies and
-#' weights, added a fourth unit. The `deb_decimal` class integrates these
-#' measurements by optionally adding a fourth unit, named `f` for farthing.
-#' A tetrapartite `deb_decimal` vector is created by providing a numeric
-#' vector of length 3 to the `bases` argument.
+#' `deb_decimal` vectors can either be tripartite, like `deb_lsd`, or
+#' tetrapartite, like `deb_tetra`. These two kinds of `deb_decimal` vectors
+#' are distinguished by the length of `bases` attribute (2 for tripartite and
+#' 3 for tetrapartite) and the addition of the farthing unit for tetrapartite.
+#' If the *solidus* and *denarius* bases are equal, tripartite and tetrapartite
+#' `deb_decimal` vectors can be combined. The result is a `deb_decimal` vector
+#' with tripartite bases.
 #'
 #' @seealso
 #' The `deb_decimal` class works in concert with the `deb_lsd` and `deb_tetra`
