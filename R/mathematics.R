@@ -207,7 +207,12 @@ trunc.deb_lsd <- function(x, ...) {
 #' @param ... Additional arguments passed to `.fn`.
 #' @export
 vec_math.deb_lsd <- function(.fn, .x, ...) {
-  rlang::abort(paste0("`", .fn, ".", class(.x)[[1]], "()` not implemented."))
+  # Implement sum to allow various types of deb-style vectors in ...
+  switch(.fn,
+         sum = sum(.x),
+         rlang::abort(paste0("`", .fn, ".", class(.x)[[1]],
+                             "()` not implemented."))
+         )
 }
 
 
@@ -221,13 +226,21 @@ sum.deb_tetra <- function(..., na.rm = FALSE) {
   if (na.rm == TRUE) {
     x <- x[!is.na(x)]
   }
-
-  ret <- new_tetra(sum(field(x, "l"), na.rm = na.rm),
+  # Sum with deb_tetra and deb_lsd vectors is turned into
+  # deb_lsd, so x will be deb_lsd after vec_c() above.
+  # Enables: sum(tetra, lsd) == sum(lsd, tetra)
+  if (deb_is_tetra(x)) {
+    ret <- new_tetra(sum(field(x, "l"), na.rm = na.rm),
+                     sum(field(x, "s"), na.rm = na.rm),
+                     sum(field(x, "d"), na.rm = na.rm),
+                     sum(field(x, "f"), na.rm = na.rm),
+                     bases = deb_bases(x))
+  } else if (deb_is_lsd(x)) {
+    ret <- new_lsd(sum(field(x, "l"), na.rm = na.rm),
                    sum(field(x, "s"), na.rm = na.rm),
                    sum(field(x, "d"), na.rm = na.rm),
-                   sum(field(x, "f"), na.rm = na.rm),
                    bases = deb_bases(x))
-
+  }
   deb_normalize(ret)
 }
 
@@ -337,5 +350,10 @@ trunc.deb_tetra <- function(x, ...) {
 #' @param ... Additional arguments passed to `.fn`.
 #' @export
 vec_math.deb_tetra <- function(.fn, .x, ...) {
-  rlang::abort(paste0("`", .fn, ".", class(.x)[[1]], "()` not implemented."))
+  # Implement sum to allow various types of deb-style vectors in ...
+  switch(.fn,
+         sum = sum(.x),
+         rlang::abort(paste0("`", .fn, ".", class(.x)[[1]],
+                             "()` not implemented."))
+  )
 }

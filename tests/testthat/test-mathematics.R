@@ -48,6 +48,8 @@ dec_tetra_f_alt <- deb_decimal(7708, unit = "f", bases = bases4)
 
 bases_error <- paste0("`bases` attributes must be equal to combine ",
                       "<deb_lsd>, <deb_tetra>, or <deb_decimal> vectors.")
+mixed_error <- paste0("s and d units of the `bases` attributes must be ",
+                      "equal to combine <deb_lsd> and <deb_tetra> vectors.")
 
 
 # vec_math ----------------------------------------------------------------
@@ -91,8 +93,12 @@ test_that("sum and mean work with deb_decimal", {
   expect_equal(sum(dec_tetra), deb_decimal(270.0625, "s", bases3))
   expect_equal(sum(dec_tetra_l, dec_tetra_f), dec_tetra_l * 2)
   expect_equal(sum(dec_tetra_alt), deb_decimal(13.503125, bases = bases4))
+  # Mixed bases
+  expect_equal(sum(dec_tetra, dec_l), deb_decimal(15.340625))
+  expect_equal(sum(dec_l, dec_tetra), deb_decimal(15.340625))
   # Errors
-  expect_error(sum(dec_l, deb_decimal(1.5, bases = bases2)), bases_error)
+  expect_error(sum(dec_l, dec_l_alt), bases_error)
+  expect_error(sum(dec_l, dec_tetra_alt), mixed_error)
 
 })
 
@@ -109,25 +115,42 @@ test_that("sum and mean with deb_tetra work", {
 })
 
 test_that("sum works with deb-style vectors and numeric", {
-  expect_equal(sum(lsd1, dec_l), deb_lsd(3, 13, 6))
-  expect_equal(sum(lsd1, dec_l), sum(lsd1, dec_s))
   expect_equal(sum(lsd3, 1.8375, 3, na.rm = TRUE), deb_lsd(23, 8, 2))
   expect_equal(sum(dec2, 3.5, na.rm = TRUE),
                deb_decimal(sum(1.8375, 5.225, 3.2875, 1.1125, 3.5)))
-  expect_equal(sum(lsd1, tetra1), deb_lsd(3, 13, 6.75))
-  expect_equal(sum(tetra1, dec_tetra_s), deb_tetra(3, 13, 7, 2))
-  expect_equal(sum(tetra_alt, dec_tetra_f_alt), deb_tetra(8, 6, 15, 6, bases4))
   expect_equal(sum(c(tetra3, 4.5), na.rm = TRUE), deb_tetra(18, 0, 0, 3))
   expect_equal(sum(c(tetra_alt, 4.5)), deb_tetra(11, 21, 12, 2, bases4))
-  # This works but opposite does not
-  # Works: sum(lsd1, dec_tetra)
-  # Should: sum(dec_tetra, lsd1)
+
 })
 
-test_that("mean works with deb-style vectors and numeric", {
-  expect_equal(mean(c(tetra1, lsd1, dec_l)), deb_lsd(1, 16, 9.25))
-  expect_equal(mean(c(lsd_bases, tetra_alt, dec_l_alt, 5)),
-               deb_lsd(3, 18, 9.875, bases2))
+test_that("sum works between deb-style vectors", {
+  # lsd and lsd decimal -> lsd
+  expect_equal(sum(lsd1, dec_l), deb_lsd(3, 13, 6))
+  expect_equal(sum(dec_s, lsd1), deb_lsd(3, 13, 6))
+  # lsd and tetra decimal -> lsd
+  expect_equal(sum(lsd1, dec_tetra_s), deb_lsd(3, 13, 6.75))
+  expect_equal(sum(dec_tetra_f, lsd1), deb_lsd(3, 13, 6.75))
+  # lsd and tetra -> lsd
+  expect_equal(sum(lsd1, tetra1), deb_lsd(3, 13, 6.75))
+  expect_equal(sum(tetra1, lsd1), deb_lsd(3, 13, 6.75))
+  # tetra and tetra decimal -> tetra
+  expect_equal(sum(tetra1, dec_tetra_s), deb_tetra(3, 13, 7, 2))
+  expect_equal(sum(dec_tetra_f_alt, tetra_alt), deb_tetra(8, 6, 15, 6, bases4))
+  # tetra and lsd decimal -> tetra
+  expect_equal(sum(tetra1, dec_s), deb_tetra(3, 13, 6, 3))
+  expect_equal(sum(dec_s, tetra1), deb_tetra(3, 13, 6, 3))
+  # All three -> lsd
+  expect_equal(sum(lsd1, dec_s, tetra1), deb_lsd(5, 10, 3.75))
+  expect_equal(sum(dec_s, lsd1, tetra1), deb_lsd(5, 10, 3.75))
+  expect_equal(sum(tetra1, lsd1, dec_s), deb_lsd(5, 10, 3.75))
+  # Errors
+  expect_error(sum(lsd1, dec_l_alt), bases_error)
+  expect_error(sum(lsd1, dec_tetra_alt),  mixed_error)
+  expect_error(sum(lsd1, tetra_alt), mixed_error)
+  expect_error(sum(tetra_alt, dec_tetra), bases_error)
+  expect_error(sum(tetra_alt, dec_d), mixed_error)
+  expect_error(sum(lsd1, dec_l_alt, dec_tetra_alt), bases_error)
+  expect_error(sum(tetra1, lsd_bases, dec_tetra_alt), mixed_error)
 })
 
 test_that("cumulative functions work", {
