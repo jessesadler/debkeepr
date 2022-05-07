@@ -209,15 +209,31 @@ dec_arithmetic <- function(op, x, y) {
 #' @method vec_arith.deb_decimal deb_decimal
 #' @export
 vec_arith.deb_decimal.deb_decimal <- function(op, x, y) {
-  # Ensure bases are equal
-  bases_equal(x, y)
+  # Deal with possibility of mixed bases: tetra becomes lsd
+  # Both lsd or both tetra
+  if (vec_size(deb_bases(x)) == vec_size(deb_bases(y))) {
+    bases_equal(x, y)
+    bases <- deb_bases(x)
+    # x is lsd; y is tetra
+  } else if (vec_size(deb_bases(x)) == 2L) {
+    mixed_bases_equal(x, y)
+    bases <- deb_bases(x)
+    # x is tetra; y is lsd
+  } else {
+    mixed_bases_equal(y, x)
+    bases <- deb_bases(y)
+    # If unit of x is f, convert to d
+    if (deb_unit(x) == "f") {
+      x <- deb_convert_unit(x, "d")
+    }
+  }
 
   switch(
     op,
     "+" = ,
     "-" = new_decimal(dec_arithmetic(op, x, y),
                       unit = unit_hierarchy(x, y),
-                      bases = deb_bases(x)),
+                      bases = bases),
     "/" = dec_arithmetic(op, x, y),
     stop_incompatible_op(op, x, y)
   )
@@ -459,14 +475,18 @@ vec_arith.deb_tetra.MISSING <- function(op, x, y) {
 #' @method vec_arith.deb_lsd deb_decimal
 #' @export
 vec_arith.deb_lsd.deb_decimal <- function(op, x, y) {
-  bases_equal(x, y)
+  if (vec_size(deb_bases(y)) == 2L) {
+    bases_equal(x, y)
+  } else {
+    mixed_bases_equal(x, y)
+  }
 
   switch(
     op,
     "+" = lsd_plus(x, deb_as_lsd(y)),
     "-" = lsd_minus(x, deb_as_lsd(y)),
-    "/" = as.double(x) / vec_data(vec_cast(y, deb_decimal(unit = "l",
-                                                          bases = deb_bases(y)))),
+    "/" = as.double(x) /
+      vec_data(vec_cast(y, deb_decimal(unit = "l", bases = deb_bases(y)))),
     stop_incompatible_op(op, x, y)
   )
 }
@@ -477,7 +497,11 @@ vec_arith.deb_lsd.deb_decimal <- function(op, x, y) {
 #' @method vec_arith.deb_decimal deb_lsd
 #' @export
 vec_arith.deb_decimal.deb_lsd <- function(op, x, y) {
-  bases_equal(x, y)
+  if (vec_size(deb_bases(x)) == 2L) {
+    bases_equal(x, y)
+  } else {
+    mixed_bases_equal(y, x)
+  }
 
   switch(
     op,
@@ -533,14 +557,18 @@ vec_arith.deb_tetra.deb_lsd <- function(op, x, y) {
 #' @method vec_arith.deb_tetra deb_decimal
 #' @export
 vec_arith.deb_tetra.deb_decimal <- function(op, x, y) {
-  bases_equal(x, y)
+  if (vec_size(deb_bases(y)) == 3L) {
+    bases_equal(x, y)
+  } else {
+    mixed_bases_equal(y, x)
+  }
 
   switch(
     op,
-    "+" = tetra_plus(x, deb_as_tetra(y)),
-    "-" = tetra_minus(x, deb_as_tetra(y)),
-    "/" = as.double(x) / vec_data(vec_cast(y, deb_decimal(unit = "l",
-                                                          bases = deb_bases(y)))),
+    "+" = tetra_plus(x, vec_cast(y, deb_tetra(bases = deb_bases(x)))),
+    "-" = tetra_minus(x, vec_cast(y, deb_tetra(bases = deb_bases(x)))),
+    "/" = as.double(x) /
+      vec_data(vec_cast(y, deb_decimal(unit = "l", bases = deb_bases(y)))),
     stop_incompatible_op(op, x, y)
   )
 }
@@ -551,12 +579,16 @@ vec_arith.deb_tetra.deb_decimal <- function(op, x, y) {
 #' @method vec_arith.deb_decimal deb_tetra
 #' @export
 vec_arith.deb_decimal.deb_tetra <- function(op, x, y) {
-  bases_equal(x, y)
+  if (vec_size(deb_bases(x)) == 3L) {
+    bases_equal(x, y)
+  } else {
+    mixed_bases_equal(x, y)
+  }
 
   switch(
     op,
-    "+" = tetra_plus(deb_as_tetra(x), y),
-    "-" = tetra_minus(deb_as_tetra(x), y),
+    "+" = tetra_plus(vec_cast(x, deb_tetra(bases = deb_bases(y))), y),
+    "-" = tetra_minus(vec_cast(x, deb_tetra(bases = deb_bases(y))), y),
     "/" = vec_data(vec_cast(x, deb_decimal(unit = "l",
                                            bases = deb_bases(x)))) / as.double(y),
     stop_incompatible_op(op, x, y)

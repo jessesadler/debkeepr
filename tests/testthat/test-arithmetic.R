@@ -117,6 +117,18 @@ test_that("Arithmetic operators work with deb_decimal vectors with tetra bases",
   expect_error(dec_tetra_l * dec_tetra_s)
 })
 
+test_that("Arithmetic operators work with deb_decimal vectors with mixed bases", {
+  expect_equal(dec_l + dec_tetra_l, deb_decimal(3.678125))
+  expect_equal(dec_tetra_l + dec_l, deb_decimal(3.678125))
+  expect_equal(dec_l - dec_tetra_s, deb_decimal(-0.003125))
+  expect_equal(dec_tetra_f - dec_l, deb_decimal(0.003125))
+  expect_equal(dec_tetra_l / deb_decimal(73.625, "s"), 0.5)
+  expect_equal(deb_decimal(73.625, "s") / dec_tetra_l, 2)
+  # Error
+  expect_error(dec_l_alt + dec_tetra_f, mixed_error)
+  expect_error(dec_tetra_f - dec_l_alt, mixed_error)
+})
+
 test_that("Arithmetic operators work with deb_decimal and numeric", {
   # deb_decimal and numeric
   expect_equal(dec_l + 1.5, deb_decimal(3.3375))
@@ -219,10 +231,17 @@ test_that("Arithmetic operators work with deb_lsd and deb_decimal", {
   expect_equal(dec_l - lsd2, deb_lsd(-3, -9, -11))
   expect_equal(deb_decimal(10 + 2 / 3) / lsd2, 2)
   expect_equal(deb_decimal(73.5, unit = "s") / lsd1, 2)
+  # deb_lsd and deb_decimal with tetra bases
+  expect_equal(lsd2 + dec_tetra_l, deb_lsd(7, 3, 5.75))
+  expect_equal(lsd2 + dec_tetra_f, deb_lsd(7, 3, 5.75))
+  expect_equal(dec_tetra_l + lsd2, deb_lsd(7, 3, 5.75))
+  expect_equal(lsd2 / deb_decimal(2 + 2 / 3, bases = bases3), 2)
+
   # Errors
   expect_error(lsd_alt + dec_l, bases_error)
   expect_error(dec_l + lsd_alt, bases_error)
-  expect_error(lsd1 + dec_tetra_l, bases_error)
+  expect_error(lsd1 + dec_tetra_l_alt, mixed_error)
+  expect_error(dec_tetra_l + lsd_alt, mixed_error)
   expect_error(lsd1 * dec_l)
   expect_error(dec_l * lsd1)
 })
@@ -276,10 +295,16 @@ test_that("Arithmetic operators work with deb_tetra and deb_decimal", {
                deb_tetra(c(0, -4), c(14, -11), c(12, -8), c(4, -6), bases4))
   expect_equal(deb_decimal(0.9203125, bases = bases3) / tetra1, 0.5)
   expect_equal(deb_decimal(120.4375, "s", bases4) / tetra_alt[[1]], 2)
+  # deb_tetra and deb_decimal with lsd bases
+  expect_equal(tetra1 + dec_l, deb_tetra(3, 13, 6, 3))
+  expect_equal(dec_s + tetra1, deb_tetra(3, 13, 6, 3))
+  expect_equal(deb_decimal(0.9203125) / tetra1, 0.5)
 
   # Errors
   expect_error(tetra_alt + dec_tetra_l, bases_error)
   expect_error(dec_tetra_l + tetra_alt, bases_error)
+  expect_error(tetra_alt + dec_l, mixed_error)
+  expect_error(dec_l_alt - tetra1, mixed_error)
   expect_error(tetra1 * dec_tetra_l)
   expect_error(dec_tetra_l * tetra1)
 })
