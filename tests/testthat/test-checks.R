@@ -168,6 +168,20 @@ test_that("decimal bases checks", {
 })
 
 
+
+# f_bases_check -----------------------------------------------------------
+
+test_that("f unit bases check", {
+  expect_invisible(f_bases_check(4))
+  expect_error(f_bases_check("hello"),
+               "`f` must be a numeric vector of length 1.")
+  expect_error(f_bases_check(c(20, 12, 4)),
+               "`f` must be a numeric vector of length 1.")
+  expect_error(f_bases_check(NA_integer_), "`f` cannot be `NA`.")
+  expect_error(f_bases_check(-12),
+               "`f` must be a natural number greater than zero.")
+})
+
 # Equivalency -------------------------------------------------------------
 
 test_that("bases assert allows named vector", {

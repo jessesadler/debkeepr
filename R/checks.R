@@ -167,6 +167,20 @@ dec_bases_check <- function(bases) {
   }
 }
 
+f_bases_check <- function(f) {
+  rlang::check_required(f)
+
+  if (!is.numeric(f) || vec_size(f) != 1L) {
+    rlang::abort("`f` must be a numeric vector of length 1.")
+  }
+  if (rlang::is_na(f)) {
+    rlang::abort("`f` cannot be `NA`.")
+  }
+  if (!is_natural(f)) {
+    rlang::abort("`f` must be a natural number greater than zero.")
+  }
+}
+
 #' Check that object is of type deb_lsd or deb_decimal
 #' @keywords internal
 deb_ptype_check <- function(x) {

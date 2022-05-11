@@ -15,9 +15,9 @@ deb_as_tetra(x, ...)
 
 \method{deb_as_tetra}{deb_tetra}(x, ...)
 
-\method{deb_as_tetra}{deb_lsd}(x, bases = c(20, 12, 4), ...)
+\method{deb_as_tetra}{deb_lsd}(x, f, ...)
 
-\method{deb_as_tetra}{deb_decimal}(x, ...)
+\method{deb_as_tetra}{deb_decimal}(x, f, ...)
 
 \method{deb_as_tetra}{numeric}(x, bases = c(20, 12, 4), ...)
 
@@ -29,6 +29,10 @@ deb_as_tetra(x, ...)
 \item{x}{An object to coerce to \code{deb_tetra}.}
 
 \item{...}{Arguments passed on to further methods.}
+
+\item{f}{Integer of length 1 to represent the base of the farthing unit.
+Must be provided to cast from deb_lsd or deb_decimal vectors with
+tripartite bases to deb_tetra.}
 
 \item{bases}{Numeric vector of length 3 used to specify the bases for the
 solidus or s, denarius or d, and farthing or f units. Default is
@@ -49,31 +53,26 @@ by the value instead of by the unit.
 }
 \examples{
 
-# To cast from deb_lsd to deb_tetra the bases must either be
-# supplied, or the 's' and 'd' bases of the deb_lsd vector
-# must conform to the default values of 20 and 12.
+# To cast from deb_lsd to deb_tetra an "f" unit must be supplied
 
 # Compare
 lsd1 <- deb_lsd(8, 12, 4)
 lsd2 <- deb_lsd(8, 12, 4, bases = c(60, 16))
 
-deb_as_tetra(lsd1)
-deb_as_tetra(lsd2, bases = c(60, 16, 8))
+deb_as_tetra(lsd1, f = 4)
+deb_as_tetra(lsd2, f = 8)
 
 # Cast a deb_decimal vector with four units to deb_tetra.
 # Bases are automatically applied when casting from
-# deb_decimal to deb_tetra.
+# tetrapartite deb_decimal to deb_tetra.
 x <- c(5.11875, 3.76875, 25/3)
 d1 <- deb_decimal(x, bases = c(20, 12, 4))
 deb_as_tetra(d1)
 
-# Cannot cast a deb_decimal vector with three units
-# directly to deb_tetra. An alternative is to cast
-# first to deb_lsd and then to deb_tetra.
+# Use "f" argument to cast from tripartite deb_decimal
+# to deb_tetra
 d2 <- deb_decimal(x)
-d2 \%>\%
-  deb_as_lsd() \%>\%
-  deb_as_tetra()
+deb_as_tetra(d2, f = 4)
 
 # Cast a numeric vector to deb_tetra
 deb_as_tetra(x)

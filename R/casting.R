@@ -789,6 +789,9 @@ deb_as_decimal.list <- function(x,
 #'
 #' @param x An object to coerce to `deb_tetra`.
 #' @param ... Arguments passed on to further methods.
+#' @param f Integer of length 1 to represent the base of the farthing unit.
+#'   Must be provided to cast from deb_lsd or deb_decimal vectors with
+#'   tripartite bases to deb_tetra.
 #' @param bases Numeric vector of length 3 used to specify the bases for the
 #'   solidus or s, denarius or d, and farthing or f units. Default is
 #'   `c(20, 12, 4)`, which conforms to the English system of 1 pound =
@@ -799,31 +802,26 @@ deb_as_decimal.list <- function(x,
 #'
 #' @examples
 #'
-#' # To cast from deb_lsd to deb_tetra the bases must either be
-#' # supplied, or the 's' and 'd' bases of the deb_lsd vector
-#' # must conform to the default values of 20 and 12.
+#' # To cast from deb_lsd to deb_tetra an "f" unit must be supplied
 #'
 #' # Compare
 #' lsd1 <- deb_lsd(8, 12, 4)
 #' lsd2 <- deb_lsd(8, 12, 4, bases = c(60, 16))
 #'
-#' deb_as_tetra(lsd1)
-#' deb_as_tetra(lsd2, bases = c(60, 16, 8))
+#' deb_as_tetra(lsd1, f = 4)
+#' deb_as_tetra(lsd2, f = 8)
 #'
 #' # Cast a deb_decimal vector with four units to deb_tetra.
 #' # Bases are automatically applied when casting from
-#' # deb_decimal to deb_tetra.
+#' # tetrapartite deb_decimal to deb_tetra.
 #' x <- c(5.11875, 3.76875, 25/3)
 #' d1 <- deb_decimal(x, bases = c(20, 12, 4))
 #' deb_as_tetra(d1)
 #'
-#' # Cannot cast a deb_decimal vector with three units
-#' # directly to deb_tetra. An alternative is to cast
-#' # first to deb_lsd and then to deb_tetra.
+#' # Use "f" argument to cast from tripartite deb_decimal
+#' # to deb_tetra
 #' d2 <- deb_decimal(x)
-#' d2 %>%
-#'   deb_as_lsd() %>%
-#'   deb_as_tetra()
+#' deb_as_tetra(d2, f = 4)
 #'
 #' # Cast a numeric vector to deb_tetra
 #' deb_as_tetra(x)
@@ -861,22 +859,25 @@ deb_as_tetra.deb_tetra <- function(x, ...) x
 
 #' @rdname cast-tetra
 #' @export
-deb_as_tetra.deb_lsd <- function(x, bases = c(20, 12, 4), ...) {
+deb_as_tetra.deb_lsd <- function(x, f, ...) {
+
+  f_bases_check(f)
+
+  bases <- vec_c(deb_bases(x), f = f)
   vec_cast(x, to = deb_tetra(bases = bases))
 }
 
 #' @rdname cast-tetra
 #' @export
-deb_as_tetra.deb_decimal <- function(x, ...) {
+deb_as_tetra.deb_decimal <- function(x, f, ...) {
   if (vec_size(deb_bases(x)) == 2L) {
-    rlang::abort(
-      paste0("The `bases` attribute of a <deb_decimal> vector must have ",
-             "'s', 'd', and 'f' units (length 3) to cast to <deb_tetra>. ",
-             "An alternative is to cast to <deb_lsd> with deb_as_lsd() and ",
-             "then cast to <deb_tetra>.")
-    )
+    f_bases_check(f)
+
+    bases <- vec_c(deb_bases(x), f = f)
+    vec_cast(x, to = deb_tetra(bases = bases))
+  } else {
+    decimal_to_tetra(x)
   }
-  decimal_to_tetra(x)
 }
 
 #' @rdname cast-tetra

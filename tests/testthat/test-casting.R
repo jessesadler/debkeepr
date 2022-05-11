@@ -321,13 +321,14 @@ test_that("deb_as_decimal works", {
 
 test_that("deb_as_tetra works", {
   expect_equal(deb_as_tetra(tetra_alt), tetra_alt)
-  expect_equal(deb_as_tetra(lsd1), deb_tetra(1, 2, 3, 0))
-  expect_equal(deb_as_tetra(lsd_alt, bases = bases4),
+  expect_equal(deb_as_tetra(lsd1, f = 4), deb_tetra(1, 2, 3, 0))
+  expect_equal(deb_as_tetra(lsd_alt, f = 8),
                deb_tetra(1, 25, 4, 0, bases = bases4))
   expect_error(deb_as_tetra(lsd_alt))
   expect_equal(deb_as_tetra(dec_l_tetra), tetra1)
   expect_equal(deb_as_tetra(dec_f_tetra), tetra1)
   expect_equal(deb_as_tetra(dec_s_tetra_alt), tetra_alt)
+  expect_equal(deb_as_tetra(dec_l, f = 4), deb_tetra(1, 2, 3, 0))
   expect_equal(deb_as_tetra(1.11875), tetra1)
   expect_equal(deb_as_tetra(1 + 10 / 50 + 3 / (50 * 16) + 4 / (50 * 16 * 8),
                             bases = bases4),
@@ -335,9 +336,10 @@ test_that("deb_as_tetra works", {
   expect_equal(deb_as_tetra(NA), deb_tetra(NA, NA, NA, NA))
   expect_error(deb_as_tetra(factor("hello")))
   expect_identical(deb_as_tetra(tetra_list), z)
-  # Error with deb_decimal with lsd units
-  expect_error(deb_as_tetra(dec_l),
-               paste0("The `bases` attribute"))
+  # Error with no f unit
+  expect_error(deb_as_tetra(lsd1))
+  expect_error(deb_as_tetra(dec_l))
+
 })
 
 # Test assignment subsetting ----------------------------------------------
