@@ -19,7 +19,9 @@ new_lsd <- function(l = double(),
   vec_assert(s, ptype = double())
   vec_assert(d, ptype = double())
 
-  bases <- bases_assert(bases)
+  # Bases assert
+  vec_assert(bases, ptype = integer(), size = 2)
+  bases <- rlang::set_names(bases, c("s", "d"))
 
   new_rcrd(list(l = l, s = s, d = d),
            bases = bases,

@@ -153,53 +153,56 @@ tetra_bases_check <- function(bases) {
 #' - Must be natural (whole) numbers greater that 0
 #' @keywords internal
 
-dec_bases_check <- function(bases) {
+dec_bases_check <- function(bases, call = rlang::caller_env()) {
   if (!is.numeric(bases) || vec_size(bases) != 2L && vec_size(bases) != 3L ||
       is.null(bases)) {
-    rlang::abort(
-      "`bases` must be a numeric vector of length 2 for lsd or 3 for tetra.")
+    cli::cli_abort(c(
+      "{.var bases} must be a numeric vector of length 2 for tripartite values
+            or 3 for tetrapartite values.",
+      "x" = "You've supplied a {.cls {class(bases)}} vector
+            of length {vec_size(bases)}."),
+      call = call)
   }
   if (any(rlang::are_na(bases))) {
-    rlang::abort("`bases` cannot be `NA`.")
+    cli::cli_abort(message = bases_na, call = call)
   }
   if (!all(is_natural(bases))) {
-    rlang::abort("`bases` must be natural numbers greater than zero.")
+    prob <- as.character(bases[which(!is_natural(bases))])
+    cli::cli_abort(message = bases_natural, call = call)
   }
 }
 
-f_bases_check <- function(f) {
+f_bases_check <- function(f, call = rlang::caller_env()) {
   rlang::check_required(f)
 
   if (!is.numeric(f) || vec_size(f) != 1L) {
-    rlang::abort("`f` must be a numeric vector of length 1.")
+    cli::cli_abort(c(
+      "{.var f} must be a numeric vector of length 1.",
+      "x" = "You've supplied a {.cls {class(f)}} vector
+            of length {vec_size(f)}."),
+      call = call)
   }
   if (rlang::is_na(f)) {
-    rlang::abort("`f` cannot be `NA`.")
+    cli::cli_abort(c("{.var f} cannot be `NA`.",
+                     "i" = "{.var f} must be natural numbers greater than zero."),
+                   call = call)
   }
   if (!is_natural(f)) {
-    rlang::abort("`f` must be a natural number greater than zero.")
+    cli::cli_abort(c("{.var f} must be a natural number greater than zero.",
+                     "x" = "{f} is not a natural number."),
+                   call = call)
   }
 }
 
 #' Check that object is of type deb_lsd or deb_decimal
 #' @keywords internal
-deb_ptype_check <- function(x) {
+deb_ptype_check <- function(x, call = rlang::caller_env()) {
   if (!deb_is_lsd(x) && !deb_is_decimal(x) && !deb_is_tetra(x)) {
-    rlang::abort(
-      "`lsd` must be of type <deb_lsd>, <deb_decimal>, or <deb_tetra>.")
+    cli::cli_abort(c(
+      "`lsd` must be of a column of type <deb_lsd>, <deb_decimal>, or <deb_tetra>.",
+      "x" = "You've supplied a column of {.cls {class(x)}}."),
+                     call = call)
   }
-}
-
-# Bases assert ------------------------------------------------------------
-
-#' Bases assert
-#'
-#' Remove any names of bases and then add unit names
-#' @keywords internal
-
-bases_assert <- function(bases) {
-  vec_assert(bases, ptype = integer(), size = 2)
-  rlang::set_names(bases, c("s", "d"))
 }
 
 # Bases equivalent --------------------------------------------------------

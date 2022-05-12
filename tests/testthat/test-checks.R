@@ -184,11 +184,6 @@ test_that("f unit bases check", {
 
 # Equivalency -------------------------------------------------------------
 
-test_that("bases assert allows named vector", {
-  expect_equal(bases_assert(c(f = 20L, g = 12L)),
-               c(s = 20L, d = 12L))
-})
-
 test_that("bases tests equivalency", {
   expect_invisible(bases_equal(deb_lsd(2, 3, 4), deb_lsd(3, 2, 1)))
   expect_invisible(bases_equal(deb_lsd(2, 3, 4, bases = c(60, 12)),
