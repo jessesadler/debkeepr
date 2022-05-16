@@ -62,9 +62,9 @@ numeric_check <- function(x,
 
 lsd_check <- function(l, s, d, call = rlang::caller_env()) {
   # Check that l, s, and d are numeric
-  numeric_check(l)
-  numeric_check(s)
-  numeric_check(d)
+  numeric_check(l, call = call)
+  numeric_check(s, call = call)
+  numeric_check(d, call = call)
 
   # Check that l, s, and d are same length, length 1, or all length 0
   lengths <- c(vec_size(l), vec_size(s), vec_size(d))
@@ -146,9 +146,9 @@ tetra_check <- function(l, s, d, f, call = rlang::caller_env()) {
 lsd_bases_check <- function(bases, call = rlang::caller_env()) {
   if (!is.numeric(bases) || vec_size(bases) != 2L || is.null(bases)) {
     cli::cli_abort(c(
-      "{.var bases} must be a numeric vector of length 2.",
+      "{.var bases} must be a numeric vector of length {.val {2}}.",
       "x" = "You've supplied a {.cls {class(bases)}} vector
-            of length {vec_size(bases)}."),
+            of length {.val {vec_size(bases)}}."),
       call = call)
   }
   if (any(rlang::are_na(bases))) {
@@ -172,9 +172,9 @@ lsd_bases_check <- function(bases, call = rlang::caller_env()) {
 tetra_bases_check <- function(bases, call = rlang::caller_env()) {
   if (!is.numeric(bases) || vec_size(bases) != 3L || is.null(bases)) {
     cli::cli_abort(c(
-      "{.var bases} must be a numeric vector of length 3.",
+      "{.var bases} must be a numeric vector of length {.val {3}}.",
       "x" = "You've supplied a {.cls {class(bases)}} vector
-            of length {vec_size(bases)}."),
+            of length {.val {vec_size(bases)}}."),
       call = call)
   }
   if (any(rlang::are_na(bases))) {
@@ -202,7 +202,7 @@ dec_bases_check <- function(bases, call = rlang::caller_env()) {
       "{.var bases} must be a numeric vector of length {.val {2}} for
           tripartite values or {.val {3}} for tetrapartite values.",
       "x" = "You've supplied a {.cls {class(bases)}} vector
-          of length {vec_size(bases)}."),
+          of length {.val {vec_size(bases)}}."),
       call = call)
   }
   if (any(rlang::are_na(bases))) {

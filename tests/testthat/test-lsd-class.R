@@ -28,6 +28,13 @@ test_that("deb_lsd works", {
   expect_equal(deb_bases(x), c(s = 20L, d = 12L))
   expect_equal(deb_bases(deb_lsd(1, 2, 3, bases = c(60, 16))),
                c(s = 60L, d = 16L))
+  # Errors
+  expect_snapshot(deb_lsd(1), error = TRUE)
+  expect_snapshot(deb_lsd(1, d = 2), error = TRUE)
+  expect_snapshot(deb_lsd("hello", 3, 4), error = TRUE)
+  expect_snapshot(deb_lsd(3, "hello", 4), error = TRUE)
+  expect_snapshot(deb_lsd(1:3, 1:2, 0), error = TRUE)
+  expect_snapshot(deb_lsd(1, 2, 3, bases = c(20, 12, 4)), error = TRUE)
 })
 
 test_that("deb_lsd prints", {
