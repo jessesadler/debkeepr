@@ -8,8 +8,6 @@ bases_na <- c("`bases` cannot be `NA`.",
 bases_natural <- c("`bases` must be natural numbers greater than zero.",
                    "x" = "{prob} {?is/are} not {?a/} natural number{?s}.")
 
-
-
 # Helpers for iteration placement -----------------------------------------
 
 #' Arg as string helper
@@ -201,10 +199,10 @@ dec_bases_check <- function(bases, call = rlang::caller_env()) {
   if (!is.numeric(bases) || vec_size(bases) != 2L && vec_size(bases) != 3L ||
       is.null(bases)) {
     cli::cli_abort(c(
-      "{.var bases} must be a numeric vector of length 2 for tripartite values
-            or 3 for tetrapartite values.",
+      "{.var bases} must be a numeric vector of length {.val {2}} for
+          tripartite values or {.val {3}} for tetrapartite values.",
       "x" = "You've supplied a {.cls {class(bases)}} vector
-            of length {vec_size(bases)}."),
+          of length {vec_size(bases)}."),
       call = call)
   }
   if (any(rlang::are_na(bases))) {
@@ -295,7 +293,7 @@ bases_equal <- function(x, y, x_arg = "", y_arg = "", call = NULL) {
       x_bases_label <- paste0("s = ", x_bases[[1]], ", d = ", x_bases[[2]],
                               ", and f = ", x_bases[[3]])
       y_bases_label <- paste0("s = ", y_bases[[1]], ", d = ", y_bases[[2]],
-                              ", and f = ", x_bases[[3]])
+                              ", and f = ", y_bases[[3]])
     }
 
     cli::cli_abort(c(
