@@ -117,11 +117,29 @@ deb_account <- function(df, account_id,
   # need cn for base subsetting to access lsd column
   cn <- rlang::as_name(lsd_quo)
 
+  # Checks for account_id
+  rlang::check_required(account_id)
+
+  if (is.null(account_id)) {
+    cli::cli_abort(c(
+      "{.var account_id} cannot be {.code NULL}.",
+      "x" = "{.var account_id} must be present in `credit` and/or `debit` columns."))
+  }
+  credit_vec <- rlang::eval_tidy(credit_quo, df)
+  debit_vec <- rlang::eval_tidy(debit_quo, df)
+
+  if (rlang::is_false(account_id %in% c(credit_vec, debit_vec))) {
+    cli::cli_abort(c(
+      "{.var account_id} must be present in `credit` and/or `debit` columns.",
+      "x" = "{.val {account_id}} is not present in either the
+            `credit` or `debit` columns."))
+  }
+
   transaction_check(df, cn = cn,
                     credit = credit_quo, debit = debit_quo,
                     edge_columns = c(rlang::as_name(credit_quo),
-                                     rlang::as_name(debit_quo)),
-                    account_id = account_id)
+                                     rlang::as_name(debit_quo)))
+  # Need to get access to bare credit and debit vectors
 
   # Access data for bases and class
   lsd_vctr <- rlang::eval_tidy(lsd_quo, df)
