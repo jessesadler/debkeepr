@@ -4,7 +4,7 @@
 \alias{dec_bases_check}
 \title{Checks for decimal bases attribute}
 \usage{
-dec_bases_check(bases)
+dec_bases_check(bases, call = rlang::caller_env())
 }
 \description{
 Check that:

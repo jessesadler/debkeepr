@@ -45,20 +45,20 @@ unit_hierarchy <- function(x, y) {
 #'   If unequal length, lsd bases is returned, removing f unit.
 #' @keywords internal
 
-bases_hierarchy <- function(x, y) {
+bases_hierarchy <- function(x, y, x_arg = "", y_arg = "") {
   # Both lsd or both tetra
   if (vec_size(deb_bases(x)) == vec_size(deb_bases(y))) {
-    bases_equal(x, y)
+    bases_equal(x, y, x_arg = x_arg, y_arg = y_arg)
     deb_bases(x)
 
     # x is lsd; y is tetra
   } else if (vec_size(deb_bases(x)) == 2L) {
-    mixed_bases_equal(x, y)
+    mixed_bases_equal(x, y, x_arg = x_arg, y_arg = y_arg)
     deb_bases(x)
 
     # y is lsd, x is tetra
   } else {
-    mixed_bases_equal(y, x)
+    mixed_bases_equal(y, x, x_arg = x_arg, y_arg = y_arg)
     deb_bases(y)
   }
 }

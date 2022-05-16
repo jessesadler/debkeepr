@@ -4,7 +4,7 @@
 \alias{lsd_bases_check}
 \title{Checks for lsd bases attribute}
 \usage{
-lsd_bases_check(bases)
+lsd_bases_check(bases, call = rlang::caller_env())
 }
 \description{
 Check that:

@@ -4,7 +4,7 @@
 \alias{lsd_list_check}
 \title{lsd list check}
 \usage{
-lsd_list_check(x)
+lsd_list_check(x, call = rlang::caller_env())
 }
 \description{
 Ensure that lists only include numeric vectors of length 3

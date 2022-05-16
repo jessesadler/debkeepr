@@ -5,8 +5,8 @@
 # deb_lsd and deb_lsd
 
 #' @export
-vec_ptype2.deb_lsd.deb_lsd <- function(x, y, ...) {
-  bases_equal(x, y)
+vec_ptype2.deb_lsd.deb_lsd <- function(x, y, ..., x_arg = "", y_arg = "") {
+  bases_equal(x, y, x_arg = x_arg, y_arg = y_arg)
   new_lsd(bases = deb_bases(x))
 }
 
@@ -31,8 +31,8 @@ vec_ptype2.integer.deb_lsd <- function(x, y, ...) y
 # deb_decimal and deb_decimal
 
 #' @export
-vec_ptype2.deb_decimal.deb_decimal <- function(x, y, ...) {
-  bases <- bases_hierarchy(x, y)
+vec_ptype2.deb_decimal.deb_decimal <- function(x, y, ..., x_arg = "", y_arg = "") {
+  bases <- bases_hierarchy(x, y, x_arg = x_arg, y_arg = y_arg)
   unit <- unit_hierarchy(x, y)
 
   new_decimal(bases = bases, unit = unit)
@@ -60,8 +60,8 @@ vec_ptype2.integer.deb_decimal <- function(x, y, ...) y
 # deb_tetra and deb_tetra
 
 #' @export
-vec_ptype2.deb_tetra.deb_tetra <- function(x, y, ...) {
-  bases_equal(x, y)
+vec_ptype2.deb_tetra.deb_tetra <- function(x, y, ..., x_arg = "", y_arg = "") {
+  bases_equal(x, y, x_arg = x_arg, y_arg = y_arg)
   new_tetra(bases = deb_bases(x))
 }
 

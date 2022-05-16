@@ -4,7 +4,7 @@
 \alias{tetra_list_check}
 \title{tetra list check}
 \usage{
-tetra_list_check(x)
+tetra_list_check(x, call = rlang::caller_env())
 }
 \description{
 Ensure that lists only include numeric vectors of length 4

@@ -4,7 +4,7 @@
 \alias{bases_hierarchy}
 \title{Coercion hierarchy for deb_decimal bases}
 \usage{
-bases_hierarchy(x, y)
+bases_hierarchy(x, y, x_arg = "", y_arg = "")
 }
 \value{
 bases attribute. If equal length, bases is returned.

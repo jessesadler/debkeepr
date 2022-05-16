@@ -1,6 +1,58 @@
 ## Checks ##
 
+
+# Messages ----------------------------------------------------------------
+
+bases_na <- c("`bases` cannot be `NA`.",
+              "i" = "`bases` must be natural numbers greater than zero.")
+bases_natural <- c("`bases` must be natural numbers greater than zero.",
+                   "x" = "{prob} {?is/are} not {?a/} natural number{?s}.")
+
+
+
+# Helpers for iteration placement -----------------------------------------
+
+#' Arg as string helper
+#' @details
+#' This function is taken from an internal function in the vctrs package
+#' found in conditions.R. It helps provide functionality found in
+#' [`stop_incompatible_type()`] used in [`vec_ptype2()`]. It is used in
+#' concert with code from [`cnd_type_message()`] to find iteration number
+#' for errors.
+#'
+#' Used in [`bases_equal()`] and [`mixed_bases_equal()`] to provide more
+#' in depth error message.
+#' @keywords internal
+
+arg_as_string <- function(arg) {
+  if (rlang::is_null(arg)) {
+    ""
+  } else if (rlang::is_string(arg)) {
+    arg
+  } else {
+    rlang::as_label(arg)
+  }
+}
+
 # lsd and tetra checks ----------------------------------------------------
+
+#' Helper function for numeric check of units
+#' @description
+#' Check that all units are numeric. Use cli_abort() with caller_arg()
+#' to be able to supply various arguments.
+#' @keywords internal
+
+numeric_check <- function(x,
+                          arg = rlang::caller_arg(x),
+                          call = rlang::caller_env()) {
+  if (!all(rlang::are_na(x))) {
+    if (!is.numeric(x)) {
+      cli::cli_abort(c("{.arg {arg}} must be a numeric vector.",
+                       "x" = "You've supplied a {.cls {class(x)}} vector."),
+                     call = call)
+    }
+  }
+}
 
 #' Checks for deb_lsd functions
 #'
@@ -10,41 +62,34 @@
 #' - That they are the same length, length 1, or all length 0
 #' @keywords internal
 
-lsd_check <- function(l, s, d) {
+lsd_check <- function(l, s, d, call = rlang::caller_env()) {
   # Check that l, s, and d are numeric
-  if (!all(rlang::are_na(l))) {
-    if (!is.numeric(l)) {
-      rlang::abort("`l` must be a numeric vector.")
-    }
-  }
-
-  if (!all(rlang::are_na(s))) {
-    if (!is.numeric(s)) {
-      rlang::abort("`s` must be a numeric vector.")
-    }
-  }
-
-  if (!all(rlang::are_na(d))) {
-    if (!is.numeric(d)) {
-      rlang::abort("`d` must be a numeric vector.")
-    }
-  }
+  numeric_check(l)
+  numeric_check(s)
+  numeric_check(d)
 
   # Check that l, s, and d are same length, length 1, or all length 0
   lengths <- c(vec_size(l), vec_size(s), vec_size(d))
 
   # Must be either all zero length or no zero length
   if (!all(lengths == 0) && any(lengths == 0)) {
-    rlang::abort(
-      paste0("`l`, `s`, and `d` must all have values. ",
-             "You may have forgotten a value or need to use 0."))
+    missing <- c("`l`", "`s`", "`d`")[which(lengths == 0)]
+    cli::cli_abort(c("{missing} {?is/are} absent but must be supplied.",
+                   "x" = "`l`, `s`, and `d` must all have values.",
+                   "i" = "You may have forgotten a value or need to use 0."),
+                   call = call)
   }
 
   # Must be only one length other than scalar
   non_scalar <- lengths[lengths != 1L]
-  if (length(unique(non_scalar)) > 1L) {
-    rlang::abort(
-      "`l`, `s`, and `d` must be vectors of equal length or length 1.")
+  if (vec_unique_count(non_scalar) > 1L) {
+    cli::cli_abort(c(
+      "`l`, `s`, and `d` must have compatible lengths",
+      "i" = "Only values of length one are recycled.",
+      "*" = "Unit `l` has length {lengths[[1]]}.",
+      "*" = "Unit `s` has length {lengths[[2]]}.",
+      "*" = "Unit `d` has length {lengths[[3]]}."),
+      call = call)
   }
 }
 
@@ -56,47 +101,36 @@ lsd_check <- function(l, s, d) {
 #' - That they are the same length, length 1, or all length 0
 #' @keywords internal
 
-tetra_check <- function(l, s, d, f) {
+tetra_check <- function(l, s, d, f, call = rlang::caller_env()) {
   # Check that l, s, d, and f are numeric
-  if (!all(rlang::are_na(l))) {
-    if (!is.numeric(l)) {
-      rlang::abort("`l` must be a numeric vector.")
-    }
-  }
-
-  if (!all(rlang::are_na(s))) {
-    if (!is.numeric(s)) {
-      rlang::abort("`s` must be a numeric vector.")
-    }
-  }
-
-  if (!all(rlang::are_na(d))) {
-    if (!is.numeric(d)) {
-      rlang::abort("`d` must be a numeric vector.")
-    }
-  }
-
-  if (!all(rlang::are_na(f))) {
-    if (!is.numeric(f)) {
-      rlang::abort("`f` must be a numeric vector.")
-    }
-  }
+  numeric_check(l)
+  numeric_check(s)
+  numeric_check(d)
+  numeric_check(f)
 
   # Check that l, s, d, and f are same length, length 1, or all length 0
   lengths <- c(vec_size(l), vec_size(s), vec_size(d), vec_size(f))
 
   # Must be either all zero length or no zero length
   if (!all(lengths == 0) && any(lengths == 0)) {
-    rlang::abort(
-      paste0("`l`, `s`, `d`, and `f` must all have values. ",
-             "You may have forgotten a value or need to use 0."))
+    missing <- c("`l`", "`s`", "`d`", "`f`")[which(lengths == 0)]
+    cli::cli_abort(c("{missing} {?is/are} absent but must be supplied.",
+                     "x" = "`l`, `s`, `d`, and `f` must all have values.",
+                     "i" = "You may have forgotten a value or need to use 0."),
+                   call = call)
   }
 
   # Must be only one length other than scalar
   non_scalar <- lengths[lengths != 1L]
-  if (length(unique(non_scalar)) > 1L) {
-    rlang::abort(
-      "`l`, `s`, `d`, and `f` must be vectors of equal length or length 1.")
+  if (vec_unique_count(non_scalar) > 1L) {
+    cli::cli_abort(c(
+      "`l`, `s`, and `d` must have compatible lengths.",
+      "i" = "Only values of length one are recycled.",
+      "*" = "Unit `l` has length {lengths[[1]]}.",
+      "*" = "Unit `s` has length {lengths[[2]]}.",
+      "*" = "Unit `d` has length {lengths[[3]]}.",
+      "*" = "Unit `f` has length {lengths[[4]]}."),
+      call = call)
   }
 }
 
@@ -111,15 +145,20 @@ tetra_check <- function(l, s, d, f) {
 #' - Must be natural (whole) numbers greater that 0
 #' @keywords internal
 
-lsd_bases_check <- function(bases) {
+lsd_bases_check <- function(bases, call = rlang::caller_env()) {
   if (!is.numeric(bases) || vec_size(bases) != 2L || is.null(bases)) {
-    rlang::abort("`bases` must be a numeric vector of length 2.")
+    cli::cli_abort(c(
+      "{.var bases} must be a numeric vector of length 2.",
+      "x" = "You've supplied a {.cls {class(bases)}} vector
+            of length {vec_size(bases)}."),
+      call = call)
   }
   if (any(rlang::are_na(bases))) {
-    rlang::abort("`bases` cannot be `NA`.")
+    cli::cli_abort(message = bases_na, call = call)
   }
   if (!all(is_natural(bases))) {
-    rlang::abort("`bases` must be natural numbers greater than zero.")
+    prob <- as.character(bases[which(!is_natural(bases))])
+    cli::cli_abort(message = bases_natural, call = call)
   }
 }
 
@@ -132,15 +171,20 @@ lsd_bases_check <- function(bases) {
 #' - Must be natural (whole) numbers greater that 0
 #' @keywords internal
 
-tetra_bases_check <- function(bases) {
+tetra_bases_check <- function(bases, call = rlang::caller_env()) {
   if (!is.numeric(bases) || vec_size(bases) != 3L || is.null(bases)) {
-    rlang::abort("`bases` must be a numeric vector of length 3.")
+    cli::cli_abort(c(
+      "{.var bases} must be a numeric vector of length 3.",
+      "x" = "You've supplied a {.cls {class(bases)}} vector
+            of length {vec_size(bases)}."),
+      call = call)
   }
   if (any(rlang::are_na(bases))) {
-    rlang::abort("`bases` cannot be `NA`.")
+    cli::cli_abort(message = bases_na, call = call)
   }
   if (!all(is_natural(bases))) {
-    rlang::abort("`bases` must be natural numbers greater than zero.")
+    prob <- as.character(bases[which(!is_natural(bases))])
+    cli::cli_abort(message = bases_natural, call = call)
   }
 }
 
@@ -199,47 +243,127 @@ f_bases_check <- function(f, call = rlang::caller_env()) {
 deb_ptype_check <- function(x, call = rlang::caller_env()) {
   if (!deb_is_lsd(x) && !deb_is_decimal(x) && !deb_is_tetra(x)) {
     cli::cli_abort(c(
-      "`lsd` must be of a column of type <deb_lsd>, <deb_decimal>, or <deb_tetra>.",
-      "x" = "You've supplied a column of {.cls {class(x)}}."),
+      "`lsd` must be of a column of type <deb_lsd>, <deb_tetra>, or <deb_decimal>.",
+      "x" = "You've supplied a column of type {.cls {class(x)}}."),
                      call = call)
   }
 }
 
-# Bases equivalent --------------------------------------------------------
+# Bases compatible --------------------------------------------------------
 
 #' Check that bases are equal for two deb-style vectors
 #'
-#' Used to ensure that deb_lsd and deb_decimal vectors with different bases
-#' cannot be combined except explicitly with `deb_convert_bases()`.
+#' Used to ensure that deb_lsd, deb_decimal, and deb_tetra vectors with
+#' different bases cannot be combined except explicitly with
+#' `deb_convert_bases()`.
+#' @param x,y deb-style vectors
+#' @param x_arg,y_arg Argument names for x and y. These are used in error
+#'   messages to inform the user about the locations of incompatible types
+#'   (see [`stop_incompatible_type()`]).
+#' @param call Supplied to [`abort()`]. Default is `NULL` since revealing
+#'   call to `vec_ptype2()` and `vec_cast()` is not helpful.
+#'
 #' @keywords internal
 
-bases_equal <- function(x, y) {
-  if (!identical(deb_bases(x), deb_bases(y))) {
-    rlang::abort(
-      paste0("`bases` attributes must be equal to combine <deb_lsd>, ",
-             "<deb_tetra>, or <deb_decimal> vectors."))
+bases_equal <- function(x, y, x_arg = "", y_arg = "", call = NULL) {
+  x_bases <- deb_bases(x)
+  y_bases <- deb_bases(y)
+
+  if (!identical(x_bases, y_bases)) {
+
+    # From cnd_type_message() in vctrs 0.4.1 conditions.R
+    # Used to get iteration values
+    x_arg <- arg_as_string(x_arg)
+    y_arg <- arg_as_string(y_arg)
+
+    if (nzchar(x_arg)) {
+      x_name <- paste0(" `", x_arg, "` ")
+    } else {
+      x_name <- " "
+    }
+
+    if (nzchar(y_arg)) {
+      y_name <- paste0(" `", y_arg, "` ")
+    } else {
+      y_name <- " "
+    }
+
+    if (vec_size(deb_bases(x)) == 2L) {
+      x_bases_label <- paste0("s = ", x_bases[[1]], " and d = ", x_bases[[2]])
+      y_bases_label <- paste0("s = ", y_bases[[1]], " and d = ", y_bases[[2]])
+    } else {
+      x_bases_label <- paste0("s = ", x_bases[[1]], ", d = ", x_bases[[2]],
+                              ", and f = ", x_bases[[3]])
+      y_bases_label <- paste0("s = ", y_bases[[1]], ", d = ", y_bases[[2]],
+                              ", and f = ", x_bases[[3]])
+    }
+
+    cli::cli_abort(c(
+      "Incompatible {.var bases}.",
+      "i" = "{.var bases} must be compatible to combine {.cls deb_lsd},
+          {.cls deb_tetra}, or {.cls deb_decimal} vectors.",
+      "x" = "Cannot combine: {x_name} {.cls {class(x)[[1]]}}
+          vector with {.var bases} {x_bases_label}.",
+      "x" = "Cannot combine: {y_name} {.cls {class(y)[[1]]}}
+          vector with {.var bases} {y_bases_label}.",
+      "i" = "Use {.code deb_convert_bases()} to convert one or more
+          of the vectors to compatible {.var bases}."),
+    call = call)
   }
 }
 
 
-
 # Mixed bases equivalent --------------------------------------------------
 
-#' Check that s and d bases are equal for deb_lsd and deb_tetra vectors
+#' Check that s and d bases are equal for two deb-style vectors
 #'
-#' Used to ensure that deb_lsd and deb_tetra vectors can only be combined
-#' if they share the same s and d bases. Create a different function from
-#' `bases_equal()` for better error message and to keep simplicity.
+#' Used to ensure that deb_lsd, deb_decimal, and deb_tetra vectors with
+#' tripartite and tetrapartite bases can only be combined if they share the
+#' same s and d bases. Create a different function from [`bases_equal()`] for
+#' better error message and to keep simplicity.
 #'
-#' @param x Object with 2 bases.
-#' @param y Object with 3 bases.
+#' @param x Object with tripartite bases: `s` and `d`.
+#' @param y Object with tetrapartite bases: `s`, `d`, and `f`.
+#' @inheritParams bases_equal
 #' @keywords internal
 
-mixed_bases_equal <- function(x, y) {
-  if (!identical(deb_bases(x), deb_bases(y)[1:2])) {
-    rlang::abort(
-      paste0("s and d units of the `bases` attributes must be equal to ",
-             "combine <deb_lsd> and <deb_tetra> vectors."))
+mixed_bases_equal <- function(x, y, x_arg = "", y_arg = "", call = NULL) {
+  x_bases <- deb_bases(x)
+  y_bases <- deb_bases(y)[1:2]
+
+  if (!identical(x_bases, y_bases)) {
+
+    # From cnd_type_message() in vctrs 0.4.1 conditions.R
+    # Used to get iteration values
+    x_arg <- arg_as_string(x_arg)
+    y_arg <- arg_as_string(y_arg)
+
+    if (nzchar(x_arg)) {
+      x_name <- paste0(" `", x_arg, "` ")
+    } else {
+      x_name <- " "
+    }
+
+    if (nzchar(y_arg)) {
+      y_name <- paste0(" `", y_arg, "` ")
+    } else {
+      y_name <- " "
+    }
+
+    x_bases_label <- paste0("s = ", x_bases[[1]], " and d = ", x_bases[[2]])
+    y_bases_label <- paste0("s = ", y_bases[[1]], " and d = ", y_bases[[2]])
+
+    cli::cli_abort(c(
+      "Incompatible {.var bases}.",
+      "i" = "{.var bases} of the 's' and 'd' units must be equal to combine
+          {.cls deb_lsd}, {.cls deb_tetra}, or {.cls deb_decimal} vectors.",
+      "x" = "Cannot combine: {x_name} {.cls {class(x)[[1]]}}
+          vector with {.var bases} {x_bases_label}.",
+      "x" = "Cannot combine: {y_name} {.cls {class(y)[[1]]}}
+          vector with {.var bases} {y_bases_label}.",
+      "i" = "Use {.code deb_convert_bases()} to convert one or more
+          of the vectors to compatible {.var bases}."),
+      call = call)
   }
 }
 
@@ -249,18 +373,24 @@ mixed_bases_equal <- function(x, y) {
 #'
 #' Ensure that lists only include numeric vectors of length 3
 #' @keywords internal
-lsd_list_check <- function(x) {
+lsd_list_check <- function(x, call = rlang::caller_env()) {
   if (any(vapply(x, rlang::is_null, logical(1)))) {
     x <- Filter(length, x)
   }
   if (!all(vapply(x, is.numeric, logical(1)))) {
-    rlang::abort("`x` must be a list of numeric vectors.")
+    rlang::abort("`x` must be a list of numeric vectors.",
+      call = call)
   }
 
   lsd_lengths <- unique(list_sizes(x))
 
   if (!identical(lsd_lengths, 3L)) {
-    rlang::abort("`x` must be a list of numeric vectors of length 3.")
+    sizes <- list_sizes(x)
+    cli::cli_abort(c(
+      "{.var x} must be a list of numeric vectors of length 3.",
+      "x" = "You've supplied a list of {.cls numeric} vectors of
+           length(s) {sizes}."),
+      call = call)
   }
 }
 
@@ -268,18 +398,24 @@ lsd_list_check <- function(x) {
 #'
 #' Ensure that lists only include numeric vectors of length 4
 #' @keywords internal
-tetra_list_check <- function(x) {
+tetra_list_check <- function(x, call = rlang::caller_env()) {
   if (any(vapply(x, rlang::is_null, logical(1)))) {
     x <- Filter(length, x)
   }
   if (!all(vapply(x, is.numeric, logical(1)))) {
-    rlang::abort("`x` must be a list of numeric vectors.")
+    rlang::abort("`x` must be a list of numeric vectors.",
+                 call = call)
   }
 
   lsd_lengths <- unique(list_sizes(x))
 
   if (!identical(lsd_lengths, 4L)) {
-    rlang::abort("`x` must be a list of numeric vectors of length 4.")
+    sizes <- list_sizes(x)
+    cli::cli_abort(c(
+      "{.var x} must be a list of numeric vectors of length 4.",
+      "x" = "You've supplied a list of {.cls numeric} vectors of
+           length(s) {sizes}."),
+      call = call)
   }
 }
 
@@ -294,7 +430,6 @@ tetra_list_check <- function(x) {
 #' - `lsd`column is provided
 #' - `credit` and `debit` columns are provided
 #' - `credit` and `debit` columns must be of the same type
-#' - `account_id` in `deb_account()` must be in credit or debit columns
 #'
 #' @keywords internal
 transaction_check <- function(df,
@@ -302,33 +437,34 @@ transaction_check <- function(df,
                               credit,
                               debit,
                               edge_columns,
-                              account_id = NULL) {
+                              call = rlang::caller_env()) {
 
   if (!is.data.frame(df)) {
-    rlang::abort("`df` must be a data frame.")
+    cli::cli_abort(c(
+      "{.var df} must be a data frame.",
+      "x" = "You've supplied a {.cls {class(df)}}."),
+      call = call)
   }
 
   if (rlang::is_false(cn %in% names(df))) {
     rlang::abort(
-      "`lsd` must be provided if the default is not present in `df`.")
+      "`lsd` must be provided if the default is not present in `df`.",
+      call = call)
   }
 
   if (all(edge_columns %in% names(df)) == FALSE) {
-    rlang::abort(
-      paste0("Column names for `credit` and `debit` must be provided if",
-             " the default names are not present in `df`."))
+    cli::cli_abort("Column names for `credit` and `debit` must be provided if
+                   the default names are not present in `df`.",
+                   call = call)
   }
 
   credit <- rlang::eval_tidy(credit, df)
   debit <- rlang::eval_tidy(debit, df)
   if (!identical(vec_ptype(credit), vec_ptype(debit))) {
-    rlang::abort("`credit` and `debit` must be of the same type.")
-  }
-
-  if (!is.null(account_id)) {
-    if (rlang::is_false(account_id %in% c(credit, debit))) {
-      rlang::abort(
-        "`account_id` must be a value present in `credit` and/or `debit`.")
-    }
+    cli::cli_abort(c(
+      "The {.var credit} and {.var debit} columns must be of the same type.",
+      "*" = "{.var credit} is type {.cls {class(credit)[[1]]}}.",
+      "*" = "{.var debit} is type {.cls {class(debit)[[1]]}}."),
+                   call = call)
   }
 }

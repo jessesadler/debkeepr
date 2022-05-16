@@ -4,7 +4,7 @@
 \alias{tetra_check}
 \title{Checks for deb_tetra functions}
 \usage{
-tetra_check(l, s, d, f)
+tetra_check(l, s, d, f, call = rlang::caller_env())
 }
 \description{
 Checks made:
