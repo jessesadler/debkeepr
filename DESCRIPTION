@@ -6,27 +6,29 @@ Authors@R: person("Jesse", "Sadler",
     email = "jrsadler@icloud.com",
     role = c("aut", "cre"),
     comment = c(ORCID = "0000-0001-6081-9681"))
-Description: Analysis of historical non-decimal currencies that use the
-    tripartite system of pounds, shillings, and pence.
+Description: Analysis of historical non-decimal currencies and value systems
+    that use the tripartite system of pounds, shillings, and pence or
+    tetrapartite systems.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Depends:
     R (>= 3.2)
 Imports:
+    cli (>= 3.2.0),
     dplyr (>= 1.0.0),
     magrittr,
-    rlang (>= 0.4.6),
-    vctrs (>= 0.3.0),
-    zeallot,
-    tibble,
-    methods
+    methods,
+    rlang (>= 1.0.2),
+    tibble (>= 2.1.3),
+    vctrs (>= 0.4.1),
+    zeallot
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Suggests: 
     covr,
     knitr,
-    testthat (>= 3.0.0),
+    testthat (>= 3.1.3),
     rmarkdown,
     ggplot2,
     igraph,
