@@ -12,8 +12,7 @@ test_that("new_decimal works", {
   # With tetra
   expect_equal(length(new_decimal(x, bases = c(20L, 12L, 4L))), 3)
   # Error if bases are not length 2 or 3
-  expect_error(new_decimal(x, bases = c(20L, 12L, 8L, 4L)),
-               "`bases` must be a numeric vector of length 2 for lsd or 3 for tetra.")
+  expect_snapshot_error(new_decimal(x, bases = c(20L, 12L, 8L, 4L)))
 })
 
 test_that("deb_decimal works", {
@@ -41,9 +40,10 @@ test_that("deb_decimal works", {
   # With tetra
   expect_equal(length(deb_decimal(x, bases = tetra)), 3)
   expect_equal(deb_unit(deb_decimal(x, unit = "f", bases = tetra)), "f")
-  # Error with "f" unit
-  expect_error(deb_decimal(x, unit = "f"),
-               "`bases` must be a numeric vector of length 3 to use `'f'` unit.")
+  # Errors
+  expect_snapshot(error = TRUE,
+                  deb_decimal(x, bases = c(20, 12, 4, 8)))
+  expect_snapshot_error(deb_decimal(x, unit = "f"))
 })
 
 test_that("deb_decimal prints", {

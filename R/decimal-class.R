@@ -25,8 +25,11 @@ new_decimal <- function(x = double(),
   } else if (vec_size(bases) == 3L) {
     bases <- rlang::set_names(bases, c("s", "d", "f"))
   } else {
-    rlang::abort(
-      "`bases` must be a numeric vector of length 2 for lsd or 3 for tetra.")
+    cli::cli_abort(c(
+      "{.var bases} must be a numeric vector of length {.val {2}} for
+            tripartite values or {.val {3}} for tetrapartite values.",
+      "x" = "You've supplied a {.cls {class(bases)}} vector
+            of length {vec_size(bases)}."))
   }
 
   new_vctr(x,
@@ -120,8 +123,9 @@ deb_decimal <- function(x = double(),
                         bases = c(20, 12)) {
   unit <- rlang::arg_match(unit)
   if (unit == "f" && vec_size(bases) != 3L) {
-    rlang::abort(
-      "`bases` must be a numeric vector of length 3 to use `'f'` unit.")
+    cli::cli_abort(
+      "{.var bases} must be a numeric vector of length {.val {3}}
+        to use 'f' unit.")
   }
   dec_bases_check(bases)
 
