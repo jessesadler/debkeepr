@@ -1,5 +1,18 @@
 ## Normalize lsd values ##
 
+
+# Error messages ----------------------------------------------------------
+lsd_msg <- c("{.var bases} must be a numeric vector of length {.val {2}}
+                 to normalize a tripartite value.",
+             "x" = "You've supplied a {.cls {class(bases)}} vector of
+                 length {.val {vec_size(bases)}}.")
+tetra_msg <- c("{.var bases} must be a numeric vector of length {.val {3}}
+                   to normalize a tetrapartite value.",
+               "x" = "You've supplied a {.cls {class(bases)}} vector of
+                   length {.val {vec_size(bases)}}.")
+
+# Normalization pieces ----------------------------------------------------
+
 #' Check for non-whole numbers in libra and solidus units
 #'
 #' Move any decimals in libra and solidus units to the denarius unit
@@ -197,9 +210,9 @@ deb_normalize <- function(x, ...) {
 #' @rdname normalize
 #' @export
 deb_normalize.default <- function(x, ...) {
-  rlang::abort(
-    paste0("`x` must be a <deb_lsd> or <deb_tetra> vector ",
-           "or a numeric vector of length 3 or 4."))
+  cli::cli_abort(c("{.var x } must be a <deb_lsd> or <deb_tetra> vector or a
+                     numeric vector of length {.val {3}} or {.val {4}}.",
+                   "x" = "You've supplied a {.cls {class(x)}} vector."))
 }
 
 #' @rdname normalize
@@ -215,17 +228,27 @@ deb_normalize.deb_lsd <- function(x, ...) {
 #' @export
 deb_normalize.numeric <- function(x, bases = c(20, 12), ...) {
   if (vec_size(x) == 3L) {
+    # Check bases
+    if (!is.numeric(bases) || vec_size(bases) != 2L) {
+      cli::cli_abort(message = lsd_msg)
+    }
     lsd <- deb_lsd(x[[1]], x[[2]], x[[3]], bases)
     ret <- deb_normalize(lsd)
+
   } else if (vec_size(x) == 4L) {
-    if (vec_size(bases) != 3L) {
-      rlang::abort(paste0("`bases` must be a numeric vector of length ",
-                          "3 to normalize a tetrapartite value."))
+    # Check bases
+    if (!is.numeric(bases) || vec_size(bases) != 3L) {
+      cli::cli_abort(tetra_msg)
     }
     tetra <- deb_tetra(x[[1]], x[[2]], x[[3]], x[[4]], bases)
     ret <- deb_normalize(tetra)
+
   } else {
-    rlang::abort("`x` must be a numeric vector of length 3 or 4.")
+    cli::cli_abort(c(
+      "{.var x } must be a <deb_lsd> or <deb_tetra> vector or a numeric
+          vector of length {.val {3}} or {.val {4}}.",
+      "x" = "You've supplied a {.cls {class(x)}} vector of length
+          {.val {vec_size(x)}}."))
   }
   ret
 }

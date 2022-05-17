@@ -93,16 +93,13 @@ test_that("it comes together with deb_normalize with deb_tetra", {
 
 test_that("deb_normalize works with numeric vector", {
   # Errors
-  expect_error(deb_normalize(TRUE),
-               paste0("`x` must be a <deb_lsd> or <deb_tetra> vector ",
-                      "or a numeric vector of length 3 or 4."))
-  expect_error(deb_normalize(4),
-               "`x` must be a numeric vector of length 3 or 4.")
-  expect_error(deb_normalize(1:5),
-               "`x` must be a numeric vector of length 3 or 4.")
-  expect_error(deb_normalize(1:4),
-               paste0("`bases` must be a numeric vector of length ",
-                      "3 to normalize a tetrapartite value."))
+  expect_snapshot_error(deb_normalize(TRUE))
+  expect_snapshot_error(deb_normalize(4))
+  expect_snapshot_error(deb_normalize(1:5))
+  expect_snapshot_error(deb_normalize(1:3, bases = c(20, 12, 4)))
+  expect_snapshot_error(deb_normalize(1:3, bases = c("hello", "hi")))
+  expect_snapshot_error(deb_normalize(1:4))
+
   # It works for lsd
   expect_s3_class(deb_normalize(c(5, 82, 56)), "deb_lsd")
   expect_equal(deb_normalize(c(5, 82, 56)), deb_lsd(9, 6, 8))
