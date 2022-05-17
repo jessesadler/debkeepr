@@ -3,9 +3,9 @@
 
 # Messages ----------------------------------------------------------------
 
-bases_na <- c("`bases` cannot be `NA`.",
-              "i" = "`bases` must be natural numbers greater than zero.")
-bases_natural <- c("`bases` must be natural numbers greater than zero.",
+bases_na <- c("Values in {.arg {arg}} cannot be missing (`NA`).",
+              "i" = "{.arg {arg}} must be natural numbers greater than zero.")
+bases_natural <- c("{.arg {arg}} must be natural numbers greater than zero.",
                    "x" = "{prob} {?is/are} not {?a/} natural number{?s}.")
 
 # Helpers for iteration placement -----------------------------------------
@@ -143,10 +143,12 @@ tetra_check <- function(l, s, d, f, call = rlang::caller_env()) {
 #' - Must be natural (whole) numbers greater that 0
 #' @keywords internal
 
-lsd_bases_check <- function(bases, call = rlang::caller_env()) {
+lsd_bases_check <- function(bases,
+                            arg = rlang::caller_arg(bases),
+                            call = rlang::caller_env()) {
   if (!is.numeric(bases) || vec_size(bases) != 2L || is.null(bases)) {
     cli::cli_abort(c(
-      "{.var bases} must be a numeric vector of length {.val {2}}.",
+      "{.arg {arg}} must be a numeric vector of length {.val {2}}.",
       "x" = "You've supplied a {.cls {class(bases)}} vector
             of length {.val {vec_size(bases)}}."),
       call = call)
@@ -169,10 +171,12 @@ lsd_bases_check <- function(bases, call = rlang::caller_env()) {
 #' - Must be natural (whole) numbers greater that 0
 #' @keywords internal
 
-tetra_bases_check <- function(bases, call = rlang::caller_env()) {
+tetra_bases_check <- function(bases,
+                              arg = rlang::caller_arg(bases),
+                              call = rlang::caller_env()) {
   if (!is.numeric(bases) || vec_size(bases) != 3L || is.null(bases)) {
     cli::cli_abort(c(
-      "{.var bases} must be a numeric vector of length {.val {3}}.",
+      "{.arg {arg}} must be a numeric vector of length {.val {3}}.",
       "x" = "You've supplied a {.cls {class(bases)}} vector
             of length {.val {vec_size(bases)}}."),
       call = call)
@@ -195,11 +199,13 @@ tetra_bases_check <- function(bases, call = rlang::caller_env()) {
 #' - Must be natural (whole) numbers greater that 0
 #' @keywords internal
 
-dec_bases_check <- function(bases, call = rlang::caller_env()) {
+dec_bases_check <- function(bases,
+                            arg = rlang::caller_arg(bases),
+                            call = rlang::caller_env()) {
   if (!is.numeric(bases) || vec_size(bases) != 2L && vec_size(bases) != 3L ||
       is.null(bases)) {
     cli::cli_abort(c(
-      "{.var bases} must be a numeric vector of length {.val {2}} for
+      "{.arg {arg}} must be a numeric vector of length {.val {2}} for
           tripartite values or {.val {3}} for tetrapartite values.",
       "x" = "You've supplied a {.cls {class(bases)}} vector
           of length {.val {vec_size(bases)}}."),
@@ -227,18 +233,18 @@ f_bases_check <- function(f, call = rlang::caller_env()) {
 
   if (!is.numeric(f) || vec_size(f) != 1L) {
     cli::cli_abort(c(
-      "{.var f} must be a numeric vector of length {.val {1}}.",
+      "{.arg f} must be a numeric vector of length {.val {1}}.",
       "x" = "You've supplied a {.cls {class(f)}} vector
             of length {vec_size(f)}."),
       call = call)
   }
   if (rlang::is_na(f)) {
-    cli::cli_abort(c("{.var f} cannot be `NA`.",
-                     "i" = "{.var f} must be natural numbers greater than zero."),
+    cli::cli_abort(c("{.arg f} cannot be `NA`.",
+                     "i" = "{.arg f} must be natural numbers greater than zero."),
                    call = call)
   }
   if (!is_natural(f)) {
-    cli::cli_abort(c("{.var f} must be a natural number greater than zero.",
+    cli::cli_abort(c("{.arg f} must be a natural number greater than zero.",
                      "x" = "{.val {f}} is not a natural number."),
                    call = call)
   }

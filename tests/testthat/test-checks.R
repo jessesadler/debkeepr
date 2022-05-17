@@ -81,43 +81,62 @@ test_that("tetra: length of units are same length, length 1, or length 0", {
 test_that("lsd: bases is numeric vector of length 2", {
   # Successful
   expect_invisible(lsd_bases_check(c(20, 12)))
-  expect_snapshot_error(lsd_bases_check(TRUE))
-  expect_snapshot_error(lsd_bases_check(c("hello", "goodbye")))
-  expect_snapshot_error(lsd_bases_check(1))
-  expect_snapshot_error(lsd_bases_check(c(1, 2, 3)))
+  bases <- TRUE
+  expect_snapshot_error(lsd_bases_check(bases))
+  bases <- c("hello", "goodbye")
+  expect_snapshot_error(lsd_bases_check(bases))
+  bases <- 1
+  expect_snapshot_error(lsd_bases_check(bases))
+  bases <- c(1, 2, 3)
+  expect_snapshot_error(lsd_bases_check(bases))
 })
 
 test_that("lsd: bases does not have any missing values", {
-  expect_snapshot_error(lsd_bases_check(c(NA, 3)))
-  expect_snapshot_error(lsd_bases_check(c(3, NA)))
+  bases <- c(NA, 3)
+  expect_snapshot_error(lsd_bases_check(bases))
+  bases <- c(3, NA)
+  expect_snapshot_error(lsd_bases_check(bases))
 })
 
 test_that("lsd: bases are natural numbers", {
-  expect_snapshot_error(lsd_bases_check(c(-12, -3)))
-  expect_snapshot_error(lsd_bases_check(c(20, 0)))
-  expect_snapshot_error(lsd_bases_check(c(20.5, 8.23)))
+  bases <- c(-12, -3)
+  expect_snapshot_error(lsd_bases_check(bases))
+  bases <- c(20, 0)
+  expect_snapshot_error(lsd_bases_check(bases))
+  bases <- c(20.5, 8.23)
+  expect_snapshot_error(lsd_bases_check(bases))
 })
 
 # tetra_bases_check -------------------------------------------------------
 test_that("tetra: bases is numeric vector of length 2", {
   # Successful
   expect_invisible(tetra_bases_check(c(20, 12, 4)))
-  expect_snapshot_error(tetra_bases_check(TRUE))
-  expect_snapshot_error(tetra_bases_check(c("hello", "goodbye")))
-  expect_snapshot_error(tetra_bases_check(1))
-  expect_snapshot_error(tetra_bases_check(c(20, 12)))
-  expect_snapshot_error(tetra_bases_check(c(20, 12, 4, 2)))
+  bases <- TRUE
+  expect_snapshot_error(tetra_bases_check(bases))
+  bases <- c("hello", "goodbye")
+  expect_snapshot_error(tetra_bases_check(bases))
+  bases <- 1
+  expect_snapshot_error(tetra_bases_check(bases))
+  bases <- c(20, 12)
+  expect_snapshot_error(tetra_bases_check(bases))
+  bases <- c(20, 12, 4, 2)
+  expect_snapshot_error(tetra_bases_check(bases))
 })
 
 test_that("tetra: bases does not have any missing values", {
-  expect_snapshot_error(tetra_bases_check(c(NA, 3, 4)))
-  expect_snapshot_error(tetra_bases_check(c(3, NA, 4)))
+  bases <- c(NA, 3, 4)
+  expect_snapshot_error(tetra_bases_check(bases))
+  bases <- c(3, NA, 4)
+  expect_snapshot_error(tetra_bases_check(bases))
 })
 
 test_that("tetra: bases are natural numbers", {
-  expect_snapshot_error(tetra_bases_check(c(-12, -3, -6)))
-  expect_snapshot_error(tetra_bases_check(c(20, 0, 4)))
-  expect_snapshot_error(tetra_bases_check(c(20.5, 8.23, 8.75)))
+  bases <- c(-12, -3, -6)
+  expect_snapshot_error(tetra_bases_check(bases))
+  bases <- c(20, 0, 4)
+  expect_snapshot_error(tetra_bases_check(bases))
+  bases <- c(20.5, 8.23, 8.75)
+  expect_snapshot_error(tetra_bases_check(bases))
 })
 
 # dec_bases_check ---------------------------------------------------------
@@ -125,9 +144,12 @@ test_that("tetra: bases are natural numbers", {
 test_that("decimal bases checks", {
   expect_invisible(dec_bases_check(c(20, 12, 4)))
   expect_invisible(dec_bases_check(c(20, 12)))
-  expect_snapshot_error(dec_bases_check(1))
-  expect_snapshot_error(dec_bases_check(c(3, NA)))
-  expect_snapshot_error(dec_bases_check(c(-12, -3)))
+  bases <- 1
+  expect_snapshot_error(dec_bases_check(bases))
+  bases <- c(3, NA)
+  expect_snapshot_error(dec_bases_check(bases))
+  bases <- c(-12, -3)
+  expect_snapshot_error(dec_bases_check(bases))
 })
 
 # f_bases_check -----------------------------------------------------------

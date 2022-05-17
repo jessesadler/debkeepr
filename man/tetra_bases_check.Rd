@@ -4,7 +4,11 @@
 \alias{tetra_bases_check}
 \title{Checks for tetra bases attribute}
 \usage{
-tetra_bases_check(bases, call = rlang::caller_env())
+tetra_bases_check(
+  bases,
+  arg = rlang::caller_arg(bases),
+  call = rlang::caller_env()
+)
 }
 \description{
 Check that:

@@ -114,12 +114,12 @@
 
 # lsd: bases does not have any missing values
 
-    `bases` cannot be `NA`.
+    Values in `bases` cannot be missing (`NA`).
     i `bases` must be natural numbers greater than zero.
 
 ---
 
-    `bases` cannot be `NA`.
+    Values in `bases` cannot be missing (`NA`).
     i `bases` must be natural numbers greater than zero.
 
 # lsd: bases are natural numbers
@@ -164,12 +164,12 @@
 
 # tetra: bases does not have any missing values
 
-    `bases` cannot be `NA`.
+    Values in `bases` cannot be missing (`NA`).
     i `bases` must be natural numbers greater than zero.
 
 ---
 
-    `bases` cannot be `NA`.
+    Values in `bases` cannot be missing (`NA`).
     i `bases` must be natural numbers greater than zero.
 
 # tetra: bases are natural numbers
@@ -194,7 +194,7 @@
 
 ---
 
-    `bases` cannot be `NA`.
+    Values in `bases` cannot be missing (`NA`).
     i `bases` must be natural numbers greater than zero.
 
 ---
