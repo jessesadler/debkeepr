@@ -82,8 +82,9 @@ deb_text <- function(x, ...) {
 #' @rdname text
 #' @export
 deb_text.default <- function(x, ...) {
-  rlang::abort(
-    "`x` must be a <deb_lsd>, <deb_decimal>, or <deb_tetra> vector.")
+  cli::cli_abort(c("{.arg x} must be a <deb_lsd>, <deb_tetra>, or
+                     <deb_decimal> vector.",
+                   "x" = "You've supplied a {.cls {class(x)}} vector."))
 }
 
 #' @rdname text

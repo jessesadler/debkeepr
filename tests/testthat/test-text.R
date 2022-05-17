@@ -14,8 +14,7 @@ tetra <- deb_tetra(c(10000, NA, 0, -10000),
                    c(2.8252, NA, 0, -2.8252))
 
 test_that("deb_text works", {
-  expect_error(deb_text(c(2, 3)),
-    "`x` must be a <deb_lsd>, <deb_decimal>, or <deb_tetra> vector.")
+  expect_snapshot(deb_text(c(2, 3)), error = TRUE)
   expect_type(deb_text(lsd), "character")
   expect_length(deb_text(lsd), 4)
   expect_type(deb_text(dec), "character")
