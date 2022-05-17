@@ -44,9 +44,11 @@ test_that("Bases conversion works with deb_lsd vectors", {
   expect_equal(deb_convert_bases(lsd2, to = bases1), lsd1)
   expect_equal(as.numeric(deb_convert_bases(lsd2, to = bases1)),
                as.numeric(lsd1))
-  # Error with non-deb vector
-  expect_error(deb_convert_bases("a", bases1),
-               "`x` must be a <deb_lsd>, <deb_tetra>, or <deb_decimal> vector.")
+  # Errors
+  expect_snapshot_error(deb_convert_bases("a", bases1))
+  expect_snapshot(deb_convert_bases(lsd1, bases3), error = TRUE)
+  expect_snapshot(deb_convert_bases(lsd1, to = c(NA, 20)), error = TRUE)
+  expect_snapshot(deb_convert_bases(lsd1, to = c(-10, -20)), error = TRUE)
 })
 
 test_that("Bases conversion works with deb_decimal vectors", {
@@ -85,9 +87,10 @@ test_that("Bases conversion works with deb_tetra vectors", {
   expect_equal(deb_convert_bases(tetra2, to = bases3), tetra1)
   expect_equal(as.numeric(deb_convert_bases(tetra2, to = bases3)),
                as.numeric(tetra1))
-  # Error with non-deb vector
-  expect_error(deb_convert_bases("a", bases1),
-               "`x` must be a <deb_lsd>, <deb_tetra>, or <deb_decimal> vector.")
+  # Errors
+  expect_snapshot(deb_convert_bases(tetra1, bases2), error = TRUE)
+  expect_snapshot(deb_convert_bases(tetra1, to = c(NA, 20, 12)), error = TRUE)
+  expect_snapshot(deb_convert_bases(tetra1, to = c(-10, -20, -12)), error = TRUE)
 })
 
 # Unit conversion ---------------------------------------------------------
@@ -118,8 +121,7 @@ test_that("Unit conversion works", {
   expect_equal(deb_convert_unit(dec_tetra_f, to = "d"), dec_tetra_d)
 
   # Errors
-  expect_error(deb_convert_unit(dec_l, to = "hello"))
-  expect_error(deb_convert_unit(lsd1), "`x` must be a <deb_decimal> vector.")
-  expect_error(deb_convert_unit(dec_l, to = "f"),
-               "`bases` must be a numeric vector of length 3 to use `'f'` unit.")
+  expect_snapshot_error(deb_convert_unit(lsd1, to = "l"))
+  expect_snapshot_error(deb_convert_unit(dec_l, to = "hello"))
+  expect_snapshot_error(deb_convert_unit(dec_l, to = "f"))
 })

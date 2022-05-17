@@ -46,9 +46,12 @@ deb_convert_bases <- function(x, to) {
   UseMethod("deb_convert_bases")
 }
 
+#' @rdname convert-bases
+#' @export
 deb_convert_bases.default <- function(x, to) {
-  rlang::abort(
-    "`x` must be a <deb_lsd>, <deb_tetra>, or <deb_decimal> vector.")
+  cli::cli_abort(c("{.arg x} must be a <deb_lsd>, <deb_tetra>, or
+                     <deb_decimal> vector.",
+                   "x" = "You've supplied a {.cls {class(x)}} vector."))
 }
 
 #' @rdname convert-bases
@@ -168,9 +171,14 @@ deb_convert_bases.deb_tetra <- function(x, to) {
 
 deb_convert_unit <- function(x, to = c("l", "s", "d", "f")) {
   if (!deb_is_decimal(x)) {
-    rlang::abort("`x` must be a <deb_decimal> vector.")
+    cli::cli_abort(c("{.arg x} must be a <deb_decimal> vector.",
+                     "x" = "You've supplied a {.cls {class(x)[[1]]}} vector."))
   }
   to_unit <- rlang::arg_match(to)
-
+  if (to_unit == "f" && vec_size(deb_bases(x)) != 3L) {
+    cli::cli_abort(c("`x` must be a <deb_decimal> vector with tetrapartite bases to
+                       convert to the 'f' unit.",
+                     "i" = "Choose to = 'l', 's', or 'd' instead."))
+  }
   vec_cast(x, deb_decimal(unit = to_unit, bases = deb_bases(x)))
 }

@@ -3,12 +3,15 @@
 \name{convert-bases}
 \alias{convert-bases}
 \alias{deb_convert_bases}
+\alias{deb_convert_bases.default}
 \alias{deb_convert_bases.deb_lsd}
 \alias{deb_convert_bases.deb_decimal}
 \alias{deb_convert_bases.deb_tetra}
 \title{Convert bases of \code{deb_lsd}, \code{deb_tetra}, and \code{deb_decimal} vectors}
 \usage{
 deb_convert_bases(x, to)
+
+\method{deb_convert_bases}{default}(x, to)
 
 \method{deb_convert_bases}{deb_lsd}(x, to)
 
