@@ -137,7 +137,9 @@ deb_spread_tetra <- function(df,
                              replace = FALSE) {
 
   if (!deb_is_tetra(rlang::eval_tidy(rlang::enquo(tetra), df))) {
-    rlang::abort("`tetra` must be of type <deb_tetra>.")
+    cls <- class(rlang::eval_tidy(rlang::enquo(tetra), df))[[1]]
+    cli::cli_abort(c("{.arg tetra} must be of type <deb_tetra>.",
+                     "x" = "You've supplied a column of type {.cls {cls}}."))
   }
 
   df <- dplyr::mutate(df,

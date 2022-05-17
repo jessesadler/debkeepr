@@ -41,7 +41,7 @@ test_that("deb_gather_tetra works", {
 
 test_that("deb_spread_tetra works", {
   # Error
-  expect_error(deb_spread_tetra(x, tetra = l), "`tetra` must be of type <deb_tetra>.")
+  expect_snapshot(deb_spread_tetra(x, tetra = l), error = TRUE)
   # defaults
   expect_equal(ncol(deb_spread_tetra(y)), 6)
   expect_equal(deb_spread_tetra(y)[[3]], libra)

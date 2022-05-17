@@ -126,7 +126,9 @@ deb_spread_lsd <- function(df,
                            replace = FALSE) {
 
   if (!deb_is_lsd(rlang::eval_tidy(rlang::enquo(lsd), df))) {
-    rlang::abort("`lsd` must be of type <deb_lsd>.")
+    cls <- class(rlang::eval_tidy(rlang::enquo(lsd), df))[[1]]
+    cli::cli_abort(c("{.arg lsd} must be of type <deb_lsd>.",
+                     "x" = "You've supplied a column of type {.cls {cls}}."))
   }
 
   df <- dplyr::mutate(df,
