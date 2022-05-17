@@ -11,11 +11,7 @@ mixed_bases_equal(x, y, x_arg = "", y_arg = "", call = NULL)
 
 \item{y}{Object with tetrapartite bases: \code{s}, \code{d}, and \code{f}.}
 
-\item{x_arg}{Argument names for x and y. These are used in error
-messages to inform the user about the locations of incompatible types
-(see \code{\link[=stop_incompatible_type]{stop_incompatible_type()}}).}
-
-\item{y_arg}{Argument names for x and y. These are used in error
+\item{x_arg, y_arg}{Argument names for x and y. These are used in error
 messages to inform the user about the locations of incompatible types
 (see \code{\link[=stop_incompatible_type]{stop_incompatible_type()}}).}
 

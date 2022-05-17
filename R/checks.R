@@ -214,12 +214,20 @@ dec_bases_check <- function(bases, call = rlang::caller_env()) {
   }
 }
 
+#' Check f unit
+#' @description
+#' Check that:
+#' - f is numeric vector of length 1
+#' - Is not NA
+#' - Must be natural (whole) number greater that 0
+#' @keywords internal
+
 f_bases_check <- function(f, call = rlang::caller_env()) {
   rlang::check_required(f)
 
   if (!is.numeric(f) || vec_size(f) != 1L) {
     cli::cli_abort(c(
-      "{.var f} must be a numeric vector of length 1.",
+      "{.var f} must be a numeric vector of length {.val {1}}.",
       "x" = "You've supplied a {.cls {class(f)}} vector
             of length {vec_size(f)}."),
       call = call)
@@ -231,7 +239,7 @@ f_bases_check <- function(f, call = rlang::caller_env()) {
   }
   if (!is_natural(f)) {
     cli::cli_abort(c("{.var f} must be a natural number greater than zero.",
-                     "x" = "{f} is not a natural number."),
+                     "x" = "{.val {f}} is not a natural number."),
                    call = call)
   }
 }
