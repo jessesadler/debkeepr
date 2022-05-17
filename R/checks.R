@@ -101,10 +101,10 @@ lsd_check <- function(l, s, d, call = rlang::caller_env()) {
 
 tetra_check <- function(l, s, d, f, call = rlang::caller_env()) {
   # Check that l, s, d, and f are numeric
-  numeric_check(l)
-  numeric_check(s)
-  numeric_check(d)
-  numeric_check(f)
+  numeric_check(l, call = call)
+  numeric_check(s, call = call)
+  numeric_check(d, call = call)
+  numeric_check(f, call = call)
 
   # Check that l, s, d, and f are same length, length 1, or all length 0
   lengths <- c(vec_size(l), vec_size(s), vec_size(d), vec_size(f))

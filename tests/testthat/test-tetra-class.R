@@ -29,6 +29,13 @@ test_that("deb_tetra works", {
   expect_equal(deb_bases(x), c(s = 20L, d = 12L, f = 4L))
   expect_equal(deb_bases(deb_tetra(1, 2, 3, 4, bases = c(60, 16, 8))),
                c(s = 60L, d = 16L, f = 8L))
+  # Errors
+  expect_snapshot(deb_tetra(1), error = TRUE)
+  expect_snapshot(deb_tetra(1, 3, f = 2), error = TRUE)
+  expect_snapshot(deb_tetra("hello", 3, 4, 2), error = TRUE)
+  expect_snapshot(deb_tetra(3, "hello", 4, 2), error = TRUE)
+  expect_snapshot(deb_tetra(1:3, 1:2, 0, 1:5), error = TRUE)
+  expect_snapshot(deb_tetra(1, 2, 3, 4, bases = c(20, 12)), error = TRUE)
 })
 
 test_that("deb_lsd prints", {
