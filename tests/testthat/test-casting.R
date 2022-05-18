@@ -1,7 +1,5 @@
 ## Test casting with deb_lsd, deb_decimal, and deb_tetra ##
 
-library(vctrs)
-
 bases2 <- c(50, 16)
 bases3 <- c(20, 12, 4)
 bases4 <- c(50, 16, 8)
