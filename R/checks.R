@@ -229,7 +229,7 @@ dec_bases_check <- function(bases,
 #' @keywords internal
 
 f_bases_check <- function(f, call = rlang::caller_env()) {
-  rlang::check_required(f)
+  rlang::check_required(f, call = call)
 
   if (!is.numeric(f) || vec_size(f) != 1L) {
     cli::cli_abort(c(
