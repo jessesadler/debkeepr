@@ -31,11 +31,6 @@ dec_tetra_f <- deb_decimal(1767, unit = "f", bases = bases3)
 dec_tetra_l_alt <- deb_decimal(1.5, bases = bases4)
 dec_tetra_f_alt <- deb_decimal(7708, unit = "f", bases = bases4)
 
-bases_error <- paste0("`bases` attributes must be equal to combine ",
-                      "<deb_lsd>, <deb_tetra>, or <deb_decimal> vectors.")
-mixed_error <- paste0("s and d units of the `bases` attributes must be ",
-                      "equal to combine <deb_lsd> and <deb_tetra> vectors.")
-
 # deb_lsd coercion --------------------------------------------------------
 
 test_that("deb_lsd coerces to itself", {
@@ -47,8 +42,8 @@ test_that("deb_lsd coerces to itself", {
   expect_equal(length(c(lsd, lsd2)), 2)
   expect_equal(c(lsd, lsd2), deb_lsd(c(1, 4), c(2, 5), c(3, 6)))
   # Errors
-  expect_error(vec_c(lsd, lsd_alt), bases_error)
-  expect_error(c(lsd, lsd_alt), bases_error)
+  expect_snapshot(vec_c(lsd, lsd_alt), error = TRUE)
+  expect_snapshot(c(lsd, lsd_alt), error = TRUE)
 })
 
 test_that("double coerces to deb_lsd", {
@@ -79,8 +74,8 @@ test_that("deb_lsd coercion works with NA", {
 })
 
 test_that("incompatible types do not work", {
-  expect_error(c(lsd, "hello"))
-  expect_error(c(lsd, TRUE))
+  expect_snapshot_error(c(lsd, "hello"))
+  expect_snapshot_error(c(lsd, TRUE))
 })
 
 # deb_decimal coercion ----------------------------------------------------
@@ -122,14 +117,12 @@ test_that("deb_decimal coerces to itself", {
   expect_equal(c(dec_d, dec_tetra_f), c(dec_d, 441.75))
 
   # Errors
-  expect_error(vec_c(dec, deb_decimal(4.5, bases = bases2)),
-               bases_error)
-  expect_error(c(dec, deb_decimal(4.5, bases = bases2)),
-               bases_error)
-  expect_error(vec_c(deb_decimal(1.5, bases = bases4), deb_decimal(1.5, bases = bases3)),
-               bases_error)
-  expect_error(c(dec, dec_tetra_l_alt), mixed_error)
-  expect_error(c(dec_tetra_l_alt, dec), mixed_error)
+  expect_snapshot(vec_c(dec, deb_decimal(4.5, bases = bases2)), error = TRUE)
+  expect_snapshot(c(dec, deb_decimal(4.5, bases = bases2)), error = TRUE)
+  expect_snapshot(vec_c(deb_decimal(1.5, bases = bases4),
+                        deb_decimal(1.5, bases = bases3)), error = TRUE)
+  expect_snapshot(c(dec, dec_tetra_l_alt), error = TRUE)
+  expect_snapshot(c(dec_tetra_l_alt, dec), error = TRUE)
 
 })
 
@@ -157,8 +150,8 @@ test_that("deb_decimal coercion works with NA", {
 })
 
 test_that("incompatible types do not work", {
-  expect_error(c(dec, "hello"))
-  expect_error(c(dec, TRUE))
+  expect_snapshot_error(c(dec, "hello"))
+  expect_snapshot_error(c(dec, TRUE))
 })
 
 
@@ -174,10 +167,10 @@ test_that("deb_tetra coerces to itself", {
   expect_equal(c(tetra, tetra2),
                deb_tetra(c(1, 5), c(2, 6), c(3, 7), c(4, 8)))
   # Errors
-  expect_error(vec_c(tetra, deb_tetra(1, 2, 3, 4, bases = bases4)),
-               bases_error)
-  expect_error(c(tetra, deb_tetra(1, 2, 3, 4, bases = bases4)),
-               bases_error)
+  expect_snapshot(vec_c(tetra, deb_tetra(1, 2, 3, 4, bases = bases4)),
+                  error = TRUE)
+  expect_snapshot(c(tetra, deb_tetra(1, 2, 3, 4, bases = bases4)),
+                  error = TRUE)
 })
 
 test_that("double coerces to deb_tetra", {
@@ -212,8 +205,8 @@ test_that("deb_tetra coercion works with NA", {
 })
 
 test_that("incompatible types do not work", {
-  expect_error(c(tetra, "hello"))
-  expect_error(c(tetra, TRUE))
+  expect_snapshot_error(c(tetra, "hello"))
+  expect_snapshot_error(c(tetra, TRUE))
 })
 
 # deb_lsd and deb_decimal coercion ----------------------------------------
@@ -228,10 +221,9 @@ test_that("deb_decimal coerces to deb_lsd", {
   expect_equal(vec_c(lsd_alt, dec_tetra_f_alt),
                c(lsd_alt, deb_lsd(1, 10, 3.5, bases2)))
   # Errors
-  expect_error(vec_c(lsd, deb_decimal(5.5, bases = bases2)),
-               bases_error)
-  expect_error(vec_c(dec, lsd_alt), bases_error)
-  expect_error(vec_c(lsd, dec_tetra_l_alt), mixed_error)
+  expect_snapshot(vec_c(lsd, deb_decimal(5.5, bases = bases2)), error = TRUE)
+  expect_snapshot(vec_c(dec, lsd_alt), error = TRUE)
+  expect_snapshot(vec_c(lsd, dec_tetra_l_alt), error = TRUE)
 })
 
 
@@ -245,12 +237,8 @@ test_that("deb_tetra coerces to deb_lsd", {
   expect_equal(vec_c(tetra, lsd),
                deb_lsd(c(1, 1), c(2, 2), c(4, 3)))
 
-  expect_error(vec_c(lsd, deb_tetra(1, 2, 3, 4, bases = bases4)),
-               paste0("s and d units of the `bases` attributes must be ",
-               "equal to combine <deb_lsd> and <deb_tetra> vectors."))
-  expect_error(vec_c(tetra, lsd_alt),
-               paste0("s and d units of the `bases` attributes must be ",
-                      "equal to combine <deb_lsd> and <deb_tetra> vectors."))
+  expect_snapshot(vec_c(lsd, deb_tetra(1, 2, 3, 4, bases4)), error = TRUE)
+  expect_snapshot(vec_c(tetra, lsd_alt), error = TRUE)
 })
 
 
@@ -270,7 +258,7 @@ test_that("deb_decimal coerces to deb_tetra", {
   expect_equal(vec_c(dec, tetra),
                deb_tetra(c(1, 2, 1), c(7, 10, 2), c(0, 0, 3), c(0, 0, 4)))
   # Errors
-  expect_error(vec_c(tetra, deb_decimal(1.5, bases = bases2)), mixed_error)
-  expect_error(vec_c(tetra, deb_decimal(1.5, bases = c(20, 12, 8))),
-               bases_error)
+  expect_snapshot(vec_c(tetra, deb_decimal(1.5, bases = bases2)), error = TRUE)
+  expect_snapshot(vec_c(tetra, deb_decimal(1.5, bases = c(20, 12, 8))),
+                  error = TRUE)
 })
