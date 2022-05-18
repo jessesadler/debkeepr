@@ -1,7 +1,12 @@
 ## Test equality and comparison ##
 
+bases2 <- c(50, 16)
+bases3 <- c(20, 12, 4)
+bases4 <- c(50, 16, 8)
+
 lsd1 <- deb_lsd(1, 2, 3)
 lsd2 <- deb_lsd(5, 6, 8)
+lsd_alt <- deb_lsd(1, 2, 3, bases2)
 normalize <- c(lsd1, lsd2, NA, deb_lsd(c(3, 2), c(40, 84), c(80, 65)))
 dec1 <- deb_decimal(1.1125)
 dec2 <- deb_decimal(8.825)
@@ -10,12 +15,14 @@ dec_s <- deb_decimal(22.25, "s")
 dec_s2 <- deb_decimal(176.5, "s")
 dec_d <- deb_decimal(267, "d")
 dec_d2 <- deb_decimal(2118, "d")
+dec_alt <- deb_decimal(1.1125, bases = bases2)
+dec_tetra <- deb_decimal(1.1125, bases = bases3)
+dec_tetra_alt <- deb_decimal(1.1125, bases = bases4)
 tetra1 <- deb_tetra(1, 2, 3, 2)
 tetra2 <- deb_tetra(5, 6, 7, 3)
 tetra3 <- c(tetra1, tetra2)
+tetra_alt <- deb_tetra(1, 2, 3, 2, bases4)
 
-bases_error <- paste0("`bases` attributes must be equal to combine ",
-                      "<deb_lsd>, <deb_tetra>, or <deb_decimal> vectors.")
 
 # Equality ----------------------------------------------------------------
 
@@ -28,28 +35,28 @@ test_that("Equality works with deb_lsd", {
   expect_true(anyDuplicated(normalize))
   expect_equal(is.na(normalize), c(FALSE, FALSE, TRUE, FALSE, FALSE))
   # Error with different bases
-  expect_error(lsd1 == deb_lsd(5, 6, 8, bases = c(20, 16)),
-               bases_error)
+  expect_snapshot(lsd1 == lsd_alt, error = TRUE)
 })
 
 test_that("Equality works with deb_decimal", {
   expect_true(dec1 == deb_decimal(1.1125))
   expect_false(dec1 == dec2)
   expect_true(dec1 != dec2)
+  expect_true(dec1 == dec_tetra)
   expect_equal(dec3 == dec_s, c(TRUE, NA, FALSE, FALSE, TRUE))
   # Different units
   expect_true(dec1 == dec_s)
   expect_true(dec1 == dec_d)
   expect_true(dec_s == dec_d)
   expect_false(dec1 != dec_s)
-
   # Functions
   expect_equal(unique(dec3), dec3[-5])
   expect_true(anyDuplicated(dec3))
   expect_equal(is.na(dec3), c(FALSE, TRUE, FALSE, FALSE, FALSE))
   # Error with different bases
-  expect_error(dec1 == deb_decimal(1.1125, bases = c(24, 12)),
-               bases_error)
+  expect_snapshot(dec1 == dec_alt, error = TRUE)
+  expect_snapshot(dec_tetra == dec_tetra_alt, error = TRUE)
+  expect_snapshot(dec1 == dec_tetra_alt, error = TRUE)
 })
 
 
@@ -62,10 +69,17 @@ test_that("Equality works with deb_tetra", {
   expect_true(anyDuplicated(c(tetra1, tetra2, tetra1)))
   expect_equal(is.na(c(tetra1, deb_tetra(NA, NA, NA, NA))), c(FALSE, TRUE))
   # Error with different bases
-  expect_error(tetra1 == deb_tetra(1, 2, 3, 2, bases = c(20, 16, 8)),
-               bases_error)
+  expect_snapshot(tetra1 == tetra_alt, error = TRUE)
 })
 
+test_that("Equality works with mixed types", {
+  expect_true(lsd1 == dec1)
+  expect_true(lsd1 == deb_tetra(1, 2, 3, 0))
+  expect_true(deb_tetra(1, 2, 3, 0) == dec1)
+  # Error with different bases
+  expect_snapshot(lsd1 == tetra_alt, error = TRUE)
+  expect_snapshot(lsd1 == dec_tetra_alt, error = TRUE)
+})
 
 # Comparison --------------------------------------------------------------
 
@@ -91,15 +105,23 @@ test_that("Comparison logical operators work", {
   expect_true(tetra1 <= deb_tetra(0, 20, 27, 4))
   expect_false(tetra2 > deb_tetra(4, 26, 8, 12))
   expect_true(lsd2 > tetra1)
-  expect_true(tetra2 > deb_decimal(86.925, unit = "s",
-                                   bases = c(20, 12, 4)))
+  expect_true(tetra2 > deb_decimal(86.925, "s", bases3))
   expect_true(tetra2 > 5)
   expect_false(tetra2 < 5)
 
+  # Mixed types
+  expect_true(tetra2 > lsd1)
+  expect_true(dec_s2 > lsd1)
+  expect_true(dec2 > tetra1)
+  expect_true(tetra2 > dec_tetra)
+
   # Error with different bases
-  expect_error(lsd1 < deb_lsd(15, 6, 8, bases = c(20, 16)), bases_error)
-  expect_error(dec1 < deb_decimal(11.125, bases = c(24, 12)), bases_error)
-  expect_error(tetra1 < deb_tetra(1, 2, 3, 4, bases = c(60, 16, 8)), bases_error)
+  expect_snapshot(lsd1 < lsd_alt, error = TRUE)
+  expect_snapshot(dec1 < dec_alt, error = TRUE)
+  expect_snapshot(tetra1 < tetra_alt, error = TRUE)
+  expect_snapshot(lsd1 < tetra_alt, error = TRUE)
+  expect_snapshot(lsd1 < dec_tetra_alt, error = TRUE)
+  expect_snapshot(dec_d < dec_tetra_alt, error = TRUE)
 })
 
 test_that("Comparison functions work", {
