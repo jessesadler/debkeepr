@@ -3,11 +3,14 @@
 \name{list-lsd}
 \alias{list-lsd}
 \alias{deb_as_list}
+\alias{deb_as_list.default}
 \alias{deb_as_list.deb_lsd}
 \alias{deb_as_list.deb_tetra}
 \title{Cast \code{deb_lsd} or \code{deb_tetra} to a list of values}
 \usage{
 deb_as_list(x, ...)
+
+\method{deb_as_list}{default}(x, ...)
 
 \method{deb_as_list}{deb_lsd}(x, ...)
 

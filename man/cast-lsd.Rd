@@ -3,6 +3,7 @@
 \name{cast-lsd}
 \alias{cast-lsd}
 \alias{deb_as_lsd}
+\alias{deb_as_lsd.default}
 \alias{deb_as_lsd.deb_lsd}
 \alias{deb_as_lsd.deb_decimal}
 \alias{deb_as_lsd.deb_tetra}
@@ -12,6 +13,8 @@
 \title{Cast to \code{deb_lsd}}
 \usage{
 deb_as_lsd(x, ...)
+
+\method{deb_as_lsd}{default}(x, ...)
 
 \method{deb_as_lsd}{deb_lsd}(x, ...)
 

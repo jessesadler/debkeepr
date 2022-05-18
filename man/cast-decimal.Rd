@@ -3,6 +3,7 @@
 \name{cast-decimal}
 \alias{cast-decimal}
 \alias{deb_as_decimal}
+\alias{deb_as_decimal.default}
 \alias{deb_as_decimal.deb_decimal}
 \alias{deb_as_decimal.deb_lsd}
 \alias{deb_as_decimal.deb_tetra}
@@ -12,6 +13,8 @@
 \title{Cast to \code{deb_decimal}}
 \usage{
 deb_as_decimal(x, ...)
+
+\method{deb_as_decimal}{default}(x, ...)
 
 \method{deb_as_decimal}{deb_decimal}(x, ...)
 

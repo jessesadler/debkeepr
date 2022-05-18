@@ -325,6 +325,13 @@ deb_as_list  <- function(x, ...) {
 
 #' @rdname list-lsd
 #' @export
+deb_as_list.default <- function(x, ...) {
+  cli::cli_abort(c("{.var x } must be a <deb_lsd> or <deb_tetra> vector.",
+                   "x" = "You've supplied a {.cls {class(x)[[1]]}}."))
+}
+
+#' @rdname list-lsd
+#' @export
 deb_as_list.deb_lsd <- function(x, ...) {
   vec_cast(x, list())
 }
@@ -628,6 +635,12 @@ deb_as_lsd  <- function(x, ...) {
 
 #' @rdname cast-lsd
 #' @export
+deb_as_lsd.default  <- function(x, ...) {
+  vec_cast(x, deb_lsd())
+}
+
+#' @rdname cast-lsd
+#' @export
 deb_as_lsd.deb_lsd <- function(x, ...) x
 
 #' @rdname cast-lsd
@@ -730,6 +743,12 @@ NULL
 #' @export
 deb_as_decimal <- function(x, ...) {
   UseMethod("deb_as_decimal")
+}
+
+#' @rdname cast-decimal
+#' @export
+deb_as_decimal.default <- function(x, ...) {
+  vec_cast(x, deb_decimal())
 }
 
 #' @rdname cast-decimal
@@ -851,6 +870,12 @@ NULL
 #' @export
 deb_as_tetra  <- function(x, ...) {
   UseMethod("deb_as_tetra")
+}
+
+#' @rdname cast-tetra
+#' @export
+deb_as_tetra.default  <- function(x, ...) {
+  vec_cast(x, deb_tetra())
 }
 
 #' @rdname cast-tetra

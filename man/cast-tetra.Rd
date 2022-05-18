@@ -3,6 +3,7 @@
 \name{cast-tetra}
 \alias{cast-tetra}
 \alias{deb_as_tetra}
+\alias{deb_as_tetra.default}
 \alias{deb_as_tetra.deb_tetra}
 \alias{deb_as_tetra.deb_lsd}
 \alias{deb_as_tetra.deb_decimal}
@@ -12,6 +13,8 @@
 \title{Cast to \code{deb_tetra}}
 \usage{
 deb_as_tetra(x, ...)
+
+\method{deb_as_tetra}{default}(x, ...)
 
 \method{deb_as_tetra}{deb_tetra}(x, ...)
 
