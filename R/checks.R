@@ -15,7 +15,7 @@ bases_natural <- c("{.arg {arg}} must be natural numbers greater than zero.",
 #' This function is taken from an internal function in the vctrs package
 #' found in conditions.R. It helps provide functionality found in
 #' [`stop_incompatible_type()`] used in [`vec_ptype2()`]. It is used in
-#' concert with code from [`cnd_type_message()`] to find iteration number
+#' concert with code from `cnd_type_message()` to find iteration number
 #' for errors.
 #'
 #' Used in [`bases_equal()`] and [`mixed_bases_equal()`] to provide more

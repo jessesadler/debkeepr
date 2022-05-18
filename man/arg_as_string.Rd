@@ -13,7 +13,7 @@ Arg as string helper
 This function is taken from an internal function in the vctrs package
 found in conditions.R. It helps provide functionality found in
 \code{\link[=stop_incompatible_type]{stop_incompatible_type()}} used in \code{\link[=vec_ptype2]{vec_ptype2()}}. It is used in
-concert with code from \code{\link[=cnd_type_message]{cnd_type_message()}} to find iteration number
+concert with code from \code{cnd_type_message()} to find iteration number
 for errors.
 
 Used in \code{\link[=bases_equal]{bases_equal()}} and \code{\link[=mixed_bases_equal]{mixed_bases_equal()}} to provide more
