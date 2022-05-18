@@ -250,17 +250,6 @@ f_bases_check <- function(f, call = rlang::caller_env()) {
   }
 }
 
-#' Check that object is of type deb_lsd or deb_decimal
-#' @keywords internal
-deb_ptype_check <- function(x, call = rlang::caller_env()) {
-  if (!deb_is_lsd(x) && !deb_is_decimal(x) && !deb_is_tetra(x)) {
-    cli::cli_abort(c(
-      "`lsd` must be of a column of type <deb_lsd>, <deb_tetra>, or <deb_decimal>.",
-      "x" = "You've supplied a column of type {.cls {class(x)}}."),
-                     call = call)
-  }
-}
-
 # Bases compatible --------------------------------------------------------
 
 #' Check that bases are equal for two deb-style vectors
@@ -315,9 +304,9 @@ bases_equal <- function(x, y, x_arg = "", y_arg = "", call = NULL) {
       "i" = "{.var bases} must be compatible to combine {.cls deb_lsd},
           {.cls deb_tetra}, or {.cls deb_decimal} vectors.",
       "x" = "Cannot combine: {x_name} {.cls {class(x)[[1]]}}
-          vector with {.var bases} {x_bases_label}.",
+          vector with {.var bases} {.strong {x_bases_label}}.",
       "x" = "Cannot combine: {y_name} {.cls {class(y)[[1]]}}
-          vector with {.var bases} {y_bases_label}.",
+          vector with {.var bases} {.strong {y_bases_label}}.",
       "i" = "Use {.code deb_convert_bases()} to convert one or more
           of the vectors to compatible {.var bases}."),
     call = call)
@@ -370,9 +359,9 @@ mixed_bases_equal <- function(x, y, x_arg = "", y_arg = "", call = NULL) {
       "i" = "{.var bases} of the 's' and 'd' units must be equal to combine
           {.cls deb_lsd}, {.cls deb_tetra}, or {.cls deb_decimal} vectors.",
       "x" = "Cannot combine: {x_name} {.cls {class(x)[[1]]}}
-          vector with {.var bases} {x_bases_label}.",
+          vector with {.var bases} {.strong {x_bases_label}}.",
       "x" = "Cannot combine: {y_name} {.cls {class(y)[[1]]}}
-          vector with {.var bases} {y_bases_label}.",
+          vector with {.var bases} {.strong {y_bases_label}}.",
       "i" = "Use {.code deb_convert_bases()} to convert one or more
           of the vectors to compatible {.var bases}."),
       call = call)
@@ -432,6 +421,17 @@ tetra_list_check <- function(x, call = rlang::caller_env()) {
 }
 
 # Transaction checks ------------------------------------------------------
+
+#' Check that object is of type deb_lsd or deb_decimal
+#' @keywords internal
+deb_ptype_check <- function(x, call = rlang::caller_env()) {
+  if (!deb_is_lsd(x) && !deb_is_decimal(x) && !deb_is_tetra(x)) {
+    cli::cli_abort(c(
+      "`lsd` must be of a column of type <deb_lsd>, <deb_tetra>, or <deb_decimal>.",
+      "x" = "You've supplied a column of type {.cls {class(x)}}."),
+      call = call)
+  }
+}
 
 #' Transaction functions checks
 #'
