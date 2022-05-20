@@ -1,8 +1,17 @@
+# debkeepr 0.0.6
+
+- New `deb_tetra` class to enable functionality with tetrapartite values. `deb_tetra` vectors can do everything that `deb_lsd` vectors can do and can also interact with `deb_decimal` vectors.
+- `deb_decimal` class can now represent tetrapartite values by having three non-decimal based units: length of `bases` attribute can now be either 2 or 3.
+- Allow interaction between tripartite (`deb_lsd`) and tetrapartite (`deb_tetra`) vectors.
+- Adopt rlang 1.0.0-style error messages with bulleted lists. New dependency on `cli` package.
+- Adopt testthat third edition (3.0.0) and use of snapshots.
+- Raise minimal version of vctrs to 0.4.1 and rlang to 1.0.2.
+
 # debkeepr 0.0.5
 
 - Changes for vctrs 0.3.0.
 - Adopt dplyr 1.0.0 as minimum version. This enables dplyr methods with record-style vectors such as `deb_lsd`.
-- Rewrite coercion and casting methods for 0.3.0.
+- Rewrite coercion and casting methods for vctrs 0.3.0.
 - Change documentation style of exporting methods.
 
 # debkeepr 0.0.4

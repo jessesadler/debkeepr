@@ -1,7 +1,7 @@
 Package: debkeepr
 Type: Package
 Title: Analysis of Non-Decimal Currencies and Double-Entry Bookkeeping
-Version: 0.0.5.9000
+Version: 0.0.6.9000
 Authors@R: person("Jesse", "Sadler",
     email = "jrsadler@icloud.com",
     role = c("aut", "cre"),
