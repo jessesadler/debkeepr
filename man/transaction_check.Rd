@@ -4,16 +4,22 @@
 \alias{transaction_check}
 \title{Transaction functions checks}
 \usage{
-transaction_check(df, cn, credit, debit, edge_columns, account_id = NULL)
+transaction_check(
+  df,
+  cn,
+  credit,
+  debit,
+  edge_columns,
+  call = rlang::caller_env()
+)
 }
 \description{
 Check that:
 \itemize{
 \item \code{df} is a dataframe
-\item \code{lsd}-column is provided
+\item \code{lsd}column is provided
 \item \code{credit} and \code{debit} columns are provided
 \item \code{credit} and \code{debit} columns must be of the same type
-\item \code{account_id} in \code{deb_account()} must be in credit or debit columns
 }
 }
 \keyword{internal}

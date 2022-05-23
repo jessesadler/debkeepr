@@ -24,10 +24,10 @@ deb_spread_lsd(df, lsd = lsd, l_col = l, s_col = s, d_col = d, replace = FALSE)
 \item{l}{Pounds column: Unquoted name of a numeric variable corresponding
 to the pounds or libra unit. Default is \code{l}.}
 
-\item{s}{Shillings column: Unquoted name of numeric variable corresponding
-to the shillings or solidus unit. Default is \code{s}.}
+\item{s}{Shillings column: Unquoted name of a numeric variable
+corresponding to the shillings or solidus unit. Default is \code{s}.}
 
-\item{d}{Pence column: Unquoted name of numeric variable corresponding to
+\item{d}{Pence column: Unquoted name of a numeric variable corresponding to
 the pence or denarius unit. Default is \code{d}.}
 
 \item{bases}{Numeric vector of length 2 used to specify the bases for the
@@ -35,8 +35,8 @@ solidus or s and denarius or d units. Default is \code{c(20, 12)}, which
 conforms to the most widely used system of 1 pound = 20 shillings and
 1 shilling = 12 pence.}
 
-\item{lsd_col}{Unquoted name of the \code{deb_lsd} column create. Default
-is \code{lsd}.}
+\item{lsd_col}{Unquoted name of the \code{deb_lsd} column created by the
+function. Default is \code{lsd}.}
 
 \item{replace}{Logical (default \code{FALSE}). When \code{TRUE}, the newly created
 column(s) will replace the one(s) used to create it/them.}
@@ -44,14 +44,14 @@ column(s) will replace the one(s) used to create it/them.}
 \item{lsd}{\code{deb_lsd} column: Unquoted name of a \code{deb_lsd} column.
 Default is \code{lsd}.}
 
-\item{l_col}{An unquoted name for the pounds column created by the
-function. Default is \code{l}.}
+\item{l_col}{Unquoted name for the pounds column created by the function.
+Default is \code{l}.}
 
-\item{s_col}{An unquoted name for the shillings column created by
-the function. Default is \code{s}.}
+\item{s_col}{Unquoted name for the shillings column created by the function.
+Default is \code{s}.}
 
-\item{d_col}{An unquoted name for the pence column created by the
-function. Default is \code{d}.}
+\item{d_col}{Unquoted name for the pence column created by the function.
+Default is \code{d}.}
 }
 \description{
 \itemize{
@@ -60,13 +60,18 @@ representing pounds, shillings, and pence values.
 \item \code{deb_spread_lsd()} creates separate variables for pounds, shillings,
 and pence from a \code{deb_lsd} column.
 }
-
-If transcribing historical accounting data by hand, entering the pounds,
+}
+\details{
+When transcribing historical accounting data by hand, entering the pounds,
 shillings, and pence values (lsd) into separate columns is probably the
-easiest and least error prone method. \code{deb_gather_lsd()} creates a
-\code{deb_lsd} column from the three separate \code{l}, \code{s}, and \code{d} columns.
-\code{deb_spread_lsd()} does the opposite. It takes a \code{deb_lsd} column and
-spreads it into three separate pounds, shillings, and pence columns.
+easiest and least error prone method. The \code{deb_gather_()} and
+\code{deb_spread_()} set of functions provide helpers to go back and forth
+between this mode of data entry and the use of \code{deb_lsd} and \code{deb_tetra}
+vectors within data frames in R. \code{deb_gather_lsd()} creates a \code{deb_lsd}
+column from \code{l}, \code{s}, and \code{d} columns representing the three units of
+this type of value. \code{deb_spread_lsd()} does the opposite. It takes a
+\code{deb_lsd} column and spreads it into three separate pounds, shillings,
+and pence columns.
 
 Values for column names (\code{lsd_col}, \code{l_col}, \code{s_col}, and \code{d_col}) must
 be valid column names. They can be quoted or unquoted, but they cannot be
@@ -114,4 +119,9 @@ z <- x \%>\%
   deb_spread_lsd(replace = TRUE)
 all.equal(x, z)
 
+}
+\seealso{
+\code{\link[=deb_gather_tetra]{deb_gather_tetra()}} and \code{\link[=deb_spread_tetra]{deb_spread_tetra()}} provide the
+same functionality for the less common tetrapartite values of pounds,
+shillings, pence, and farthings.
 }

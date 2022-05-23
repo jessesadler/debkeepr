@@ -7,6 +7,6 @@
 unit_hierarchy(x, y)
 }
 \description{
-Hierarchy: d -> s -> l
+Hierarchy: f -> d -> s -> l
 }
 \keyword{internal}

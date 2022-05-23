@@ -14,8 +14,18 @@
 \alias{vec_arith.deb_decimal.numeric}
 \alias{vec_arith.numeric.deb_decimal}
 \alias{vec_arith.deb_decimal.MISSING}
+\alias{vec_arith.deb_tetra}
+\alias{vec_arith.deb_tetra.default}
+\alias{vec_arith.deb_tetra.deb_tetra}
+\alias{vec_arith.deb_tetra.numeric}
+\alias{vec_arith.numeric.deb_tetra}
+\alias{vec_arith.deb_tetra.MISSING}
 \alias{vec_arith.deb_lsd.deb_decimal}
 \alias{vec_arith.deb_decimal.deb_lsd}
+\alias{vec_arith.deb_lsd.deb_tetra}
+\alias{vec_arith.deb_tetra.deb_lsd}
+\alias{vec_arith.deb_tetra.deb_decimal}
+\alias{vec_arith.deb_decimal.deb_tetra}
 \title{Arithmetic operations for debkeepr}
 \usage{
 \method{vec_arith}{deb_lsd}(op, x, y)
@@ -42,9 +52,29 @@
 
 \method{vec_arith.deb_decimal}{MISSING}(op, x, y)
 
+\method{vec_arith}{deb_tetra}(op, x, y)
+
+\method{vec_arith.deb_tetra}{default}(op, x, y)
+
+\method{vec_arith.deb_tetra}{deb_tetra}(op, x, y)
+
+\method{vec_arith.deb_tetra}{numeric}(op, x, y)
+
+\method{vec_arith.numeric}{deb_tetra}(op, x, y)
+
+\method{vec_arith.deb_tetra}{MISSING}(op, x, y)
+
 \method{vec_arith.deb_lsd}{deb_decimal}(op, x, y)
 
 \method{vec_arith.deb_decimal}{deb_lsd}(op, x, y)
+
+\method{vec_arith.deb_lsd}{deb_tetra}(op, x, y)
+
+\method{vec_arith.deb_tetra}{deb_lsd}(op, x, y)
+
+\method{vec_arith.deb_tetra}{deb_decimal}(op, x, y)
+
+\method{vec_arith.deb_decimal}{deb_tetra}(op, x, y)
 }
 \arguments{
 \item{op}{Arithmetic operation.}

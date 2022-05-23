@@ -10,7 +10,15 @@
 \alias{ceiling.deb_lsd}
 \alias{floor.deb_lsd}
 \alias{trunc.deb_lsd}
-\title{Math group with \code{deb_lsd} vectors}
+\alias{sum.deb_tetra}
+\alias{mean.deb_tetra}
+\alias{cumsum.deb_tetra}
+\alias{round.deb_tetra}
+\alias{signif.deb_tetra}
+\alias{ceiling.deb_tetra}
+\alias{floor.deb_tetra}
+\alias{trunc.deb_tetra}
+\title{Math group with \code{deb_lsd} and \code{deb_tetra} vectors}
 \usage{
 \method{sum}{deb_lsd}(..., na.rm = FALSE)
 
@@ -27,23 +35,39 @@
 \method{floor}{deb_lsd}(x)
 
 \method{trunc}{deb_lsd}(x, ...)
+
+\method{sum}{deb_tetra}(..., na.rm = FALSE)
+
+\method{mean}{deb_tetra}(x, ..., na.rm = FALSE)
+
+\method{cumsum}{deb_tetra}(x)
+
+\method{round}{deb_tetra}(x, digits = 0)
+
+\method{signif}{deb_tetra}(x, digits = 6)
+
+\method{ceiling}{deb_tetra}(x)
+
+\method{floor}{deb_tetra}(x)
+
+\method{trunc}{deb_tetra}(x, ...)
 }
 \arguments{
-\item{...}{\code{deb_lsd} vectors in \code{sum()} and arguments passed on to
-further methods in \code{mean()}.}
+\item{...}{\code{deb_lsd} or \code{deb_tetra} vectors in \code{sum()} and arguments
+passed on to further methods in \code{mean()}.}
 
 \item{na.rm}{Logical. Should missing values (including `NaN``) be removed?}
 
-\item{x}{An vector of class \code{deb_lsd}.}
+\item{x}{An vector of class \code{deb_lsd} or \code{deb_tetra}.}
 
 \item{digits}{Integer. Indicating the number of decimal places
 (\code{round()}) or significant digits (\code{signif()}) to be used.}
 }
 \value{
-A \code{deb_lsd} vector with normalized values.
+A \code{deb_lsd} or \code{deb_tetra} vector with normalized values.
 }
 \description{
-Math and Summary group of functions with \code{deb_lsd} vectors.
+Math and Summary group of functions with \code{deb_lsd} and \code{deb_tetra} vectors.
 Implemented functions:
 \itemize{
 \item \link{Summary} group: \code{sum()}, \code{any()}, and \code{all()}.
@@ -57,34 +81,48 @@ All other functions from the groups not currently implemented,
 including \code{median()}, \code{quantile()}, and \code{summary()}.
 }
 \details{
-\code{sum()} and \code{cumsum()} return a normalized \code{deb_lsd} values.
+\code{sum()} and \code{cumsum()} return a normalized \code{deb_lsd} or \code{deb_tetra} values.
 
 Round family of functions only affect the denarius (\code{d}) unit of a
-\code{deb_lsd} value. All values are normalized.
+\code{deb_lsd} value and the farthing (\code{f}) unit of \code{deb_tetra} value.
+All values are normalized.
 
 If you need a wider implementation of Math and Summary group functions,
 use a \code{deb_decimal} vector. However, \code{median()}, \code{quantile()}, and
 \code{summary()} are also not currently implemented for \code{deb_decimal} vectors.
-To use these functions cast \code{deb_lsd} and \code{deb_decimal} vectors to numeric.
+To use these functions cast \code{deb_lsd}, \code{deb_tetra}, and \code{deb_decimal}
+vectors to numeric.
 }
 \examples{
 x <- deb_lsd(l = c(5, 8, 12),
              s = c(16, 6, 13),
              d = c(6, 11, 0))
+y <- deb_tetra(l = c(5, 8, 12),
+               s = c(16, 6, 13),
+               d = c(6, 11, 0),
+               f = c(3, 2, 3))
 
 # All values are normalized with sum and cumsum
 sum(x)
+sum(y)
 cumsum(x)
+cumsum(y)
 mean(x)
+mean(y)
 
 # Round family on deb_lsd affects the denarius unit
 x2 <- deb_lsd(5, 12, 5.8365)
+y2 <- deb_tetra(5, 12, 8, 4.125)
 round(x2)
+round(y2)
 round(x2, digits = 2)
 signif(x2, digits = 2)
 ceiling(x2)
+ceiling(y2)
 floor(x2)
+floor(y2)
 trunc(x2)
+trunc(y2)
 
 # The returned values are normalized whether
 # they are positive or negative

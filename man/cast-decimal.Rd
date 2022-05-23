@@ -3,8 +3,10 @@
 \name{cast-decimal}
 \alias{cast-decimal}
 \alias{deb_as_decimal}
+\alias{deb_as_decimal.default}
 \alias{deb_as_decimal.deb_decimal}
 \alias{deb_as_decimal.deb_lsd}
+\alias{deb_as_decimal.deb_tetra}
 \alias{deb_as_decimal.numeric}
 \alias{deb_as_decimal.logical}
 \alias{deb_as_decimal.list}
@@ -12,15 +14,19 @@
 \usage{
 deb_as_decimal(x, ...)
 
+\method{deb_as_decimal}{default}(x, ...)
+
 \method{deb_as_decimal}{deb_decimal}(x, ...)
 
 \method{deb_as_decimal}{deb_lsd}(x, unit = c("l", "s", "d"), ...)
 
-\method{deb_as_decimal}{numeric}(x, unit = c("l", "s", "d"), bases = c(20, 12), ...)
+\method{deb_as_decimal}{deb_tetra}(x, unit = c("l", "s", "d", "f"), ...)
 
-\method{deb_as_decimal}{logical}(x, unit = c("l", "s", "d"), bases = c(20, 12), ...)
+\method{deb_as_decimal}{numeric}(x, unit = c("l", "s", "d", "f"), bases = c(20, 12), ...)
 
-\method{deb_as_decimal}{list}(x, unit = c("l", "s", "d"), bases = c(20, 12), ...)
+\method{deb_as_decimal}{logical}(x, unit = c("l", "s", "d", "f"), bases = c(20, 12), ...)
+
+\method{deb_as_decimal}{list}(x, unit = c("l", "s", "d", "f"), bases = c(20, 12), ...)
 }
 \arguments{
 \item{x}{An object to coerce to \code{deb_decimal}.}
@@ -63,23 +69,31 @@ x2 <- deb_lsd(l = c(5, 3, 7),
               bases = c(60, 16))
 deb_as_decimal(x2)
 
+# Cast a deb_tetra vector to deb_decimal
+# Bases are automatically applied, creating
+# a deb_decimal vector with three bases units.
+y <- deb_tetra(l = c(5, 13, 7),
+               s = c(12, 8, 16),
+               d = c(3, 11, 0),
+               f = c(1, 3, 2))
+deb_as_lsd(y)
+
 # Cast a numeric vector to deb_decimal
-y <- c(5.825, 3.25, 22/3)
-deb_as_decimal(y)
+z <- c(5.825, 3.25, 22/3)
+deb_as_decimal(z)
 
 # Use the unit and bases arguments to specify
 # the unit and apply non-default bases
-deb_as_decimal(y, unit = "s", bases = c(60, 16))
+deb_as_decimal(z, unit = "s", bases = c(60, 16))
 
-# Cast a list to deb_lsd provides an alternate
-# to deb_lsd() \%>\% deb_decimal()
-
-list(c(5, 12, 3),
-     c(13, 8, 11),
-     c(7, 16, 0)) \%>\%
-  deb_as_decimal()
+# Casting a list to deb_decimal provides an
+# alternative to get lsd values to deb_decimal.
+lsd_list <- list(c(5, 12, 3),
+                 c(13, 8, 11),
+                 c(7, 16, 0))
+deb_as_decimal(lsd_list)
 
 }
 \seealso{
-\code{\link[=deb_as_lsd]{deb_as_lsd()}}
+\code{\link[=deb_as_lsd]{deb_as_lsd()}} and \code{\link[=deb_as_tetra]{deb_as_tetra()}}
 }

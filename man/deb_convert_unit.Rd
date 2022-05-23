@@ -4,14 +4,14 @@
 \alias{deb_convert_unit}
 \title{Convert the unit of \code{deb_decimal} vectors}
 \usage{
-deb_convert_unit(x, to = c("l", "s", "d"))
+deb_convert_unit(x, to = c("l", "s", "d", "f"))
 }
 \arguments{
 \item{x}{A vector of class \code{deb_decimal}.}
 
 \item{to}{A character vector of length one indicating the unit to be
 converted to. Choice of \code{"l"} (libra, the default), \code{"s"} (solidus),
-or \code{"d"} (denarius).}
+\code{"d"} (denarius), or \code{"f"} (farthing).}
 }
 \value{
 A \code{deb_decimal} vector with a converted \code{unit} attribute.
@@ -21,16 +21,22 @@ Convert the \code{unit} attribute of \code{deb_decimal} vectors.
 }
 \details{
 \code{deb_convert_unit()} converts the \code{unit} of a \code{deb_decimal} vector to
-either \code{"l"}, \code{"s"}, or \code{"d"}. This changes the representation of the
-vector, but the value remains equivalent.
+either \code{"l"}, \code{"s"}, \code{"d"}, or optionally \code{"f"} if the vector has
+tetrapartite bases. This changes the representation of the vector,
+but the value remains equivalent.
 }
 \examples{
 
 x <- deb_decimal(c(8.825, 15.125, 3.65))
 y <- deb_decimal(c(56.45, 106.525, 200.4), unit = "s")
+z <- deb_decimal(c(8472, 14520,  3504),
+                 unit = "f",
+                 bases = c(20, 12, 4))
 
 deb_convert_unit(x, to = "s")
 deb_convert_unit(x, to = "d")
 deb_convert_unit(y, to = "l")
 deb_convert_unit(y, to = "d")
+deb_convert_unit(z, to = "l")
+deb_convert_unit(z, to = "s")
 }

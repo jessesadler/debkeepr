@@ -8,40 +8,49 @@
 #' - `deb_spread_lsd()` creates separate variables for pounds, shillings,
 #'   and pence from a `deb_lsd` column.
 #'
-#' If transcribing historical accounting data by hand, entering the pounds,
+#' @details
+#' When transcribing historical accounting data by hand, entering the pounds,
 #' shillings, and pence values (lsd) into separate columns is probably the
-#' easiest and least error prone method. `deb_gather_lsd()` creates a
-#' `deb_lsd` column from the three separate `l`, `s`, and `d` columns.
-#' `deb_spread_lsd()` does the opposite. It takes a `deb_lsd` column and
-#' spreads it into three separate pounds, shillings, and pence columns.
+#' easiest and least error prone method. The `deb_gather_()` and
+#' `deb_spread_()` set of functions provide helpers to go back and forth
+#' between this mode of data entry and the use of `deb_lsd` and `deb_tetra`
+#' vectors within data frames in R. `deb_gather_lsd()` creates a `deb_lsd`
+#' column from `l`, `s`, and `d` columns representing the three units of
+#' this type of value. `deb_spread_lsd()` does the opposite. It takes a
+#' `deb_lsd` column and spreads it into three separate pounds, shillings,
+#' and pence columns.
 #'
 #' Values for column names (`lsd_col`, `l_col`, `s_col`, and `d_col`) must
 #' be valid column names. They can be quoted or unquoted, but they cannot be
 #' vectors or bare numbers. This follows the rules of [dplyr::rename()].
 #'
+#' @seealso [`deb_gather_tetra()`] and [`deb_spread_tetra()`] provide the
+#' same functionality for the less common tetrapartite values of pounds,
+#' shillings, pence, and farthings.
+#'
 #' @param df A data frame.
 #' @param l Pounds column: Unquoted name of a numeric variable corresponding
 #'   to the pounds or libra unit. Default is `l`.
-#' @param s Shillings column: Unquoted name of numeric variable corresponding
-#'   to the shillings or solidus unit. Default is `s`.
-#' @param d Pence column: Unquoted name of numeric variable corresponding to
+#' @param s Shillings column: Unquoted name of a numeric variable
+#'   corresponding to the shillings or solidus unit. Default is `s`.
+#' @param d Pence column: Unquoted name of a numeric variable corresponding to
 #'   the pence or denarius unit. Default is `d`.
 #' @param bases Numeric vector of length 2 used to specify the bases for the
 #'   solidus or s and denarius or d units. Default is `c(20, 12)`, which
 #'   conforms to the most widely used system of 1 pound = 20 shillings and
 #'   1 shilling = 12 pence.
-#' @param lsd_col Unquoted name of the `deb_lsd` column create. Default
-#'   is `lsd`.
+#' @param lsd_col Unquoted name of the `deb_lsd` column created by the
+#'   function. Default is `lsd`.
 #' @param replace Logical (default `FALSE`). When `TRUE`, the newly created
 #'   column(s) will replace the one(s) used to create it/them.
 #' @param lsd `deb_lsd` column: Unquoted name of a `deb_lsd` column.
 #'   Default is `lsd`.
-#' @param l_col An unquoted name for the pounds column created by the
-#'   function. Default is `l`.
-#' @param s_col An unquoted name for the shillings column created by
-#'   the function. Default is `s`.
-#' @param d_col An unquoted name for the pence column created by the
-#'   function. Default is `d`.
+#' @param l_col Unquoted name for the pounds column created by the function.
+#'   Default is `l`.
+#' @param s_col Unquoted name for the shillings column created by the function.
+#'  Default is `s`.
+#' @param d_col Unquoted name for the pence column created by the function.
+#'  Default is `d`.
 #'
 #' @examples
 #'
@@ -117,7 +126,9 @@ deb_spread_lsd <- function(df,
                            replace = FALSE) {
 
   if (!deb_is_lsd(rlang::eval_tidy(rlang::enquo(lsd), df))) {
-    rlang::abort("`lsd` must be of type <deb_lsd>.")
+    cls <- class(rlang::eval_tidy(rlang::enquo(lsd), df))[[1]]
+    cli::cli_abort(c("{.arg lsd} must be of type <deb_lsd>.",
+                     "x" = "You've supplied a column of type {.cls {cls}}."))
   }
 
   df <- dplyr::mutate(df,

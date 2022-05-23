@@ -4,10 +4,21 @@
 \alias{bases_equal}
 \title{Check that bases are equal for two deb-style vectors}
 \usage{
-bases_equal(x, y)
+bases_equal(x, y, x_arg = "", y_arg = "", call = NULL)
+}
+\arguments{
+\item{x, y}{deb-style vectors}
+
+\item{x_arg, y_arg}{Argument names for x and y. These are used in error
+messages to inform the user about the locations of incompatible types
+(see \code{\link[=stop_incompatible_type]{stop_incompatible_type()}}).}
+
+\item{call}{Supplied to \code{\link[=abort]{abort()}}. Default is \code{NULL} since revealing
+call to \code{vec_ptype2()} and \code{vec_cast()} is not helpful.}
 }
 \description{
-Used to ensure that deb_lsd and deb_decimal vectors with different bases
-cannot be combined except explicitly with \code{deb_convert_bases()}.
+Used to ensure that deb_lsd, deb_decimal, and deb_tetra vectors with
+different bases cannot be combined except explicitly with
+\code{deb_convert_bases()}.
 }
 \keyword{internal}

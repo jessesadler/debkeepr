@@ -4,11 +4,17 @@
 \alias{comparison}
 \alias{vec_proxy_equal.deb_lsd}
 \alias{vec_proxy_compare.deb_lsd}
+\alias{vec_proxy_equal.deb_tetra}
+\alias{vec_proxy_compare.deb_tetra}
 \title{Equality and comparison}
 \usage{
 \method{vec_proxy_equal}{deb_lsd}(x, ...)
 
 \method{vec_proxy_compare}{deb_lsd}(x, ...)
+
+\method{vec_proxy_equal}{deb_tetra}(x, ...)
+
+\method{vec_proxy_compare}{deb_tetra}(x, ...)
 }
 \arguments{
 \item{x}{A deb_lsd vector.}

@@ -4,7 +4,7 @@
 \alias{lsd_check}
 \title{Checks for deb_lsd functions}
 \usage{
-lsd_check(l, s, d)
+lsd_check(l, s, d, call = rlang::caller_env())
 }
 \description{
 Checks made:

@@ -4,7 +4,7 @@
 \alias{deb_ptype_check}
 \title{Check that object is of type deb_lsd or deb_decimal}
 \usage{
-deb_ptype_check(x)
+deb_ptype_check(x, call = rlang::caller_env())
 }
 \description{
 Check that object is of type deb_lsd or deb_decimal

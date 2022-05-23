@@ -67,7 +67,7 @@ deb_lsd(96, 14, 9) * 0.08 * 4 / 12
 ```
 
 ### Weights and value of sales/purchases
-`debkeepr` is meant to work with non-decimal currencies, but the ability to change the bases for the shillings and pence units makes `deb_lsd` vectors quite flexible. `deb_lsd` vectors need not represent pounds, shillings, and pence. They can also be measurements of various sorts that also adopted a tripartite unit system. An example of this is presented in the third transaction in the journal that records the weight and value of five barrels of kettles. The weights are given in terms of hundredweight, quarters, and pounds. A hundredweight was equivalent to 4 quarters, and one quarter equaled 28 pounds. The measurements also provided a tare value for the weight of the barrels, which was shown in pounds.
+`debkeepr` is meant to work with non-decimal currencies, but the ability to change the bases for the *solidus* and *denarius* units makes `debkeepr` types quite flexible. `deb_lsd` vectors need not represent pounds, shillings, and pence. They can also be measurements of various sorts that also adopted a tripartite unit system. An example of this is presented in the third transaction in the journal that records the weight and value of five barrels of kettles. The weights are given in terms of hundredweight, quarters, and pounds. A hundredweight was equivalent to four quarters, and one quarter equaled 28 pounds. The measurements also provided a tare value for the weight of the barrels, which was shown in pounds.
 
 | id | hundredweight | quarters | pounds | tare |
 |:-----:|:-----:|:-----:|:------:|:------:|
@@ -96,7 +96,7 @@ To find the total net weight of the kettles, the gross and tare weights can be f
 (kettles_net <- sum(kettles_gross) - sum(kettles_tare))
 ```
 
-Transaction 3 notes that the kettles were valued at £4 19s. per hundredweight. The two values cannot be multiplied, as multiplication between two `deb_lsd` vectors is not implemented, nor would it be possible to do so since the two vectors have different `bases`. Instead, the price can be multiplied by the decimalized weight created by casting `kettles_net` to a `numeric` vector of the correct unit — here, the libra unit.
+Transaction 3 notes that the kettles were valued at £4 19s. per hundredweight. The two values cannot be multiplied, as multiplication between two `deb_lsd` vectors is not implemented, nor would it be possible to do so since the two vectors have different `bases`. Instead, the price can be multiplied by the decimalized weight created by casting `kettles_net` to a `numeric` vector of the correct unit — here, the *libra* unit.
 
 ```{r 3. kettles value}
 # 3. Decimalize hundredweight
@@ -117,6 +117,14 @@ sugar_lbs <- deb_lsd(51, 3, 4, bases = c(4, 28)) %>%
 
 # Price
 deb_lsd(0, 0, 13) * sugar_lbs
+```
+
+As an aside, it would also be possible to represent the weight of the sugar, as well as other weights in Dafforne's journal, as tetrapartite values by including the unit of the ton of twenty hundredweight through the `deb_tetra` type. We could manually normalize the value, or use `deb_normalize()` with the new set of bases of length three. In this case, their is little gained by moving to the use of the `deb_tetra` type, but it might be useful if weights were listed in this tetrapartite form in other places of the account book or by other factors.
+
+```{r 54. sugar tetra}
+# Normalize 51 hundredweight 3 quarters 4 pounds of sugar as tetrapartite value
+deb_tetra(0, 51, 3, 4, bases = c(20, 4, 28)) %>% 
+  deb_normalize()
 ```
 
 By May, the merchant had found a willing buyer for the sugar at the price of 14d. per pound in the person of George Pinchback. However, when the sugar arrived from Lisbon, there was actually 15 chests weighing 77 hundredweight 2 quarters 20 pounds. All of the merchants involved agreed to the same prices. Transactions 102 and 103 record the purchase price of the sugar and the profits resulting from the 1d. price difference.
@@ -149,7 +157,7 @@ Going through the calculations for this purchase and sale of sugar helps to bett
 
 ## Currency exchanges
 
-The examples shown thus far all deal with monetary values in terms of pounds sterling, but many of the transactions in Dafforne's practice journal involve other currencies. Arithmetic operations can be used for exchanges between currencies that possess the same bases for the solidus and denarius units. However, Flemish pounds was the only money of account used in the journal that possessed the same bases as the pound sterling. In order to find the exchange between other monies of account it is necessary to convert between different bases for the solidus and denarius units with `deb_convert_bases()`. The following examples show a variety of different conversions between monies of account that do not share the same bases.
+The examples shown thus far all deal with monetary values in terms of pounds sterling, but many of the transactions in Dafforne's practice journal involve other currencies. Arithmetic operations can be used for exchanges between currencies that possess the same bases for the *solidus* and *denarius* units. However, Flemish pounds was the only money of account used in the journal that possessed the same bases as the pound sterling. In order to find the exchange between other monies of account it is necessary to convert between different bases for the *solidus* and *denarius* units with `deb_convert_bases()`. The following examples show a variety of different conversions between monies of account that do not share the same bases.
 
 ### Holland guilders and Flemish pounds
 Unsurprisingly much of the trade activity that Dafforne placed in his practice journal occurred in or funneled through Amsterdam and thus involved values recorded in guilders, stuivers, and penningen. Guilders possessed a different base from pounds sterling, and to complicate matters further, the exchange rate between guilders and pounds sterling often went through pounds Flemish. Pounds Flemish was tied to guilders at a rate of 6 guilders to £1 Flemish, and Dafforne listed the established exchange rate between pounds sterling and pounds Flemish as £1 sterling to 33s. 4d. Flemish. Though Dafforne provides the exchange rate to pounds Flemish, the transactions in the journal proceed from pounds Flemish to pounds sterling, so the inverse rate has to be calculated. Dividing £1 by the rate inverts the rate and has the added benefit of coercing the value to numeric, which can be used as the multiplier for the exchange. It may also be useful to know the inverse rate expressed as a `deb_lsd` value, which could be done by casting the inverse rate from `numeric` to `deb_lsd` or taking 1 over the original `deb_lsd` rate.
@@ -260,9 +268,9 @@ deb_lsd(l = c(3987, 1907),
 ```
 
 ### Portuguese real
-The final currency dealt with in Dafforne's practice journal is the Portuguese real, which came about from trade conducted by Diego del Varino in Lisbon. The Portuguese real as used in the Dafforne journal presents a money of account quite different from all others in the journal. Not only is the base of 1,000 réis to the milréis of a very different magnitude from the pound sterling of 20 shillings, but the real only has two units instead of the three units of the pounds, shillings, and pence monies of account. `debkeepr` can accommodate this type of money of account, but a placeholder value must be provided for the denarius unit, because neither of the two values passed to `bases` can be zero or missing.
+The final currency dealt with in Dafforne's practice journal is the Portuguese real, which came about from trade conducted by Diego del Varino in Lisbon. The Portuguese real as used in the Dafforne journal presents a money of account quite different from all others in the journal. Not only is the base of 1,000 réis to the milréis of a very different magnitude from the pound sterling of 20 shillings, but the real only has two units instead of the three units of the pounds, shillings, and pence monies of account. `debkeepr` can accommodate this type of money of account, but a placeholder value must be provided for the *denarius* unit, because neither of the two values passed to `bases` can be zero or missing.
 
-The other issue with the real is that the exchange rate is given as 400 réis for 5s. sterling, complicating the calculation of the exchange rate. One way to find the ratio is to multiply the réis value by four to get réis equivalent to £1 sterling and then finding the inverse. Another way is to multiply the shillings by 2.5 to find shillings per 1 milréis, converting the `unit` to libra, and then casting to `numeric`.
+The other issue with the real is that the exchange rate is given as 400 réis for 5s. sterling, complicating the calculation of the exchange rate. One way to find the ratio is to multiply the réis value by four to get réis equivalent to £1 sterling and then finding the inverse. Another way is to multiply the shillings by 2.5 to find shillings per 1 milréis, converting the `unit` to *libra*, and then casting to `numeric`.
 
 Transaction 51 shows the purchase of 1,576 pieces of figs by Diego del Varino for a company with the bookkeeper and Randoll Rice. The figs were purchased for the price of 681 milréis 960 réis with the exchange rate, as noted above, of 400 réis for 5s. sterling.
 

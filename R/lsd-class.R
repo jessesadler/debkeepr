@@ -19,7 +19,9 @@ new_lsd <- function(l = double(),
   vec_assert(s, ptype = double())
   vec_assert(d, ptype = double())
 
-  bases <- bases_assert(bases)
+  # Bases assert
+  vec_assert(bases, ptype = integer(), size = 2)
+  bases <- rlang::set_names(bases, c("s", "d"))
 
   new_rcrd(list(l = l, s = s, d = d),
            bases = bases,
@@ -35,21 +37,21 @@ new_lsd <- function(l = double(),
 #' into standardized forms of analysis provided by R.
 #'
 #' @details
-#' The `deb_lsd` class and the `debkeepr` package use the nomenclature of
-#' [l, s, and d](https://en.wikipedia.org/wiki/£sd) to represent pounds,
-#' shillings, and pence units. The abbreviations derive from the Latin terms
-#' [libra](https://en.wikipedia.org/wiki/French_livre),
-#' [solidus](https://en.wikipedia.org/wiki/Solidus_(coin)), and
-#' [denarius](https://en.wikipedia.org/wiki/Denarius). In the 8th century a
-#' solidus came to represent 12 denarii coins, and, for a time at least, 240
-#' denarii were made from one libra or pound of silver. The custom of counting
-#' coins in dozens (solidi) and scores of dozens (librae) spread throughout the
-#' Carolingian Empire and became engrained in much of Europe. However, a
-#' variety of accounting systems arose at different times that used
+#' The `deb_decimal` class and the `debkeepr` package use the nomenclature of
+#' [l, s, and d](https://en.wikipedia.org/wiki/£sd) to represent the tripartite
+#' system of pounds, shillings, and pence units. The abbreviations derive from
+#' the Latin terms [*libra*](https://en.wikipedia.org/wiki/French_livre),
+#' [*solidus*](https://en.wikipedia.org/wiki/Solidus_(coin)), and
+#' [*denarius*](https://en.wikipedia.org/wiki/Denarius). In the 8th century a
+#' *solidus* came to represent 12 *denarii* coins, and, for a time at least,
+#' 240 *denarii* were made from one *libra* or pound of silver. The custom of
+#' counting coins in dozens (*solidi*) and scores of dozens (*librae*) spread
+#' throughout the Carolingian Empire and became ingrained in much of Europe.
+#' However, a variety of accounting systems arose at different times that used
 #' [other bases](https://en.wikipedia.org/wiki/Non-decimal_currency) for the
-#' solidus and denarius units. The `bases` attribute of `deb_lsd` vectors
-#' makes it possible to specify alternative bases for the solidus and denarius
-#' units.
+#' *solidus* and *denarius* units. The `bases` attribute of `deb_decimal`
+#' vectors makes it possible to specify alternative bases for the *solidus* and
+#' *denarius* units.
 #'
 #' The length of `l`, `s`, and `d` must either be all equal, or a vector of
 #' length 1 can be recycled to the length of the other argument(s). See
@@ -61,7 +63,8 @@ new_lsd <- function(l = double(),
 #' @seealso
 #' The `deb_lsd` class works in concert with the `deb_decimal` class, which
 #' represents non-decimal currencies as decimalized values. See
-#' [`deb_decimal()`].
+#' [`deb_decimal()`]. To represent values with tetrapartite units see
+#' [`deb_tetra()`].
 #'
 #' @param l Numeric vector representing the pounds unit.
 #' @param s Numeric vector representing the shillings unit.
@@ -101,7 +104,7 @@ deb_lsd <- function(l = double(),
                     bases = c(20, 12)) {
   # checks
   lsd_check(l, s, d)
-  bases_check(bases)
+  lsd_bases_check(bases)
 
   c(l, s, d) %<-% vec_cast_common(l, s, d, .to = double())
   c(l, s, d) %<-% vec_recycle_common(l, s, d)

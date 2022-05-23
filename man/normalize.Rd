@@ -6,6 +6,7 @@
 \alias{deb_normalize.default}
 \alias{deb_normalize.deb_lsd}
 \alias{deb_normalize.numeric}
+\alias{deb_normalize.deb_tetra}
 \title{Normalization function}
 \usage{
 normalize(l, s, d, bases)
@@ -17,39 +18,53 @@ deb_normalize(x, ...)
 \method{deb_normalize}{deb_lsd}(x, ...)
 
 \method{deb_normalize}{numeric}(x, bases = c(20, 12), ...)
+
+\method{deb_normalize}{deb_tetra}(x, ...)
 }
 \arguments{
 \item{bases}{Used only if \code{x} is a numeric vector. A Numeric vector of
-length 2 used to specify the bases for the shillings or s and pence or
-d units. Default is \code{c(20, 12)}, which conforms to the most widely used
-system of 1 pound = 20 shillings and 1 shilling = 12 pence.}
+length 2 or 3 used to specify the bases for the solidus or s, denarius or
+d, and optionally the farthing or f units. Default is \code{c(20, 12)}, which
+conforms to the most widely used system of 1 pound = 20 shillings and 1
+shilling = 12 pence.}
 
-\item{x}{Either an vector of class \code{deb_lsd} or a numeric vector of
-length 3 representing the values to be normalized.}
+\item{x}{Either an vector of class \code{deb_lsd}, \code{deb_tetra}, or a numeric
+vector of length 3 or 4 representing the values to be normalized.}
 
 \item{...}{Arguments passed on to further methods.}
 }
 \value{
 Returns a vector of class \code{deb_lsd} with normalized solidus and
-denarius units.
+denarius units or a vector of class \code{deb_tetra} with normalized solidus,
+denarius, and farthing units.
 }
 \description{
 Function that actually performs the normalization of lsd value
 
-Normalize pounds, shillings, and pence values to given bases of solidus
-and denarius units.
+Normalize tripartite and tetrapartite values values to given bases.
 }
 \examples{
 
 # Normalize a deb_lsd vector
 x <- deb_lsd(12, 93, 78)
-y <- deb_lsd(12, 93, 78, bases = c(60, 16))
+x_alt <- deb_lsd(12, 93, 78, bases = c(60, 16))
 deb_normalize(x)
-deb_normalize(y)
+deb_normalize(x_alt)
+
+# Normalize a deb_tetra vector
+t <- deb_tetra(12, 83, 78, 42)
+t_alt <- deb_tetra(12, 83, 78, 42, bases = c(60, 16, 8))
+deb_normalize(t)
+deb_normalize(t_alt)
 
 # Normalize a numeric vector of length 3
-deb_normalize(c(12, 93, 78), bases = c(20, 12))
+deb_normalize(c(12, 93, 78))
 deb_normalize(c(12, 93, 78), bases = c(60, 16))
+
+# Normalize a numeric vector of length 4
+# Must provide bases of length 3
+deb_normalize(c(12, 93, 78, 42), bases = c(20, 12, 4))
+deb_normalize(c(12, 93, 78, 42), bases = c(60, 16, 8))
 
 }
 \keyword{internal}

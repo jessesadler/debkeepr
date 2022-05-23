@@ -4,14 +4,14 @@
 \alias{new_decimal}
 \title{Internal constructor to create \code{deb_decimal} type}
 \usage{
-new_decimal(x = double(), unit = c("l", "s", "d"), bases = c(20L, 12L))
+new_decimal(x = double(), unit = c("l", "s", "d", "f"), bases = c(20L, 12L))
 }
 \value{
 A vector of class \code{deb_decimal}.
 }
 \description{
-Asserts that \code{x} is a \code{double()}, that \code{unit} is "l", "s", or "d", and
-that \code{bases} is an \code{integer()} of length 2. Creates the object through
-\code{new_vctr()}.
+Asserts that \code{x} is a \code{double()}, that \code{unit} is "l", "s", "d", or "f"
+and that \code{bases} is an \code{integer()} of length 2 or 3. Creates the object
+through \code{new_vctr()}.
 }
 \keyword{internal}

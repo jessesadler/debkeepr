@@ -2,50 +2,63 @@
 % Please edit documentation in R/decimal-class.R
 \name{deb_decimal}
 \alias{deb_decimal}
-\title{A decimalized class for pounds, shillings, and pence values}
+\title{A decimalized class for tripartite and tetrapartite values}
 \usage{
-deb_decimal(x = double(), unit = c("l", "s", "d"), bases = c(20, 12))
+deb_decimal(x = double(), unit = c("l", "s", "d", "f"), bases = c(20, 12))
 }
 \arguments{
-\item{x}{A numeric vector representing the decimalized values of a
-non-decimal currency.}
+\item{x}{A numeric vector representing the decimalized values of either
+tripartite or tetrapartite values.}
 
 \item{unit}{A character vector of length one indicating the unit for the
-decimalized values, either \code{"l"} (libra, the default), \code{"s"} (solidus),
-or \code{"d"} (denarius).}
+decimalized values, either \code{"l"} (\emph{libra}, the default), \code{"s"}
+(\emph{solidus}), \code{"d"} (\emph{denarius}), or \code{"f"} (farthing). \code{"f"} is only
+valid if the \code{bases} argument is a numeric vector of length 3 (a
+tetrapartite value).}
 
-\item{bases}{Numeric vector of length 2 used to specify the bases for the
-solidus or s and denarius or d units. Default is \code{c(20, 12)}, which
-conforms to the most widely used system of 1 pound = 20 shillings and
-1 shilling = 12 pence.}
+\item{bases}{Numeric vector of length 2 or 3 used to specify the bases for
+the solidus or s, denarius or d, and optionally the farthing or f units.
+Default is \code{c(20, 12)}, which conforms to the most widely used tripartite
+system of 1 pound = 20 shillings and 1 shilling = 12 pence.}
 }
 \value{
 Returns a vector of class \code{deb_decimal}.
 }
 \description{
 Create a vector of class \code{deb_decimal} to integrate non-decimal currencies
-into standardized forms of analysis provided by R.
+and other measurements that use tripartite or tetrapartite units into
+standardized forms of analysis provided by R.
 }
 \details{
 The \code{deb_decimal} class and the \code{debkeepr} package use the nomenclature of
-\href{https://en.wikipedia.org/wiki/£sd}{l, s, and d} to represent pounds,
-shillings, and pence units. The abbreviations derive from the Latin terms
-\href{https://en.wikipedia.org/wiki/French_livre}{libra},
-\href{https://en.wikipedia.org/wiki/Solidus_(coin)}{solidus}, and
-\href{https://en.wikipedia.org/wiki/Denarius}{denarius}. In the 8th century a
-solidus came to represent 12 denarii coins, and, for a time at least, 240
-denarii were made from one libra or pound of silver. The custom of counting
-coins in dozens (solidi) and scores of dozens (librae) spread throughout the
-Carolingian Empire and became engrained in much of Europe. However, a
-variety of accounting systems arose at different times that used
+\href{https://en.wikipedia.org/wiki/£sd}{l, s, and d} to represent the tripartite
+system of pounds, shillings, and pence units. The abbreviations derive from
+the Latin terms \href{https://en.wikipedia.org/wiki/French_livre}{\emph{libra}},
+\href{https://en.wikipedia.org/wiki/Solidus_(coin)}{\emph{solidus}}, and
+\href{https://en.wikipedia.org/wiki/Denarius}{\emph{denarius}}. In the 8th century a
+\emph{solidus} came to represent 12 \emph{denarii} coins, and, for a time at least,
+240 \emph{denarii} were made from one \emph{libra} or pound of silver. The custom of
+counting coins in dozens (\emph{solidi}) and scores of dozens (\emph{librae}) spread
+throughout the Carolingian Empire and became ingrained in much of Europe.
+However, a variety of accounting systems arose at different times that used
 \href{https://en.wikipedia.org/wiki/Non-decimal_currency}{other bases} for the
-solidus and denarius units. The \code{bases} attribute of \code{deb_decimal} vectors
-makes it possible to specify alternative bases for the solidus and denarius
-units, while the \code{unit} attribute identifies the decimalized unit: either
-libra, solidus, or denarius.
+\emph{solidus} and \emph{denarius} units and even additional units. The \code{deb_decimal}
+class decimalizes either tripartite or tetrapartite values. The \code{bases}
+attribute makes it possible to specify the bases for the \emph{solidus},
+\emph{denarius}, and optionally farthing units. The \code{unit} attribute identifies
+the decimalized unit: either \emph{libra}, \emph{solidus}, \emph{denarius}, or farthing.
+
+\code{deb_decimal} vectors can either be tripartite, like \code{deb_lsd}, or
+tetrapartite, like \code{deb_tetra}. These two kinds of \code{deb_decimal} vectors
+are distinguished by the length of \code{bases} attribute (2 for tripartite and
+3 for tetrapartite) and the addition of the farthing unit for tetrapartite.
+If the \emph{solidus} and \emph{denarius} bases are equal, tripartite and tetrapartite
+\code{deb_decimal} vectors can be combined. The result is a \code{deb_decimal} vector
+with tripartite bases.
 }
 \examples{
 
+# deb_decimal with tripartite units
 deb_decimal(c(5.25, 3.825, 8.5))
 
 # Set the unit of the deb_decimal vector
@@ -57,9 +70,18 @@ deb_decimal(c(5.25, 3.825, 8.5), bases = c(60, 16))
 
 # Create a prototype or vector of length 0
 deb_decimal()
+
+# To create a tetrapartite value, provide numeric vector
+# of length 3 to bases argument
+deb_decimal(c(5.11875, 3.234375, 8.2875),
+            bases = c(20, 12, 4))
+deb_decimal(c(4914, 3105, 7956),
+            unit = "f",
+            bases = c(20, 12, 4))
 }
 \seealso{
-The \code{deb_decimal} class works in concert with the \code{deb_lsd} class, which
-maintains the tripartite unit structure of most non-decimal currencies.
-See \code{\link[=deb_lsd]{deb_lsd()}}.
+The \code{deb_decimal} class works in concert with the \code{deb_lsd} and \code{deb_tetra}
+classes. These classes maintain the tripartite (\code{deb_lsd}) and tetrapartite
+(\code{deb_tetra}) unit structure of non-decimal currencies and values.
+See \code{\link[=deb_lsd]{deb_lsd()}} and \code{\link[=deb_tetra]{deb_tetra()}}.
 }

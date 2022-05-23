@@ -3,8 +3,10 @@
 \name{cast-lsd}
 \alias{cast-lsd}
 \alias{deb_as_lsd}
+\alias{deb_as_lsd.default}
 \alias{deb_as_lsd.deb_lsd}
 \alias{deb_as_lsd.deb_decimal}
+\alias{deb_as_lsd.deb_tetra}
 \alias{deb_as_lsd.numeric}
 \alias{deb_as_lsd.logical}
 \alias{deb_as_lsd.list}
@@ -12,9 +14,13 @@
 \usage{
 deb_as_lsd(x, ...)
 
+\method{deb_as_lsd}{default}(x, ...)
+
 \method{deb_as_lsd}{deb_lsd}(x, ...)
 
 \method{deb_as_lsd}{deb_decimal}(x, ...)
+
+\method{deb_as_lsd}{deb_tetra}(x, ...)
 
 \method{deb_as_lsd}{numeric}(x, bases = c(20, 12), ...)
 
@@ -56,19 +62,28 @@ deb_as_lsd(d1)
 d2 <- deb_decimal(x, bases = c(60, 16))
 deb_as_lsd(d2)
 
+# Cast a deb_tetra vector to deb_lsd
+# This removes the 'f' or farthings unit.
+y <- deb_tetra(l = c(5, 13, 7),
+               s = c(12, 8, 16),
+               d = c(3, 11, 0),
+               f = c(1, 3, 2))
+deb_as_lsd(y)
+
 # Cast a numeric vector to deb_lsd
 deb_as_lsd(x)
 
 # Use the bases argument to apply non-default bases
 deb_as_lsd(x, bases = c(60, 16))
 
-# Cast a list to deb_lsd provides an alternate to deb_lsd()
+# Casting a list to deb_lsd provides an alternate to deb_lsd()
 # This can be helpful for legibility. Compare:
 
-list(c(5, 12, 3),
-     c(13, 8, 11),
-     c(7, 16, 0)) \%>\%
-  deb_as_lsd()
+deb_as_lsd(
+  list(c(5, 12, 3),
+       c(13, 8, 11),
+       c(7, 16, 0))
+  )
 
 deb_lsd(l = c(5, 13, 7),
         s = c(12, 8, 16),
@@ -76,5 +91,5 @@ deb_lsd(l = c(5, 13, 7),
 
 }
 \seealso{
-\code{\link[=deb_as_decimal]{deb_as_decimal()}}
+\code{\link[=deb_as_decimal]{deb_as_decimal()}} and \code{\link[=deb_as_tetra]{deb_as_tetra()}}
 }

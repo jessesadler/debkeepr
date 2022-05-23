@@ -40,3 +40,9 @@ NULL
 #' @importFrom rlang :=
 #' @importFrom rlang .data
 NULL
+
+#' Methods
+#' @name methods
+#' @keywords internal
+#' @importFrom methods setOldClass
+NULL

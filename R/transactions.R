@@ -6,8 +6,9 @@
 #' Analysis of double-entry bookkeeping
 #'
 #' @description
-#' Family of seven related functions to analyze transactions data frames that
-#' have credit, debit, and lsd variables, mimicking an account book.
+#' Family of seven related functions to analyze transactions data frames
+#' that have credit, debit, and tetrapartite (lsd) or tetrapartite (lsdf)
+#' variables, mimicking an account book.
 #'
 #' - `deb_account()` credit, debit, and current value of a single account.
 #' - `deb_account_summary()` credit, debit, and current value of all accounts.
@@ -24,10 +25,10 @@
 #' should have a similar arrangement to `dafforne_transactions`. Each row is
 #' a transaction in the book. `credit` and `debit` variables contain the
 #' account ids associated with discharging account (credit) and the receiving
-#' account (debit). The `lsd` variable represents the value of each
-#' transaction. Like `dafforne_transactions`, transactions data frames can
-#' have additional variables with attributes for each transaction such as id
-#' or date.
+#' account (debit). The `lsd` variable represents the tripartite or
+#' tetrapartitevalue of each transaction. Like `dafforne_transactions`,
+#' transactions data frames can have additional variables with attributes for
+#' each transaction such as id or date among others.
 #'
 #' @param df A data frame with at least credit, debit, and lsd variables.
 #' @param account_id The id of the account to be used to calculate the
@@ -38,13 +39,13 @@
 #' @param debit Debit column: Unquoted name of the debit variable,
 #'   representing the accounts that receive the transactional values.
 #'   Default is `debit`.
-#' @param lsd Value column: Unquoted name of a variable of class `deb_lsd`
-#'   or `deb_decimal`. Default is `lsd`.
+#' @param lsd Value column: Unquoted name of a variable of class `deb_lsd`,
+#'   `deb_decimal`, or `deb_tetra`. Default is `lsd`.
 #' @param na.rm Logical. Should missing values (including `NaN`) be removed?
 #'
 #' @return
 #' All return a tibble with variables for accounts and values in the same
-#' class as `lsd`:
+#' class and `bases` as `lsd`:
 #'
 #' - `deb_account()` a tibble with three rows showing the credit, debit, and
 #'   current value of the given account.
@@ -119,8 +120,26 @@ deb_account <- function(df, account_id,
   transaction_check(df, cn = cn,
                     credit = credit_quo, debit = debit_quo,
                     edge_columns = c(rlang::as_name(credit_quo),
-                                     rlang::as_name(debit_quo)),
-                    account_id = account_id)
+                                     rlang::as_name(debit_quo)))
+
+  # Checks for account_id
+  rlang::check_required(account_id)
+
+  if (is.null(account_id)) {
+    cli::cli_abort(c(
+      "{.var account_id} cannot be {.code NULL}.",
+      "x" = "{.var account_id} must be present in `credit` and/or `debit` columns."))
+  }
+  credit_vec <- rlang::eval_tidy(credit_quo, df)
+  debit_vec <- rlang::eval_tidy(debit_quo, df)
+
+  if (rlang::is_false(account_id %in% c(credit_vec, debit_vec))) {
+    cli::cli_abort(c(
+      "{.var account_id} must be present in `credit` and/or `debit` columns.",
+      "x" = "{.val {account_id}} is not present in either the
+            `credit` or `debit` columns."))
+  }
+  # Need to get access to bare credit and debit vectors
 
   # Access data for bases and class
   lsd_vctr <- rlang::eval_tidy(lsd_quo, df)
@@ -145,8 +164,8 @@ deb_account <- function(df, account_id,
     }
 
     current <- cred - deb
-    # deb_decimal
-  } else {
+  # deb_decimal
+  } else if (deb_is_decimal(lsd_vctr)) {
     pos <- dplyr::filter(df, {{ credit }} == account_id)
     if (vec_size(pos) < 1) {
       cred <- deb_decimal(0, bases = bases)
@@ -168,6 +187,23 @@ deb_account <- function(df, account_id,
         current <- round(current)
         }
     }
+  # deb_tetra
+  } else if (deb_is_tetra(lsd_vctr)) {
+    pos <- dplyr::filter(df, {{ credit }} == account_id)
+    if (vec_size(pos) < 1) {
+      cred <- deb_tetra(0, 0, 0, 0, bases = bases)
+    } else {
+      cred <- sum(pos[[cn]], na.rm = na.rm)
+    }
+
+    neg <- dplyr::filter(df, {{ debit }} == account_id)
+    if (vec_size(neg) < 1) {
+      deb <- deb_tetra(0, 0, 0, 0, bases = bases)
+    } else {
+      deb <- sum(neg[[cn]], na.rm = na.rm)
+    }
+
+    current <- cred - deb
   }
 
   tibble::tibble(relation = c("credit", "debit", "current"),
@@ -195,8 +231,8 @@ deb_account_summary <- function(df,
   lsd_vctr <- rlang::eval_tidy(lsd_quo, df)
   deb_ptype_check(lsd_vctr)
 
-  # Turn deb_lsd to deb_decimal for speed
-  if (deb_is_lsd(lsd_vctr)) {
+  # Turn deb_lsd or deb_tetra to deb_decimal for speed
+  if (deb_is_lsd(lsd_vctr) || deb_is_tetra(lsd_vctr)) {
     df <- dplyr::mutate(df, !! cn := deb_as_decimal({{ lsd }}))
   }
 
@@ -221,8 +257,8 @@ deb_account_summary <- function(df,
   # If no NAs, then any NAs from join should be 0s
   } else if (!anyNA(c(pos[[2]], neg[[2]]))) {
     ret <- dplyr::full_join(pos, neg, by = "account_id") %>%
-      dplyr::mutate(credit = dplyr::coalesce(credit, 0), # replace NA with 0
-                    debit = dplyr::coalesce(debit, 0), # replace NA with 0
+      dplyr::mutate(credit  = dplyr::coalesce(credit, 0), # replace NA with 0
+                    debit   = dplyr::coalesce(debit, 0), # replace NA with 0
                     current = credit - debit,
                     # floating point problems
                     current = dplyr::if_else(should_be_int(current),
@@ -253,12 +289,17 @@ deb_account_summary <- function(df,
       dplyr::arrange(.data$account_id)
   }
 
-  # Return deb_decimal back to deb_lsd
+  # Return deb_decimal back to deb_lsd or deb_tetra
   if (deb_is_lsd(lsd_vctr)) {
     ret <- ret %>%
-      dplyr::mutate(credit = deb_as_lsd(credit),
-                    debit = deb_as_lsd(debit),
+      dplyr::mutate(credit  = deb_as_lsd(credit),
+                    debit   = deb_as_lsd(debit),
                     current = deb_as_lsd(current))
+  } else if (deb_is_tetra(lsd_vctr)) {
+    ret <- ret %>%
+      dplyr::mutate(credit  = deb_as_tetra(credit),
+                    debit   = deb_as_tetra(debit),
+                    current = deb_as_tetra(current))
   }
 
   ret
@@ -286,7 +327,7 @@ deb_credit <- function(df,
   deb_ptype_check(lsd_vctr)
 
   # Turn deb_lsd to deb_decimal for speed
-  if (deb_is_lsd(lsd_vctr)) {
+  if (deb_is_lsd(lsd_vctr) || deb_is_tetra(lsd_vctr)) {
     df <- dplyr::mutate(df, !! cn := deb_as_decimal({{ lsd }}))
   }
 
@@ -316,6 +357,8 @@ deb_credit <- function(df,
 
   if (deb_is_lsd(lsd_vctr)) {
     ret[[cn]] <- deb_as_lsd(ret[[cn]])
+  } else if (deb_is_tetra(lsd_vctr)) {
+    ret[[cn]] <- deb_as_tetra(ret[[cn]])
   }
 
   ret
@@ -343,7 +386,7 @@ deb_debit <- function(df,
   deb_ptype_check(lsd_vctr)
 
   # Turn deb_lsd to deb_decimal for speed
-  if (deb_is_lsd(lsd_vctr)) {
+  if (deb_is_lsd(lsd_vctr) || deb_is_tetra(lsd_vctr)) {
     df <- dplyr::mutate(df, !! cn := deb_as_decimal({{ lsd }}))
   }
 
@@ -373,6 +416,8 @@ deb_debit <- function(df,
 
   if (deb_is_lsd(lsd_vctr)) {
     ret[[cn]] <- deb_as_lsd(ret[[cn]])
+  } else if (deb_is_tetra(lsd_vctr)) {
+    ret[[cn]] <- deb_as_tetra(ret[[cn]])
   }
 
   ret
@@ -446,9 +491,13 @@ deb_balance <- function(df,
     if (deb_is_lsd(lsd_vctr)) {
       return(tibble::tibble(relation = c("credit", "debit"),
                !! cn := deb_lsd(c(0, 0), c(0, 0), c(0, 0), bases = bases)))
-    } else {
+    } else if (deb_is_decimal(lsd_vctr)) {
       return(tibble::tibble(relation = c("credit", "debit"),
                !! cn := deb_decimal(c(0, 0), bases = bases)))
+    } else if (deb_is_tetra(lsd_vctr)) {
+      return(tibble::tibble(relation = c("credit", "debit"),
+               !! cn := deb_tetra(c(0, 0), c(0, 0), c(0, 0), c(0, 0),
+                                  bases = bases)))
     }
   }
 
