@@ -2,63 +2,14 @@
 % Please edit documentation in R/mathematics.R
 \name{mathematics}
 \alias{mathematics}
-\alias{sum.deb_lsd}
-\alias{mean.deb_lsd}
-\alias{cumsum.deb_lsd}
-\alias{round.deb_lsd}
-\alias{signif.deb_lsd}
-\alias{ceiling.deb_lsd}
-\alias{floor.deb_lsd}
-\alias{trunc.deb_lsd}
-\alias{sum.deb_tetra}
-\alias{mean.deb_tetra}
-\alias{cumsum.deb_tetra}
-\alias{round.deb_tetra}
-\alias{signif.deb_tetra}
-\alias{ceiling.deb_tetra}
-\alias{floor.deb_tetra}
-\alias{trunc.deb_tetra}
 \title{Math group with \code{deb_lsd} and \code{deb_tetra} vectors}
-\usage{
-\method{sum}{deb_lsd}(..., na.rm = FALSE)
-
-\method{mean}{deb_lsd}(x, ..., na.rm = FALSE)
-
-\method{cumsum}{deb_lsd}(x)
-
-\method{round}{deb_lsd}(x, digits = 0)
-
-\method{signif}{deb_lsd}(x, digits = 6)
-
-\method{ceiling}{deb_lsd}(x)
-
-\method{floor}{deb_lsd}(x)
-
-\method{trunc}{deb_lsd}(x, ...)
-
-\method{sum}{deb_tetra}(..., na.rm = FALSE)
-
-\method{mean}{deb_tetra}(x, ..., na.rm = FALSE)
-
-\method{cumsum}{deb_tetra}(x)
-
-\method{round}{deb_tetra}(x, digits = 0)
-
-\method{signif}{deb_tetra}(x, digits = 6)
-
-\method{ceiling}{deb_tetra}(x)
-
-\method{floor}{deb_tetra}(x)
-
-\method{trunc}{deb_tetra}(x, ...)
-}
 \arguments{
+\item{x}{An vector of class \code{deb_lsd} or \code{deb_tetra}.}
+
 \item{...}{\code{deb_lsd} or \code{deb_tetra} vectors in \code{sum()} and arguments
 passed on to further methods in \code{mean()}.}
 
 \item{na.rm}{Logical. Should missing values (including `NaN``) be removed?}
-
-\item{x}{An vector of class \code{deb_lsd} or \code{deb_tetra}.}
 
 \item{digits}{Integer. Indicating the number of decimal places
 (\code{round()}) or significant digits (\code{signif()}) to be used.}

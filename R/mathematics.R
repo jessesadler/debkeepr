@@ -1,4 +1,4 @@
-## Mathematical functions with deb_lsd ##
+## Mathematical functions with deb_lsd and deb_tetra##
 
 #' Math group with `deb_lsd` and `deb_tetra` vectors
 #'
@@ -85,7 +85,6 @@ NULL
 
 # deb_lsd mathematic functions --------------------------------------------
 
-#' @rdname mathematics
 #' @export
 sum.deb_lsd <- function(..., na.rm = FALSE) {
   x <- vec_c(...)
@@ -102,7 +101,6 @@ sum.deb_lsd <- function(..., na.rm = FALSE) {
   deb_normalize(ret)
 }
 
-#' @rdname mathematics
 #' @export
 mean.deb_lsd <- function(x, ..., na.rm = FALSE) {
   if (na.rm == TRUE) {
@@ -120,7 +118,6 @@ abs.deb_lsd <- function(x) {
 
 # Cumulative functions
 
-#' @rdname mathematics
 #' @export
 cumsum.deb_lsd <- function(x) {
   ret <- new_lsd(cumsum(field(x, "l")),
@@ -162,7 +159,6 @@ is.nan.deb_lsd <- function(x) {
 
 # lsd rounding ------------------------------------------------------------
 
-#' @rdname mathematics
 #' @export
 round.deb_lsd <- function(x, digits = 0) {
   x <- decimal_check(x)
@@ -170,14 +166,12 @@ round.deb_lsd <- function(x, digits = 0) {
   deb_normalize(x)
 }
 
-#' @rdname mathematics
 #' @export
 signif.deb_lsd <- function(x, digits = 6) {
   field(x, "d") <- signif(field(x, "d"), digits = digits)
   deb_normalize(x)
 }
 
-#' @rdname mathematics
 #' @export
 ceiling.deb_lsd <- function(x) {
   x <- decimal_check(x)
@@ -185,7 +179,6 @@ ceiling.deb_lsd <- function(x) {
   deb_normalize(x)
 }
 
-#' @rdname mathematics
 #' @export
 floor.deb_lsd <- function(x) {
   x <- decimal_check(x)
@@ -193,7 +186,6 @@ floor.deb_lsd <- function(x) {
   deb_normalize(x)
 }
 
-#' @rdname mathematics
 #' @export
 trunc.deb_lsd <- function(x, ...) {
   x <- decimal_check(x)
@@ -218,7 +210,6 @@ vec_math.deb_lsd <- function(.fn, .x, ...) {
 
 # deb_tetra mathematic functions ------------------------------------------
 
-#' @rdname mathematics
 #' @export
 sum.deb_tetra <- function(..., na.rm = FALSE) {
   x <- vec_c(...)
@@ -244,7 +235,6 @@ sum.deb_tetra <- function(..., na.rm = FALSE) {
   deb_normalize(ret)
 }
 
-#' @rdname mathematics
 #' @export
 mean.deb_tetra <- function(x, ..., na.rm = FALSE) {
   if (na.rm == TRUE) {
@@ -262,7 +252,6 @@ abs.deb_tetra <- function(x) {
 
 # Cumulative functions
 
-#' @rdname mathematics
 #' @export
 cumsum.deb_tetra <- function(x) {
   ret <- new_tetra(cumsum(field(x, "l")),
@@ -305,7 +294,6 @@ is.nan.deb_tetra <- function(x) {
 
 # tetra rounding ----------------------------------------------------------
 
-#' @rdname mathematics
 #' @export
 round.deb_tetra <- function(x, digits = 0) {
   x <- decimal_check(x)
@@ -313,14 +301,12 @@ round.deb_tetra <- function(x, digits = 0) {
   deb_normalize(x)
 }
 
-#' @rdname mathematics
 #' @export
 signif.deb_tetra <- function(x, digits = 6) {
   field(x, "f") <- signif(field(x, "f"), digits = digits)
   deb_normalize(x)
 }
 
-#' @rdname mathematics
 #' @export
 ceiling.deb_tetra <- function(x) {
   x <- decimal_check(x)
@@ -328,7 +314,6 @@ ceiling.deb_tetra <- function(x) {
   deb_normalize(x)
 }
 
-#' @rdname mathematics
 #' @export
 floor.deb_tetra <- function(x) {
   x <- decimal_check(x)
@@ -336,7 +321,6 @@ floor.deb_tetra <- function(x) {
   deb_normalize(x)
 }
 
-#' @rdname mathematics
 #' @export
 trunc.deb_tetra <- function(x, ...) {
   x <- decimal_check(x)
