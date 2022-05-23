@@ -34,22 +34,25 @@
     <loc>https://jessesadler.github.io/debkeepr/reference/all_present.html</loc>
   </url>
   <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/arg_as_string.html</loc>
+  </url>
+  <url>
     <loc>https://jessesadler.github.io/debkeepr/reference/arithmetic.html</loc>
   </url>
   <url>
-    <loc>https://jessesadler.github.io/debkeepr/reference/bases_assert.html</loc>
-  </url>
-  <url>
-    <loc>https://jessesadler.github.io/debkeepr/reference/bases_check.html</loc>
-  </url>
-  <url>
     <loc>https://jessesadler.github.io/debkeepr/reference/bases_equal.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/bases_hierarchy.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr/reference/cast-decimal.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr/reference/cast-lsd.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/cast-tetra.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr/reference/comparison.html</loc>
@@ -62,9 +65,6 @@
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr/reference/dafforne_transactions.html</loc>
-  </url>
-  <url>
-    <loc>https://jessesadler.github.io/debkeepr/reference/deb_as_list.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr/reference/deb_bases.html</loc>
@@ -82,10 +82,16 @@
     <loc>https://jessesadler.github.io/debkeepr/reference/deb_is_lsd.html</loc>
   </url>
   <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/deb_is_tetra.html</loc>
+  </url>
+  <url>
     <loc>https://jessesadler.github.io/debkeepr/reference/deb_lsd.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr/reference/deb_ptype_check.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/deb_tetra.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr/reference/deb_unit.html</loc>
@@ -97,13 +103,25 @@
     <loc>https://jessesadler.github.io/debkeepr/reference/dec_arithmetic.html</loc>
   </url>
   <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/dec_bases_check.html</loc>
+  </url>
+  <url>
     <loc>https://jessesadler.github.io/debkeepr/reference/decimal_check.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr/reference/decimal_to_lsd.html</loc>
   </url>
   <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/decimal_to_tetra.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/f_bases_check.html</loc>
+  </url>
+  <url>
     <loc>https://jessesadler.github.io/debkeepr/reference/format.deb_lsd.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/format.deb_tetra.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr/reference/index.html</loc>
@@ -115,10 +133,13 @@
     <loc>https://jessesadler.github.io/debkeepr/reference/is_negative.html</loc>
   </url>
   <url>
-    <loc>https://jessesadler.github.io/debkeepr/reference/list_check.html</loc>
+    <loc>https://jessesadler.github.io/debkeepr/reference/list-lsd.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr/reference/lsd-column.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/lsd_bases_check.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr/reference/lsd_check.html</loc>
@@ -128,6 +149,9 @@
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr/reference/lsd_divisor.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/lsd_list_check.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr/reference/lsd_minus.html</loc>
@@ -151,7 +175,16 @@
     <loc>https://jessesadler.github.io/debkeepr/reference/lsd_to_decimal.html</loc>
   </url>
   <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/lsd_to_tetra.html</loc>
+  </url>
+  <url>
     <loc>https://jessesadler.github.io/debkeepr/reference/mathematics.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/methods.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/mixed_bases_equal.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr/reference/multi-assign.html</loc>
@@ -163,7 +196,16 @@
     <loc>https://jessesadler.github.io/debkeepr/reference/new_lsd.html</loc>
   </url>
   <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/new_tetra.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/normalization.html</loc>
+  </url>
+  <url>
     <loc>https://jessesadler.github.io/debkeepr/reference/normalize.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/numeric_check.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr/reference/obj_print_footer.deb_decimal.html</loc>
@@ -172,10 +214,58 @@
     <loc>https://jessesadler.github.io/debkeepr/reference/obj_print_footer.deb_lsd.html</loc>
   </url>
   <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/obj_print_footer.deb_tetra.html</loc>
+  </url>
+  <url>
     <loc>https://jessesadler.github.io/debkeepr/reference/pipe.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr/reference/should_be_int.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/tetra-column.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/tetra_bases_check.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/tetra_check.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/tetra_dividend.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/tetra_divisor.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/tetra_list_check.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/tetra_minus.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/tetra_multiply.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/tetra_negate.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/tetra_normalize.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/tetra_normalize_neg.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/tetra_normalize_pos.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/tetra_plus.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/tetra_to_decimal.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/tetra_to_lsd.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr/reference/text.html</loc>
@@ -199,9 +289,15 @@
     <loc>https://jessesadler.github.io/debkeepr/reference/vec_math.deb_lsd.html</loc>
   </url>
   <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/vec_math.deb_tetra.html</loc>
+  </url>
+  <url>
     <loc>https://jessesadler.github.io/debkeepr/reference/vec_ptype_abbr.deb_decimal.html</loc>
   </url>
   <url>
     <loc>https://jessesadler.github.io/debkeepr/reference/vec_ptype_abbr.deb_lsd.html</loc>
+  </url>
+  <url>
+    <loc>https://jessesadler.github.io/debkeepr/reference/vec_ptype_abbr.deb_tetra.html</loc>
   </url>
 </urlset>

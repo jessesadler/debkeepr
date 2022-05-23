@@ -16,7 +16,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">debkeepr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.5.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.6.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,7 +73,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">deb_convert_unit</span><span class="op">(</span><span class="va">x</span>, to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"l"</span>, <span class="st">"s"</span>, <span class="st">"d"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">deb_convert_unit</span><span class="op">(</span><span class="va">x</span>, to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"l"</span>, <span class="st">"s"</span>, <span class="st">"d"</span>, <span class="st">"f"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -83,7 +83,7 @@
 <dt>to</dt>
 <dd><p>A character vector of length one indicating the unit to be
 converted to. Choice of <code>"l"</code> (libra, the default), <code>"s"</code> (solidus),
-or <code>"d"</code> (denarius).</p></dd>
+<code>"d"</code> (denarius), or <code>"f"</code> (farthing).</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -92,8 +92,9 @@ or <code>"d"</code> (denarius).</p></dd>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p><code>deb_convert_unit()</code> converts the <code>unit</code> of a <code>deb_decimal</code> vector to
-either <code>"l"</code>, <code>"s"</code>, or <code>"d"</code>. This changes the representation of the
-vector, but the value remains equivalent.</p>
+either <code>"l"</code>, <code>"s"</code>, <code>"d"</code>, or optionally <code>"f"</code> if the vector has
+tetrapartite bases. This changes the representation of the vector,
+but the value remains equivalent.</p>
     </div>
 
     <div class="section level2">
@@ -101,6 +102,9 @@ vector, but the value remains equivalent.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
 <span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="deb_decimal.html">deb_decimal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">8.825</span>, <span class="fl">15.125</span>, <span class="fl">3.65</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="deb_decimal.html">deb_decimal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">56.45</span>, <span class="fl">106.525</span>, <span class="fl">200.4</span><span class="op">)</span>, unit <span class="op">=</span> <span class="st">"s"</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="deb_decimal.html">deb_decimal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">8472</span>, <span class="fl">14520</span>,  <span class="fl">3504</span><span class="op">)</span>,</span>
+<span class="r-in">                 unit <span class="op">=</span> <span class="st">"f"</span>,</span>
+<span class="r-in">                 bases <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">12</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu">deb_convert_unit</span><span class="op">(</span><span class="va">x</span>, to <span class="op">=</span> <span class="st">"s"</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;deb_decimal[3]&gt;</span>
@@ -122,6 +126,16 @@ vector, but the value remains equivalent.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]  677.4 1278.3 2404.8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> # Unit: denarius</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> # Bases: 20s 12d</span>
+<span class="r-in"><span class="fu">deb_convert_unit</span><span class="op">(</span><span class="va">z</span>, to <span class="op">=</span> <span class="st">"l"</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;deb_decimal[3]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  8.825 15.125  3.650</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Unit: libra</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Bases: 20s 12d 4f</span>
+<span class="r-in"><span class="fu">deb_convert_unit</span><span class="op">(</span><span class="va">z</span>, to <span class="op">=</span> <span class="st">"s"</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;deb_decimal[3]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 176.5 302.5  73.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Unit: solidus</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Bases: 20s 12d 4f</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -133,7 +147,7 @@ vector, but the value remains equivalent.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
     </footer></div>

@@ -32,7 +32,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">debkeepr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.5.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.6.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -155,7 +155,7 @@
 <div class="section level3">
 <h3 id="weights-and-value-of-salespurchases">Weights and value of sales/purchases<a class="anchor" aria-label="anchor" href="#weights-and-value-of-salespurchases"></a>
 </h3>
-<p><code>debkeepr</code> is meant to work with non-decimal currencies, but the ability to change the bases for the shillings and pence units makes <code>deb_lsd</code> vectors quite flexible. <code>deb_lsd</code> vectors need not represent pounds, shillings, and pence. They can also be measurements of various sorts that also adopted a tripartite unit system. An example of this is presented in the third transaction in the journal that records the weight and value of five barrels of kettles. The weights are given in terms of hundredweight, quarters, and pounds. A hundredweight was equivalent to 4 quarters, and one quarter equaled 28 pounds. The measurements also provided a tare value for the weight of the barrels, which was shown in pounds.</p>
+<p><code>debkeepr</code> is meant to work with non-decimal currencies, but the ability to change the bases for the <em>solidus</em> and <em>denarius</em> units makes <code>debkeepr</code> types quite flexible. <code>deb_lsd</code> vectors need not represent pounds, shillings, and pence. They can also be measurements of various sorts that also adopted a tripartite unit system. An example of this is presented in the third transaction in the journal that records the weight and value of five barrels of kettles. The weights are given in terms of hundredweight, quarters, and pounds. A hundredweight was equivalent to four quarters, and one quarter equaled 28 pounds. The measurements also provided a tare value for the weight of the barrels, which was shown in pounds.</p>
 <table class="table">
 <thead><tr class="header">
 <th align="center">id</th>
@@ -227,7 +227,7 @@
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 11:0s:13d</span>
 <span class="co">#&gt; # Bases: 4s 28d</span></code></pre></div>
-<p>Transaction 3 notes that the kettles were valued at £4 19s. per hundredweight. The two values cannot be multiplied, as multiplication between two <code>deb_lsd</code> vectors is not implemented, nor would it be possible to do so since the two vectors have different <code>bases</code>. Instead, the price can be multiplied by the decimalized weight created by casting <code>kettles_net</code> to a <code>numeric</code> vector of the correct unit — here, the libra unit.</p>
+<p>Transaction 3 notes that the kettles were valued at £4 19s. per hundredweight. The two values cannot be multiplied, as multiplication between two <code>deb_lsd</code> vectors is not implemented, nor would it be possible to do so since the two vectors have different <code>bases</code>. Instead, the price can be multiplied by the decimalized weight created by casting <code>kettles_net</code> to a <code>numeric</code> vector of the correct unit — here, the <em>libra</em> unit.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 3. Decimalize hundredweight</span>
 <span class="op">(</span><span class="va">kettles_num</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">kettles_net</span><span class="op">)</span><span class="op">)</span>
@@ -251,8 +251,16 @@
 <span class="co">#&gt; &lt;deb_lsd[1]&gt;</span>
 <span class="co">#&gt; [1] 314:3s:4d</span>
 <span class="co">#&gt; # Bases: 20s 12d</span></code></pre></div>
-<p>By May, the merchant had found a willing buyer for the sugar at the price of 14d. per pound in the person of George Pinchback. However, when the sugar arrived from Lisbon, there was actually 15 chests weighing 77 hundredweight 2 quarters 20 pounds. All of the merchants involved agreed to the same prices. Transactions 102 and 103 record the purchase price of the sugar and the profits resulting from the 1d. price difference.</p>
+<p>As an aside, it would also be possible to represent the weight of the sugar, as well as other weights in Dafforne’s journal, as tetrapartite values by including the unit of the ton of twenty hundredweight through the <code>deb_tetra</code> type. We could manually normalize the value, or use <code><a href="../reference/normalization.html">deb_normalize()</a></code> with the new set of bases of length three. In this case, their is little gained by moving to the use of the <code>deb_tetra</code> type, but it might be useful if weights were listed in this tetrapartite form in other places of the account book or by other factors.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Normalize 51 hundredweight 3 quarters 4 pounds of sugar as tetrapartite value</span>
+<span class="fu"><a href="../reference/deb_tetra.html">deb_tetra</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">51</span>, <span class="fl">3</span>, <span class="fl">4</span>, bases <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">4</span>, <span class="fl">28</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="../reference/normalization.html">deb_normalize</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; &lt;deb_tetra[1]&gt;</span>
+<span class="co">#&gt; [1] 2:11s:3d:4f</span>
+<span class="co">#&gt; # Bases: 20s 4d 28f</span></code></pre></div>
+<p>By May, the merchant had found a willing buyer for the sugar at the price of 14d. per pound in the person of George Pinchback. However, when the sugar arrived from Lisbon, there was actually 15 chests weighing 77 hundredweight 2 quarters 20 pounds. All of the merchants involved agreed to the same prices. Transactions 102 and 103 record the purchase price of the sugar and the profits resulting from the 1d. price difference.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 102. 77 hundredweight 2 quarters 20 pounds of sugar</span>
 <span class="va">sugar_lbs2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span><span class="op">(</span><span class="fl">77</span>, <span class="fl">2</span>, <span class="fl">20</span>, bases <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">28</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="../reference/cast-decimal.html">deb_as_decimal</a></span><span class="op">(</span>unit <span class="op">=</span> <span class="st">"d"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
@@ -270,7 +278,7 @@
 <span class="co">#&gt; [1] 36:5s:0d</span>
 <span class="co">#&gt; # Bases: 20s 12d</span></code></pre></div>
 <p>To complete the deal, Wilkinson needed to be paid for the sugar. Transaction 105 shows that he was paid in the form of 8 silver bars weighing 1733 ounces that were values at 6s. 7.5d. per ounce. However, the bars had a higher value than the sugar, and so transaction 106 shows Wilkinson making a payment to the cash register to even out the payments for the £471 5s. purchase price of the sugar. There is a discrepancy of one-half of a penny, but Dafforne ignored this.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 105. Payment for sugar</span>
 <span class="co"># Value of the 8 silver bars</span>
 <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">6</span>, <span class="fl">7.5</span><span class="op">)</span> <span class="op">*</span> <span class="fl">1733</span>
@@ -289,12 +297,12 @@
 <div class="section level2">
 <h2 id="currency-exchanges">Currency exchanges<a class="anchor" aria-label="anchor" href="#currency-exchanges"></a>
 </h2>
-<p>The examples shown thus far all deal with monetary values in terms of pounds sterling, but many of the transactions in Dafforne’s practice journal involve other currencies. Arithmetic operations can be used for exchanges between currencies that possess the same bases for the solidus and denarius units. However, Flemish pounds was the only money of account used in the journal that possessed the same bases as the pound sterling. In order to find the exchange between other monies of account it is necessary to convert between different bases for the solidus and denarius units with <code><a href="../reference/convert-bases.html">deb_convert_bases()</a></code>. The following examples show a variety of different conversions between monies of account that do not share the same bases.</p>
+<p>The examples shown thus far all deal with monetary values in terms of pounds sterling, but many of the transactions in Dafforne’s practice journal involve other currencies. Arithmetic operations can be used for exchanges between currencies that possess the same bases for the <em>solidus</em> and <em>denarius</em> units. However, Flemish pounds was the only money of account used in the journal that possessed the same bases as the pound sterling. In order to find the exchange between other monies of account it is necessary to convert between different bases for the <em>solidus</em> and <em>denarius</em> units with <code><a href="../reference/convert-bases.html">deb_convert_bases()</a></code>. The following examples show a variety of different conversions between monies of account that do not share the same bases.</p>
 <div class="section level3">
 <h3 id="holland-guilders-and-flemish-pounds">Holland guilders and Flemish pounds<a class="anchor" aria-label="anchor" href="#holland-guilders-and-flemish-pounds"></a>
 </h3>
 <p>Unsurprisingly much of the trade activity that Dafforne placed in his practice journal occurred in or funneled through Amsterdam and thus involved values recorded in guilders, stuivers, and penningen. Guilders possessed a different base from pounds sterling, and to complicate matters further, the exchange rate between guilders and pounds sterling often went through pounds Flemish. Pounds Flemish was tied to guilders at a rate of 6 guilders to £1 Flemish, and Dafforne listed the established exchange rate between pounds sterling and pounds Flemish as £1 sterling to 33s. 4d. Flemish. Though Dafforne provides the exchange rate to pounds Flemish, the transactions in the journal proceed from pounds Flemish to pounds sterling, so the inverse rate has to be calculated. Dividing £1 by the rate inverts the rate and has the added benefit of coercing the value to numeric, which can be used as the multiplier for the exchange. It may also be useful to know the inverse rate expressed as a <code>deb_lsd</code> value, which could be done by casting the inverse rate from <code>numeric</code> to <code>deb_lsd</code> or taking 1 over the original <code>deb_lsd</code> rate.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Rate for sterling to Flemish</span>
 <span class="va">sterling_to_flemish</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">33</span>, <span class="fl">4</span><span class="op">)</span>
 
@@ -314,7 +322,7 @@
 <span class="co">#&gt; [1] 0:12s:0d</span>
 <span class="co">#&gt; # Bases: 20s 12d</span></code></pre></div>
 <p>Transaction 5 provides a good example of the workflow to transform guilders to pounds sterling. The transaction tells that Jacob Symonson possessed 2,290 guilders of the bookkeeper’s capital deriving from a company that they had together. The transaction specifies that this capital was calculated at the general course of 33s. 4d. Flemish. The exchange involves two steps: from guilders to pounds Flemish at the rate of 6 to 1 and then from pounds Flemish to pounds sterling at the listed exchange rate.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 5. Guilders to Flemish</span>
 <span class="va">tr5_guilders</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span><span class="op">(</span><span class="fl">2290</span>, <span class="fl">0</span>, <span class="fl">0</span>, bases <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">16</span><span class="op">)</span><span class="op">)</span>
 <span class="va">tr5_flemish</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/convert-bases.html">deb_convert_bases</a></span><span class="op">(</span><span class="va">tr5_guilders</span>, to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">12</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fl">6</span>
@@ -325,7 +333,7 @@
 <span class="co">#&gt; [1] 229:0s:0d</span>
 <span class="co">#&gt; # Bases: 20s 12d</span></code></pre></div>
 <p>Transaction 33 presents a slightly more complex example. It involves 1,224 guilders 19s. 8d. that Jacob Symonson received through a bill of exchange at an exchange rate different from the general course. Unlike the inverted rate for 33s. 4d. Flemish, the given rate of 36s. 10d. does not easily reduce itself. It is noteworthy that despite this complexity, Dafforne’s calculation is the same as done here if the pence were rounded at the end of the calculations.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 33. 1224 guilders 19s. 8d. through bills of exchange</span>
 <span class="co"># Inverse rate</span>
 <span class="va">tr33_rate</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">36</span>, <span class="fl">10</span><span class="op">)</span>
@@ -338,7 +346,7 @@
 <span class="co">#&gt; [1] 110:17s:1.792d</span>
 <span class="co">#&gt; # Bases: 20s 12d</span></code></pre></div>
 <p>A final example for the conversion between guilders and pounds sterling is provided by transaction 40, which records the sale of 60 Leeds dozens or broadcloths in Amsterdam by Jacob Symonson. Thirty pieces of cloth were sold at 45 guilders 7s. 8d. per piece, and the remaining thirty were sold at 50 guilders per piece. The total proceeds from the sales had to be calculated and then converted to pounds sterling at the normal rate of 33s. 4d. Flemish.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 40. Proceeds from the two sales</span>
 <span class="op">(</span><span class="va">tr40_sale</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span><span class="op">(</span><span class="fl">45</span>, <span class="fl">7</span>, <span class="fl">8</span>, bases <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">16</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="fl">30</span>, 
                   <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">0</span>, <span class="fl">0</span>, bases <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">16</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="fl">30</span><span class="op">)</span><span class="op">)</span>
@@ -359,7 +367,7 @@
 <h3 id="french-crowns">French crowns<a class="anchor" aria-label="anchor" href="#french-crowns"></a>
 </h3>
 <p>Dafforne’s journal contains many transactions with a factor in Rouen named Jean du Boys who used the French crown of 60 sous as his money of account. The exchange rate between French crowns and pounds sterling differed by transaction, but all were listed in terms of deniers per pound sterling. This rate can be decimalized by casting to <code>numeric</code> or through a longer process using a <code>deb_decimal</code> vector. Thus, in transaction 20 Jean du Boys was remitted £2,148 50s. 6d. French crowns at the rate of £1 French crown to 63d. sterling.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 20. For £2148 50s. 6d. French crowns at 63d. sterling</span>
 <span class="co"># Rate</span>
 <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">63</span><span class="op">)</span><span class="op">)</span>
@@ -378,7 +386,7 @@
 <span class="co">#&gt; [1] 564:1s:5.025d</span>
 <span class="co">#&gt; # Bases: 20s 12d</span></code></pre></div>
 <p>A merchant involved in long-distance trade often had to record the value of transactions that occurred in currencies that differed from the money of account used in the account book. Such a situation appeared in transaction 58 in which Jacob Symonson in Amsterdam received a bill of exchange from Jean du Boys in Rouen that consisted of capital for a company involving the bookkeeper and Randoll Rice. Jean du Boys sent Symonson £1,140 17s. 8d. French crowns at the rate of 123d. Flemish, and this transaction was calculated at the rate of 72d. sterling for the purposes of accounting in terms of pounds sterling. In this case, a bookkeeper needed to know the amount of guilders received by Symonson, which was calculated through pounds Flemish, as well as the value in pounds sterling.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 58. Crowns to Flemish to guilders</span>
 <span class="va">crowns_to_flemish</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">123</span><span class="op">)</span><span class="op">)</span>
 <span class="va">tr58_crowns</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span><span class="op">(</span><span class="fl">1140</span>, <span class="fl">17</span>, <span class="fl">8</span>, bases <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">12</span><span class="op">)</span><span class="op">)</span>
@@ -400,7 +408,7 @@
 <h3 id="polish-florins">Polish florins<a class="anchor" aria-label="anchor" href="#polish-florins"></a>
 </h3>
 <p>The above examples all involved single pounds, shillings, and pence values even if multiple values went into the calculation. This is hardly accidental. Dafforne advised that every transfer of value between accounts should be listed separately.<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Dafforne did break this rule on one occasion in transaction 119, where sales to three separate merchants were listed in the same transaction. However, this was done mainly to emphasize the rule that each entry in the journal should only record a single transaction.&lt;/p&gt;"><sup>6</sup></a> However, transactions 64 and 65 present an opportunity to show calculations made on multiple values at the same time. On 7 April 1634, the bookkeeper sent two bills of exchange to Arthur Mumperson in Danzig on behalf of Jacob Symonson. The money of account used by Mumperson in Danzig was the Polish florin of 30 gros and gros of 18 denar, and the exchange rate was again calculated in terms of pounds Flemish. In this case, both bills of exchange were sent at the rate of 232 gros per £1 Flemish, though the calculation requires the inverse rate. There are again a couple of ways to calculate the rate for the exchange, but here a <code>deb_lsd</code> vector is created with the value, the inverse is found, and then this is cast to <code>numeric</code>. In this example, the Exchange between florins to Flemish to sterling is done using the <a href="https://magrittr.tidyverse.org/index.html" class="external-link">magrittr</a> pipe (<code>%&gt;%</code>) and the prefix form of the multiplication operation.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 64 and 65. Bills of exchange to Danzig</span>
 <span class="co"># Rate of 232 gros per £1 Flemish</span>
 <span class="va">tr64_rate</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">232</span>, <span class="fl">0</span>, bases <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">18</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
@@ -420,10 +428,10 @@
 <div class="section level3">
 <h3 id="portuguese-real">Portuguese real<a class="anchor" aria-label="anchor" href="#portuguese-real"></a>
 </h3>
-<p>The final currency dealt with in Dafforne’s practice journal is the Portuguese real, which came about from trade conducted by Diego del Varino in Lisbon. The Portuguese real as used in the Dafforne journal presents a money of account quite different from all others in the journal. Not only is the base of 1,000 réis to the milréis of a very different magnitude from the pound sterling of 20 shillings, but the real only has two units instead of the three units of the pounds, shillings, and pence monies of account. <code>debkeepr</code> can accommodate this type of money of account, but a placeholder value must be provided for the denarius unit, because neither of the two values passed to <code>bases</code> can be zero or missing.</p>
-<p>The other issue with the real is that the exchange rate is given as 400 réis for 5s. sterling, complicating the calculation of the exchange rate. One way to find the ratio is to multiply the réis value by four to get réis equivalent to £1 sterling and then finding the inverse. Another way is to multiply the shillings by 2.5 to find shillings per 1 milréis, converting the <code>unit</code> to libra, and then casting to <code>numeric</code>.</p>
+<p>The final currency dealt with in Dafforne’s practice journal is the Portuguese real, which came about from trade conducted by Diego del Varino in Lisbon. The Portuguese real as used in the Dafforne journal presents a money of account quite different from all others in the journal. Not only is the base of 1,000 réis to the milréis of a very different magnitude from the pound sterling of 20 shillings, but the real only has two units instead of the three units of the pounds, shillings, and pence monies of account. <code>debkeepr</code> can accommodate this type of money of account, but a placeholder value must be provided for the <em>denarius</em> unit, because neither of the two values passed to <code>bases</code> can be zero or missing.</p>
+<p>The other issue with the real is that the exchange rate is given as 400 réis for 5s. sterling, complicating the calculation of the exchange rate. One way to find the ratio is to multiply the réis value by four to get réis equivalent to £1 sterling and then finding the inverse. Another way is to multiply the shillings by 2.5 to find shillings per 1 milréis, converting the <code>unit</code> to <em>libra</em>, and then casting to <code>numeric</code>.</p>
 <p>Transaction 51 shows the purchase of 1,576 pieces of figs by Diego del Varino for a company with the bookkeeper and Randoll Rice. The figs were purchased for the price of 681 milréis 960 réis with the exchange rate, as noted above, of 400 réis for 5s. sterling.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 51. purchase of 1576 pieces of figs for 681 milréis 960 réis</span>
 <span class="va">tr51_reis</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/deb_lsd.html">deb_lsd</a></span><span class="op">(</span><span class="fl">681</span>, <span class="fl">960</span>, <span class="fl">0</span>, bases <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">12</span><span class="op">)</span><span class="op">)</span>
 <span class="va">tr51_converted</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/convert-bases.html">deb_convert_bases</a></span><span class="op">(</span><span class="va">tr51_reis</span>, to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">12</span><span class="op">)</span><span class="op">)</span>
@@ -462,7 +470,7 @@
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
     </footer>

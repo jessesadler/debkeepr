@@ -16,7 +16,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">debkeepr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.5.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.6.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,7 +66,7 @@
     </div>
 
     <div class="section level2">
-      <h2 id="debkeepr-classes">debkeepr classes<a class="anchor" aria-label="anchor" href="#debkeepr-classes"></a></h2>
+      <h2 id="debkeepr-types">debkeepr types<a class="anchor" aria-label="anchor" href="#debkeepr-types"></a></h2>
       
       
 
@@ -93,14 +93,24 @@
         <dd>Cast to <code>deb_lsd</code></dd>
       </dl><dl><dt>
           
-          <code><a href="deb_as_list.html">deb_as_list()</a></code> 
+          <code><a href="deb_tetra.html">deb_tetra()</a></code> 
         </dt>
-        <dd>Cast <code>deb_lsd</code> to a list of lsd values</dd>
+        <dd>A class for tetrapartite values</dd>
+      </dl><dl><dt>
+          
+          <code><a href="deb_is_tetra.html">deb_is_tetra()</a></code> 
+        </dt>
+        <dd>Test if an object is of class <code>deb_tetra</code></dd>
+      </dl><dl><dt>
+          
+          <code><a href="cast-tetra.html">deb_as_tetra()</a></code> 
+        </dt>
+        <dd>Cast to <code>deb_tetra</code></dd>
       </dl><dl><dt>
           
           <code><a href="deb_decimal.html">deb_decimal()</a></code> 
         </dt>
-        <dd>A decimalized class for pounds, shillings, and pence values</dd>
+        <dd>A decimalized class for tripartite and tetrapartite values</dd>
       </dl><dl><dt>
           
           <code><a href="deb_is_decimal.html">deb_is_decimal()</a></code> 
@@ -113,9 +123,14 @@
         <dd>Cast to <code>deb_decimal</code></dd>
       </dl><dl><dt>
           
+          <code><a href="list-lsd.html">deb_as_list()</a></code> 
+        </dt>
+        <dd>Cast <code>deb_lsd</code> or <code>deb_tetra</code> to a list of values</dd>
+      </dl><dl><dt>
+          
           <code><a href="text.html">deb_text()</a></code> 
         </dt>
-        <dd>Format <code>deb_lsd</code> and <code>deb_decimal</code> vectors as text</dd>
+        <dd>Format <code>deb_lsd</code>, <code>deb_decimal</code>, and <code>deb_tetra</code> vectors as text</dd>
       </dl><dl><dt>
           
           <code><a href="debkeepr-package.html">debkeepr-package</a></code> 
@@ -134,9 +149,9 @@
 
       <dl><dt>
           
-          <code><a href="normalize.html">normalize()</a></code> <code><a href="normalize.html">deb_normalize()</a></code> 
+          <code><a href="normalization.html">deb_normalize()</a></code> 
         </dt>
-        <dd>Normalization function</dd>
+        <dd>Normalize tripartite and tetrapartite values</dd>
       </dl></div><div class="section level2">
       <h2 id="conversion">Conversion<a class="anchor" aria-label="anchor" href="#conversion"></a></h2>
       
@@ -152,7 +167,7 @@
           
           <code><a href="convert-bases.html">deb_convert_bases()</a></code> 
         </dt>
-        <dd>Convert bases of <code>deb_lsd</code> and <code>deb_decimal</code> vectors</dd>
+        <dd>Convert bases of <code>deb_lsd</code>, <code>deb_tetra</code>, and <code>deb_decimal</code> vectors</dd>
       </dl><dl><dt>
           
           <code><a href="deb_convert_unit.html">deb_convert_unit()</a></code> 
@@ -171,9 +186,9 @@
 
       <dl><dt>
           
-          <code><a href="mathematics.html">sum(<i>&lt;deb_lsd&gt;</i>)</a></code> <code><a href="mathematics.html">mean(<i>&lt;deb_lsd&gt;</i>)</a></code> <code><a href="mathematics.html">cumsum(<i>&lt;deb_lsd&gt;</i>)</a></code> <code><a href="mathematics.html">round(<i>&lt;deb_lsd&gt;</i>)</a></code> <code><a href="mathematics.html">signif(<i>&lt;deb_lsd&gt;</i>)</a></code> <code><a href="mathematics.html">ceiling(<i>&lt;deb_lsd&gt;</i>)</a></code> <code><a href="mathematics.html">floor(<i>&lt;deb_lsd&gt;</i>)</a></code> <code><a href="mathematics.html">trunc(<i>&lt;deb_lsd&gt;</i>)</a></code> 
+          <code><a href="mathematics.html">mathematics</a></code> 
         </dt>
-        <dd>Math group with <code>deb_lsd</code> vectors</dd>
+        <dd>Math group with <code>deb_lsd</code> and <code>deb_tetra</code> vectors</dd>
       </dl></div><div class="section level2">
       <h2 id="analysis-of-double-entry-bookkeeping">Analysis of double-entry bookkeeping<a class="anchor" aria-label="anchor" href="#analysis-of-double-entry-bookkeeping"></a></h2>
       
@@ -191,7 +206,7 @@
         </dt>
         <dd>Analysis of double-entry bookkeeping</dd>
       </dl></div><div class="section level2">
-      <h2 id="data-frame-helpers-for-deb-lsd-class">Data frame helpers for deb_lsd class<a class="anchor" aria-label="anchor" href="#data-frame-helpers-for-deb-lsd-class"></a></h2>
+      <h2 id="data-frame-helpers-for-deb-lsd-and-deb-tetra-types">Data frame helpers for deb_lsd and deb_tetra types<a class="anchor" aria-label="anchor" href="#data-frame-helpers-for-deb-lsd-and-deb-tetra-types"></a></h2>
       
       
 
@@ -206,6 +221,11 @@
           <code><a href="lsd-column.html">deb_gather_lsd()</a></code> <code><a href="lsd-column.html">deb_spread_lsd()</a></code> 
         </dt>
         <dd>Helpers to create and separate a <code>deb_lsd</code> column in a data frame</dd>
+      </dl><dl><dt>
+          
+          <code><a href="tetra-column.html">deb_gather_tetra()</a></code> <code><a href="tetra-column.html">deb_spread_tetra()</a></code> 
+        </dt>
+        <dd>Helpers to create and separate a <code>deb_tetra</code> column in a data frame</dd>
       </dl></div><div class="section level2">
       <h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a></h2>
       
@@ -237,7 +257,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
     </footer></div>
