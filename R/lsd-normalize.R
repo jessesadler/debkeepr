@@ -198,16 +198,16 @@ tetra_normalize_neg <- function(tetra) {
 #' deb_normalize(c(12, 93, 78, 42), bases = c(20, 12, 4))
 #' deb_normalize(c(12, 93, 78, 42), bases = c(60, 16, 8))
 #'
-#' @name normalize
+#' @name normalization
 NULL
 
-#' @rdname normalize
+#' @rdname normalization
 #' @export
 deb_normalize <- function(x, ...) {
   UseMethod("deb_normalize")
 }
 
-#' @rdname normalize
+#' @rdname normalization
 #' @export
 deb_normalize.default <- function(x, ...) {
   cli::cli_abort(c("{.var x } must be a <deb_lsd> or <deb_tetra> vector or a
@@ -215,7 +215,7 @@ deb_normalize.default <- function(x, ...) {
                    "x" = "You've supplied a {.cls {class(x)}} vector."))
 }
 
-#' @rdname normalize
+#' @rdname normalization
 #' @export
 deb_normalize.deb_lsd <- function(x, ...) {
   checked <- decimal_check(x)
@@ -224,7 +224,7 @@ deb_normalize.deb_lsd <- function(x, ...) {
                  lsd_normalize(checked))
 }
 
-#' @rdname normalize
+#' @rdname normalization
 #' @export
 deb_normalize.numeric <- function(x, bases = c(20, 12), ...) {
   if (vec_size(x) == 3L) {
@@ -253,7 +253,7 @@ deb_normalize.numeric <- function(x, bases = c(20, 12), ...) {
   ret
 }
 
-#' @rdname normalize
+#' @rdname normalization
 #' @export
 deb_normalize.deb_tetra <- function(x, ...) {
   checked <- decimal_check(x)
