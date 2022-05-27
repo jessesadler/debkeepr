@@ -1,5 +1,5 @@
 
-# debkeepr: Analysis of Non-Decimal Currencies
+# debkeepr <a href="https://jessesadler.github.io/debkeepr/"><img src="man/figures/logo.png" align="right" height="278" /></a>
 
 [![Travis build
 status](https://travis-ci.org/jessesadler/debkeepr.svg?branch=master)](https://travis-ci.org/jessesadler/debkeepr)

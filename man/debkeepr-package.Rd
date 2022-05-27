@@ -6,6 +6,8 @@
 \alias{debkeepr-package}
 \title{debkeepr: Analysis of Non-Decimal Currencies and Double-Entry Bookkeeping}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 Analysis of historical non-decimal currencies and value systems that use the tripartite system of pounds, shillings, and pence or tetrapartite systems.
 }
 \seealso{
