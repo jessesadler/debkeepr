@@ -1,10 +1,11 @@
 
-# debkeepr <a href="https://jessesadler.github.io/debkeepr/"><img src="man/figures/logo.png" align="right" height="278" /></a>
+# debkeepr <a href="https://jessesadler.github.io/debkeepr/"><img src="man/figures/logo.png" align="right" height="139" /></a>
 
-[![Travis build
-status](https://travis-ci.org/jessesadler/debkeepr.svg?branch=master)](https://travis-ci.org/jessesadler/debkeepr)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/debkeepr)](https://cran.r-project.org/package=debkeepr)
+[![R-CMD-check](https://github.com/jessesadler/debkeepr/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/jessesadler/debkeepr/actions/workflows/check-standard.yaml)
 [![Coverage
-status](https://codecov.io/gh/jessesadler/debkeepr/branch/master/graph/badge.svg)](https://codecov.io/github/jessesadler/debkeepr?branch=master)
+status](https://codecov.io/gh/jessesadler/debkeepr/branch/main/graph/badge.svg)](https://app.codecov.io/gh/jessesadler/debkeepr?branch=main)
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
 `debkeepr` integrates non-decimal currencies that use tripartite and
