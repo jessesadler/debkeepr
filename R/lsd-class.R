@@ -9,6 +9,7 @@
 #'
 #' @return An object of class `deb_lsd`.
 #' @keywords internal
+#' @noRd
 
 new_lsd <- function(l = double(),
                     s = double(),
@@ -126,6 +127,7 @@ methods::setOldClass(c("deb_lsd", "vctrs_rcrd", "vctrs_vctr"))
 #' Access the bases attribute of a `deb_lsd` vector
 #'
 #' @keywords internal
+#' @noRd
 
 deb_bases <- function(x) attr(x, "bases")
 

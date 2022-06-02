@@ -5,6 +5,7 @@
 #' Should the value be a whole number or should it have a decimal value.
 #' Used in `decimal_check()`.
 #' @keywords internal
+#' @noRd
 
 should_be_int <- function(x, tol = .Machine$double.eps^0.5) {
   abs(x - round(x)) < tol
@@ -15,6 +16,7 @@ should_be_int <- function(x, tol = .Machine$double.eps^0.5) {
 #' Check that bases are natural numbers (whole number greater than 0).
 #' From integer docs and SO: https://stackoverflow.com/a/4562291
 #' @keywords internal
+#' @noRd
 
 is_natural <- function(x, tol = .Machine$double.eps^0.5) {
   x > tol & abs(x - round(x)) < tol
@@ -24,6 +26,7 @@ is_natural <- function(x, tol = .Machine$double.eps^0.5) {
 #'
 #' Hierarchy: f -> d -> s -> l
 #' @keywords internal
+#' @noRd
 
 unit_hierarchy <- function(x, y) {
   if (identical(deb_unit(x), deb_unit(y))) {
@@ -44,6 +47,7 @@ unit_hierarchy <- function(x, y) {
 #' @return bases attribute. If equal length, bases is returned.
 #'   If unequal length, lsd bases is returned, removing f unit.
 #' @keywords internal
+#' @noRd
 
 bases_hierarchy <- function(x, y, x_arg = "", y_arg = "") {
   # Both lsd or both tetra
@@ -69,6 +73,7 @@ bases_hierarchy <- function(x, y, x_arg = "", y_arg = "") {
 #' if statement to see whether all accounts have both a credit and debit
 #' transaction or not.
 #' @keywords internal
+#' @noRd
 
 all_present <- function(pos, neg) {
   all(pos[[1]] %in% neg[[1]], neg[[1]] %in% pos[[1]])

@@ -349,6 +349,7 @@ deb_as_list.deb_tetra <- function(x, ...) {
 #'
 #' Find unit and normalize
 #' @keywords internal
+#' @noRd
 
 decimal_to_lsd <- function(x) {
   bases <- deb_bases(x)
@@ -390,6 +391,7 @@ vec_cast.deb_lsd.deb_decimal <- function(x, to, ...) {
 #'
 #' Add f / farthing base to d
 #' @keywords internal
+#' @noRd
 
 tetra_to_lsd <- function(x) {
   bases <- deb_bases(x)
@@ -416,6 +418,7 @@ vec_cast.deb_lsd.deb_tetra <- function(x, to, ...) {
 #'
 #' Arithmetic based on the unit
 #' @keywords internal
+#' @noRd
 
 lsd_to_decimal <- function(x, to) {
   l <- field(x, "l")
@@ -460,6 +463,7 @@ vec_cast.deb_decimal.deb_lsd <- function(x, to, ...) {
 #'
 #' Arithmetic based on the unit
 #' @keywords internal
+#' @noRd
 
 tetra_to_decimal <- function(x, to) {
   l <- field(x, "l")
@@ -506,6 +510,7 @@ vec_cast.deb_decimal.deb_tetra <- function(x, to, ...) {
 #'
 #' Add f unit and normalize
 #' @keywords internal
+#' @noRd
 
 lsd_to_tetra <- function(x, to) {
   tetra <- new_tetra(l = field(x, "l"),
@@ -528,6 +533,7 @@ vec_cast.deb_tetra.deb_lsd <- function(x, to, ...) {
 #'
 #' Find unit and normalize
 #' @keywords internal
+#' @noRd
 
 decimal_to_tetra <- function(x, to) {
   bases <- deb_bases(x)

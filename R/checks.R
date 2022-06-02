@@ -21,6 +21,7 @@ bases_natural <- c("{.arg {arg}} must be natural numbers greater than zero.",
 #' Used in [`bases_equal()`] and [`mixed_bases_equal()`] to provide more
 #' in depth error message.
 #' @keywords internal
+#' @noRd
 
 arg_as_string <- function(arg) {
   if (rlang::is_null(arg)) {
@@ -39,6 +40,7 @@ arg_as_string <- function(arg) {
 #' Check that all units are numeric. Use cli_abort() with caller_arg()
 #' to be able to supply various arguments.
 #' @keywords internal
+#' @noRd
 
 numeric_check <- function(x,
                           arg = rlang::caller_arg(x),
@@ -59,6 +61,7 @@ numeric_check <- function(x,
 #' - That `l`, `s`, and `d` are numeric
 #' - That they are the same length, length 1, or all length 0
 #' @keywords internal
+#' @noRd
 
 lsd_check <- function(l, s, d, call = rlang::caller_env()) {
   # Check that l, s, and d are numeric
@@ -98,6 +101,7 @@ lsd_check <- function(l, s, d, call = rlang::caller_env()) {
 #' - That `l`, `s`, `d`, and `f` are numeric
 #' - That they are the same length, length 1, or all length 0
 #' @keywords internal
+#' @noRd
 
 tetra_check <- function(l, s, d, f, call = rlang::caller_env()) {
   # Check that l, s, d, and f are numeric
@@ -142,6 +146,7 @@ tetra_check <- function(l, s, d, f, call = rlang::caller_env()) {
 #' - Cannot have NA values
 #' - Must be natural (whole) numbers greater that 0
 #' @keywords internal
+#' @noRd
 
 lsd_bases_check <- function(bases,
                             arg = rlang::caller_arg(bases),
@@ -170,6 +175,7 @@ lsd_bases_check <- function(bases,
 #' - Cannot have NA values
 #' - Must be natural (whole) numbers greater that 0
 #' @keywords internal
+#' @noRd
 
 tetra_bases_check <- function(bases,
                               arg = rlang::caller_arg(bases),
@@ -198,6 +204,7 @@ tetra_bases_check <- function(bases,
 #' - Cannot have NA values
 #' - Must be natural (whole) numbers greater that 0
 #' @keywords internal
+#' @noRd
 
 dec_bases_check <- function(bases,
                             arg = rlang::caller_arg(bases),
@@ -227,6 +234,7 @@ dec_bases_check <- function(bases,
 #' - Is not NA
 #' - Must be natural (whole) number greater that 0
 #' @keywords internal
+#' @noRd
 
 f_bases_check <- function(f, call = rlang::caller_env()) {
   rlang::check_required(f, call = call)
@@ -263,8 +271,8 @@ f_bases_check <- function(f, call = rlang::caller_env()) {
 #'   (see [`stop_incompatible_type()`]).
 #' @param call Supplied to [`abort()`]. Default is `NULL` since revealing
 #'   call to `vec_ptype2()` and `vec_cast()` is not helpful.
-#'
 #' @keywords internal
+#' @noRd
 
 bases_equal <- function(x, y, x_arg = "", y_arg = "", call = NULL) {
   x_bases <- deb_bases(x)
@@ -327,6 +335,7 @@ bases_equal <- function(x, y, x_arg = "", y_arg = "", call = NULL) {
 #' @param y Object with tetrapartite bases: `s`, `d`, and `f`.
 #' @inheritParams bases_equal
 #' @keywords internal
+#' @noRd
 
 mixed_bases_equal <- function(x, y, x_arg = "", y_arg = "", call = NULL) {
   x_bases <- deb_bases(x)
@@ -374,6 +383,8 @@ mixed_bases_equal <- function(x, y, x_arg = "", y_arg = "", call = NULL) {
 #'
 #' Ensure that lists only include numeric vectors of length 3
 #' @keywords internal
+#' @noRd
+
 lsd_list_check <- function(x, call = rlang::caller_env()) {
   if (any(vapply(x, rlang::is_null, logical(1)))) {
     x <- Filter(length, x)
@@ -399,6 +410,8 @@ lsd_list_check <- function(x, call = rlang::caller_env()) {
 #'
 #' Ensure that lists only include numeric vectors of length 4
 #' @keywords internal
+#' @noRd
+
 tetra_list_check <- function(x, call = rlang::caller_env()) {
   if (any(vapply(x, rlang::is_null, logical(1)))) {
     x <- Filter(length, x)
@@ -424,6 +437,8 @@ tetra_list_check <- function(x, call = rlang::caller_env()) {
 
 #' Check that object is of type deb_lsd or deb_decimal
 #' @keywords internal
+#' @noRd
+
 deb_ptype_check <- function(x, call = rlang::caller_env()) {
   if (!deb_is_lsd(x) && !deb_is_decimal(x) && !deb_is_tetra(x)) {
     cli::cli_abort(c(
@@ -444,6 +459,8 @@ deb_ptype_check <- function(x, call = rlang::caller_env()) {
 #' - `credit` and `debit` columns must be of the same type
 #'
 #' @keywords internal
+#' @noRd
+
 transaction_check <- function(df,
                               cn,
                               credit,

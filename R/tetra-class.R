@@ -9,6 +9,7 @@
 #'
 #' @return An object of class `deb_tetra`.
 #' @keywords internal
+#' @noRd
 
 new_tetra <- function(l = double(),
                       s = double(),

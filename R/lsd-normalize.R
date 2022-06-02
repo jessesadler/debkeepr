@@ -21,6 +21,7 @@ tetra_msg <- c("{.var bases} must be a numeric vector of length {.val {3}}
 #' with floating point problems.
 #'
 #' @keywords internal
+#' @noRd
 
 decimal_check <- function(x) {
   l <- field(x, "l")
@@ -50,6 +51,7 @@ decimal_check <- function(x) {
 
 #' Check whether lsd value is positive or negative
 #' @keywords internal
+#' @noRd
 
 is_negative <- function(x) {
   if (deb_is_lsd(x)) {
@@ -68,6 +70,7 @@ is_negative <- function(x) {
 #'
 #' Function that actually performs the normalization of lsd value
 #' @keywords internal
+#' @noRd
 
 normalize <- function(l, s, d, bases) {
 
@@ -85,6 +88,7 @@ normalize <- function(l, s, d, bases) {
 #' Separate normalization functions for positive and negative values to be
 #' used in `dplyr::if_else()`. Making them functions simplifies the process.
 #' @keywords internal
+#' @noRd
 
 lsd_normalize <- function(lsd) {
 
@@ -98,6 +102,8 @@ lsd_normalize <- function(lsd) {
 #'
 #' Turn values positive and then return to negative value.
 #' @keywords internal
+#' @noRd
+
 lsd_normalize_neg <- function(lsd) {
 
   ret <- normalize(l = -field(lsd, "l"),
@@ -113,6 +119,7 @@ lsd_normalize_neg <- function(lsd) {
 #'
 #' Function that actually performs the normalization of tetra values
 #' @keywords internal
+#' @noRd
 
 tetra_normalize <- function(l, s, d, f, bases) {
 
@@ -132,6 +139,7 @@ tetra_normalize <- function(l, s, d, f, bases) {
 #' Separate normalization functions for positive and negative values to be
 #' used in `dplyr::if_else()`. Making them functions simplifies the process.
 #' @keywords internal
+#' @noRd
 
 tetra_normalize_pos <- function(tetra) {
 
@@ -146,6 +154,8 @@ tetra_normalize_pos <- function(tetra) {
 #'
 #' Turn values positive and then return to negative value.
 #' @keywords internal
+#' @noRd
+
 tetra_normalize_neg <- function(tetra) {
 
   ret <- tetra_normalize(l = -field(tetra, "l"),

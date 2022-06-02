@@ -30,6 +30,7 @@ vec_arith.deb_lsd.default <- function(op, x, y) {
 #' Addition for deb_lsd
 #'
 #' @keywords internal
+#' @noRd
 
 lsd_plus <- function(x, y) {
   c(x, y) %<-% vec_recycle_common(x, y)
@@ -45,6 +46,7 @@ lsd_plus <- function(x, y) {
 #' Subtraction for deb_lsd
 #'
 #' @keywords internal
+#' @noRd
 
 lsd_minus <- function(x, y) {
   c(x, y) %<-% vec_recycle_common(x, y)
@@ -78,6 +80,7 @@ vec_arith.deb_lsd.deb_lsd <- function(op, x, y) {
 #' Multiplication for deb_lsd and numeric
 #'
 #' @keywords internal
+#' @noRd
 
 lsd_multiply <- function(x, multiplier) {
   c(x, multiplier) %<-% vec_recycle_common(x, multiplier)
@@ -93,6 +96,7 @@ lsd_multiply <- function(x, multiplier) {
 #' Division for deb_lsd and numeric
 #'
 #' @keywords internal
+#' @noRd
 
 lsd_dividend <- function(x, divisor) {
   c(x, divisor) %<-% vec_recycle_common(x, divisor)
@@ -108,6 +112,7 @@ lsd_dividend <- function(x, divisor) {
 #' Division for numeric over deb_lsd
 #'
 #' @keywords internal
+#' @noRd
 
 lsd_divisor <- function(dividend, x) {
   c(dividend, x) %<-% vec_recycle_common(dividend, x)
@@ -151,6 +156,7 @@ vec_arith.numeric.deb_lsd <- function(op, x, y) {
 #' Make deb_lsd negative
 #'
 #' @keywords internal
+#' @noRd
 
 lsd_negate <- function(x) {
   field(x, "l") <- field(x, "l") * -1
@@ -199,6 +205,7 @@ vec_arith.deb_decimal.default <- function(op, x, y) {
 #' if they are different.
 #'
 #' @keywords internal
+#' @noRd
 
 dec_arithmetic <- function(op, x, y) {
   xy <- vec_cast_common(x, y)
@@ -319,6 +326,7 @@ vec_arith.deb_tetra.default <- function(op, x, y) {
 #' Addition for deb_tetra
 #'
 #' @keywords internal
+#' @noRd
 
 tetra_plus <- function(x, y) {
   c(x, y) %<-% vec_recycle_common(x, y)
@@ -335,6 +343,7 @@ tetra_plus <- function(x, y) {
 #' Subtraction for deb_tetra
 #'
 #' @keywords internal
+#' @noRd
 
 tetra_minus <- function(x, y) {
   c(x, y) %<-% vec_recycle_common(x, y)
@@ -369,6 +378,7 @@ vec_arith.deb_tetra.deb_tetra <- function(op, x, y) {
 #' Multiplication for deb_tetra and numeric
 #'
 #' @keywords internal
+#' @noRd
 
 tetra_multiply <- function(x, multiplier) {
   c(x, multiplier) %<-% vec_recycle_common(x, multiplier)
@@ -385,6 +395,7 @@ tetra_multiply <- function(x, multiplier) {
 #' Division for deb_tetra and numeric
 #'
 #' @keywords internal
+#' @noRd
 
 tetra_dividend <- function(x, divisor) {
   c(x, divisor) %<-% vec_recycle_common(x, divisor)
@@ -401,6 +412,7 @@ tetra_dividend <- function(x, divisor) {
 #' Division for numeric over deb_tetra
 #'
 #' @keywords internal
+#' @noRd
 
 tetra_divisor <- function(dividend, x) {
   c(dividend, x) %<-% vec_recycle_common(dividend, x)
@@ -444,6 +456,7 @@ vec_arith.numeric.deb_tetra <- function(op, x, y) {
 #' Make deb_tetra negative
 #'
 #' @keywords internal
+#' @noRd
 
 tetra_negate <- function(x) {
   field(x, "l") <- field(x, "l") * -1

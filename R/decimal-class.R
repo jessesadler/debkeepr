@@ -10,6 +10,7 @@
 #'
 #' @return A vector of class `deb_decimal`.
 #' @keywords internal
+#' @noRd
 
 new_decimal <- function(x = double(),
                         unit = c("l", "s", "d", "f"),
@@ -146,6 +147,7 @@ methods::setOldClass(c("deb_decimal", "vctrs_vctr"))
 #' Access the unit attribute of a `deb_decimal` vector
 #'
 #' @keywords internal
+#' @noRd
 
 deb_unit <- function(x) attr(x, "unit")
 
@@ -176,6 +178,7 @@ deb_is_decimal <- function(x) inherits(x, "deb_decimal")
 #' Full name of unit for footer
 #'
 #' @keywords internal
+#' @noRd
 
 unit_word <- function(x) {
   if (attr(x, "unit") == "l") {
