@@ -144,11 +144,9 @@ deb_is_tetra <- function(x) inherits(x, "deb_tetra")
 
 # Format method -----------------------------------------------------------
 
-#' deb_tetra format method for object printing
-#'
-#' @keywords internal
-#' @export
+# deb_tetra format method for object printing
 
+#' @export
 format.deb_tetra <- function(x, ...) {
   l <- round(field(x, "l"), 3) # only print 3 decimals
   s <- round(field(x, "s"), 3)
@@ -160,11 +158,9 @@ format.deb_tetra <- function(x, ...) {
   out
 }
 
-#' Print footer with bases
-#'
-#' @keywords internal
-#' @export
+# Print footer with bases
 
+#' @export
 obj_print_footer.deb_tetra <- function(x, ...) {
   s <- format(attr(x, "bases")[[1]])
   d <- format(attr(x, "bases")[[2]])
@@ -173,13 +169,9 @@ obj_print_footer.deb_tetra <- function(x, ...) {
 }
 
 
-# Abbreviated name type ---------------------------------------------------
+# Abbreviated name for tibble columns -------------------------------------
 
-#' Abbreviated name for tibble columns
-#'
-#' @keywords internal
 #' @export
-
 vec_ptype_abbr.deb_tetra <- function(x) {
   paste0("tetra[", attr(x, "bases")[[1]], "s:",
          attr(x, "bases")[[2]], "d:",

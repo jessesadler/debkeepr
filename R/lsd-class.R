@@ -154,11 +154,9 @@ deb_is_lsd <- function(x) inherits(x, "deb_lsd")
 
 # Format method -----------------------------------------------------------
 
-#' deb_lsd format method for object printing
-#'
-#' @keywords internal
-#' @export
+# deb_lsd format method for object printing
 
+#' @export
 format.deb_lsd <- function(x, ...) {
   l <- round(field(x, "l"), 3) # only print 3 decimals
   s <- round(field(x, "s"), 3)
@@ -169,11 +167,9 @@ format.deb_lsd <- function(x, ...) {
   out
 }
 
-#' Print footer with bases
-#'
-#' @keywords internal
-#' @export
+# Print footer with bases
 
+#' @export
 obj_print_footer.deb_lsd <- function(x, ...) {
   s <- format(attr(x, "bases")[[1]])
   d <- format(attr(x, "bases")[[2]])
@@ -181,13 +177,9 @@ obj_print_footer.deb_lsd <- function(x, ...) {
 }
 
 
-# Abbreviated name type ---------------------------------------------------
+# Abbreviated name for tibble columns -------------------------------------
 
-#' Abbreviated name for tibble columns
-#'
-#' @keywords internal
 #' @export
-
 vec_ptype_abbr.deb_lsd <- function(x) {
   paste0("lsd[", attr(x, "bases")[[1]], "s:", attr(x, "bases")[[2]], "d]")
 }
