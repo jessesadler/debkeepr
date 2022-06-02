@@ -11,17 +11,17 @@ id,credit,debit,date,l,s,d,journal,ledger,description
 10,5,10,16330104,120,0,0,2,3/2,400 French crowns remitted by Symonson in his own bills at 123d. Flemish is 1230 guilders and at 72d. sterling is £120
 11,13,12,16330109,180,0,0,2,4/4,For 60 pieces of kerseys bought by the company at £3 per piece
 12,1,13,16330109,120,0,0,2,4/1,For 2/3 of the payment of the 60 kerseys in nr 11 paid by me in cash
-13,14,7,16330109,40,0,0,2,2/5,For Symonson’s 1/3 part of the £120 paid by me nr 12 for the 60 kerseys nr 11
+13,14,7,16330109,40,0,0,2,2/5,For Symonson's 1/3 part of the £120 paid by me nr 12 for the 60 kerseys nr 11
 14,5,15,16330103,120,0,0,2,5/2,For 400 French crowns principal at the rate of 72d
 15,16,15,16330103,3,4,0,2,5/5,For £10 40s. French crowns of 60 sous for forbearance of the principal for 4 months at 8% at rate of 72d
 16,3,12,16330103,270,0,0,2,4/1,For 90 pieces of kerseys owned by me and brought into the company at £3 per piece
-17,14,7,16330103,90,0,0,2,2/5,For Jacob’s 1/3 of the 90 kerseys brought into the company nr 16
+17,14,7,16330103,90,0,0,2,2/5,For Jacob's 1/3 of the 90 kerseys brought into the company nr 16
 18,18,17,16330117,566,13,4,3,5/6,For 100 says shipped to Lisbon on the White Lion and consigned to Diego del Varino
-19,19,18,16330117,340,0,0,3,6/6,For Rice’s 3/5 part of the 100 says valued at £566.13.4 nr 18
+19,19,18,16330117,340,0,0,3,6/6,For Rice's 3/5 part of the 100 says valued at £566.13.4 nr 18
 20,13,20,16330123,564,1,5,3,6/4,For £2148 50s. 6d. French crowns remitted from the £566.13.4 (nr 18) with provision and brokerage at 63d.
 21,23,21,16330123,2,11,11,3,7/7,For brokerage costs of exchange to Rouen in nr 18 and 20 at 1/8% and provision at 1/3%
 22,19,18,16330123,225,12,7,3,6/6,"For my 2/5 part of the £564.1.5 remitted for the says, nr 20"
-23,19,22,16330123,112,16,3,3,7/6,For the difference between £225.12.7 for my part and the £338.8.10 for Rice’s 3/5 part.
+23,19,22,16330123,112,16,3,3,7/6,For the difference between £225.12.7 for my part and the £338.8.10 for Rice's 3/5 part.
 24,16,22,16330123,2,5,2,3,5/5,For 3 months of £112.16.3 owed to Rice nr 23 at 8%
 25,4,9,16330130,75,0,8,3,3/2,For 5 barrels nr 3 at £6.15 per pound as partial payment for the 100 Leeds dozens nr 8
 26,1,9,16330130,135,19,8,3,3/1,"Paid to George Pinchback, which was to be for 6 months as partial payment for the 100 Leeds dozens nr 8"
@@ -34,9 +34,9 @@ id,credit,debit,date,l,s,d,journal,ledger,description
 33,10,7,16330217,110,17,2,4,2/3,For 1224 guilders 19s. 8d. drawn by Symonson on me with the exchange of 36s. 10d.
 34,10,23,16330217,0,10,1,4,7/3,For brokerage and provision of 5 guilders 0s. 8d. at 33s. 4d. for nr 33
 35,1,24,16330221,594,0,0,4,8/1,For 96 pieces of Colchester black bays bought from James Wilkinson and consigned to Diego del Varino
-36,14,7,16330221,396,0,0,4,2/5,For Symonson’s 2/3 part in the bays nr 35
+36,14,7,16330221,396,0,0,4,2/5,For Symonson's 2/3 part in the bays nr 35
 37,12,7,16330221,637,10,0,5,2/4,For 150 kerseys sold to James Wilkinson at £4.5.0 per piece ready money
-38,7,14,16330221,212,10,0,5,5/2,For Symonson’s 1/3 of the principal of the sale in nr 37
+38,7,14,16330221,212,10,0,5,5/2,For Symonson's 1/3 of the principal of the sale in nr 37
 39,7,1,16330221,328,10,11,5,1/2,Received from James Wilkinson to clear the account current of Symonson
 40,11,25,16330305,286,2,6,5,8/3,"For sales of 60 dozens: 30 at 45 guilders 7s. 8d. and 30 at 50 guilders for 6 months, which is 2861 guilders 5s. at the exchange rate of 33s. 4d."
 41,25,10,16330305,136,2,6,5,3/8,For the 1361 guilders 5s. received by Symonson (nr 40) and reduced at 33s. 4d.
@@ -44,9 +44,9 @@ id,credit,debit,date,l,s,d,journal,ledger,description
 43,1,26,16330313,200,0,0,5,8/1,For 2666 florins 20 gros remitted in bills of exchange to Steven Jourdane at 240 gros per pound Flemish
 44,1,12,16330313,2,2,6,5,4/1,For brokerage of £637.10 at 1/3% nr 37
 45,23,12,16330313,128,5,0,5,4/7,For my 2/3 of the gains from the sale of 150 kerseys nr 37 and other transactions
-46,14,12,16330313,57,2,6,5,4/5,For Symonson’s 1/3 part in the £171.7.6 gained by the sale of 150 kerseys nr 37
+46,14,12,16330313,57,2,6,5,4/5,For Symonson's 1/3 part in the £171.7.6 gained by the sale of 150 kerseys nr 37
 47,1,27,16330313,4,7,0,6,8/1,For charges upon the reception of 60 pieces of Cambric cloth to be sold for Symonson
-48,20,28,16330313,300,0,0,6,9/6,For 1000 French crowns remitted by Du Boys for the company’s use at 124d. are 3100 guilders and here at 72d. There is a mistake in the journal that gives this as £530
+48,20,28,16330313,300,0,0,6,9/6,For 1000 French crowns remitted by Du Boys for the company's use at 124d. are 3100 guilders and here at 72d. There is a mistake in the journal that gives this as £530
 49,3,7,16330321,300,0,0,6,2/1,For 60 Leeds dozens sold and shipped to Symonson by John Claeson at £5 per piece
 50,1,7,16330321,9,7,6,6,2/1,For various charges in my book of small expenses
 51,30,29,16330321,426,4,6,6,9/9,For 1576 pieces of figs purchased by Diego del Varino in Lisbon which cost 681 milréis (u.) 960 réis reduced at 400 réis per 5s.
@@ -70,8 +70,8 @@ id,credit,debit,date,l,s,d,journal,ledger,description
 69,17,36,16340415,605,0,0,8,11/5,For sale of 100 double says for 2200 ducats at 440 réis per ducat is 968 milréis and 66d. sterling per ducat
 70,36,30,16340415,441,13,0,8,9/11,For 706 milréis 640 réis received for the 73 pieces in nr 69
 71,23,6,16340415,50,0,0,8,2/7,For 500 guilders gained for my part by our company stock from July 1633 at 33s. 4d.
-72,38,37,16340415,504,19,6,9,11/11,"For 5580 guilders, which is 2290 guilders for me, 500 guilders for gains, and 2790 guilders for Symonson’s part with gains remitted at 36s. 10d. with the deduction of the exchange is 5049 guilders 15 stuivers at 33s. 4d."
-73,14,38,16340415,279,0,0,9,11/5,For Symonson’s 1/2 part due to him of 2790 guilders from nr 72
+72,38,37,16340415,504,19,6,9,11/11,"For 5580 guilders, which is 2290 guilders for me, 500 guilders for gains, and 2790 guilders for Symonson's part with gains remitted at 36s. 10d. with the deduction of the exchange is 5049 guilders 15 stuivers at 33s. 4d."
+73,14,38,16340415,279,0,0,9,11/5,For Symonson's 1/2 part due to him of 2790 guilders from nr 72
 74,6,38,16340415,279,0,0,9,11/2,For my 1/2 part due to me of 2790 guilders from nr 72
 75,9,5,16340422,393,13,6,9,2/3,"For £1499.43.4 French crowns drawn upon me, including 41 French crowns for brokerage and provision, at 63d."
 76,5,34,16340422,12,6,0,9,10/2,For 41 crowns for brokerage and provision of the exchange nr 75 at 72d.
@@ -81,14 +81,14 @@ id,credit,debit,date,l,s,d,journal,ledger,description
 80,39,26,16340422,10,19,8,9,8/12,For 140 florins 10 gros 5 penningen (of 18 to the gros) remitted by bills of exchange at 230 gros per pound Flemish
 81,23,26,16340422,10,19,9,9,8/7,For gains from nr 79 and nr 80
 82,37,28,16340430,158,4,9,10,9/11,For 1740 guilders 12 stuivers ordered by me on sight of letter for wares purchased for the company at 36s. 8d.
-83,19,18,16340430,94,18,10,10,6/6,For Rice’s 3/5 for the exchange in nr 82 by Andrew Hitchcock
+83,19,18,16340430,94,18,10,10,6/6,For Rice's 3/5 for the exchange in nr 82 by Andrew Hitchcock
 84,37,13,16340430,250,0,0,10,4/11,By my order paid to John Sharp for the use of Wilkinson as promised in nr 63
 85,16,13,16340430,6,13,4,10,4/5,For the forbearance of the £250 in nr 84 at 8% for 4 months nr 63 and 84
 86,31,13,16340430,250,0,0,10,4/10,For performance of the promise in nr 63 and 84
 87,16,37,16340430,2,11,8,10,11/5,For £96.14.9 detained upon interest at 8% for 4 months
 88,31,13,16340508,200,0,0,10,4/10,For our agreement of the value for Hitchcocks use at 8% for 4 months
 89,29,1,16340508,525,0,0,10,1/9,For 1500 pieces sold to George Pinchback at 7s. per piece
-90,18,19,16340508,315,0,0,10,6/6,For Rice’s 3/5 part of the received sum for figs nr 89
+90,18,19,16340508,315,0,0,10,6/6,For Rice's 3/5 part of the received sum for figs nr 89
 91,22,18,16340508,115,1,5,10,6/7,For money paid for Rice upon the company account and is now due with interest nr 23 and 24
 92,1,18,16340508,99,19,1,10,6/1,Paid to Rice in full the £315 due to him for this sale
 93,11,10,16340508,200,0,0,10,4/3,For sale of 40 dozens sold to Jasper Cop for ready money at 50 guilders per piece at 33s. 4d.
@@ -96,7 +96,7 @@ id,credit,debit,date,l,s,d,journal,ledger,description
 95,10,11,16340508,12,6,0,11,4/3,"For 123 guilders for costs of warehouse, brokerage, and provision of dozens at 33s. 4d."
 96,9,31,16340513,338,6,8,11,10/3,For the sale of 51 hundredweight 3 quarters 4 pounds sugar nr 54 agreed upon with George Pinchback at 14d. per pound
 97,1,38,16340513,504,19,6,11,11/1,For 5781 guilders 19 stuivers remitted by bill of exchange at 38s. 2d. and so remitted 5049 guilders 15 stuivers at 33s. 4d. nr 72
-98,38,14,16340513,289,1,11,11,5/11,For Symonson’s half of the exchange of 5781 guilders 19 stuivers is 2890 guilders 19 stuivers 8 penningen nr 97
+98,38,14,16340513,289,1,11,11,5/11,For Symonson's half of the exchange of 5781 guilders 19 stuivers is 2890 guilders 19 stuivers 8 penningen nr 97
 99,38,6,16340513,289,1,11,11,2/11,For my half of the exchange of 5781 guilders 19 stuivers is 2890 guilders 19 stuivers 8 penningen nr 97
 100,13,37,16340522,205,6,8,11,11/4,For payment of £200 plus £5.6.8 interest due to Wilkinson and paid to Hitchcock for him
 101,13,31,16340522,200,0,0,11,10/4,For the sum promised nr 88
@@ -105,16 +105,16 @@ id,credit,debit,date,l,s,d,journal,ledger,description
 104,31,9,16340522,338,6,8,11,3/10,For the performance of my promise made in nr 96 and accomplished by sale of the sugar to George Pinchback nr 102
 105,34,13,16340522,574,1,1,12,4/10,For 8 bars weighing 1733 oz at 6s. 7.5d. per ounce
 106,13,1,16340522,102,16,1,12,1/4,Received from Wilkinson
-107,13,31,16340522,314,3,4,12,10/4,For Wilkinson’s performance of the agreement of 21 March for the sale of sugar nr 54
+107,13,31,16340522,314,3,4,12,10/4,For Wilkinson's performance of the agreement of 21 March for the sale of sugar nr 54
 108,30,29,16340503,154,11,6,12,9/9,"For 572 pieces of figs received from John Thomson shipper, which cost 247 milréis 320 réis"
 109,36,30,16340503,163,7,0,12,9/11,For payment of interest through the figs and so placed here on the account of ready money at 261 milréis and 360 réis
 110,30,17,16340503,24,4,0,12,5/9,For provision and charges from nr 70 and 109 at 4% is 38 milréis 720 réis
 111,41,40,16340607,25,10,7,12,12/12,For expenses done at the reception of 270 figs and 300 pieces of raisons solis to sell for the account of Del Varino
 112,1,41,16340607,25,10,7,12,12/1,For expenses paid out of my money for Del Varino nr 111
-113,1,29,16340607,23,8,9,12,9/1,For expenses at the reception of 172 pieces of figs 
+113,1,29,16340607,23,8,9,12,9/1,For expenses at the reception of 172 pieces of figs
 114,37,28,16340607,244,5,0,12,9/11,For 2699 guilders ordered to be paid on sight of his letter to Hitchcock for the wares bought on 15 May at 36s. 10d.
 115,1,37,16340607,72,16,8,12,11/1,For so much by the order of Hitchcock paid to Wilkinson to clear the exchange
-116,19,18,16340607,146,11,0,12,6/6,For Rice’s 3/5 part of my payment for the use of the company
+116,19,18,16340607,146,11,0,12,6/6,For Rice's 3/5 part of my payment for the use of the company
 117,35,43,16340607,1515,7,0,13,12/10,For wares sold by him nr 68: 8 bales of pepper - 2753 guilders 9 stuivers 4 penningen; 20 butts of serrese - 12400 guilders is 15153 guilders 9 stuivers 4 penningen at 10 guilders or 33s. 4d. Flemish per sterling
 118,43,44,16340607,1102,0,4,13,13/12,For 11020 guilders 3 stuivers 9 penningen that Trust received from the sale nr 117. There is a mistake in the journal that gives this as £1162.0.4
 119.1,27,13,16340615,135,0,0,13,4/8,For 20 pieces of Cambric cloth sold at £6.15 at 4 months. Listed together with 119.2 and 119.3 against the rule in place 244 of the Introduction
@@ -131,25 +131,25 @@ id,credit,debit,date,l,s,d,journal,ledger,description
 128,42,40,16340623,500,2,8,14,12/12,For the net proceeds from the sale of the fruits nr 124 with the costs nr 126 and 127
 129,23,1,16340623,13,4,0,14,1/7,For warehouse and provision of the fruits nr 124 as noted in nr 127
 130,38,18,16340623,530,9,1,14,6/11,"For 5781 guilders 19 stuivers remitted at 36s. 4d., which is 5304 guilders 11 stuivers at 33s. 4d. see also nr 138"
-131,14,38,16340623,289,1,11,14,11/5,For Symonson’s one half of the remitted 5781 guilders 19 stuivers nr 130 now at the rate of 33s. 4d.
+131,14,38,16340623,289,1,11,14,11/5,For Symonson's one half of the remitted 5781 guilders 19 stuivers nr 130 now at the rate of 33s. 4d.
 132,6,38,16340623,289,1,11,14,13/2,For my one half of the remitted 5781 guilders 19 stuivers nr 130 now at the rate of 33s. 4d.
 133,24,45,16340702,785,13,4,14,13/8,For 2908 pieces of figs received by Richard Munt in return for 96 bays sold at 31 ducats
 134,9,1,16340702,485,6,5,15,1/3,Received by my cashier by the assignation of Pinchback
 135,9,16,16340702,1,10,0,15,5/3,For payment by Pinchback before the loan was due
 136,9,45,16340702,20,13,7,15,13/3,For expenses of 2908 pieces of figs paid by Pinchback for use of the company
-137,14,7,16340702,13,15,7,15,2/5,For Symonson’s 2/3 of the expenses nr 136
+137,14,7,16340702,13,15,7,15,2/5,For Symonson's 2/3 of the expenses nr 136
 138,18,38,16340702,530,9,1,15,11/6,"For 6020 guilders 13 stuivers remitted to Symonson to close the company at 37s. 10d., which is 5304 guilders 11 stuivers at 33s. 4d. see also nr 130"
-139,38,14,16340702,301,0,8,15,5/11,For Symonson’s one half of the remitted 6020 guilders 13 stuivers nr 138 now at the rate of 33s. 4d. from nr 73
+139,38,14,16340702,301,0,8,15,5/11,For Symonson's one half of the remitted 6020 guilders 13 stuivers nr 138 now at the rate of 33s. 4d. from nr 73
 140,38,6,16340702,301,0,8,15,2/11,For my one half of the remitted 6020 guilders 13 stuivers nr 138 now at the rate of 33s. 4d. from nr 74
 141,14,38,16340702,22,0,8,15,11/5,For the 220 guilders 6 stuivers 8 penningen gained for his part in the exchange where £279 was due to him in nr 73 but £301.0.8 was remitted in nr 139
 142,23,38,16340702,22,0,8,15,11/7,For the 220 guilders 6 stuivers 8 penningen gained for my part in the exchange where £279 was due to me in nr 74 but £301.0.8 was remitted in nr 140
 143,29,18,16340711,348,6,0,15,6/9,For sale of 648 pieces figs weighing 162 hundredweight at 43s. per hundredweight
-144,18,19,16340711,208,19,7,15,6/6,For Rice’s 3/5 in the sale of the figs nr 143
+144,18,19,16340711,208,19,7,15,6/6,For Rice's 3/5 in the sale of the figs nr 143
 145,23,29,16340711,114,15,5,15,9/7,"For warehouse, provision and extraordinary pains at £17.10 and for my part in the gains at £97.5.5"
-146,19,29,16340711,145,18,1,15,9/6,For Rice’s 3/5 in the gains of the figs
-147,13,7,16340711,135,0,0,16,2/4,For Wilkinson’s debt due to Symonson nr 119
-148,9,7,16340711,135,0,0,16,2/4,For Pinchback’s debt due to Symonson nr 119
-149,37,7,16340711,135,0,0,16,2/11,For Hitchcock’s debt due to Symonson nr 119
+146,19,29,16340711,145,18,1,15,9/6,For Rice's 3/5 in the gains of the figs
+147,13,7,16340711,135,0,0,16,2/4,For Wilkinson's debt due to Symonson nr 119
+148,9,7,16340711,135,0,0,16,2/4,For Pinchback's debt due to Symonson nr 119
+149,37,7,16340711,135,0,0,16,2/11,For Hitchcock's debt due to Symonson nr 119
 150,7,1,16340711,28,1,7,16,1/2,"For expenses, brokerage, warehouse, and provision formerly charged on his account of Cambric cloth (nr 27) and now by his order received from Wilkinson"
 151,13,37,16340720,48,0,0,16,11/4,For my assignation delivered to him by Wilkinson
 152,13,16,16340720,3,6,8,16,5/4,For forbearance of £250 paid two months before the time
@@ -169,12 +169,12 @@ id,credit,debit,date,l,s,d,journal,ledger,description
 166,34,23,16340720,3,9,1,17,7/10,For loss by the barter of the 8 bars of silver nr 60
 167,21,17,16340720,14,2,8,17,5/7,For gains of the company from the sale of 100 says nr 18
 168,21,20,16340720,80,11,7,17,6/7,For gains by the exchange
-169,14,24,16340720,127,15,7,17,8/5,For Symonson’s 2/3 part of the £191.13.4 from the sale of 96 black bays
+169,14,24,16340720,127,15,7,17,8/5,For Symonson's 2/3 part of the £191.13.4 from the sale of 96 black bays
 170,23,24,16340720,63,17,9,17,8/7,For my 1/3 part of the 96 black bays
 171,21,28,16340720,60,0,6,17,9/7,For gains by the exchange with Jean du Boys in Rouen
-172,21,35,16340720,600,7,0,17,10/7,For gains by the sale of wine and pepper as by the factor’s account (Thomas Trust) nr 68
+172,21,35,16340720,600,7,0,17,10/7,For gains by the sale of wine and pepper as by the factor's account (Thomas Trust) nr 68
 173,44,21,16340720,9,2,6,17,7/13,For 3 stuivers 9 penningen too short and lost by exchange
-174,19,21,16340720,444,9,8,18,7/6,For Rice’s 3/5 part of the £740.16.1 due to him by the division of this account
+174,19,21,16340720,444,9,8,18,7/6,For Rice's 3/5 part of the £740.16.1 due to him by the division of this account
 175,23,21,16340720,296,6,5,18,7/7,For my 2/5 part of the £740.16.1 due to me by the division of this account
 176,6,47,16340720,301,0,8,18,13/2,For 3010 guilders 6 stuivers and 8 penningen due to me by conclusion of the account
 177,20,47,16340720,1092,17,10,18,13/6,For £3642.58.6 French crowns due to the company at the conclusion of the account

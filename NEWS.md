@@ -32,7 +32,7 @@
 
 # debkeepr 0.0.3
 
-- Add vignette: Analysis of Richard Dafforne’s Journal and Ledger
+- Add vignette: Analysis of Richard Dafforne's Journal and Ledger
 - pkgdown website for `debkeepr`
 
 # debkeepr 0.0.2

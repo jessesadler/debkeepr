@@ -24,7 +24,7 @@
 #'     `credit` and `debit` variables in `dafforne_transactions`.
 #'   - `account`: Name of the account.
 #'   - `ledger`: Page on which the account appears in the ledger.
-#'   - `investor`: The investor or the person’s whose capital is involved in
+#'   - `investor`: The investor or the person's whose capital is involved in
 #'     the account. Accounts that only deal with the bookkeeper's capital are
 #'     listed as "ego".
 #'   - `description`: Short description of each account.

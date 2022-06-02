@@ -218,7 +218,7 @@ The summary of accounts in Dafforne's practice journal and ledger and the visual
 
 According to Dafforne, at the opening of a new set of account books the merchant must create an inventory in which all cash, unsold wares, debtors, and creditors are listed in relation to the stock account. Of this account Dafforne explains that it 
 
-> "containeth in it, all what a man possesseth; whether *Money, Wares, Debts* due to us, or the like: and (marke this well) *Cash*, yea, each particular thing that I possesse, is but a member of that whole body *stocke*; therefore by the joynt meeting of all those members, the body (*Stock*) is made compleat.”[^8]
+> "containeth in it, all what a man possesseth; whether *Money, Wares, Debts* due to us, or the like: and (marke this well) *Cash*, yea, each particular thing that I possesse, is but a member of that whole body *stocke*; therefore by the joynt meeting of all those members, the body (*Stock*) is made compleat."[^8]
 
 We can get a better understanding of the inventory or opening of the books by inspecting the stock account. One way to do this is to recreate the ledger entries for the account. The `dafforne_transactions` data is presented in the form of the journal: each transaction is listed once and tied to two accounts. The ledger can be replicated by finding all debit transactions for an account — the left side of the page in the ledger — and all credit transactions for the account — the right side of the ledger.
 

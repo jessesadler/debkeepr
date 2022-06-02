@@ -101,7 +101,7 @@ should have a similar arrangement to \code{dafforne_transactions}. Each row is
 a transaction in the book. \code{credit} and \code{debit} variables contain the
 account ids associated with discharging account (credit) and the receiving
 account (debit). The \code{lsd} variable represents the tripartite or
-tetrapartitevalue of each transaction. Like \code{dafforne_transactions},
+tetrapartite value of each transaction. Like \code{dafforne_transactions},
 transactions data frames can have additional variables with attributes for
 each transaction such as id or date among others.
 }

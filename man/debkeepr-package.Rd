@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Analysis of historical non-decimal currencies and value systems that use the tripartite system of pounds, shillings, and pence or tetrapartite systems.
+Analysis of historical non-decimal currencies and value systems that use either tripartite or tetrapartite systems such as that of pounds, shillings, and pence.
 }
 \seealso{
 Useful links:

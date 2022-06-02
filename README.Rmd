@@ -41,12 +41,12 @@ Translations of *libra*, *solidus*, and *denarius* units:
 
 ## Resources
 - [Getting Started with debkeepr vignette](https://jessesadler.github.io/debkeepr/articles/debkeepr.html): An introduction to the `deb_lsd`, `deb_tetra`, and `deb_decimal` types and their use as vectors and as columns in data frames.
-- [Transactions in Richard Dafforne’s Journal vignette](https://jessesadler.github.io/debkeepr/articles/transactions.html): Examples of financial and arithmetic calculations dealing with various currencies taken from the practice journal in Richard Dafforne’s *Merchant’s Mirrour* (1660), a 17th-century textbook for learning accounting practices.
-- [Analysis of Richard Dafforne’s Journal and Ledger vignette](https://jessesadler.github.io/debkeepr/articles/ledger.html): An analysis of the practice journal and ledger in Dafforne’s *Merchant’s Mirrour* using the `dafforne_transactions` and `dafforne_accounts` data provided in `debkeepr`.
-- [A PDF copy of Dafforne’s practice journal](https://github.com/jessesadler/debkeepr/blob/master/data-raw/dafforne-journal.pdf) can be consulted to further investigate the practices of early modern double-entry bookkeeping.
+- [Transactions in Richard Dafforne's Journal vignette](https://jessesadler.github.io/debkeepr/articles/transactions.html): Examples of financial and arithmetic calculations dealing with various currencies taken from the practice journal in Richard Dafforne's *Merchant's Mirrour* (1660), a 17th-century textbook for learning accounting practices.
+- [Analysis of Richard Dafforne's Journal and Ledger vignette](https://jessesadler.github.io/debkeepr/articles/ledger.html): An analysis of the practice journal and ledger in Dafforne's *Merchant's Mirrour* using the `dafforne_transactions` and `dafforne_accounts` data provided in `debkeepr`.
+- [A PDF copy of Dafforne's practice journal](https://github.com/jessesadler/debkeepr/blob/master/data-raw/dafforne-journal.pdf) can be consulted to further investigate the practices of early modern double-entry bookkeeping.
 
 ## Usage
-The `deb_lsd`, `deb_tetra`, and `deb_decimal` types are implemented to deal with two interrelated problems inherent in historical non-decimal currencies.
+The `deb_lsd`, `deb_tetra`, and `deb_decimal` types are implemented to deal with two interrelated problems inherent in historical non-decimal currencies and other value systems.
 
 1. Historical currencies consist of three or four separate non-decimal **units**. Most often: pounds, shillings, and pence with sometimes a fourth unit, such as the farthing, added on.
 2. The **bases** of the shillings, pence, and optionally farthing units differed by region, coinage, and era.

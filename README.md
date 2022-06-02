@@ -96,7 +96,7 @@ Translations of *libra*, *solidus*, and *denarius* units:
 
 The `deb_lsd`, `deb_tetra`, and `deb_decimal` types are implemented to
 deal with two interrelated problems inherent in historical non-decimal
-currencies.
+currencies and other value systems.
 
 1.  Historical currencies consist of three or four separate non-decimal
     **units**. Most often: pounds, shillings, and pence with sometimes a

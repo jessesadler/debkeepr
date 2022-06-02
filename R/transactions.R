@@ -26,7 +26,7 @@
 #' a transaction in the book. `credit` and `debit` variables contain the
 #' account ids associated with discharging account (credit) and the receiving
 #' account (debit). The `lsd` variable represents the tripartite or
-#' tetrapartitevalue of each transaction. Like `dafforne_transactions`,
+#' tetrapartite value of each transaction. Like `dafforne_transactions`,
 #' transactions data frames can have additional variables with attributes for
 #' each transaction such as id or date among others.
 #'
