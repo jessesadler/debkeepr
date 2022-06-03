@@ -161,7 +161,7 @@ test_that("vec_cast works for deb_tetra", {
   expect_snapshot_error(vec_cast(factor("hello"), deb_tetra()))
 })
 
-test_that("vec_cast works with lists",{
+test_that("vec_cast works with lists", {
   # list to deb_lsd
   expect_identical(vec_cast(y, deb_lsd()), x)
   expect_snapshot(vec_cast(c(y, 5), deb_lsd()), error = TRUE)
@@ -255,8 +255,8 @@ test_that("vec_cast works between deb_decimal and deb_tetra", {
   expect_equal(vec_cast(dec_d_tetra, deb_tetra()), tetra1)
   expect_equal(vec_cast(dec_f_tetra, deb_tetra()), tetra1)
   # With length more than 1
-  expect_equal(vec_cast(deb_decimal(c(1.11875, 2.234375, 3.2875), bases = bases3),
-                        deb_tetra()),
+  expect_equal(vec_cast(deb_decimal(c(1.11875, 2.234375, 3.2875),
+                                    bases = bases3), deb_tetra()),
                deb_tetra(1:3, c(2, 4, 5), c(4, 8, 9), c(2, 1, 0)))
   # deb_decimal with lsd bases to tetra
   expect_equal(vec_cast(dec_l, deb_tetra()), deb_tetra(1, 2, 3, 0))

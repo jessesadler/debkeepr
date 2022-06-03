@@ -194,7 +194,7 @@ test_that("integer coerces to deb_tetra", {
                deb_tetra(c(1, 1), c(0, 2), c(0, 3), c(0, 4)))
   expect_equal(length(c(tetra, 1L)), 2)
   expect_equal(c(tetra, 1L),
-               deb_tetra(c(1, 1), c(2, 0), c(3, 0), c(4,0)))
+               deb_tetra(c(1, 1), c(2, 0), c(3, 0), c(4, 0)))
 })
 
 test_that("deb_tetra coercion works with NA", {

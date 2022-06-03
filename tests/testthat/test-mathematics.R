@@ -41,8 +41,10 @@ dec_tetra_s <- deb_decimal(36.8125, unit = "s", bases = bases3)
 dec_tetra_d <- deb_decimal(441.75, unit = "d", bases = bases3)
 dec_tetra_f <- deb_decimal(1767, unit = "f", bases = bases3)
 
-dec_tetra <- deb_decimal(c(36.8125, 112.3125, 72.375, 48.5625), unit = "s", bases = bases3)
-dec_tetra_alt <- deb_decimal(c(1.840625, 5.615625, 3.618750, 2.428125), bases = bases4)
+dec_tetra <- deb_decimal(c(36.8125, 112.3125, 72.375, 48.5625),
+                         unit = "s", bases = bases3)
+dec_tetra_alt <- deb_decimal(c(1.840625, 5.615625, 3.618750, 2.428125),
+                             bases = bases4)
 dec_tetra_f_alt <- deb_decimal(7708, unit = "f", bases = bases4)
 
 
@@ -193,7 +195,8 @@ test_that("round family works with deb_lsd and deb_tetra", {
   expect_equal(round(multi_decimal), round(deb_normalize(multi_decimal)))
   expect_equal(round(tetra_round), deb_tetra(6, 0, 0, 0))
   expect_equal(round(tetra_round, 2), deb_tetra(5, 19, 11, 3.88))
-  expect_equal(round(tetra_multi_decimal), round(deb_normalize(tetra_multi_decimal)))
+  expect_equal(round(tetra_multi_decimal),
+               round(deb_normalize(tetra_multi_decimal)))
   # signif
   expect_equal(signif(lsd_round, 3), deb_lsd(5, 19, 11.9))
   expect_equal(signif(lsd_round, 2), round1)

@@ -247,14 +247,16 @@ f_bases_check <- function(f, call = rlang::caller_env()) {
       call = call)
   }
   if (rlang::is_na(f)) {
-    cli::cli_abort(c("{.arg f} cannot be `NA`.",
-                     "i" = "{.arg f} must be natural numbers greater than zero."),
-                   call = call)
+    cli::cli_abort(c(
+      "{.arg f} cannot be `NA`.",
+      "i" = "{.arg f} must be natural numbers greater than zero."),
+      call = call)
   }
   if (!is_natural(f)) {
-    cli::cli_abort(c("{.arg f} must be a natural number greater than zero.",
-                     "x" = "{.val {f}} is not a natural number."),
-                   call = call)
+    cli::cli_abort(c(
+      "{.arg f} must be a natural number greater than zero.",
+      "x" = "{.val {f}} is not a natural number."),
+      call = call)
   }
 }
 
@@ -442,7 +444,8 @@ tetra_list_check <- function(x, call = rlang::caller_env()) {
 deb_ptype_check <- function(x, call = rlang::caller_env()) {
   if (!deb_is_lsd(x) && !deb_is_decimal(x) && !deb_is_tetra(x)) {
     cli::cli_abort(c(
-      "`lsd` must be of a column of type <deb_lsd>, <deb_tetra>, or <deb_decimal>.",
+      "`lsd` must be of a column of type <deb_lsd>, <deb_tetra>, or
+          <deb_decimal>.",
       "x" = "You've supplied a column of type {.cls {class(x)}}."),
       call = call)
   }

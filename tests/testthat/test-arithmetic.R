@@ -88,7 +88,7 @@ test_that("Arithmetic operators work with two deb_decimal vectors", {
   expect_snapshot_error(dec_l * dec_s)
 })
 
-test_that("Arithmetic operators work with deb_decimal vectors with tetra bases", {
+test_that("Arithmetic ops work with deb_decimal vectors with tetra bases", {
   expect_equal(dec_tetra_l + dec_tetra_l, dec_tetra_l * 2)
   expect_equal(dec_tetra_f_alt + dec_tetra_f_alt, dec_tetra_f_alt * 2)
   expect_equal(dec_tetra_l - deb_decimal(1.5, bases = bases3),
@@ -112,7 +112,7 @@ test_that("Arithmetic operators work with deb_decimal vectors with tetra bases",
   expect_snapshot_error(dec_tetra_l * dec_tetra_s)
 })
 
-test_that("Arithmetic operators work with deb_decimal vectors with mixed bases", {
+test_that("Arithmetic ops work with deb_decimal vectors with mixed bases", {
   expect_equal(dec_l + dec_tetra_l, deb_decimal(3.678125))
   expect_equal(dec_tetra_l + dec_l, deb_decimal(3.678125))
   expect_equal(dec_l - dec_tetra_s, deb_decimal(-0.003125))
@@ -194,7 +194,8 @@ test_that("Arithmetic operators work with deb_tetra and numeric", {
   expect_equal(3 * tetra2, deb_tetra(16, 0, 1, 2))
   expect_equal(2 * tetra_alt[[1]], deb_tetra(2, 20, 7, 0, bases4))
   expect_equal(1 / deb_tetra(0, 12, 0, 0), deb_tetra(1, 13, 4, 0))
-  expect_equal(1 / deb_tetra(0, 40, 0, 0, bases4), deb_tetra(1, 12, 8, 0, bases4))
+  expect_equal(1 / deb_tetra(0, 40, 0, 0, bases4),
+               deb_tetra(1, 12, 8, 0, bases4))
   # Errors
   expect_snapshot_error(tetra1 + 3)
   expect_snapshot_error(3 %% tetra1)
@@ -255,7 +256,7 @@ test_that("Arithmetic operators work with deb_lsd and deb_tetra", {
   expect_equal(lsd1 / deb_tetra(0, 18, 4, 2), 2)
   # deb_tetra and deb_lsd
   expect_equal(tetra1 + lsd1, deb_lsd(3, 13, 6.75))
-  expect_equal( tetra_alt + lsd_alt,
+  expect_equal(tetra_alt + lsd_alt,
                 deb_lsd(c(2, 10), c(26, 43), c(12.5, 0.75), bases2))
   expect_equal(tetra1 - lsd2, deb_lsd(-3, -9, -10.25))
   expect_equal(tetra_alt - lsd_alt,

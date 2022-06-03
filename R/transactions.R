@@ -128,7 +128,8 @@ deb_account <- function(df, account_id,
   if (is.null(account_id)) {
     cli::cli_abort(c(
       "{.var account_id} cannot be {.code NULL}.",
-      "x" = "{.var account_id} must be present in `credit` and/or `debit` columns."))
+      "x" = "{.var account_id} must be present in `credit` and/or `debit`
+          columns."))
   }
   credit_vec <- rlang::eval_tidy(credit_quo, df)
   debit_vec <- rlang::eval_tidy(debit_quo, df)
@@ -182,7 +183,7 @@ deb_account <- function(df, account_id,
 
     current <- cred - deb
     # Deal with floating point issues
-    if (!is.na(current)){
+    if (!is.na(current)) {
       if (should_be_int(current)) {
         current <- round(current)
         }
@@ -481,7 +482,7 @@ deb_balance <- function(df,
   vals <- current[[2]]
 
   # If there are NAs
-  if(anyNA(vals)) {
+  if (anyNA(vals)) {
     return(tibble::tibble(relation = c("credit", "debit"),
              !! cn := vec_init(deb_lsd(bases = bases), 2L)))
   }

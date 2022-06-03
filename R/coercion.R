@@ -31,7 +31,8 @@ vec_ptype2.integer.deb_lsd <- function(x, y, ...) y
 # deb_decimal and deb_decimal
 
 #' @export
-vec_ptype2.deb_decimal.deb_decimal <- function(x, y, ..., x_arg = "", y_arg = "") {
+vec_ptype2.deb_decimal.deb_decimal <- function(x, y, ...,
+                                               x_arg = "", y_arg = "") {
   bases <- bases_hierarchy(x, y, x_arg = x_arg, y_arg = y_arg)
   unit <- unit_hierarchy(x, y)
 

@@ -22,7 +22,7 @@ b2 <- c(8, 16)
 l <- c(10, 10, 7, 9, 15, 12)
 s <- c(15, 15, 11, 2, 0, 10)
 d <- c(6, 6, 8, 11, 9, 4)
-f = c(3, 3, 1, 0, 3, 2)
+f <- c(3, 3, 1, 0, 3, 2)
 cred <- c("a", "b", "a", "c", "d", "c")
 deb <- c("b", "a", "c", "a", "a", "e")
 lsd_b1 <- deb_lsd(l, s, d)
@@ -262,9 +262,9 @@ test_that("deb_account works", {
   expect_identical(deb_account(tbl_na, "a", lsd = dec_tetra, na.rm = TRUE),
                    deb_account(tbl_b1, "a", lsd = dec_tetra))
   # Tetra: only one type of transaction
-  expect_equal(deb_account(tbl_b1, "e", lsd = tetra)[1,][["tetra"]],
+  expect_equal(deb_account(tbl_b1, "e", lsd = tetra)[1, ][["tetra"]],
                deb_tetra(0, 0, 0, 0))
-  expect_equal(deb_account(tbl_b1, "d", lsd = tetra)[2,][["tetra"]],
+  expect_equal(deb_account(tbl_b1, "d", lsd = tetra)[2, ][["tetra"]],
                deb_tetra(0, 0, 0, 0))
 })
 
@@ -303,10 +303,10 @@ test_that("deb_account_summary works", {
     deb_account_summary(tbl_b1, lsd = dec_tetra)[["credit"]]),
     c(s = 20L, d = 12L, f = 4L))
   # Credit for c is same as deb_account
-  expect_equal(deb_account_summary(tbl_b1, lsd = tetra)[3,][["credit"]],
-               deb_account(tbl_b1, "c", lsd = tetra)[1,][["tetra"]])
-  expect_equal(deb_account_summary(tbl_b1, lsd = dec_tetra)[3,][["credit"]],
-               deb_account(tbl_b1, "c", lsd = dec_tetra)[1,][["dec_tetra"]])
+  expect_equal(deb_account_summary(tbl_b1, lsd = tetra)[3, ][["credit"]],
+               deb_account(tbl_b1, "c", lsd = tetra)[1, ][["tetra"]])
+  expect_equal(deb_account_summary(tbl_b1, lsd = dec_tetra)[3, ][["credit"]],
+               deb_account(tbl_b1, "c", lsd = dec_tetra)[1, ][["dec_tetra"]])
 })
 
 

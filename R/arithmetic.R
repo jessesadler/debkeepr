@@ -575,13 +575,15 @@ vec_arith.deb_tetra.deb_decimal <- function(op, x, y) {
   } else {
     mixed_bases_equal(y, x)
   }
+  y_bases <- deb_bases(y)
+  x_bases <- deb_bases(x)
 
   switch(
     op,
-    "+" = tetra_plus(x, vec_cast(y, deb_tetra(bases = deb_bases(x)))),
-    "-" = tetra_minus(x, vec_cast(y, deb_tetra(bases = deb_bases(x)))),
+    "+" = tetra_plus(x, vec_cast(y, deb_tetra(bases = x_bases))),
+    "-" = tetra_minus(x, vec_cast(y, deb_tetra(bases = x_bases))),
     "/" = as.double(x) /
-      vec_data(vec_cast(y, deb_decimal(unit = "l", bases = deb_bases(y)))),
+      vec_data(vec_cast(y, deb_decimal(unit = "l", bases = y_bases))),
     stop_incompatible_op(op, x, y)
   )
 }
@@ -597,13 +599,15 @@ vec_arith.deb_decimal.deb_tetra <- function(op, x, y) {
   } else {
     mixed_bases_equal(x, y)
   }
+  y_bases <- deb_bases(y)
+  x_bases <- deb_bases(x)
 
   switch(
     op,
-    "+" = tetra_plus(vec_cast(x, deb_tetra(bases = deb_bases(y))), y),
-    "-" = tetra_minus(vec_cast(x, deb_tetra(bases = deb_bases(y))), y),
-    "/" = vec_data(vec_cast(x, deb_decimal(unit = "l",
-                                           bases = deb_bases(x)))) / as.double(y),
+    "+" = tetra_plus(vec_cast(x, deb_tetra(bases = y_bases)), y),
+    "-" = tetra_minus(vec_cast(x, deb_tetra(bases = y_bases)), y),
+    "/" = vec_data(vec_cast(x, deb_decimal(unit = "l", bases = x_bases))) /
+      as.double(y),
     stop_incompatible_op(op, x, y)
   )
 }

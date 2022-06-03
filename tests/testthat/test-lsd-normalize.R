@@ -88,7 +88,8 @@ test_that("it comes together with deb_normalize with deb_tetra", {
   expect_equal(deb_normalize(tetra_multi),
                deb_tetra(c(9, -9, 9), c(6, -6, 12),
                          c(8, -8, 4), c(3, -3, 3.9999)))
-  expect_equal(deb_normalize(tetra_alt), deb_tetra(6, 35, 5, 7, tetra_alt_bases))
+  expect_equal(deb_normalize(tetra_alt),
+               deb_tetra(6, 35, 5, 7, tetra_alt_bases))
 })
 
 test_that("deb_normalize works with numeric vector", {

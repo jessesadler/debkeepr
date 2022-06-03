@@ -38,7 +38,7 @@
 
     <deb_decimal> * <deb_decimal> is not permitted
 
-# Arithmetic operators work with deb_decimal vectors with tetra bases
+# Arithmetic ops work with deb_decimal vectors with tetra bases
 
     Code
       dec_tetra_l + deb_decimal(1.5, bases = bases4)
@@ -54,7 +54,7 @@
 
     <deb_decimal> * <deb_decimal> is not permitted
 
-# Arithmetic operators work with deb_decimal vectors with mixed bases
+# Arithmetic ops work with deb_decimal vectors with mixed bases
 
     Code
       dec_l_alt + dec_tetra_f

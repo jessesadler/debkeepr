@@ -5,7 +5,8 @@ x <- deb_tetra(c(1, 2, 3), c(4, 5, 6), c(7, 8, 9), c(2, 4, 6))
 test_that("new_tetra works", {
   expect_equal(length(new_tetra()), 0)
   expect_equal(class(new_tetra()), c("deb_tetra", "vctrs_rcrd", "vctrs_vctr"))
-  expect_equal(length(new_tetra(c(1, 2, 3), c(4, 5, 6), c(7, 8, 9), c(2, 4, 6))), 3)
+  expect_equal(length(new_tetra(c(1, 2, 3), c(4, 5, 6),
+                                c(7, 8, 9), c(2, 4, 6))), 3)
 })
 
 test_that("deb_tetra works", {
@@ -19,7 +20,8 @@ test_that("deb_tetra works", {
   expect_false(deb_is_tetra(3))
   # NA
   expect_true(is.na(deb_tetra(3, 4, NA, 1)))
-  expect_equal(is.na(deb_tetra(c(1, 2, 3), c(4, 5, 6), c(7, 8, 9), c(2, 4, NA))),
+  expect_equal(is.na(deb_tetra(c(1, 2, 3), c(4, 5, 6),
+                               c(7, 8, 9), c(2, 4, NA))),
                c(FALSE, FALSE, TRUE))
   # Data is correct
   expect_equal(vctrs::field(x, "l"), c(1, 2, 3))
@@ -43,6 +45,7 @@ test_that("deb_lsd prints", {
   expect_snapshot_output(
     print(deb_tetra(c(1, 2, 3), c(4, 5, 6), c(7, 8, NA), c(2, 4, 6))))
   expect_equal(vctrs::vec_ptype_abbr(x), "tetra[20s:12d:4f]")
-  expect_equal(vctrs::vec_ptype_abbr(deb_tetra(1, 2, 3, 4, bases = c(60, 16, 8))),
+  expect_equal(vctrs::vec_ptype_abbr(deb_tetra(1, 2, 3, 4,
+                                               bases = c(60, 16, 8))),
                "tetra[60s:16d:8f]")
 })

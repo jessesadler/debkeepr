@@ -176,9 +176,10 @@ deb_convert_unit <- function(x, to = c("l", "s", "d", "f")) {
   }
   to_unit <- rlang::arg_match(to)
   if (to_unit == "f" && vec_size(deb_bases(x)) != 3L) {
-    cli::cli_abort(c("`x` must be a <deb_decimal> vector with tetrapartite bases to
-                       convert to the 'f' unit.",
-                     "i" = "Choose to = 'l', 's', or 'd' instead."))
+    cli::cli_abort(c(
+    "`x` must be a <deb_decimal> vector with tetrapartite bases to convert
+        to the 'f' unit.",
+    "i" = "Choose to = 'l', 's', or 'd' instead."))
   }
   vec_cast(x, deb_decimal(unit = to_unit, bases = deb_bases(x)))
 }

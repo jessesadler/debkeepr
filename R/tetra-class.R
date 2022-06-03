@@ -4,8 +4,8 @@
 
 #' Internal constructor to create deb_tetra type
 #'
-#' Asserts that `l`, `s`, `d`, and `f` are of type `double()` and that `bases` is an
-#' `integer()` of length 3. Creates the vector through `new_rcrd()`.
+#' Asserts that `l`, `s`, `d`, and `f` are of type `double()` and that `bases`
+#' is an `integer()` of length 3. Creates the vector through `new_rcrd()`.
 #'
 #' @return An object of class `deb_tetra`.
 #' @keywords internal
