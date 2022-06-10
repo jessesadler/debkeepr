@@ -5,24 +5,21 @@ y <- deb_decimal(x)
 tetra <- c(20, 12, 4)
 
 test_that("new_decimal works", {
-  expect_equal(length(new_decimal()), 0)
-  expect_equal(class(new_decimal()),
-               c("deb_decimal", "vctrs_vctr", "double"))
-  expect_equal(length(new_decimal(x)), 3)
+  expect_length(new_decimal(), 0)
+  expect_s3_class(new_decimal(), c("deb_decimal", "vctrs_vctr", "double"))
+  expect_length(new_decimal(x), 3)
   # With tetra
-  expect_equal(length(new_decimal(x, bases = c(20L, 12L, 4L))), 3)
+  expect_length(new_decimal(x, bases = c(20L, 12L, 4L)), 3)
   # Error if bases are not length 2 or 3
   expect_snapshot_error(new_decimal(x, bases = c(20L, 12L, 8L, 4L)))
 })
 
 test_that("deb_decimal works", {
   # Prototype
-  expect_equal(length(deb_decimal()), 0)
-  expect_equal(class(deb_decimal()),
-               c("deb_decimal", "vctrs_vctr", "double"))
+  expect_length(deb_decimal(), 0)
+  expect_s3_class(deb_decimal(), c("deb_decimal", "vctrs_vctr", "double"))
   # Basics
-  expect_equal(class(deb_decimal(x)),
-               c("deb_decimal", "vctrs_vctr", "double"))
+  expect_s3_class(deb_decimal(x), c("deb_decimal", "vctrs_vctr", "double"))
   expect_true(deb_is_decimal(y))
   expect_false(deb_is_decimal(3))
   # NA
@@ -38,11 +35,10 @@ test_that("deb_decimal works", {
   expect_equal(deb_bases(deb_decimal(x, bases = c(60, 16))),
                c(s = 60L, d = 16L))
   # With tetra
-  expect_equal(length(deb_decimal(x, bases = tetra)), 3)
+  expect_length(deb_decimal(x, bases = tetra), 3)
   expect_equal(deb_unit(deb_decimal(x, unit = "f", bases = tetra)), "f")
   # Errors
-  expect_snapshot(error = TRUE,
-                  deb_decimal(x, bases = c(20, 12, 4, 8)))
+  expect_snapshot(error = TRUE, deb_decimal(x, bases = c(20, 12, 4, 8)))
   expect_snapshot_error(deb_decimal(x, unit = "f"))
 })
 

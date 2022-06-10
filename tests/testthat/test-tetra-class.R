@@ -3,19 +3,18 @@
 x <- deb_tetra(c(1, 2, 3), c(4, 5, 6), c(7, 8, 9), c(2, 4, 6))
 
 test_that("new_tetra works", {
-  expect_equal(length(new_tetra()), 0)
-  expect_equal(class(new_tetra()), c("deb_tetra", "vctrs_rcrd", "vctrs_vctr"))
-  expect_equal(length(new_tetra(c(1, 2, 3), c(4, 5, 6),
-                                c(7, 8, 9), c(2, 4, 6))), 3)
+  expect_length(new_tetra(), 0)
+  expect_s3_class(new_tetra(), c("deb_tetra", "vctrs_rcrd", "vctrs_vctr"))
+  expect_length(new_tetra(c(1, 2, 3), c(4, 5, 6), c(7, 8, 9), c(2, 4, 6)), 3)
 })
 
 test_that("deb_tetra works", {
   # Prototype
-  expect_equal(length(deb_tetra()), 0)
-  expect_equal(class(deb_tetra()), c("deb_tetra", "vctrs_rcrd", "vctrs_vctr"))
+  expect_length(deb_tetra(), 0)
+  expect_s3_class(deb_tetra(), c("deb_tetra", "vctrs_rcrd", "vctrs_vctr"))
   # Basics
-  expect_equal(class(deb_tetra(1, 2, 3, 4)),
-               c("deb_tetra", "vctrs_rcrd", "vctrs_vctr"))
+  expect_s3_class(deb_tetra(1, 2, 3, 4),
+                  c("deb_tetra", "vctrs_rcrd", "vctrs_vctr"))
   expect_true(deb_is_tetra(x))
   expect_false(deb_is_tetra(3))
   # NA

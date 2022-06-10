@@ -36,10 +36,9 @@ dec_tetra_f_alt <- deb_decimal(7708, unit = "f", bases = bases4)
 test_that("deb_lsd coerces to itself", {
   # Successful
   expect_equal(vec_ptype_common(deb_lsd(), deb_lsd()), deb_lsd())
-  expect_equal(length(vec_c(lsd, lsd2)), 2)
-  expect_equal(vec_c(lsd, lsd2),
-               deb_lsd(c(1, 4), c(2, 5), c(3, 6)))
-  expect_equal(length(c(lsd, lsd2)), 2)
+  expect_length(vec_c(lsd, lsd2), 2)
+  expect_equal(vec_c(lsd, lsd2), deb_lsd(c(1, 4), c(2, 5), c(3, 6)))
+  expect_length(c(lsd, lsd2), 2)
   expect_equal(c(lsd, lsd2), deb_lsd(c(1, 4), c(2, 5), c(3, 6)))
   # Errors
   expect_snapshot(vec_c(lsd, lsd_alt), error = TRUE)
@@ -48,23 +47,19 @@ test_that("deb_lsd coerces to itself", {
 
 test_that("double coerces to deb_lsd", {
   expect_equal(vec_ptype_common(deb_lsd(), double()), deb_lsd())
-  expect_equal(length(vec_c(lsd, 1.5)), 2)
-  expect_equal(vec_c(lsd, 1.5),
-               deb_lsd(c(1, 1), c(2, 10), c(3, 0)))
-  expect_equal(vec_c(1.5, lsd),
-               deb_lsd(c(1, 1), c(10, 2), c(0, 3)))
-  expect_equal(length(c(lsd, 1.5)), 2)
+  expect_length(vec_c(lsd, 1.5), 2)
+  expect_equal(vec_c(lsd, 1.5), deb_lsd(c(1, 1), c(2, 10), c(3, 0)))
+  expect_equal(vec_c(1.5, lsd), deb_lsd(c(1, 1), c(10, 2), c(0, 3)))
+  expect_length(c(lsd, 1.5), 2)
   expect_equal(c(lsd, 1.5), deb_lsd(c(1, 1), c(2, 10), c(3, 0)))
 })
 
 test_that("integer coerces to deb_lsd", {
   expect_equal(vec_ptype_common(deb_lsd(), integer()), deb_lsd())
-  expect_equal(length(vec_c(lsd, 1L)), 2)
-  expect_equal(vec_c(lsd, 1L),
-               deb_lsd(c(1, 1), c(2, 0), c(3, 0)))
-  expect_equal(vec_c(1L, lsd),
-               deb_lsd(c(1, 1), c(0, 2), c(0, 3)))
-  expect_equal(length(c(lsd, 1L)), 2)
+  expect_length(vec_c(lsd, 1L), 2)
+  expect_equal(vec_c(lsd, 1L), deb_lsd(c(1, 1), c(2, 0), c(3, 0)))
+  expect_equal(vec_c(1L, lsd), deb_lsd(c(1, 1), c(0, 2), c(0, 3)))
+  expect_length(c(lsd, 1L), 2)
   expect_equal(c(lsd, 1L), deb_lsd(c(1, 1), c(2, 0), c(3, 0)))
 })
 
@@ -84,9 +79,9 @@ test_that("deb_decimal coerces to itself", {
   # Successful
   expect_equal(vec_ptype_common(deb_decimal(), deb_decimal()),
                deb_decimal())
-  expect_equal(length(vec_c(dec, dec2)), 3)
+  expect_length(vec_c(dec, dec2), 3)
   expect_equal(vec_c(dec, dec2), dec3)
-  expect_equal(length(c(dec, dec2)), 3)
+  expect_length(c(dec, dec2), 3)
   expect_equal(c(dec, dec2), dec3)
   expect_equal(c(dec_s, dec_s2), dec_s3)
   expect_equal(c(dec_d, dec_d2), dec_d3)
@@ -128,19 +123,19 @@ test_that("deb_decimal coerces to itself", {
 
 test_that("double coerces to deb_decimal", {
   expect_equal(vec_ptype_common(deb_decimal(), double()), deb_decimal())
-  expect_equal(length(vec_c(dec, 4.5)), 3)
+  expect_length(vec_c(dec, 4.5), 3)
   expect_equal(vec_c(dec, 4.5), deb_decimal(c(1.35, 2.5, 4.5)))
   expect_equal(vec_c(4.5, dec), deb_decimal(c(4.5, 1.35, 2.5)))
-  expect_equal(length(c(dec, 4.5)), 3)
+  expect_length(c(dec, 4.5), 3)
   expect_equal(c(dec, 4.5), deb_decimal(c(1.35, 2.5, 4.5)))
 })
 
 test_that("integer coerces to deb_decimal", {
   expect_equal(vec_ptype_common(deb_decimal(), integer()), deb_decimal())
-  expect_equal(length(vec_c(dec, 4L)), 3)
+  expect_length(vec_c(dec, 4L), 3)
   expect_equal(vec_c(dec, 4L), deb_decimal(c(1.35, 2.5, 4)))
   expect_equal(vec_c(4L, dec), deb_decimal(c(4, 1.35, 2.5)))
-  expect_equal(length(c(dec, 4L)), 3)
+  expect_length(c(dec, 4L), 3)
   expect_equal(c(dec, 4L), deb_decimal(c(1.35, 2.5, 4)))
 })
 
@@ -160,10 +155,10 @@ test_that("incompatible types do not work", {
 test_that("deb_tetra coerces to itself", {
   # Successful
   expect_equal(vec_ptype_common(deb_tetra(), deb_tetra()), deb_tetra())
-  expect_equal(length(vec_c(tetra, tetra2)), 2)
+  expect_length(vec_c(tetra, tetra2), 2)
   expect_equal(vec_c(tetra, tetra2),
                deb_tetra(c(1, 5), c(2, 6), c(3, 7), c(4, 8)))
-  expect_equal(length(c(tetra, tetra2)), 2)
+  expect_length(c(tetra, tetra2), 2)
   expect_equal(c(tetra, tetra2),
                deb_tetra(c(1, 5), c(2, 6), c(3, 7), c(4, 8)))
   # Errors
@@ -175,26 +170,23 @@ test_that("deb_tetra coerces to itself", {
 
 test_that("double coerces to deb_tetra", {
   expect_equal(vec_ptype_common(deb_tetra(), double()), deb_tetra())
-  expect_equal(length(vec_c(tetra, 1.5)), 2)
+  expect_length(vec_c(tetra, 1.5), 2)
   expect_equal(vec_c(tetra, 1.5),
                deb_tetra(c(1, 1), c(2, 10), c(3, 0), c(4, 0)))
   expect_equal(vec_c(1.5, tetra),
                deb_tetra(c(1, 1), c(10, 2), c(0, 3), c(0, 4)))
-  expect_equal(length(c(tetra, 1.5)), 2)
+  expect_length(c(tetra, 1.5), 2)
   expect_equal(c(tetra, 1.5),
                deb_tetra(c(1, 1), c(2, 10), c(3, 0), c(4, 0)))
 })
 
 test_that("integer coerces to deb_tetra", {
   expect_equal(vec_ptype_common(deb_tetra(), integer()), deb_tetra())
-  expect_equal(length(vec_c(tetra, 1L)), 2)
-  expect_equal(vec_c(tetra, 1L),
-               deb_tetra(c(1, 1), c(2, 0), c(3, 0), c(4, 0)))
-  expect_equal(vec_c(1L, tetra),
-               deb_tetra(c(1, 1), c(0, 2), c(0, 3), c(0, 4)))
-  expect_equal(length(c(tetra, 1L)), 2)
-  expect_equal(c(tetra, 1L),
-               deb_tetra(c(1, 1), c(2, 0), c(3, 0), c(4, 0)))
+  expect_length(vec_c(tetra, 1L), 2)
+  expect_equal(vec_c(tetra, 1L), deb_tetra(c(1, 1), c(2, 0), c(3, 0), c(4, 0)))
+  expect_equal(vec_c(1L, tetra), deb_tetra(c(1, 1), c(0, 2), c(0, 3), c(0, 4)))
+  expect_length(c(tetra, 1L), 2)
+  expect_equal(c(tetra, 1L), deb_tetra(c(1, 1), c(2, 0), c(3, 0), c(4, 0)))
 })
 
 test_that("deb_tetra coercion works with NA", {

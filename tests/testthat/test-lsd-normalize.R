@@ -40,7 +40,7 @@ test_that("is_negative works", {
 
 test_that("decimal_check works", {
   # lsd
-  expect_equal(length(decimal_check(multi)), 3)
+  expect_length(decimal_check(multi), 3)
   expect_equal(decimal_check(x), x)
   expect_equal(decimal_check(decimal), deb_lsd(5, 101, 71.9999))
   expect_equal(decimal_check(deb_lsd(-5.875, -84.325, -62.0999)),
