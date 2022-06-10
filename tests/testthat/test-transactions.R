@@ -1,12 +1,10 @@
 ## Test transaction functions ##
 
-# Problems with comparing tibblesb / data frames
+# Problems with comparing tibbles / data frames
 # In addition, all.equal() and identical() acting differently
 
 
 # Set up ------------------------------------------------------------------
-
-suppressPackageStartupMessages(library(tibble))
 
 mut <- function(x, lsd = TRUE) {
   if (lsd) {
@@ -34,123 +32,124 @@ dec_tetra <- deb_as_decimal(tetra)
 
 # Account d and e only have one type of transaction
 # Tests no NAs path in deb_account_summary
-tbl_b1 <- tibble(credit = cred, debit = deb,
-                 lsd = lsd_b1,
-                 dec = dec_b1,
-                 tetra = tetra,
-                 dec_tetra = dec_tetra)
+tbl_b1 <- tibble::tibble(credit = cred, debit = deb,
+                         lsd = lsd_b1,
+                         dec = dec_b1,
+                         tetra = tetra,
+                         dec_tetra = dec_tetra)
 df_b1 <- as.data.frame(tbl_b1)
 # Different bases and non-default column names
-tbl_b2 <- tibble(from = cred, to = deb,
-                 data = lsd_b2,
-                 dec = dec_b2)
+tbl_b2 <- tibble::tibble(from = cred, to = deb,
+                         data = lsd_b2,
+                         dec = dec_b2)
 df_b2 <- as.data.frame(tbl_b2)
 
 # totally balanced
 # Tests all accounts present path in deb_account_summary
-balanced <- tibble(credit = c("a", "b", "a", "c"),
-                   debit = c("b", "a", "c", "a"),
-                   lsd = deb_lsd(l = c(10, 10, 7, 7),
-                                 s = c(15, 15, 11, 11),
-                                 d = c(6, 6, 8, 8)),
-                   tetra = deb_tetra(l = c(10, 10, 7, 7),
-                                     s = c(15, 15, 11, 11),
-                                     d = c(6, 6, 8, 8),
-                                     f = c(2, 2, 3, 3)))
+balanced <- tibble::tibble(
+  credit = c("a", "b", "a", "c"),
+  debit = c("b", "a", "c", "a"),
+  lsd = deb_lsd(l = c(10, 10, 7, 7),
+                s = c(15, 15, 11, 11),
+                d = c(6, 6, 8, 8)),
+  tetra = deb_tetra(l = c(10, 10, 7, 7),
+                    s = c(15, 15, 11, 11),
+                    d = c(6, 6, 8, 8),
+                    f = c(2, 2, 3, 3)))
 balanced[["dec"]] <- deb_as_decimal(balanced[["lsd"]])
 balanced[["dec_tetra"]] <- deb_as_decimal(balanced[["tetra"]])
 
 # NA, and account "e's" only credit is NA
 # Tests else path in deb_account_summary
-tbl_na <- tibble(credit = c(cred, "e", "a"), debit = c(deb, "b", "b"),
-                 lsd = c(lsd_b1, NA, NA),
-                 dec = c(dec_b1, NA, NA),
-                 tetra = c(tetra, NA, NA),
-                 dec_tetra = c(dec_tetra, NA, NA))
+tbl_na <- tibble::tibble(credit = c(cred, "e", "a"), debit = c(deb, "b", "b"),
+                         lsd = c(lsd_b1, NA, NA),
+                         dec = c(dec_b1, NA, NA),
+                         tetra = c(tetra, NA, NA),
+                         dec_tetra = c(dec_tetra, NA, NA))
 # NAs but all accounts have credit and debit
 # Tests all accounts present path in deb_account_summary
-tbl_na2 <- tibble(credit = c("a", "b", "a", "c", "c"),
-                  debit = c("b", "a", "c", "a", "a"),
-                  lsd = deb_lsd(l = c(10, 10, 7, 9, NA),
-                                s = c(15, 15, 11, 2, NA),
-                                d = c(6, 6, 8, 11, NA)))
+tbl_na2 <- tibble::tibble(credit = c("a", "b", "a", "c", "c"),
+                          debit = c("b", "a", "c", "a", "a"),
+                          lsd = deb_lsd(l = c(10, 10, 7, 9, NA),
+                                        s = c(15, 15, 11, 2, NA),
+                                        d = c(6, 6, 8, 11, NA)))
 tbl_na2[["dec"]] <- deb_as_decimal(tbl_na2[["lsd"]])
 
 relation_v <- c("credit", "debit", "current")
 
-s_b1 <- tibble(account_id = letters[1:5],
-               credit = deb_lsd(l = c(18, 10, 21, 15, 0),
-                                s = c(7, 15, 13, 0, 0),
-                                d = c(2, 6, 3, 9, 0)),
-               debit = deb_lsd(l = c(34, 10, 7, 0, 12),
-                               s = c(19, 15, 11, 0, 10),
-                               d = c(2, 6, 8, 0, 4)),
-               current = deb_lsd(l = c(-16, 0, 14, 15, -12),
-                                 s = c(-12, 0, 1, 0, -10),
-                                 d = c(0, 0, 7, 9, -4)))
-sdec_b1 <- tibble(account_id = letters[1:5],
-                  credit = deb_decimal(s_b1$credit),
-                  debit = deb_decimal(s_b1$debit),
-                  current = deb_decimal(s_b1$current))
-s_b2 <- tibble(account_id = letters[1:5],
-               credit = deb_lsd(l = c(20, 11, 22, 15, 0),
-                                s = c(2, 7, 4, 0, 0),
-                                d = c(14, 6, 15, 9, 0),
-                                bases = b2),
-               debit = deb_lsd(l = c(36, 11, 8, 0, 13),
-                               s = c(2, 7, 3, 0, 2),
-                               d = c(10, 6, 8, 0, 4),
-                               bases = b2),
-               current = deb_lsd(l = c(-15, 0, 14, 15, -13),
-                                 s = c(-7, 0, 1, 0, -2),
-                                 d = c(-12, 0, 7, 9, -4),
-                                 bases = b2))
-sdec_b2 <- tibble(account_id = letters[1:5],
-                  credit = deb_decimal(s_b2$credit),
-                  debit = deb_decimal(s_b2$debit),
-                  current = deb_decimal(s_b2$current))
-s_balanced <- tibble(account_id = letters[1:3],
-                     credit = deb_lsd(l = c(18, 10, 7),
-                                      s = c(7, 15, 11),
-                                      d = c(2, 6, 8)),
-                     debit = deb_lsd(l = c(18, 10, 7),
-                                     s = c(7, 15, 11),
-                                     d = c(2, 6, 8)),
-                     current = deb_lsd(l = c(0, 0, 0),
-                                       s = c(0, 0, 0),
-                                       d = c(0, 0, 0)))
-sdec_balanced <- tibble(account_id = letters[1:3],
-                        credit = deb_decimal(s_balanced$credit),
-                        debit = deb_decimal(s_balanced$debit),
-                        current = deb_decimal(s_balanced$current))
-s_na <- tibble(account_id = letters[1:5],
-               credit = deb_lsd(l = c(NA, 10, 21, 15, NA),
-                                s = c(NA, 15, 13, 0, NA),
-                                d = c(NA, 6, 3, 9, NA)),
-               debit = deb_lsd(l = c(34, NA, 7, 0, 12),
-                               s = c(19, NA, 11, 0, 10),
-                               d = c(2, NA, 8, 0, 4)),
-               current = deb_lsd(l = c(NA, NA, 14, 15, NA),
-                                 s = c(NA, NA, 1, 0, NA),
-                                 d = c(NA, NA, 7, 9, NA)))
-sdec_na <- tibble(account_id = letters[1:5],
-                  credit = deb_decimal(s_na$credit),
-                  debit = deb_decimal(s_na$debit),
-                  current = deb_decimal(s_na$current))
-s_na2 <- tibble(account_id = c("a", "b", "c"),
-                credit = deb_lsd(l = c(18, 10, NA),
-                                 s = c(7, 15, NA),
-                                 d = c(2, 6, NA)),
-                debit = deb_lsd(l = c(NA, 10, 7),
-                                s = c(NA, 15, 11),
-                                d = c(NA, 6, 8)),
-                current = deb_lsd(l = c(NA, 0, NA),
-                                  s = c(NA, 0, NA),
-                                  d = c(NA, 0, NA)))
-sdec_na2 <- tibble(account_id = letters[1:3],
-                   credit = deb_decimal(s_na2$credit),
-                   debit = deb_decimal(s_na2$debit),
-                   current = deb_decimal(s_na2$current))
+s_b1 <- tibble::tibble(account_id = letters[1:5],
+                       credit = deb_lsd(l = c(18, 10, 21, 15, 0),
+                                        s = c(7, 15, 13, 0, 0),
+                                        d = c(2, 6, 3, 9, 0)),
+                       debit = deb_lsd(l = c(34, 10, 7, 0, 12),
+                                       s = c(19, 15, 11, 0, 10),
+                                       d = c(2, 6, 8, 0, 4)),
+                       current = deb_lsd(l = c(-16, 0, 14, 15, -12),
+                                         s = c(-12, 0, 1, 0, -10),
+                                         d = c(0, 0, 7, 9, -4)))
+sdec_b1 <- tibble::tibble(account_id = letters[1:5],
+                          credit = deb_decimal(s_b1$credit),
+                          debit = deb_decimal(s_b1$debit),
+                          current = deb_decimal(s_b1$current))
+s_b2 <- tibble::tibble(account_id = letters[1:5],
+                       credit = deb_lsd(l = c(20, 11, 22, 15, 0),
+                                        s = c(2, 7, 4, 0, 0),
+                                        d = c(14, 6, 15, 9, 0),
+                                        bases = b2),
+                       debit = deb_lsd(l = c(36, 11, 8, 0, 13),
+                                       s = c(2, 7, 3, 0, 2),
+                                       d = c(10, 6, 8, 0, 4),
+                                       bases = b2),
+                       current = deb_lsd(l = c(-15, 0, 14, 15, -13),
+                                         s = c(-7, 0, 1, 0, -2),
+                                         d = c(-12, 0, 7, 9, -4),
+                                         bases = b2))
+sdec_b2 <- tibble::tibble(account_id = letters[1:5],
+                          credit = deb_decimal(s_b2$credit),
+                          debit = deb_decimal(s_b2$debit),
+                          current = deb_decimal(s_b2$current))
+s_balanced <- tibble::tibble(account_id = letters[1:3],
+                             credit = deb_lsd(l = c(18, 10, 7),
+                                              s = c(7, 15, 11),
+                                              d = c(2, 6, 8)),
+                             debit = deb_lsd(l = c(18, 10, 7),
+                                             s = c(7, 15, 11),
+                                             d = c(2, 6, 8)),
+                             current = deb_lsd(l = c(0, 0, 0),
+                                               s = c(0, 0, 0),
+                                               d = c(0, 0, 0)))
+sdec_balanced <- tibble::tibble(account_id = letters[1:3],
+                                credit = deb_decimal(s_balanced$credit),
+                                debit = deb_decimal(s_balanced$debit),
+                                current = deb_decimal(s_balanced$current))
+s_na <- tibble::tibble(account_id = letters[1:5],
+                       credit = deb_lsd(l = c(NA, 10, 21, 15, NA),
+                                        s = c(NA, 15, 13, 0, NA),
+                                        d = c(NA, 6, 3, 9, NA)),
+                       debit = deb_lsd(l = c(34, NA, 7, 0, 12),
+                                       s = c(19, NA, 11, 0, 10),
+                                       d = c(2, NA, 8, 0, 4)),
+                       current = deb_lsd(l = c(NA, NA, 14, 15, NA),
+                                         s = c(NA, NA, 1, 0, NA),
+                                         d = c(NA, NA, 7, 9, NA)))
+sdec_na <- tibble::tibble(account_id = letters[1:5],
+                          credit = deb_decimal(s_na$credit),
+                          debit = deb_decimal(s_na$debit),
+                          current = deb_decimal(s_na$current))
+s_na2 <- tibble::tibble(account_id = c("a", "b", "c"),
+                        credit = deb_lsd(l = c(18, 10, NA),
+                                         s = c(7, 15, NA),
+                                         d = c(2, 6, NA)),
+                        debit = deb_lsd(l = c(NA, 10, 7),
+                                        s = c(NA, 15, 11),
+                                        d = c(NA, 6, 8)),
+                        current = deb_lsd(l = c(NA, 0, NA),
+                                          s = c(NA, 0, NA),
+                                          d = c(NA, 0, NA)))
+sdec_na2 <- tibble::tibble(account_id = letters[1:3],
+                           credit = deb_decimal(s_na2$credit),
+                           debit = deb_decimal(s_na2$debit),
+                           current = deb_decimal(s_na2$current))
 
 
 # transaction_check makes checks for all transaction functions
@@ -207,20 +206,20 @@ test_that("deb_account works", {
   expect_equal(deb_account(tbl_b1, "d")[["lsd"]], res3)
   expect_equal(deb_account(tbl_b1, "d", lsd = dec)[["dec"]], res4)
 
-  res5 <- tibble(relation = relation_v,
-                 lsd = deb_lsd(l = c(0, 12, -12),
-                               s = c(0, 10, -10),
-                               d = c(0, 4, -4)))
+  res5 <- tibble::tibble(relation = relation_v,
+                         lsd = deb_lsd(l = c(0, 12, -12),
+                                       s = c(0, 10, -10),
+                                       d = c(0, 4, -4)))
   res6 <- mut(res5)
   expect_identical(deb_account(tbl_b1, "e"), res5)
   expect_identical(deb_account(tbl_b1, "e", lsd = dec), res6)
 
   # different bases and column names
-  res7 <- tibble(relation = relation_v,
-                 data = deb_lsd(l = c(20, 36, -15),
-                                s = c(2, 2, -7),
-                                d = c(14, 10, -12),
-                                bases = b2))
+  res7 <- tibble::tibble(relation = relation_v,
+                         data = deb_lsd(l = c(20, 36, -15),
+                                        s = c(2, 2, -7),
+                                        d = c(14, 10, -12),
+                                        bases = b2))
   res8 <- mut(res7, FALSE)
   expect_identical(deb_account(tbl_b2, "a", from, to, data), res7)
   expect_identical(deb_account(tbl_b2, "a", from, to, dec), res8)
@@ -231,28 +230,28 @@ test_that("deb_account works", {
   expect_identical(deb_account(tbl_na, "a", lsd = dec, na.rm = TRUE),
                    deb_account(tbl_b1, "a", lsd = dec))
 
-  res9 <- tibble(relation = relation_v,
-                 lsd = deb_lsd(l = c(NA, 34, NA),
-                               s = c(NA, 19, NA),
-                               d = c(NA, 2, NA)))
+  res9 <- tibble::tibble(relation = relation_v,
+                         lsd = deb_lsd(l = c(NA, 34, NA),
+                                       s = c(NA, 19, NA),
+                                       d = c(NA, 2, NA)))
   res10 <- mut(res9)
   expect_identical(deb_account(tbl_na, "a", na.rm = FALSE), res9)
   expect_equal(deb_account(tbl_na, "a", lsd = dec, na.rm = FALSE)[["dec"]],
                deb_as_decimal(res9[["lsd"]]))
 
-  res11 <- tibble(relation = relation_v,
-                  lsd = deb_lsd(l = c(10, NA, NA),
-                                s = c(15, NA, NA),
-                                d = c(6, NA, NA)))
+  res11 <- tibble::tibble(relation = relation_v,
+                          lsd = deb_lsd(l = c(10, NA, NA),
+                                        s = c(15, NA, NA),
+                                        d = c(6, NA, NA)))
   res12 <- mut(res11)
   expect_identical(deb_account(tbl_na, "b", lsd = dec, na.rm = FALSE), res12)
 
   # deb_tetra
-  res13 <- tibble(relation = relation_v,
-                  tetra = deb_tetra(l = c(21, 7, 14),
-                                    s = c(13, 11, 1),
-                                    d = c(3, 8, 7),
-                                    f = c(2, 1, 1)))
+  res13 <- tibble::tibble(relation = relation_v,
+                          tetra = deb_tetra(l = c(21, 7, 14),
+                                            s = c(13, 11, 1),
+                                            d = c(3, 8, 7),
+                                            f = c(2, 1, 1)))
   expect_true(deb_is_tetra(res13[["tetra"]]))
   expect_equal(deb_account(tbl_b1, "c", lsd = tetra), res13)
   expect_equal(deb_account(tbl_b1, "c", lsd = dec_tetra)[["dec_tetra"]],
@@ -374,10 +373,10 @@ test_that("deb_current works", {
   expect_identical(deb_current(df_b1)[[2]], s_b1[[4]])
   # all zeros
   expect_identical(deb_current(balanced),
-                   tibble(account_id = c("a", "b", "c"),
-                          lsd = deb_lsd(l = c(0, 0, 0),
-                                        s = c(0, 0, 0),
-                                        d = c(0, 0, 0))))
+                   tibble::tibble(account_id = c("a", "b", "c"),
+                                  lsd = deb_lsd(l = c(0, 0, 0),
+                                                s = c(0, 0, 0),
+                                                d = c(0, 0, 0))))
   # Deal with NA values
   expect_identical(deb_current(tbl_na, na.rm = TRUE), deb_current(tbl_b1))
   expect_identical(deb_current(tbl_na)[[2]], s_na[[4]])
@@ -431,23 +430,23 @@ test_that("deb_balance works", {
   expect_identical(deb_balance(df_b1)[[2]], res1)
   # all zeros
   expect_identical(deb_balance(balanced),
-                   tibble(relation = rel,
-                          lsd = deb_lsd(c(0, 0), c(0, 0), c(0, 0))))
+                   tibble::tibble(relation = rel,
+                                  lsd = deb_lsd(c(0, 0), c(0, 0), c(0, 0))))
   expect_identical(deb_balance(balanced, lsd = dec),
-                   tibble(relation = rel,
-                          dec = deb_decimal(c(0, 0))))
+                   tibble::tibble(relation = rel,
+                                  dec = deb_decimal(c(0, 0))))
   expect_identical(deb_balance(balanced, lsd = tetra),
-                   tibble(relation = rel,
-                          tetra = deb_tetra(c(0, 0), c(0, 0),
-                                            c(0, 0), c(0, 0))))
+                   tibble::tibble(relation = rel,
+                                  tetra = deb_tetra(c(0, 0), c(0, 0),
+                                                    c(0, 0), c(0, 0))))
   expect_identical(deb_balance(balanced, lsd = dec_tetra),
-                   tibble(relation = rel,
-                          dec_tetra = deb_decimal(c(0, 0),
-                                                  bases = c(20, 12, 4))))
+                   tibble::tibble(
+                     relation = rel,
+                     dec_tetra = deb_decimal(c(0, 0), bases = c(20, 12, 4))))
 
   # Deal with NA values: Any NAs lead to both being NA
-  res2 <- tibble(relation = rel,
-                 lsd = deb_lsd(c(NA, NA), c(NA, NA), c(NA, NA)))
+  res2 <- tibble::tibble(relation = rel,
+                         lsd = deb_lsd(c(NA, NA), c(NA, NA), c(NA, NA)))
   expect_identical(deb_balance(tbl_na, na.rm = TRUE), deb_balance(tbl_b1))
   expect_identical(deb_balance(tbl_na), res2)
   expect_identical(deb_balance(tbl_na2), res2)
