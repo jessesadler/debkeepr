@@ -1,11 +1,11 @@
-pandoc: 2.14.2
-pkgdown: 2.0.3
+pandoc: 2.19.2
+pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   debkeepr: debkeepr.html
   ledger: ledger.html
   transactions: transactions.html
-last_built: 2022-06-03T15:05Z
+last_built: 2022-11-09T17:55Z
 urls:
   reference: https://jessesadler.github.io/debkeepr/reference
   article: https://jessesadler.github.io/debkeepr/articles
