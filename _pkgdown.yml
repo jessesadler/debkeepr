@@ -3,8 +3,9 @@ template:
   bootstrap: 5
   bslib:
     primary: "#036684"
-  params:
-    ganalytics: UA-126059158-1
+  includes:
+    in_header: |
+      <script defer data-domain="jessesadler.github.io/debkeepr" src="https://plausible.io/js/script.js"></script>
 authors:
   Jesse Sadler:
     href: https://www.jessesadler.com
