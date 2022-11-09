@@ -1,27 +1,19 @@
 # Test deb_text #
 
-lsd <- deb_lsd(c(10000, NA, 0, -10000),
-               c(8, NA, 0, -8),
-               c(5.8252, NA, 0, -5.8252))
-lsd2 <- deb_lsd(c(10000.8252, 0),
-                c(10000.8252, 0),
-                c(10000.8252, 0))
-dec <- deb_decimal(c(10000.8252, NA, 0, -10000.8252))
-dec2 <- deb_decimal(c(8.123456789, 0))
-tetra <- deb_tetra(c(10000, NA, 0, -10000),
-                   c(8, NA, 0, -8),
-                   c(5, NA, 0, -5),
-                   c(2.8252, NA, 0, -2.8252))
-
 test_that("deb_text works", {
   expect_snapshot(deb_text(c(2, 3)), error = TRUE)
-  expect_type(deb_text(lsd), "character")
-  expect_length(deb_text(lsd), 4)
-  expect_type(deb_text(dec), "character")
-  expect_length(deb_text(dec), 4)
+  expect_type(deb_text(deb_lsd(1, 2, 3)), "character")
+  expect_type(deb_text(deb_decimal(1)), "character")
 })
 
 test_that("deb_text properly formats deb_lsd", {
+  lsd <- deb_lsd(c(10000, NA, 0, -10000),
+                 c(8, NA, 0, -8),
+                 c(5.8252, NA, 0, -5.8252))
+  lsd2 <- deb_lsd(c(10000.8252, 0),
+                  c(10000.8252, 0),
+                  c(10000.8252, 0))
+
   expect_equal(deb_text(lsd), c("£10,000 8s. 6d.", NA,
                                 "£0 0s. 0d.", "-£10,000 8s. 6d."))
   expect_equal(deb_text(lsd, sep = ".", s.mark = "", d.mark = ""),
@@ -41,6 +33,9 @@ test_that("deb_text properly formats deb_lsd", {
 })
 
 test_that("deb_text properly formats deb_decimal", {
+  dec <- deb_decimal(c(10000.8252, NA, 0, -10000.8252))
+  dec2 <- deb_decimal(c(8.123456789, 0))
+
   expect_equal(deb_text(dec), c("£10,001", NA, "£0", "-£10,001"))
   expect_equal(deb_text(dec, currency = "/", digits = 3, big.mark = ".",
                         decimal.mark = ",", suffix = " sols"),
@@ -52,6 +47,11 @@ test_that("deb_text properly formats deb_decimal", {
 })
 
 test_that("deb_text properly formats deb_tetra", {
+  tetra <- deb_tetra(c(10000, NA, 0, -10000),
+                     c(8, NA, 0, -8),
+                     c(5, NA, 0, -5),
+                     c(2.8252, NA, 0, -2.8252))
+
   expect_equal(deb_text(tetra), c("£10,000 8s. 5d. 3f.", NA,
                                   "£0 0s. 0d. 0f.", "-£10,000 8s. 5d. 3f."))
   expect_equal(deb_text(tetra, sep = ".", s.mark = "",

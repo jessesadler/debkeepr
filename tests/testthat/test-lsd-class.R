@@ -1,7 +1,5 @@
 ## Test deb_lsd class ##
 
-x <- deb_lsd(c(1, 2, 3), c(4, 5, 6), c(7, 8, 9))
-
 test_that("new_lsd works", {
   expect_length(new_lsd(), 0)
   expect_s3_class(new_lsd(), c("deb_lsd", "vctrs_rcrd", "vctrs_vctr"))
@@ -9,6 +7,8 @@ test_that("new_lsd works", {
 })
 
 test_that("deb_lsd works", {
+  x <- deb_lsd(c(1, 2, 3), c(4, 5, 6), c(7, 8, 9))
+
   # Prototype
   expect_length(deb_lsd(), 0)
   expect_s3_class(deb_lsd(), c("deb_lsd", "vctrs_rcrd", "vctrs_vctr"))
@@ -37,6 +37,8 @@ test_that("deb_lsd works", {
 })
 
 test_that("deb_lsd prints", {
+  x <- deb_lsd(c(1, 2, 3), c(4, 5, 6), c(7, 8, 9))
+
   expect_snapshot_output(print(x))
   expect_snapshot_output(print(deb_lsd(c(1, 2, 3), c(4, 5, 6), c(7, 8, NA))))
   expect_equal(vctrs::vec_ptype_abbr(x), "lsd[20s:12d]")

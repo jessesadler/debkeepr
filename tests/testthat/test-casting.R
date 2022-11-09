@@ -32,18 +32,6 @@ dec_d_tetra <- deb_decimal(268.5, unit = "d", bases = bases3)
 dec_f_tetra <- deb_decimal(1074, unit = "f", bases = bases3)
 dec_s_tetra_alt <- deb_decimal(60.21875, unit = "s", bases = bases4)
 
-x <- deb_lsd(l = 0:3, s = 4:7, d = 8:11)
-y <- list(c(0, 4, 8),
-          c(1, 5, 9),
-          c(2, 6, 10),
-          c(3, 7, 11))
-
-z <- deb_tetra(l = 0:3, s = 4:7, d = 8:11, f = 1:4)
-tetra_list <- list(c(0, 4, 8, 1),
-                   c(1, 5, 9, 2),
-                   c(2, 6, 10, 3),
-                   c(3, 7, 11, 4))
-
 # Test with vec_cast ------------------------------------------------------
 
 test_that("vec_cast works for deb_lsd", {
@@ -162,6 +150,18 @@ test_that("vec_cast works for deb_tetra", {
 })
 
 test_that("vec_cast works with lists", {
+  x <- deb_lsd(l = 0:3, s = 4:7, d = 8:11)
+  y <- list(c(0, 4, 8),
+            c(1, 5, 9),
+            c(2, 6, 10),
+            c(3, 7, 11))
+
+  z <- deb_tetra(l = 0:3, s = 4:7, d = 8:11, f = 1:4)
+  tetra_list <- list(c(0, 4, 8, 1),
+                     c(1, 5, 9, 2),
+                     c(2, 6, 10, 3),
+                     c(3, 7, 11, 4))
+
   # list to deb_lsd
   expect_identical(vec_cast(y, deb_lsd()), x)
   expect_snapshot(vec_cast(c(y, 5), deb_lsd()), error = TRUE)
@@ -276,6 +276,12 @@ test_that("vec_cast works between deb_decimal and deb_tetra", {
 # Test casting methods ----------------------------------------------------
 
 test_that("deb_as_lsd works", {
+  x <- deb_lsd(l = 0:3, s = 4:7, d = 8:11)
+  y <- list(c(0, 4, 8),
+            c(1, 5, 9),
+            c(2, 6, 10),
+            c(3, 7, 11))
+
   expect_equal(deb_as_lsd(lsd_alt), lsd_alt)
   expect_equal(deb_as_lsd(dec), lsd)
   expect_equal(deb_as_lsd(dec_d), lsd1)
@@ -293,6 +299,12 @@ test_that("deb_as_lsd works", {
 })
 
 test_that("deb_as_decimal works", {
+  x <- deb_lsd(l = 0:3, s = 4:7, d = 8:11)
+  y <- list(c(0, 4, 8),
+            c(1, 5, 9),
+            c(2, 6, 10),
+            c(3, 7, 11))
+
   expect_equal(deb_as_decimal(dec_bases), dec_bases)
   expect_equal(deb_as_decimal(dec_s), dec_s)
   expect_equal(deb_as_decimal(lsd), dec)
@@ -310,6 +322,12 @@ test_that("deb_as_decimal works", {
 })
 
 test_that("deb_as_tetra works", {
+  z <- deb_tetra(l = 0:3, s = 4:7, d = 8:11, f = 1:4)
+  tetra_list <- list(c(0, 4, 8, 1),
+                     c(1, 5, 9, 2),
+                     c(2, 6, 10, 3),
+                     c(3, 7, 11, 4))
+
   expect_equal(deb_as_tetra(tetra_alt), tetra_alt)
   expect_equal(deb_as_tetra(lsd1, f = 4), deb_tetra(1, 2, 3, 0))
   expect_equal(deb_as_tetra(lsd_alt, f = 8),

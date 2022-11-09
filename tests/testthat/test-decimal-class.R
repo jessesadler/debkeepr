@@ -1,10 +1,8 @@
 ## Test deb_decimal class ##
 
-x <- c(1.125, 2.5, 3.3)
-y <- deb_decimal(x)
-tetra <- c(20, 12, 4)
-
 test_that("new_decimal works", {
+  x <- c(1.125, 2.5, 3.3)
+
   expect_length(new_decimal(), 0)
   expect_s3_class(new_decimal(), c("deb_decimal", "vctrs_vctr", "double"))
   expect_length(new_decimal(x), 3)
@@ -15,6 +13,10 @@ test_that("new_decimal works", {
 })
 
 test_that("deb_decimal works", {
+  x <- c(1.125, 2.5, 3.3)
+  y <- deb_decimal(x)
+  tetra <- c(20, 12, 4)
+
   # Prototype
   expect_length(deb_decimal(), 0)
   expect_s3_class(deb_decimal(), c("deb_decimal", "vctrs_vctr", "double"))
@@ -43,6 +45,10 @@ test_that("deb_decimal works", {
 })
 
 test_that("deb_decimal prints", {
+  x <- c(1.125, 2.5, 3.3)
+  y <- deb_decimal(x)
+  tetra <- c(20, 12, 4)
+
   expect_snapshot_output(print(y))
   expect_snapshot_output(print(deb_decimal(NA)))
   expect_equal(vctrs::vec_ptype_abbr(y), "l[20s:12d]")

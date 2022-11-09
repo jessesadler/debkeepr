@@ -1,7 +1,5 @@
 ## Test deb_tetra class ##
 
-x <- deb_tetra(c(1, 2, 3), c(4, 5, 6), c(7, 8, 9), c(2, 4, 6))
-
 test_that("new_tetra works", {
   expect_length(new_tetra(), 0)
   expect_s3_class(new_tetra(), c("deb_tetra", "vctrs_rcrd", "vctrs_vctr"))
@@ -9,6 +7,8 @@ test_that("new_tetra works", {
 })
 
 test_that("deb_tetra works", {
+  x <- deb_tetra(c(1, 2, 3), c(4, 5, 6), c(7, 8, 9), c(2, 4, 6))
+
   # Prototype
   expect_length(deb_tetra(), 0)
   expect_s3_class(deb_tetra(), c("deb_tetra", "vctrs_rcrd", "vctrs_vctr"))
@@ -40,6 +40,8 @@ test_that("deb_tetra works", {
 })
 
 test_that("deb_lsd prints", {
+  x <- deb_tetra(c(1, 2, 3), c(4, 5, 6), c(7, 8, 9), c(2, 4, 6))
+
   expect_snapshot_output(print(x))
   expect_snapshot_output(
     print(deb_tetra(c(1, 2, 3), c(4, 5, 6), c(7, 8, NA), c(2, 4, 6))))
