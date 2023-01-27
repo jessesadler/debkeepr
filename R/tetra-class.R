@@ -7,7 +7,7 @@
 #' Asserts that `l`, `s`, `d`, and `f` are of type `double()` and that `bases`
 #' is an `integer()` of length 3. Creates the vector through `new_rcrd()`.
 #'
-#' @return An object of class `deb_tetra`.
+#' @returns An object of class `deb_tetra`.
 #' @keywords internal
 #' @noRd
 
@@ -71,7 +71,7 @@ new_tetra <- function(l = double(),
 #'   `c(20, 12, 4)`, which conforms to the English system of 1 pound =
 #'   20 shillings, 1 shilling = 12 pence, and 1 pence = 4 farthing.
 #'
-#' @return Returns a vector of class `deb_tetra`.
+#' @returns Returns a vector of class `deb_tetra`.
 #' @export
 #' @examples
 #'
@@ -130,7 +130,7 @@ methods::setOldClass(c("deb_tetra", "vctrs_rcrd", "vctrs_vctr"))
 #'
 #' @param x An object.
 #'
-#' @return `TRUE` if object is of class `deb_tetra` and `FALSE` if it is not.
+#' @returns `TRUE` if object is of class `deb_tetra` and `FALSE` if it is not.
 #' @export
 #' @examples
 #' x <- deb_tetra(5, 3, 8, 2)

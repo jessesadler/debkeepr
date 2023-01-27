@@ -34,7 +34,7 @@
 #' @param digits Integer. Indicating the number of decimal places
 #'   (`round()`) or significant digits (`signif()`) to be used.
 #'
-#' @return A `deb_lsd` or `deb_tetra` vector with normalized values.
+#' @returns A `deb_lsd` or `deb_tetra` vector with normalized values.
 #'
 #' @examples
 #' x <- deb_lsd(l = c(5, 8, 12),

@@ -8,7 +8,7 @@
 #' and that `bases` is an `integer()` of length 2 or 3. Creates the object
 #' through `new_vctr()`.
 #'
-#' @return A vector of class `deb_decimal`.
+#' @returns A vector of class `deb_decimal`.
 #' @keywords internal
 #' @noRd
 
@@ -94,7 +94,7 @@ new_decimal <- function(x = double(),
 #'   Default is `c(20, 12)`, which conforms to the most widely used tripartite
 #'   system of 1 pound = 20 shillings and 1 shilling = 12 pence.
 #'
-#' @return Returns a vector of class `deb_decimal`.
+#' @returns Returns a vector of class `deb_decimal`.
 #' @export
 #' @examples
 #'
@@ -160,7 +160,7 @@ deb_unit <- function(x) attr(x, "unit")
 #'
 #' @param x An object.
 #'
-#' @return `TRUE` if object is of class `deb_decimal` and `FALSE` if it is not.
+#' @returns `TRUE` if object is of class `deb_decimal` and `FALSE` if it is not.
 #' @export
 #' @examples
 #' x <- deb_decimal(c(5.25, 3.825, 8.5))

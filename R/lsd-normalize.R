@@ -182,7 +182,7 @@ tetra_normalize_neg <- function(tetra) {
 #'   shilling = 12 pence.
 #' @param ... Arguments passed on to further methods.
 #'
-#' @return Returns a vector of class `deb_lsd` with normalized solidus and
+#' @returns Returns a vector of class `deb_lsd` with normalized solidus and
 #'   denarius units or a vector of class `deb_tetra` with normalized solidus,
 #'   denarius, and farthing units.
 #' @examples

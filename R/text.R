@@ -40,7 +40,7 @@
 #' @param suffix Character placed after the values. Default is `""`.
 #' @param ... Arguments passed on to further methods.
 #'
-#' @return A Character vector of formatted values.
+#' @returns A Character vector of formatted values.
 #'
 #' @examples
 #' lsd <- deb_lsd(l = c(10000, 0, -10000),

@@ -20,7 +20,7 @@
 #' @param to Numeric vector of length 2 or 3, representing the bases for the
 #'   solidus, denarius, and optionally farthing units to be converted to.
 #'
-#' @return A vector of the same class as `x` with converted `bases` attribute.
+#' @returns A vector of the same class as `x` with converted `bases` attribute.
 #' @examples
 #'
 #' lsd <- deb_lsd(5, 3, 8)
@@ -152,7 +152,7 @@ deb_convert_bases.deb_tetra <- function(x, to) {
 #'   converted to. Choice of `"l"` (libra, the default), `"s"` (solidus),
 #'   `"d"` (denarius), or `"f"` (farthing).
 #'
-#' @return A `deb_decimal` vector with a converted `unit` attribute.
+#' @returns A `deb_decimal` vector with a converted `unit` attribute.
 #' @export
 #' @examples
 #'

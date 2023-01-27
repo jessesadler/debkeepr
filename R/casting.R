@@ -294,7 +294,7 @@ vec_cast.list.deb_tetra <- function(x, to, ...) {
 #'
 #' @seealso [`deb_as_lsd()`] and [`deb_as_tetra()`] for the inverse of
 #'   `deb_as_list()`.
-#' @return A list of numeric vectors of length 3 or 4, corresponding to lsd
+#' @returns A list of numeric vectors of length 3 or 4, corresponding to lsd
 #'   or tetra values.
 #' @examples
 #'
@@ -588,7 +588,7 @@ vec_cast.deb_tetra.deb_decimal <- function(x, to, ...) {
 #'   conforms to the most widely used system of 1 pound = 20 shillings and
 #'   1 shilling = 12 pence.
 #'
-#' @return A `deb_lsd` vector.
+#' @returns A `deb_lsd` vector.
 #' @seealso [`deb_as_decimal()`] and [`deb_as_tetra()`]
 #'
 #' @examples
@@ -699,7 +699,7 @@ deb_as_lsd.list <- function(x, bases = c(20, 12), ...) {
 #'   conforms to the most widely used system of 1 pound = 20 shillings and
 #'   1 shilling = 12 pence.
 #'
-#' @return A `deb_decimal` vector.
+#' @returns A `deb_decimal` vector.
 #' @seealso [`deb_as_lsd()`] and [`deb_as_tetra()`]
 #'
 #' @examples
@@ -822,7 +822,7 @@ deb_as_decimal.list <- function(x,
 #'   `c(20, 12, 4)`, which conforms to the English system of 1 pound =
 #'   20 shillings, 1 shilling = 12 pence, and 1 pence = 4 farthing.
 #'
-#' @return A `deb_tetra` vector.
+#' @returns A `deb_tetra` vector.
 #' @seealso [`deb_as_lsd()`] and [`deb_as_decimal()`]
 #'
 #' @examples

@@ -44,7 +44,7 @@ unit_hierarchy <- function(x, y) {
 #'
 #' Hierarchy: tetra -> lsd
 #' Check for equality of bases or mixed bases equality
-#' @return bases attribute. If equal length, bases is returned.
+#' @returns bases attribute. If equal length, bases is returned.
 #'   If unequal length, lsd bases is returned, removing f unit.
 #' @keywords internal
 #' @noRd

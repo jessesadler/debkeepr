@@ -43,7 +43,7 @@
 #'   `deb_decimal`, or `deb_tetra`. Default is `lsd`.
 #' @param na.rm Logical. Should missing values (including `NaN`) be removed?
 #'
-#' @return
+#' @returns
 #' All return a tibble with variables for accounts and values in the same
 #' class and `bases` as `lsd`:
 #'

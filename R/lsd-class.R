@@ -7,7 +7,7 @@
 #' Asserts that `l`, `s` and `d` are of type `double()` and that `bases` is an
 #' `integer()` of length 2. Creates the vector through `new_rcrd()`.
 #'
-#' @return An object of class `deb_lsd`.
+#' @returns An object of class `deb_lsd`.
 #' @keywords internal
 #' @noRd
 
@@ -75,7 +75,7 @@ new_lsd <- function(l = double(),
 #'   conforms to the most widely used system of 1 pound = 20 shillings and
 #'   1 shilling = 12 pence.
 #'
-#' @return Returns a vector of class `deb_lsd`.
+#' @returns Returns a vector of class `deb_lsd`.
 #' @export
 #' @examples
 #'
@@ -140,7 +140,7 @@ deb_bases <- function(x) attr(x, "bases")
 #'
 #' @param x An object.
 #'
-#' @return `TRUE` if object is of class `deb_lsd` and `FALSE` if it is not.
+#' @returns `TRUE` if object is of class `deb_lsd` and `FALSE` if it is not.
 #' @export
 #' @examples
 #' x <- deb_lsd(5, 3, 8)
