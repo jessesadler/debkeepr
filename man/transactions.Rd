@@ -58,23 +58,24 @@ Default is \code{debit}.}
 \item{na.rm}{Logical. Should missing values (including \code{NaN}) be removed?}
 }
 \value{
-All return a tibble with variables for accounts and values in the same
-class and \code{bases} as \code{lsd}:
+Transaction functions return a tibble with variables for the accounts in
+\code{df} and credit, debit, and/or current values in the same type and \code{bases}
+as \code{lsd}:
 \itemize{
-\item \code{deb_account()} a tibble with three rows showing the credit, debit, and
+\item \code{deb_account()}: a tibble with three rows showing the credit, debit, and
 current value of the given account.
 \item \code{deb_account_summary()} a tibble with one row for each account in \code{df}
 and credit, debit, and current value variables.
-\item \code{deb_credit()} a tibble with one row for each account with the total
+\item \code{deb_credit()}: a tibble with one row for each account with the total
 credit of the accounts.
-\item \code{deb_debit()} a tibble with one row for each account with the total
+\item \code{deb_debit()}: a tibble with one row for each account with the total
 debit of the accounts.
-\item \code{deb_current()} a tibble with one row for each account with the current
+\item \code{deb_current()}: a tibble with one row for each account with the current
 value of the accounts.
-\item \code{deb_open()} a tibble with one row for each account whose current value
+\item \code{deb_open()}: a tibble with one row for each account whose current value
 is not \code{0}. If all accounts are equal to zero, a tibble with zero rows
 will be returned.
-\item \code{deb_balance()} a tibble with two rows showing the credit and debit
+\item \code{deb_balance()}: a tibble with two rows showing the credit and debit
 remaining in \code{df}.
 }
 }
@@ -94,8 +95,7 @@ negative value.
 data frame.
 }
 }
-\section{Transactions data frames}{
-
+\section{Transactions data frames:}{
 Transactions data frames have the structure of an account book. They
 should have a similar arrangement to \code{dafforne_transactions}. Each row is
 a transaction in the book. \code{credit} and \code{debit} variables contain the
@@ -107,8 +107,8 @@ each transaction such as id or date among others.
 }
 
 \examples{
-# Examples with dafforne_transactions data,
-# which uses default variable names.
+# Examples use dafforne_transactions data,
+# which have default variable names.
 # See dafforne_accounts for account names.
 
 # Credit, debit, and current value of cash account

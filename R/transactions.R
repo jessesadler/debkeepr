@@ -20,7 +20,7 @@
 #' - `deb_balance()` positive and negative value remaining in a transactions
 #'   data frame.
 #'
-#' @section Transactions data frames:
+#' # Transactions data frames:
 #' Transactions data frames have the structure of an account book. They
 #' should have a similar arrangement to `dafforne_transactions`. Each row is
 #' a transaction in the book. `credit` and `debit` variables contain the
@@ -44,28 +44,29 @@
 #' @param na.rm Logical. Should missing values (including `NaN`) be removed?
 #'
 #' @returns
-#' All return a tibble with variables for accounts and values in the same
-#' class and `bases` as `lsd`:
+#' Transaction functions return a tibble with variables for the accounts in
+#' `df` and credit, debit, and/or current values in the same type and `bases`
+#' as `lsd`:
 #'
-#' - `deb_account()` a tibble with three rows showing the credit, debit, and
+#' - `deb_account()`: a tibble with three rows showing the credit, debit, and
 #'   current value of the given account.
 #' - `deb_account_summary()` a tibble with one row for each account in `df`
 #'   and credit, debit, and current value variables.
-#' - `deb_credit()` a tibble with one row for each account with the total
+#' - `deb_credit()`: a tibble with one row for each account with the total
 #'   credit of the accounts.
-#' - `deb_debit()` a tibble with one row for each account with the total
+#' - `deb_debit()`: a tibble with one row for each account with the total
 #'   debit of the accounts.
-#' - `deb_current()` a tibble with one row for each account with the current
+#' - `deb_current()`: a tibble with one row for each account with the current
 #'   value of the accounts.
-#' - `deb_open()` a tibble with one row for each account whose current value
+#' - `deb_open()`: a tibble with one row for each account whose current value
 #'   is not `0`. If all accounts are equal to zero, a tibble with zero rows
 #'   will be returned.
-#' - `deb_balance()` a tibble with two rows showing the credit and debit
+#' - `deb_balance()`: a tibble with two rows showing the credit and debit
 #'   remaining in `df`.
 #'
 #' @examples
-#' # Examples with dafforne_transactions data,
-#' # which uses default variable names.
+#' # Examples use dafforne_transactions data,
+#' # which have default variable names.
 #' # See dafforne_accounts for account names.
 #'
 #' # Credit, debit, and current value of cash account
