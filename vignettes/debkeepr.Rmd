@@ -48,17 +48,20 @@ As the silver *denarius* overtook the golden *triens*, the *triens* became a uni
 library(debkeepr)
 
 # Create deb_lsd vector of length 3 with default bases
+# representing £17 13s. 11d.,  £32 11s. 8d., and £18 10s. 5d. 
 (lsd <- deb_lsd(l = c(17, 32, 18),
                 s = c(13, 11, 10),
                 d = c(11, 8, 5)))
 
-# Create deb_tetra vector of length 3 with default bases
+# Create deb_tetra vector of length 3 with default bases 
+# representing £17 13s. 11d. 3f., £32 11s. 8d. 2f., and £18 10s. 5d. 1f.
 (tetra <- deb_tetra(l = c(17, 32, 18),
                     s = c(13, 11, 10),
                     d = c(11, 8, 5),
                     f = c(3, 2, 1)))
 
 # Create deb_decimal vector of length 3 with default bases and unit
+# representing £15 16s. 6d., £19 5s., and £9 12s. 3d. in decimal form 
 (dec <- deb_decimal(x = c(15.825, 19.25, 9.6125)))
 
 # Express the same values in solidus and denarius units
