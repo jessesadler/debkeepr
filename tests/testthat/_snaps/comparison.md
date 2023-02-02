@@ -13,7 +13,7 @@
 # Equality works with deb_decimal
 
     Code
-      dec1 == dec_alt
+      dec1 == deb_decimal(1.1125, bases = c(50, 16))
     Condition
       Error:
       ! Incompatible `bases`.
@@ -25,7 +25,8 @@
 ---
 
     Code
-      dec_tetra == dec_tetra_alt
+      deb_decimal(1.1125, bases = c(20, 12, 4)) == deb_decimal(1.1125, bases = c(50,
+        16, 8))
     Condition
       Error:
       ! Incompatible `bases`.
@@ -37,7 +38,7 @@
 ---
 
     Code
-      dec1 == dec_tetra_alt
+      dec1 == deb_decimal(1.1125, bases = c(50, 16, 8))
     Condition
       Error:
       ! Incompatible `bases`.
@@ -61,7 +62,7 @@
 # Equality works with mixed types
 
     Code
-      lsd1 == tetra_alt
+      lsd1 == deb_tetra(1, 2, 3, 2, bases = c(50, 16, 8))
     Condition
       Error:
       ! Incompatible `bases`.
@@ -73,7 +74,7 @@
 ---
 
     Code
-      lsd1 == dec_tetra_alt
+      lsd1 == deb_decimal(1.1125, bases = c(50, 16, 8))
     Condition
       Error:
       ! Incompatible `bases`.
@@ -85,7 +86,7 @@
 # Comparison logical operators work
 
     Code
-      lsd1 < lsd_alt
+      lsd1 < deb_lsd(1, 2, 3, bases = c(50, 16))
     Condition
       Error:
       ! Incompatible `bases`.
@@ -97,7 +98,7 @@
 ---
 
     Code
-      dec1 < dec_alt
+      deb_decimal(1.1125) < deb_decimal(1.1125, bases = c(50, 16))
     Condition
       Error:
       ! Incompatible `bases`.
@@ -109,7 +110,7 @@
 ---
 
     Code
-      tetra1 < tetra_alt
+      tetra1 < deb_tetra(1, 2, 3, 2, bases = c(50, 16, 8))
     Condition
       Error:
       ! Incompatible `bases`.
@@ -121,7 +122,7 @@
 ---
 
     Code
-      lsd1 < tetra_alt
+      lsd1 < deb_tetra(1, 2, 3, 2, bases = c(50, 16, 8))
     Condition
       Error:
       ! Incompatible `bases`.
@@ -133,7 +134,7 @@
 ---
 
     Code
-      lsd1 < dec_tetra_alt
+      lsd1 < deb_decimal(1.1125, bases = c(50, 16, 8))
     Condition
       Error:
       ! Incompatible `bases`.
@@ -145,7 +146,7 @@
 ---
 
     Code
-      dec_d < dec_tetra_alt
+      deb_decimal(267, "d") < deb_decimal(1.1125, bases = c(50, 16, 8))
     Condition
       Error:
       ! Incompatible `bases`.
