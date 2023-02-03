@@ -217,14 +217,17 @@ dec_arithmetic <- function(op, x, y) {
 #' @export
 vec_arith.deb_decimal.deb_decimal <- function(op, x, y) {
   # Deal with possibility of mixed bases: tetra becomes lsd
+
   # Both lsd or both tetra
   if (vec_size(deb_bases(x)) == vec_size(deb_bases(y))) {
     bases_equal(x, y)
     bases <- deb_bases(x)
+
     # x is lsd; y is tetra
   } else if (vec_size(deb_bases(x)) == 2L) {
     mixed_bases_equal(x, y)
     bases <- deb_bases(x)
+
     # x is tetra; y is lsd
   } else {
     mixed_bases_equal(y, x)

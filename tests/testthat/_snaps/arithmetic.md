@@ -25,7 +25,7 @@
 # Arithmetic operators work with two deb_decimal vectors
 
     Code
-      dec_l + deb_decimal(1.5, bases = bases2)
+      deb_decimal(1.8375) + deb_decimal(1.5, bases = bases2)
     Condition
       Error:
       ! Incompatible `bases`.
@@ -57,7 +57,7 @@
 # Arithmetic ops work with deb_decimal vectors with mixed bases
 
     Code
-      dec_l_alt + dec_tetra_f
+      dec_l_alt + dec_tetra_l
     Condition
       Error:
       ! Incompatible `bases`.
@@ -69,7 +69,7 @@
 ---
 
     Code
-      dec_tetra_f - dec_l_alt
+      dec_tetra_l - dec_l_alt
     Condition
       Error:
       ! Incompatible `bases`.
@@ -137,7 +137,7 @@
 ---
 
     Code
-      lsd1 + dec_tetra_l_alt
+      lsd2 + deb_decimal(1.5, bases = c(50, 16, 8))
     Condition
       Error:
       ! Incompatible `bases`.
@@ -225,7 +225,7 @@
 ---
 
     Code
-      tetra_alt + dec_l
+      tetra_alt + deb_decimal(1.8375)
     Condition
       Error:
       ! Incompatible `bases`.
@@ -237,7 +237,7 @@
 ---
 
     Code
-      dec_l_alt - tetra1
+      deb_decimal(1.5, bases = bases2) - tetra1
     Condition
       Error:
       ! Incompatible `bases`.
