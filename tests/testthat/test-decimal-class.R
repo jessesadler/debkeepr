@@ -26,13 +26,13 @@ test_that("deb_decimal works", {
   expect_false(deb_is_decimal(3))
   # NA
   expect_true(is.na(deb_decimal(NA)))
+  expect_true(is.na(deb_decimal(NaN))) # convert NaN to NA
   expect_equal(is.na(deb_decimal(c(1.25, 3, NA))), c(FALSE, FALSE, TRUE))
   # Data is correct
   expect_equal(as.numeric(y), x)
   expect_equal(deb_unit(y), "l")
   expect_equal(deb_unit(deb_decimal(x, unit = "s")), "s")
   expect_equal(deb_unit(deb_decimal(x, unit = "d")), "d")
-  expect_error(deb_decimal(x, unit = "hello"))
   expect_equal(deb_bases(y), c(s = 20L, d = 12L))
   expect_equal(deb_bases(deb_decimal(x, bases = c(60, 16))),
                c(s = 60L, d = 16L))
@@ -40,8 +40,11 @@ test_that("deb_decimal works", {
   expect_length(deb_decimal(x, bases = tetra), 3)
   expect_equal(deb_unit(deb_decimal(x, unit = "f", bases = tetra)), "f")
   # Errors
-  expect_snapshot(error = TRUE, deb_decimal(x, bases = c(20, 12, 4, 8)))
-  expect_snapshot_error(deb_decimal(x, unit = "f"))
+  expect_snapshot(deb_decimal(x, unit = "hello"), error = TRUE)
+  expect_snapshot(deb_decimal("hello"), error = TRUE)
+  expect_snapshot(deb_decimal(c(1, Inf)), error = TRUE)
+  expect_snapshot(deb_decimal(x, bases = c(20, 12, 4, 8)), error = TRUE)
+  expect_snapshot(deb_decimal(x, unit = "f"), error = TRUE)
 })
 
 test_that("deb_decimal prints", {

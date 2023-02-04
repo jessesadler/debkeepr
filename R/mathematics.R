@@ -144,17 +144,17 @@ cummax.deb_lsd <- function(x) {
 
 #' @export
 is.finite.deb_lsd <- function(x) {
-  vec_math("is.finite", deb_as_decimal(x))
+  !vec_detect_missing(x)
 }
 
 #' @export
 is.infinite.deb_lsd <- function(x) {
-  vec_math("is.infinite", deb_as_decimal(x))
+  vec_rep(FALSE, vec_size(x))
 }
 
 #' @export
 is.nan.deb_lsd <- function(x) {
-  vec_math("is.nan", deb_as_decimal(x))
+  vec_rep(FALSE, vec_size(x))
 }
 
 # lsd rounding ------------------------------------------------------------
@@ -279,17 +279,17 @@ cummax.deb_tetra <- function(x) {
 
 #' @export
 is.finite.deb_tetra <- function(x) {
-  vec_math("is.finite", deb_as_decimal(x))
+  !vec_detect_missing(x)
 }
 
 #' @export
 is.infinite.deb_tetra <- function(x) {
-  vec_math("is.infinite", deb_as_decimal(x))
+  vec_rep(FALSE, vec_size(x))
 }
 
 #' @export
 is.nan.deb_tetra <- function(x) {
-  vec_math("is.nan", deb_as_decimal(x))
+  vec_rep(FALSE, vec_size(x))
 }
 
 # tetra rounding ----------------------------------------------------------

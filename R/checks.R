@@ -51,6 +51,10 @@ numeric_check <- function(x,
                        "x" = "You've supplied a {.cls {class(x)}} vector."),
                      call = call)
     }
+    if (any(is.infinite(x))) {
+      cli::cli_abort(c("{.arg {arg}} cannot contain infinite (Inf) values."),
+                     call = call)
+    }
   }
 }
 

@@ -131,6 +131,11 @@ deb_decimal <- function(x = double(),
   dec_bases_check(bases)
 
   x <- vec_cast(x, to = double())
+  if (any(is.infinite(x))) {
+    cli::cli_abort("{.arg x} cannot contain infinite ({.val {Inf}}) values.")
+  }
+  # Convert any NaN to NA
+  x[vec_detect_missing(x)] <- NA
   bases <- vec_cast(bases, to = integer())
 
   new_decimal(x = x, unit = unit, bases = bases)

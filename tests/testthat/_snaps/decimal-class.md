@@ -6,6 +6,30 @@
 # deb_decimal works
 
     Code
+      deb_decimal(x, unit = "hello")
+    Condition
+      Error in `deb_decimal()`:
+      ! `unit` must be one of "l", "s", "d", or "f", not "hello".
+
+---
+
+    Code
+      deb_decimal("hello")
+    Condition
+      Error in `deb_decimal()`:
+      ! Can't convert `x` <character> to <double>.
+
+---
+
+    Code
+      deb_decimal(c(1, Inf))
+    Condition
+      Error in `deb_decimal()`:
+      ! `x` cannot contain infinite (Inf) values.
+
+---
+
+    Code
       deb_decimal(x, bases = c(20, 12, 4, 8))
     Condition
       Error in `deb_decimal()`:
@@ -14,7 +38,11 @@
 
 ---
 
-    `bases` must be a numeric vector of length 3 to use 'f' unit.
+    Code
+      deb_decimal(x, unit = "f")
+    Condition
+      Error in `deb_decimal()`:
+      ! `bases` must be a numeric vector of length 3 to use 'f' unit.
 
 # deb_decimal prints
 

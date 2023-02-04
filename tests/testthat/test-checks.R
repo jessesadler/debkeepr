@@ -2,10 +2,11 @@
 
 # lsd_check ---------------------------------------------------------------
 
-test_that("lsd: non-numeric is an error", {
+test_that("lsd: non-numeric or Inf is an error", {
   expect_snapshot_error(lsd_check("hello", 3, 4))
   expect_snapshot_error(lsd_check(3, "hello", 4))
   expect_snapshot_error(lsd_check(3, 4, "hello"))
+  expect_snapshot_error(lsd_check(3, 4, Inf))
 })
 
 test_that("lsd: NA scalar is not an error", {
@@ -38,11 +39,12 @@ test_that("lsd: length of l, s, and d are same length, length 1, or length 0", {
 
 # tetra_check -------------------------------------------------------------
 
-test_that("tetra: non-numeric is an error", {
+test_that("tetra: non-numeric or Inf is an error", {
   expect_snapshot_error(tetra_check("hello", 3, 4, 0))
   expect_snapshot_error(tetra_check(3, "hello", 4, 0))
   expect_snapshot_error(tetra_check(3, 4, "hello", 0))
   expect_snapshot_error(tetra_check(3, 4, 0, "hello"))
+  expect_snapshot_error(tetra_check(3, 4, 0, Inf))
 })
 
 test_that("tetra: NA scalar is not an error", {
@@ -196,15 +198,12 @@ test_that("mixed bases equality", {
 
 # list checks -------------------------------------------------------------
 
-x <- list(c(5, 12, 3),
-          c(13, 8, 11),
-          c(7, 16, 0),
-          c(1, 2, 3))
-
-y <- list(c(5, 12, 3, 2),
-          c(13, 8, 11, 4))
-
 test_that("lsd list check works", {
+  x <- list(c(5, 12, 3),
+            c(13, 8, 11))
+  y <- list(c(5, 12, 3, 2),
+            c(13, 8, 11, 4))
+
   expect_invisible(lsd_list_check(x))
   expect_invisible(lsd_list_check(c(x, list(NULL))))
   expect_snapshot_error(lsd_list_check(c(x, "hello")))
@@ -213,6 +212,11 @@ test_that("lsd list check works", {
 })
 
 test_that("tetra list check works", {
+  x <- list(c(5, 12, 3),
+            c(13, 8, 11))
+  y <- list(c(5, 12, 3, 2),
+            c(13, 8, 11, 4))
+
   expect_invisible(tetra_list_check(y))
   expect_invisible(tetra_list_check(c(y, list(NULL))))
   expect_snapshot_error(tetra_list_check(c(x, "hello")))

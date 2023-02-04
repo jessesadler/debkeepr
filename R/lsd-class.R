@@ -163,7 +163,7 @@ format.deb_lsd <- function(x, ...) {
   d <- round(field(x, "d"), 3)
 
   out <- paste0(l, ":", s, "s:", d, "d")
-  out[is.na(l) | is.na(s) | is.na(d)] <- NA
+  out[vec_detect_missing(l) | vec_detect_missing(s) | vec_detect_missing(d)] <- NA
   out
 }
 

@@ -1,4 +1,4 @@
-# lsd: non-numeric is an error
+# lsd: non-numeric or Inf is an error
 
     `l` must be a numeric vector.
     x You've supplied a <character> vector.
@@ -12,6 +12,10 @@
 
     `d` must be a numeric vector.
     x You've supplied a <character> vector.
+
+---
+
+    `d` cannot contain infinite (Inf) values.
 
 # lsd: length of l, s, and d all have values or are all length 0
 
@@ -39,7 +43,7 @@
     * Unit `s` has length 2.
     * Unit `d` has length 1.
 
-# tetra: non-numeric is an error
+# tetra: non-numeric or Inf is an error
 
     `l` must be a numeric vector.
     x You've supplied a <character> vector.
@@ -58,6 +62,10 @@
 
     `f` must be a numeric vector.
     x You've supplied a <character> vector.
+
+---
+
+    `f` cannot contain infinite (Inf) values.
 
 # tetra: length of units all have values or are all length 0
 
@@ -306,7 +314,7 @@
 ---
 
     `x` must be a list of numeric vectors of length 3.
-    x You've supplied a list of <numeric> vectors of length(s) 3, 3, 3, 3, and 1.
+    x You've supplied a list of <numeric> vectors of length(s) 3, 3, and 1.
 
 # tetra list check works
 
@@ -315,5 +323,5 @@
 ---
 
     `x` must be a list of numeric vectors of length 4.
-    x You've supplied a list of <numeric> vectors of length(s) 3, 3, 3, and 3.
+    x You've supplied a list of <numeric> vectors of length(s) 3 and 3.
 

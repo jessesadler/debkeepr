@@ -154,7 +154,8 @@ format.deb_tetra <- function(x, ...) {
   f <- round(field(x, "f"), 3)
 
   out <- paste0(l, ":", s, "s:", d, "d:", f, "f")
-  out[is.na(l) | is.na(s) | is.na(d) | is.na(f)] <- NA
+  out[vec_detect_missing(l) | vec_detect_missing(s) |
+        vec_detect_missing(d) | vec_detect_missing(f)] <- NA
   out
 }
 
