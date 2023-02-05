@@ -6,7 +6,7 @@
 ---
 
     Code
-      deb_convert_bases(lsd1, bases3)
+      deb_convert_bases(lsd1, c(20, 12, 4))
     Condition
       Error in `deb_convert_bases()`:
       ! `to` must be a numeric vector of length 2.
@@ -33,7 +33,7 @@
 # Bases conversion works with deb_tetra vectors
 
     Code
-      deb_convert_bases(tetra1, bases2)
+      deb_convert_bases(tetra1, c(40, 24))
     Condition
       Error in `deb_convert_bases()`:
       ! `to` must be a numeric vector of length 3.
