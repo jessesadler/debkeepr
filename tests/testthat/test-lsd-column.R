@@ -1,31 +1,34 @@
 ## Test deb_lsd column helper functions ##
 
-libra <- c(3, 5, 6, 2)
-solidus <- c(10, 18, 11, 16)
-denarius <- c(9, 11, 10, 5)
-accounts <- 1:4
-
-x <- data.frame(accounts = accounts,
-                l = libra,
-                s = solidus,
-                d = denarius)
-y <- data.frame(accounts = accounts,
-                lsd = deb_lsd(libra, solidus, denarius))
-x_tbl <- tibble::as_tibble(x)
-y_tbl <- tibble::as_tibble(y)
-
-x2 <- data.frame(accounts = accounts,
-                 libra = libra,
-                 solidus = solidus,
-                 denarius = denarius)
-y2 <- data.frame(accounts = accounts,
-                 data = deb_lsd(libra, solidus, denarius))
-
 test_that("deb_gather_lsd works", {
+  # Data
+  libra <- c(3, 5, 6, 2)
+  solidus <- c(10, 18, 11, 16)
+  denarius <- c(9, 11, 10, 5)
+  accounts <- 1:4
+
+  x <- data.frame(accounts = accounts,
+                  l = libra,
+                  s = solidus,
+                  d = denarius)
+  y <- data.frame(accounts = accounts,
+                  lsd = deb_lsd(libra, solidus, denarius))
+
+  x2 <- data.frame(accounts = accounts,
+                   libra = libra,
+                   solidus = solidus,
+                   denarius = denarius)
+  y2 <- data.frame(accounts = accounts,
+                   data = deb_lsd(libra, solidus, denarius))
+
   # defaults
   expect_equal(ncol(deb_gather_lsd(x)), 5)
   expect_equal(deb_gather_lsd(x)[[5]], y[[2]])
   expect_identical(deb_gather_lsd(x, replace = TRUE), y)
+  # With tibble
+  expect_identical(deb_gather_lsd(tibble::as_tibble(x), replace = TRUE),
+                   tibble::as_tibble(y))
+
   # non-default lsd column name
   expect_identical(deb_gather_lsd(x, lsd_col = data, replace = TRUE), y2)
   # non-default l, s, and d names
@@ -37,6 +40,26 @@ test_that("deb_gather_lsd works", {
 })
 
 test_that("deb_spread_lsd works", {
+  # Data
+  libra <- c(3, 5, 6, 2)
+  solidus <- c(10, 18, 11, 16)
+  denarius <- c(9, 11, 10, 5)
+  accounts <- 1:4
+
+  x <- data.frame(accounts = accounts,
+                  l = libra,
+                  s = solidus,
+                  d = denarius)
+  y <- data.frame(accounts = accounts,
+                  lsd = deb_lsd(libra, solidus, denarius))
+
+  x2 <- data.frame(accounts = accounts,
+                   libra = libra,
+                   solidus = solidus,
+                   denarius = denarius)
+  y2 <- data.frame(accounts = accounts,
+                   data = deb_lsd(libra, solidus, denarius))
+
   # Error
   expect_snapshot(deb_spread_lsd(x, lsd = l), error = TRUE)
   # defaults

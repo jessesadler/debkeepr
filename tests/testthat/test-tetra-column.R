@@ -1,34 +1,37 @@
 ## Test deb_lsd column helper functions ##
 
-libra <- c(3, 5, 6, 2)
-solidus <- c(10, 18, 11, 16)
-denarius <- c(9, 11, 10, 5)
-farthing <- c(2, 3, 1, 0)
-accounts <- 1:4
-
-x <- data.frame(accounts = accounts,
-                l = libra,
-                s = solidus,
-                d = denarius,
-                f = farthing)
-y <- data.frame(accounts = accounts,
-                tetra = deb_tetra(libra, solidus, denarius, farthing))
-x_tbl <- tibble::as_tibble(x)
-y_tbl <- tibble::as_tibble(y)
-
-x2 <- data.frame(accounts = accounts,
-                 libra = libra,
-                 solidus = solidus,
-                 denarius = denarius,
-                 farthing = farthing)
-y2 <- data.frame(accounts = accounts,
-                 data = deb_tetra(libra, solidus, denarius, farthing))
-
 test_that("deb_gather_tetra works", {
+  # Data
+  libra <- c(3, 5, 6, 2)
+  solidus <- c(10, 18, 11, 16)
+  denarius <- c(9, 11, 10, 5)
+  farthing <- c(2, 3, 1, 0)
+  accounts <- 1:4
+
+  x <- data.frame(accounts = accounts,
+                  l = libra,
+                  s = solidus,
+                  d = denarius,
+                  f = farthing)
+  y <- data.frame(accounts = accounts,
+                  tetra = deb_tetra(libra, solidus, denarius, farthing))
+
+  x2 <- data.frame(accounts = accounts,
+                   libra = libra,
+                   solidus = solidus,
+                   denarius = denarius,
+                   farthing = farthing)
+  y2 <- data.frame(accounts = accounts,
+                   data = deb_tetra(libra, solidus, denarius, farthing))
+
   # defaults
   expect_equal(ncol(deb_gather_tetra(x)), 6)
   expect_equal(deb_gather_tetra(x)[[6]], y[[2]])
   expect_identical(deb_gather_tetra(x, replace = TRUE), y)
+  # With tibble
+  expect_identical(deb_gather_tetra(tibble::as_tibble(x), replace = TRUE),
+                   tibble::as_tibble(y))
+
   # non-default lsd column name
   expect_identical(deb_gather_tetra(x, tetra_col = data, replace = TRUE), y2)
   # non-default l, s, d, and f names
@@ -40,6 +43,29 @@ test_that("deb_gather_tetra works", {
 })
 
 test_that("deb_spread_tetra works", {
+  # Data
+  libra <- c(3, 5, 6, 2)
+  solidus <- c(10, 18, 11, 16)
+  denarius <- c(9, 11, 10, 5)
+  farthing <- c(2, 3, 1, 0)
+  accounts <- 1:4
+
+  x <- data.frame(accounts = accounts,
+                  l = libra,
+                  s = solidus,
+                  d = denarius,
+                  f = farthing)
+  y <- data.frame(accounts = accounts,
+                  tetra = deb_tetra(libra, solidus, denarius, farthing))
+
+  x2 <- data.frame(accounts = accounts,
+                   libra = libra,
+                   solidus = solidus,
+                   denarius = denarius,
+                   farthing = farthing)
+  y2 <- data.frame(accounts = accounts,
+                   data = deb_tetra(libra, solidus, denarius, farthing))
+
   # Error
   expect_snapshot(deb_spread_tetra(x, tetra = l), error = TRUE)
   # defaults
