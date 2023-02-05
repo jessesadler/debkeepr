@@ -49,7 +49,7 @@
 # deb_decimal coerces to itself
 
     Code
-      vec_c(dec, deb_decimal(4.5, bases = bases2))
+      vec_c(dec, deb_decimal(4.5, "l", c(50, 16)))
     Condition
       Error:
       ! Incompatible `bases`.
@@ -61,7 +61,7 @@
 ---
 
     Code
-      c(dec, deb_decimal(4.5, bases = bases2))
+      c(dec, deb_decimal(4.5, "l", c(50, 16)))
     Condition
       Error:
       ! Incompatible `bases`.
@@ -73,7 +73,7 @@
 ---
 
     Code
-      vec_c(deb_decimal(1.5, bases = bases4), deb_decimal(1.5, bases = bases3))
+      vec_c(deb_decimal(1.5, "l", c(50, 16, 8)), deb_decimal(1.5, "l", bases3))
     Condition
       Error:
       ! Incompatible `bases`.
@@ -85,7 +85,7 @@
 ---
 
     Code
-      c(dec, dec_tetra_l_alt)
+      c(dec, deb_decimal(1.5, "l", c(50, 16, 8)))
     Condition
       Error:
       ! Incompatible `bases`.
@@ -97,7 +97,7 @@
 ---
 
     Code
-      c(dec_tetra_l_alt, dec)
+      c(deb_decimal(1.5, "l", c(50, 16, 8)), dec)
     Condition
       Error:
       ! Incompatible `bases`.
@@ -109,7 +109,7 @@
 # deb_tetra coerces to itself
 
     Code
-      vec_c(tetra, deb_tetra(1, 2, 3, 4, bases = bases4))
+      vec_c(tetra, deb_tetra(1, 2, 3, 4, c(50, 16, 8)))
     Condition
       Error:
       ! Incompatible `bases`.
@@ -121,7 +121,7 @@
 ---
 
     Code
-      c(tetra, deb_tetra(1, 2, 3, 4, bases = bases4))
+      c(tetra, deb_tetra(1, 2, 3, 4, c(50, 16, 8)))
     Condition
       Error:
       ! Incompatible `bases`.
@@ -133,7 +133,7 @@
 # deb_decimal coerces to deb_lsd
 
     Code
-      vec_c(lsd, deb_decimal(5.5, bases = bases2))
+      vec_c(lsd, deb_decimal(5.5, "l", c(50, 16)))
     Condition
       Error:
       ! Incompatible `bases`.
@@ -157,7 +157,7 @@
 ---
 
     Code
-      vec_c(lsd, dec_tetra_l_alt)
+      vec_c(lsd, deb_decimal(1.5, "l", c(50, 16, 8)))
     Condition
       Error:
       ! Incompatible `bases`.
@@ -169,7 +169,7 @@
 # deb_tetra coerces to deb_lsd
 
     Code
-      vec_c(lsd, deb_tetra(1, 2, 3, 4, bases4))
+      vec_c(lsd, deb_tetra(1, 2, 3, 4, c(50, 16, 8)))
     Condition
       Error:
       ! Incompatible `bases`.
@@ -181,7 +181,7 @@
 ---
 
     Code
-      vec_c(tetra, lsd_alt)
+      vec_c(tetra, deb_lsd(1, 2, 3, c(50, 16)))
     Condition
       Error:
       ! Incompatible `bases`.
@@ -193,7 +193,7 @@
 # deb_decimal coerces to deb_tetra
 
     Code
-      vec_c(tetra, deb_decimal(1.5, bases = bases2))
+      vec_c(tetra, deb_decimal(1.5, "l", c(50, 16)))
     Condition
       Error:
       ! Incompatible `bases`.
