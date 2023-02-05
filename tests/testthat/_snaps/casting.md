@@ -21,7 +21,7 @@
 # vec_cast works for deb_decimal
 
     Code
-      vec_cast(dec_bases, deb_decimal())
+      vec_cast(dec_alt, deb_decimal())
     Condition
       Error:
       ! Incompatible `bases`.
@@ -33,7 +33,7 @@
 ---
 
     Code
-      vec_cast(dec_l, deb_decimal(bases = bases4))
+      vec_cast(dec_l, deb_decimal(bases = c(50, 16, 8)))
     Condition
       Error:
       ! Incompatible `bases`.
@@ -45,7 +45,7 @@
 ---
 
     Code
-      vec_cast(dec_s_tetra_alt, deb_decimal())
+      vec_cast(deb_decimal(bases = c(50, 16, 8)), deb_decimal())
     Condition
       Error:
       ! Incompatible `bases`.
@@ -65,7 +65,7 @@
 # vec_cast works for deb_decimal with tetra bases
 
     Code
-      vec_cast(dec_l, deb_decimal(unit = "f"))
+      vec_cast(deb_decimal(), deb_decimal(unit = "f"))
     Condition
       Error in `deb_decimal()`:
       ! `bases` must be a numeric vector of length 3 to use 'f' unit.
@@ -141,7 +141,7 @@
 ---
 
     Code
-      vec_cast(dec_bases, deb_decimal())
+      vec_cast(dec_alt, deb_decimal())
     Condition
       Error:
       ! Incompatible `bases`.
@@ -153,7 +153,7 @@
 ---
 
     Code
-      vec_cast(dec_bases, deb_lsd())
+      vec_cast(dec_alt, deb_lsd())
     Condition
       Error:
       ! Incompatible `bases`.
@@ -189,7 +189,7 @@
 ---
 
     Code
-      vec_cast(lsd1, deb_decimal(bases = bases4))
+      vec_cast(lsd1, deb_decimal(bases = c(50, 16, 8)))
     Condition
       Error:
       ! Incompatible `bases`.
@@ -225,7 +225,7 @@
 ---
 
     Code
-      vec_cast(lsd_alt, deb_tetra())
+      vec_cast(deb_lsd(1, 2, 3, c(50, 16)), deb_tetra())
     Condition
       Error:
       ! Incompatible `bases`.
@@ -237,7 +237,7 @@
 # vec_cast works between deb_decimal and deb_tetra
 
     Code
-      vec_cast(dec_bases, deb_tetra())
+      vec_cast(dec_alt, deb_tetra())
     Condition
       Error:
       ! Incompatible `bases`.
@@ -249,7 +249,7 @@
 ---
 
     Code
-      vec_cast(dec_l_tetra, deb_tetra(bases = bases4))
+      vec_cast(dec_l_tetra, deb_tetra(bases = c(50, 16, 8)))
     Condition
       Error:
       ! Incompatible `bases`.
@@ -285,7 +285,7 @@
 ---
 
     Code
-      deb_as_tetra(lsd1)
+      deb_as_tetra(deb_lsd(1, 2, 3))
     Condition
       Error in `deb_as_tetra()`:
       ! `f` is absent but must be supplied.
@@ -293,7 +293,7 @@
 ---
 
     Code
-      deb_as_tetra(dec_l)
+      deb_as_tetra(deb_decimal(1.1125))
     Condition
       Error in `deb_as_tetra()`:
       ! `f` is absent but must be supplied.
