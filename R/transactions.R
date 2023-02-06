@@ -144,13 +144,13 @@ deb_account <- function(df, account_id,
   # Need to get access to bare credit and debit vectors
 
   # Access data for bases and class
-  lsd_vctr <- rlang::eval_tidy(lsd_quo, df)
-  bases <- deb_bases(lsd_vctr)
+  deb_vctr <- rlang::eval_tidy(lsd_quo, df)
+  bases <- deb_bases(deb_vctr)
 
-  deb_ptype_check(lsd_vctr)
+  deb_ptype_check(deb_vctr)
 
   # deb_lsd
-  if (deb_is_lsd(lsd_vctr)) {
+  if (deb_is_lsd(deb_vctr)) {
     pos <- dplyr::filter(df, {{ credit }} == account_id)
     if (vec_size(pos) < 1) {
       cred <- deb_lsd(0, 0, 0, bases = bases)
@@ -167,7 +167,7 @@ deb_account <- function(df, account_id,
 
     current <- cred - deb
   # deb_decimal
-  } else if (deb_is_decimal(lsd_vctr)) {
+  } else if (deb_is_decimal(deb_vctr)) {
     pos <- dplyr::filter(df, {{ credit }} == account_id)
     if (vec_size(pos) < 1) {
       cred <- deb_decimal(0, bases = bases)
@@ -190,7 +190,7 @@ deb_account <- function(df, account_id,
         }
     }
   # deb_tetra
-  } else if (deb_is_tetra(lsd_vctr)) {
+  } else if (deb_is_tetra(deb_vctr)) {
     pos <- dplyr::filter(df, {{ credit }} == account_id)
     if (vec_size(pos) < 1) {
       cred <- deb_tetra(0, 0, 0, 0, bases = bases)
@@ -230,11 +230,11 @@ deb_account_summary <- function(df,
                     edge_columns = c(rlang::as_name(credit_quo),
                                      rlang::as_name(debit_quo)))
 
-  lsd_vctr <- rlang::eval_tidy(lsd_quo, df)
-  deb_ptype_check(lsd_vctr)
+  deb_vctr <- rlang::eval_tidy(lsd_quo, df)
+  deb_ptype_check(deb_vctr)
 
   # Turn deb_lsd or deb_tetra to deb_decimal for speed
-  if (deb_is_lsd(lsd_vctr) || deb_is_tetra(lsd_vctr)) {
+  if (deb_is_lsd(deb_vctr) || deb_is_tetra(deb_vctr)) {
     df <- dplyr::mutate(df, !! cn := deb_as_decimal({{ lsd }}))
   }
 
@@ -292,12 +292,12 @@ deb_account_summary <- function(df,
   }
 
   # Return deb_decimal back to deb_lsd or deb_tetra
-  if (deb_is_lsd(lsd_vctr)) {
+  if (deb_is_lsd(deb_vctr)) {
     ret <- ret %>%
       dplyr::mutate(credit  = deb_as_lsd(credit),
                     debit   = deb_as_lsd(debit),
                     current = deb_as_lsd(current))
-  } else if (deb_is_tetra(lsd_vctr)) {
+  } else if (deb_is_tetra(deb_vctr)) {
     ret <- ret %>%
       dplyr::mutate(credit  = deb_as_tetra(credit),
                     debit   = deb_as_tetra(debit),
@@ -325,11 +325,11 @@ deb_credit <- function(df,
                     edge_columns = c(rlang::as_name(credit_quo),
                                      rlang::as_name(debit_quo)))
 
-  lsd_vctr <- rlang::eval_tidy(lsd_quo, df)
-  deb_ptype_check(lsd_vctr)
+  deb_vctr <- rlang::eval_tidy(lsd_quo, df)
+  deb_ptype_check(deb_vctr)
 
   # Turn deb_lsd to deb_decimal for speed
-  if (deb_is_lsd(lsd_vctr) || deb_is_tetra(lsd_vctr)) {
+  if (deb_is_lsd(deb_vctr) || deb_is_tetra(deb_vctr)) {
     df <- dplyr::mutate(df, !! cn := deb_as_decimal({{ lsd }}))
   }
 
@@ -357,9 +357,9 @@ deb_credit <- function(df,
       dplyr::arrange(.data$account_id)
   }
 
-  if (deb_is_lsd(lsd_vctr)) {
+  if (deb_is_lsd(deb_vctr)) {
     ret[[cn]] <- deb_as_lsd(ret[[cn]])
-  } else if (deb_is_tetra(lsd_vctr)) {
+  } else if (deb_is_tetra(deb_vctr)) {
     ret[[cn]] <- deb_as_tetra(ret[[cn]])
   }
 
@@ -384,11 +384,11 @@ deb_debit <- function(df,
                     edge_columns = c(rlang::as_name(credit_quo),
                                      rlang::as_name(debit_quo)))
 
-  lsd_vctr <- rlang::eval_tidy(lsd_quo, df)
-  deb_ptype_check(lsd_vctr)
+  deb_vctr <- rlang::eval_tidy(lsd_quo, df)
+  deb_ptype_check(deb_vctr)
 
   # Turn deb_lsd to deb_decimal for speed
-  if (deb_is_lsd(lsd_vctr) || deb_is_tetra(lsd_vctr)) {
+  if (deb_is_lsd(deb_vctr) || deb_is_tetra(deb_vctr)) {
     df <- dplyr::mutate(df, !! cn := deb_as_decimal({{ lsd }}))
   }
 
@@ -416,9 +416,9 @@ deb_debit <- function(df,
       dplyr::arrange(.data$account_id)
   }
 
-  if (deb_is_lsd(lsd_vctr)) {
+  if (deb_is_lsd(deb_vctr)) {
     ret[[cn]] <- deb_as_lsd(ret[[cn]])
-  } else if (deb_is_tetra(lsd_vctr)) {
+  } else if (deb_is_tetra(deb_vctr)) {
     ret[[cn]] <- deb_as_tetra(ret[[cn]])
   }
 
@@ -477,8 +477,8 @@ deb_balance <- function(df,
   lsd_quo <- rlang::enquo(lsd)
   cn <- rlang::as_name(lsd_quo)
   # Access data for bases and class
-  lsd_vctr <- rlang::eval_tidy(lsd_quo, df)
-  bases <- deb_bases(lsd_vctr)
+  deb_vctr <- rlang::eval_tidy(lsd_quo, df)
+  bases <- deb_bases(deb_vctr)
 
   vals <- current[[2]]
 
@@ -490,13 +490,13 @@ deb_balance <- function(df,
 
   # If completely balanced
   if (all(vals == 0)) {
-    if (deb_is_lsd(lsd_vctr)) {
+    if (deb_is_lsd(deb_vctr)) {
       return(tibble::tibble(relation = c("credit", "debit"),
                !! cn := deb_lsd(c(0, 0), c(0, 0), c(0, 0), bases = bases)))
-    } else if (deb_is_decimal(lsd_vctr)) {
+    } else if (deb_is_decimal(deb_vctr)) {
       return(tibble::tibble(relation = c("credit", "debit"),
                !! cn := deb_decimal(c(0, 0), bases = bases)))
-    } else if (deb_is_tetra(lsd_vctr)) {
+    } else if (deb_is_tetra(deb_vctr)) {
       return(tibble::tibble(relation = c("credit", "debit"),
                !! cn := deb_tetra(c(0, 0), c(0, 0), c(0, 0), c(0, 0),
                                   bases = bases)))
