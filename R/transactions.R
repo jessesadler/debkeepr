@@ -254,8 +254,7 @@ deb_account_summary <- function(df,
       dplyr::mutate(current = credit - debit,
                     current = dplyr::if_else(should_be_int(current),
                                              round(current),
-                                             current)) %>%
-      dplyr::arrange(.data$account_id)
+                                             current))
   # If no NAs, then any NAs from join should be 0s
   } else if (!anyNA(c(pos[[2]], neg[[2]]))) {
     ret <- dplyr::full_join(pos, neg, by = "account_id") %>%
@@ -265,8 +264,7 @@ deb_account_summary <- function(df,
                     # floating point problems
                     current = dplyr::if_else(should_be_int(current),
                                              round(current),
-                                             current)) %>%
-      dplyr::arrange(.data$account_id)
+                                             current))
   # If there are NAs and NAs will be introduced by join, need to distinguish
   # between the two types. Add 0s from missing accounts then join.
   } else {
@@ -287,8 +285,7 @@ deb_account_summary <- function(df,
       dplyr::mutate(current = credit - debit,
                     current = dplyr::if_else(should_be_int(current),
                                              round(current),
-                                             current)) %>%
-      dplyr::arrange(.data$account_id)
+                                             current))
   }
 
   # Return deb_decimal back to deb_lsd or deb_tetra
@@ -303,8 +300,9 @@ deb_account_summary <- function(df,
                     debit   = deb_as_tetra(debit),
                     current = deb_as_tetra(current))
   }
-
-  ret
+  # Arrange by id and return
+  ret %>%
+    dplyr::arrange(.data[["account_id"]])
 }
 
 
@@ -340,11 +338,10 @@ deb_credit <- function(df,
   neg <- dplyr::distinct(df, {{ debit }})
 
   if (all_present(pos, neg)) {
-    ret <- dplyr::arrange(pos, .data$account_id)
+    ret <- pos
   } else if (!anyNA(pos[[2]])) {
     ret <- dplyr::full_join(pos, neg, by = c("account_id" = names(neg))) %>%
-      dplyr::mutate(!! cn := dplyr::coalesce({{ lsd }}, 0)) %>%
-      dplyr::arrange(.data$account_id)
+      dplyr::mutate(!! cn := dplyr::coalesce({{ lsd }}, 0))
   } else {
     pos_acc <- pos[[1]]
     neg_acc <- neg[[1]]
@@ -353,8 +350,7 @@ deb_credit <- function(df,
 
     ret <- tibble::tibble(account_id = c(pos_acc, pos_missing),
                           !! cn := c(pos[[2]],
-                                     rep(0, vec_size(pos_missing)))) %>%
-      dplyr::arrange(.data$account_id)
+                                     rep(0, vec_size(pos_missing))))
   }
 
   if (deb_is_lsd(deb_vctr)) {
@@ -362,8 +358,9 @@ deb_credit <- function(df,
   } else if (deb_is_tetra(deb_vctr)) {
     ret[[cn]] <- deb_as_tetra(ret[[cn]])
   }
-
-  ret
+  # Arrange by id and return
+  ret %>%
+    dplyr::arrange(.data[["account_id"]])
 }
 
 
@@ -399,11 +396,10 @@ deb_debit <- function(df,
   pos <- dplyr::distinct(df, {{ credit }})
 
   if (all_present(pos, neg)) {
-    ret <- dplyr::arrange(neg, .data$account_id)
+    ret <- neg
   } else if (!anyNA(neg[[2]])) {
     ret <- dplyr::full_join(neg, pos, c("account_id" = names(pos))) %>%
-      dplyr::mutate(!! cn := dplyr::coalesce({{ lsd }}, 0)) %>%
-      dplyr::arrange(.data$account_id)
+      dplyr::mutate(!! cn := dplyr::coalesce({{ lsd }}, 0))
   } else {
     neg_acc <- neg[[1]]
     pos_acc <- pos[[1]]
@@ -412,8 +408,7 @@ deb_debit <- function(df,
 
     ret <- tibble::tibble(account_id = c(neg_acc, neg_missing),
                           !! cn := c(neg[[2]],
-                                     rep(0, vec_size(neg_missing)))) %>%
-      dplyr::arrange(.data$account_id)
+                                     rep(0, vec_size(neg_missing))))
   }
 
   if (deb_is_lsd(deb_vctr)) {
@@ -421,8 +416,9 @@ deb_debit <- function(df,
   } else if (deb_is_tetra(deb_vctr)) {
     ret[[cn]] <- deb_as_tetra(ret[[cn]])
   }
-
-  ret
+  # Arrange by id and return
+  ret %>%
+    dplyr::arrange(.data[["account_id"]])
 }
 
 
@@ -438,7 +434,7 @@ deb_current <- function(df,
                       debit = {{ debit }},
                       lsd = {{ lsd }},
                       na.rm = na.rm) %>%
-    dplyr::select(.data$account_id, {{ lsd }} := current)
+    dplyr::select("account_id", {{ lsd }} := current)
 }
 
 
@@ -454,7 +450,7 @@ deb_open <- function(df,
                       debit = {{ debit }},
                       lsd = {{ lsd }},
                       na.rm = na.rm) %>%
-    dplyr::select(.data$account_id, {{ lsd }} := current) %>%
+    dplyr::select("account_id", {{ lsd }} := current) %>%
     # Closed accounts = 0; NA accounts still open
     dplyr::filter({{ lsd }} != 0 | is.na({{ lsd }}))
 }
