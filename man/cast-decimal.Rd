@@ -76,7 +76,7 @@ y <- deb_tetra(l = c(5, 13, 7),
                s = c(12, 8, 16),
                d = c(3, 11, 0),
                f = c(1, 3, 2))
-deb_as_lsd(y)
+deb_as_decimal(y)
 
 # Cast a numeric vector to deb_decimal
 z <- c(5.825, 3.25, 22/3)
