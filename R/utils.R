@@ -78,3 +78,28 @@ bases_hierarchy <- function(x, y, x_arg = "", y_arg = "") {
 all_present <- function(pos, neg) {
   all(pos[[1]] %in% neg[[1]], neg[[1]] %in% pos[[1]])
 }
+
+#' Create deb-type vector given a prototype, default value, and size
+#'
+#' Used in `deb_account()` and `deb_balance()` to create deb-type vectors
+#' with values of 0 or NA of a given length. This places logic of if
+#' statements here instead of in those functions, making them much simpler.
+#' Default is deb-type vector of length one with value of NA.
+#' @keywords internal
+#' @param x Template of vector to create. Must be deb-type vector.
+#' @param val Value of vector to create and replicate. Default is NA.
+#' @param n Desired size of result
+#' @noRd
+
+create_debtype <- function(x, val = NA, n = 1L) {
+  bases <- deb_bases(x)
+
+  if (deb_is_lsd(x)) {
+    vec_rep(deb_as_lsd(val, bases = bases), times = n)
+  } else if (deb_is_decimal(x)) {
+    unit <- deb_unit(x)
+    vec_rep(deb_as_decimal(val, unit = unit, bases = bases), times = n)
+  } else if (deb_is_tetra(x)) {
+    vec_rep(deb_as_tetra(val, bases = bases), times = n)
+  }
+}

@@ -149,67 +149,34 @@ deb_account <- function(df, account_id,
 
   deb_ptype_check(deb_vctr)
 
-  # deb_lsd
-  if (deb_is_lsd(deb_vctr)) {
-    pos <- dplyr::filter(df, {{ credit }} == account_id)
-    if (vec_size(pos) < 1) {
-      cred <- deb_lsd(0, 0, 0, bases = bases)
-    } else {
-      cred <- sum(pos[[cn]], na.rm = na.rm)
-    }
+  # Credit
+  pos <- df %>%
+    dplyr::filter({{ credit }} == account_id) %>%
+    dplyr::pull({{ lsd }})
 
-    neg <- dplyr::filter(df, {{ debit }} == account_id)
-    if (vec_size(neg) < 1) {
-      deb <- deb_lsd(0, 0, 0, bases = bases)
-    } else {
-      deb <- sum(neg[[cn]], na.rm = na.rm)
-    }
-
-    current <- cred - deb
-  # deb_decimal
-  } else if (deb_is_decimal(deb_vctr)) {
-    pos <- dplyr::filter(df, {{ credit }} == account_id)
-    if (vec_size(pos) < 1) {
-      cred <- deb_decimal(0, bases = bases)
-    } else {
-      cred <- sum(pos[[cn]], na.rm = na.rm)
-    }
-
-    neg <- dplyr::filter(df, {{ debit }} == account_id)
-    if (vec_size(neg) < 1) {
-      deb <- deb_decimal(0, bases = bases)
-    } else {
-      deb <- sum(neg[[cn]], na.rm = na.rm)
-    }
-
-    current <- cred - deb
-    # Deal with floating point issues
-    if (!is.na(current)) {
-      if (should_be_int(current)) {
-        current <- round(current)
-        }
-    }
-  # deb_tetra
-  } else if (deb_is_tetra(deb_vctr)) {
-    pos <- dplyr::filter(df, {{ credit }} == account_id)
-    if (vec_size(pos) < 1) {
-      cred <- deb_tetra(0, 0, 0, 0, bases = bases)
-    } else {
-      cred <- sum(pos[[cn]], na.rm = na.rm)
-    }
-
-    neg <- dplyr::filter(df, {{ debit }} == account_id)
-    if (vec_size(neg) < 1) {
-      deb <- deb_tetra(0, 0, 0, 0, bases = bases)
-    } else {
-      deb <- sum(neg[[cn]], na.rm = na.rm)
-    }
-
-    current <- cred - deb
+  if (vec_size(pos) < 1) {
+    pos <- create_debtype(deb_vctr, val = 0, n = 1)
+  } else {
+    pos <- sum(pos, na.rm = na.rm)
   }
 
+  # Debit
+  neg <- df %>%
+    dplyr::filter({{ debit }} == account_id) %>%
+    dplyr::pull({{ lsd }})
+
+  if (vec_size(neg) < 1) {
+    neg <- create_debtype(deb_vctr, val = 0, n = 1)
+  } else {
+    neg <- sum(neg, na.rm = na.rm)
+  }
+
+  # Current
+  current <- pos - neg
+
+  # Make tibble
   tibble::tibble(relation = c("credit", "debit", "current"),
-                 !! cn := c(cred, deb, current))
+                 !! cn := c(pos, neg, current))
 }
 
 
@@ -238,11 +205,13 @@ deb_account_summary <- function(df,
     df <- dplyr::mutate(df, !! cn := deb_as_decimal({{ lsd }}))
   }
 
-  pos <- dplyr::group_by(df, {{ credit }}) %>%
+  pos <- df %>%
+    dplyr::group_by({{ credit }}) %>%
     dplyr::summarise(!! cn := sum({{ lsd }}, na.rm = na.rm),
                      .groups = "drop") %>%
     dplyr::rename(account_id = {{ credit }}, credit = {{ lsd }})
-  neg <- dplyr::group_by(df, {{ debit }}) %>%
+  neg <- df %>%
+    dplyr::group_by({{ debit }}) %>%
     dplyr::summarise(!! cn := sum({{ lsd }}, na.rm = na.rm),
                      .groups = "drop") %>%
     dplyr::rename(account_id = {{ debit }}, debit = {{ lsd }})
@@ -331,7 +300,8 @@ deb_credit <- function(df,
     df <- dplyr::mutate(df, !! cn := deb_as_decimal({{ lsd }}))
   }
 
-  pos <- dplyr::group_by(df, {{ credit }}) %>%
+  pos <- df %>%
+    dplyr::group_by({{ credit }}) %>%
     dplyr::summarise(!! cn := sum({{ lsd }}, na.rm = na.rm),
                      .groups = "drop") %>%
     dplyr::rename(account_id = {{ credit }})
@@ -340,14 +310,15 @@ deb_credit <- function(df,
   if (all_present(pos, neg)) {
     ret <- pos
   } else if (!anyNA(pos[[2]])) {
+    # No NAs so can make missing accounts 0
     ret <- dplyr::full_join(pos, neg, by = c("account_id" = names(neg))) %>%
       dplyr::mutate(!! cn := dplyr::coalesce({{ lsd }}, 0))
   } else {
+    # Find missing accounts and make them 0
     pos_acc <- pos[[1]]
     neg_acc <- neg[[1]]
 
     pos_missing <- neg_acc[!(neg_acc %in% pos_acc)]
-
     ret <- tibble::tibble(account_id = c(pos_acc, pos_missing),
                           !! cn := c(pos[[2]],
                                      rep(0, vec_size(pos_missing))))
@@ -389,7 +360,8 @@ deb_debit <- function(df,
     df <- dplyr::mutate(df, !! cn := deb_as_decimal({{ lsd }}))
   }
 
-  neg <- dplyr::group_by(df, {{ debit }}) %>%
+  neg <- df %>%
+    dplyr::group_by({{ debit }}) %>%
     dplyr::summarise(!! cn := sum({{ lsd }}, na.rm = na.rm),
                      .groups = "drop") %>%
     dplyr::rename(account_id = {{ debit }})
@@ -445,11 +417,11 @@ deb_open <- function(df,
                      lsd = lsd,
                      na.rm = FALSE) {
 
-  deb_account_summary(df,
-                      credit = {{ credit }},
-                      debit = {{ debit }},
-                      lsd = {{ lsd }},
-                      na.rm = na.rm) %>%
+  df %>%
+    deb_account_summary(credit = {{ credit }},
+                        debit = {{ debit }},
+                        lsd = {{ lsd }},
+                        na.rm = na.rm) %>%
     dplyr::select("account_id", {{ lsd }} := current) %>%
     # Closed accounts = 0; NA accounts still open
     dplyr::filter({{ lsd }} != 0 | is.na({{ lsd }}))
@@ -480,28 +452,14 @@ deb_balance <- function(df,
 
   # If there are NAs
   if (anyNA(vals)) {
-    return(tibble::tibble(relation = c("credit", "debit"),
-             !! cn := vec_init(deb_lsd(bases = bases), 2L)))
+    balance <- create_debtype(deb_vctr, val = NA, n = 2)
+  # If completely balance
+  } else if (all(vals == 0)) {
+    balance <- create_debtype(deb_vctr, val = 0, n = 2)
+  } else {
+   balance <- c(sum(vals[vals > 0]), sum(vals[vals < 0]))
   }
-
-  # If completely balanced
-  if (all(vals == 0)) {
-    if (deb_is_lsd(deb_vctr)) {
-      return(tibble::tibble(relation = c("credit", "debit"),
-               !! cn := deb_lsd(c(0, 0), c(0, 0), c(0, 0), bases = bases)))
-    } else if (deb_is_decimal(deb_vctr)) {
-      return(tibble::tibble(relation = c("credit", "debit"),
-               !! cn := deb_decimal(c(0, 0), bases = bases)))
-    } else if (deb_is_tetra(deb_vctr)) {
-      return(tibble::tibble(relation = c("credit", "debit"),
-               !! cn := deb_tetra(c(0, 0), c(0, 0), c(0, 0), c(0, 0),
-                                  bases = bases)))
-    }
-  }
-
-  pos <- sum(vals[vals > 0])
-  neg <- sum(vals[vals < 0])
 
   tibble::tibble(relation = c("credit", "debit"),
-                 !! cn := c(pos, neg))
+                 !! cn := balance)
 }
