@@ -1,34 +1,5 @@
 ## Test coercion with deb_lsd, deb_decimal, and deb_tetra ##
 
-bases2 <- c(50, 16)
-bases3 <- c(20, 12, 4)
-bases4 <- c(50, 16, 8)
-
-lsd <- deb_lsd(1, 2, 3)
-lsd2 <- deb_lsd(4, 5, 6)
-lsd_alt <- deb_lsd(1, 2, 3, bases2)
-lsd_tetra <- deb_lsd(1, 16, 9.75)
-
-dec <- deb_decimal(c(1.35, 2.5))
-dec2 <- deb_decimal(3.25)
-dec3 <- deb_decimal(c(1.35, 2.5, 3.25))
-dec_s <- deb_decimal(c(27, 50), unit = "s")
-dec_s2 <- deb_decimal(65, unit = "s")
-dec_s3 <- deb_decimal(c(27, 50, 65), unit = "s")
-dec_d <- deb_decimal(c(324, 600), unit = "d")
-dec_d2 <- deb_decimal(780, unit = "d")
-dec_d3 <- deb_decimal(c(324, 600, 780), unit = "d")
-
-tetra <- deb_tetra(1, 2, 3, 4)
-tetra2 <- deb_tetra(5, 6, 7, 8)
-
-dec_tetra_l <- deb_decimal(1.840625, bases = bases3)
-dec_tetra_s <- deb_decimal(36.8125, unit = "s", bases = bases3)
-dec_tetra_d <- deb_decimal(441.75, unit = "d", bases = bases3)
-dec_tetra_f <- deb_decimal(1767, unit = "f", bases = bases3)
-dec_tetra_l_alt <- deb_decimal(1.5, bases = bases4)
-dec_tetra_f_alt <- deb_decimal(7708, unit = "f", bases = bases4)
-
 # deb_lsd coercion --------------------------------------------------------
 
 test_that("deb_lsd coerces to itself", {
