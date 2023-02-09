@@ -19,6 +19,6 @@ Test if an object is of class \code{deb_decimal}.
 x <- deb_decimal(c(5.25, 3.825, 8.5))
 y <- c(5.25, 3.825, 8.5)
 
-deb_is_lsd(x)
-deb_is_lsd(y)
+deb_is_decimal(x)
+deb_is_decimal(y)
 }
