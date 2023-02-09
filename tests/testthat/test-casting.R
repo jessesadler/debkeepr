@@ -1,37 +1,5 @@
 ## Test casting with deb_lsd, deb_decimal, and deb_tetra ##
 
-bases2 <- c(50, 16)
-bases3 <- c(20, 12, 4)
-bases4 <- c(50, 16, 8)
-
-lsd <- deb_lsd(c(NA, 2, 3), c(NA, 4, 5), c(NA, 6, 9))
-lsd1 <- deb_lsd(1, 2, 3)
-lsd_alt <- deb_lsd(1, 25, 4, bases = bases2)
-lsd3 <- deb_lsd(c(1, 2, 3), c(2, 4, 5), c(3, 6, 9))
-
-dec <- deb_decimal(c(NA, 2.225, 3.2875))
-dec_l <- deb_decimal(1.1125)
-dec_bases <- deb_decimal(1.505, bases = bases2)
-dec_s <- deb_decimal(22.25, unit = "s")
-dec_s2 <- deb_decimal(c(NA, 15, 25), unit = "s")
-dec_s3 <- deb_decimal(c(22.25, 15, 25), unit = "s")
-dec_d <- deb_decimal(267, unit = "d")
-dec_d2 <- deb_decimal(c(NA, 180, 300), unit = "d")
-dec_d3 <- deb_decimal(c(267, 180, 300), unit = "d")
-dec3 <- deb_decimal(c(1.1125, 2.225, 3.2875))
-
-tetra <- deb_tetra(c(NA, 1), c(NA, 2), c(NA, 4), c(NA, 2))
-tetra1 <- deb_tetra(1, 2, 4, 2)
-tetra_alt <- deb_tetra(1, 10, 3, 4, bases = bases4)
-
-dec_tetra <- deb_decimal(c(1.840625, 1.11875), bases = bases3)
-dec_tetra_alt <- deb_decimal(c(60.21875, 85.9375), bases = bases4)
-dec_l_tetra <- deb_decimal(1.11875, bases = bases3)
-dec_s_tetra <- deb_decimal(22.375, unit = "s", bases = bases3)
-dec_d_tetra <- deb_decimal(268.5, unit = "d", bases = bases3)
-dec_f_tetra <- deb_decimal(1074, unit = "f", bases = bases3)
-dec_s_tetra_alt <- deb_decimal(60.21875, unit = "s", bases = bases4)
-
 # Test with vec_cast ------------------------------------------------------
 
 test_that("vec_cast works for deb_lsd", {
@@ -42,13 +10,11 @@ test_that("vec_cast works for deb_lsd", {
   # deb_lsd to deb_lsd: checks for equal bases
   expect_equal(vec_cast(lsd, deb_lsd()), lsd)
   expect_equal(vec_cast(lsd_alt, deb_lsd(bases = c(50,16))), lsd_alt)
-  expect_snapshot(vec_cast(lsd_alt, deb_lsd()), error = TRUE)
 
   # deb_lsd with double and integer
   expect_equal(vec_cast(lsd, numeric()), 1.1125)
   expect_equal(vec_cast(1.1125, deb_lsd()), lsd)
   expect_equal(vec_cast(1:3, deb_lsd()), deb_lsd(1:3, 0, 0))
-  expect_snapshot_error(vec_cast(lsd, integer()))
   # Allow cast from numeric prototypes
   expect_equal(vec_cast(numeric(), deb_lsd()), deb_lsd())
   expect_equal(vec_cast(integer(), deb_lsd()), deb_lsd())
@@ -56,6 +22,10 @@ test_that("vec_cast works for deb_lsd", {
   expect_equal(vec_cast(lsd, character()), "1:2s:3d")
   # NA and incompatible cast from boilerplate
   expect_equal(vec_cast(NA, deb_lsd()), deb_lsd(NA, NA, NA))
+
+  # Errors
+  expect_snapshot(vec_cast(lsd_alt, deb_lsd()), error = TRUE)
+  expect_snapshot_error(vec_cast(lsd, integer()))
   expect_snapshot_error(vec_cast(factor("hello"), deb_lsd()))
 })
 
@@ -74,7 +44,6 @@ test_that("vec_cast works for deb_decimal", {
                dec_alt)
   expect_equal(vec_cast(dec_s, deb_decimal(unit = "s")), dec_s)
   expect_equal(vec_cast(dec_d, deb_decimal(unit = "d")), dec_d)
-  expect_snapshot(vec_cast(dec_alt, deb_decimal()), error = TRUE)
   # Convert units: see also test-conversion
   expect_equal(vec_cast(dec_l, deb_decimal(unit = "s")), dec_s)
   expect_equal(vec_cast(dec_l, deb_decimal(unit = "d")), dec_d)
@@ -89,21 +58,25 @@ test_that("vec_cast works for deb_decimal", {
                deb_decimal(22.375, unit = "s"))
   expect_equal(vec_cast(dec_s_tetra, deb_decimal()),
                deb_decimal(1.11875, unit = "l"))
-  expect_snapshot(error = TRUE,
-                  vec_cast(dec_l, deb_decimal(bases = c(50, 16, 8))))
-  expect_snapshot(error = TRUE,
-                  vec_cast(deb_decimal(bases = c(50, 16, 8)), deb_decimal()))
 
   # deb_decimal with double and integer
   expect_equal(vec_cast(dec, numeric()), c(NA, 2.225, 3.2875))
   expect_equal(vec_cast(1.1125, deb_decimal()), dec_l)
   expect_equal(vec_cast(1:3, deb_decimal()), deb_decimal(1:3))
-  expect_snapshot_error(vec_cast(dec, integer()))
   # deb_lsd to character
   expect_equal(vec_cast(dec, character()), c(NA, "2.225", "3.2875"))
   # NA and incompatible cast from boilerplate
   expect_equal(vec_cast(NA, deb_decimal()), deb_decimal(NA))
-  expect_snapshot_error(vec_cast(factor("hello"), deb_decimal()))
+
+  # Errors
+  expect_snapshot(vec_cast(dec_alt, deb_decimal()), error = TRUE)
+  expect_snapshot(error = TRUE,
+                  vec_cast(dec_l, deb_decimal(bases = c(50, 16, 8))))
+  expect_snapshot(error = TRUE,
+                  vec_cast(deb_decimal(bases = c(50, 16, 8)), deb_decimal()))
+  expect_snapshot(error = TRUE, vec_cast(dec, integer()))
+  expect_snapshot(error = TRUE, vec_cast(factor("hello"), deb_decimal()))
+
 })
 
 test_that("vec_cast works for deb_decimal with tetra bases", {
@@ -115,34 +88,21 @@ test_that("vec_cast works for deb_decimal with tetra bases", {
   dec_f <- deb_decimal(1074, unit = "f", bases = bases3)
 
   # With same unit
-  expect_equal(vec_cast(dec_s, deb_decimal(unit = "s", bases = bases3)),
-               dec_s)
+  expect_equal(vec_cast(dec_s, deb_decimal(unit = "s", bases = bases3)), dec_s)
   # Convert units
-  expect_equal(vec_cast(dec_l, deb_decimal(unit = "s", bases = bases3)),
-               dec_s)
-  expect_equal(vec_cast(dec_l, deb_decimal(unit = "d", bases = bases3)),
-               dec_d)
-  expect_equal(vec_cast(dec_s, deb_decimal(unit = "l", bases = bases3)),
-               dec_l)
-  expect_equal(vec_cast(dec_s, deb_decimal(unit = "d", bases = bases3)),
-               dec_d)
-  expect_equal(vec_cast(dec_d, deb_decimal(unit = "l", bases = bases3)),
-               dec_l)
-  expect_equal(vec_cast(dec_d, deb_decimal(unit = "s", bases = bases3)),
-               dec_s)
+  expect_equal(vec_cast(dec_l, deb_decimal(unit = "s", bases = bases3)), dec_s)
+  expect_equal(vec_cast(dec_l, deb_decimal(unit = "d", bases = bases3)), dec_d)
+  expect_equal(vec_cast(dec_s, deb_decimal(unit = "l", bases = bases3)), dec_l)
+  expect_equal(vec_cast(dec_s, deb_decimal(unit = "d", bases = bases3)), dec_d)
+  expect_equal(vec_cast(dec_d, deb_decimal(unit = "l", bases = bases3)), dec_l)
+  expect_equal(vec_cast(dec_d, deb_decimal(unit = "s", bases = bases3)), dec_s)
   # Convert units with farthing
-  expect_equal(vec_cast(dec_l, deb_decimal(unit = "f", bases = bases3)),
-               dec_f)
-  expect_equal(vec_cast(dec_s, deb_decimal(unit = "f", bases = bases3)),
-               dec_f)
-  expect_equal(vec_cast(dec_d, deb_decimal(unit = "f", bases = bases3)),
-               dec_f)
-  expect_equal(vec_cast(dec_f, deb_decimal(unit = "l", bases = bases3)),
-               dec_l)
-  expect_equal(vec_cast(dec_f, deb_decimal(unit = "s", bases = bases3)),
-               dec_s)
-  expect_equal(vec_cast(dec_f, deb_decimal(unit = "d", bases = bases3)),
-               dec_d)
+  expect_equal(vec_cast(dec_l, deb_decimal(unit = "f", bases = bases3)), dec_f)
+  expect_equal(vec_cast(dec_s, deb_decimal(unit = "f", bases = bases3)), dec_f)
+  expect_equal(vec_cast(dec_d, deb_decimal(unit = "f", bases = bases3)), dec_f)
+  expect_equal(vec_cast(dec_f, deb_decimal(unit = "l", bases = bases3)), dec_l)
+  expect_equal(vec_cast(dec_f, deb_decimal(unit = "s", bases = bases3)), dec_s)
+  expect_equal(vec_cast(dec_f, deb_decimal(unit = "d", bases = bases3)), dec_d)
 
   # Error of trying to convert lsd decimal to farthing
   expect_snapshot(vec_cast(deb_decimal(), deb_decimal(unit = "f")), error = TRUE)
@@ -157,14 +117,11 @@ test_that("vec_cast works for deb_tetra", {
   # deb_tetra to deb_tetra: checks for equal bases
   expect_equal(vec_cast(tetra, deb_tetra()), tetra)
   expect_equal(vec_cast(tetra_alt, deb_tetra(bases = c(50, 16, 8))), tetra_alt)
-  expect_snapshot(vec_cast(tetra_alt, deb_tetra()), error = TRUE)
-
   # deb_lsd with double and integer
   expect_equal(vec_cast(tetra1, numeric()),
                1 + 2 / 20 + 4 / 240 + 2 / 960)
   expect_equal(vec_cast(1.11875, deb_tetra()), tetra1)
   expect_equal(vec_cast(1:3, deb_tetra()), deb_tetra(1:3, 0, 0, 0))
-  expect_snapshot_error(vec_cast(tetra, integer()))
   # Allow cast from numeric prototypes
   expect_equal(vec_cast(numeric(), deb_tetra()), deb_tetra())
   expect_equal(vec_cast(integer(), deb_tetra()), deb_tetra())
@@ -172,6 +129,10 @@ test_that("vec_cast works for deb_tetra", {
   expect_equal(vec_cast(tetra, character()), c(NA, "1:2s:4d:2f"))
   # NA and incompatible cast from boilerplate
   expect_equal(vec_cast(NA, deb_tetra()), deb_tetra(NA, NA, NA, NA))
+
+  # Errors
+  expect_snapshot(vec_cast(tetra_alt, deb_tetra()), error = TRUE)
+  expect_snapshot_error(vec_cast(tetra, integer()))
   expect_snapshot_error(vec_cast(factor("hello"), deb_tetra()))
 })
 
@@ -190,22 +151,22 @@ test_that("vec_cast works with lists", {
 
   # list to deb_lsd
   expect_identical(vec_cast(y, deb_lsd()), x)
-  expect_snapshot(vec_cast(c(y, 5), deb_lsd()), error = TRUE)
-  expect_false(identical(vec_cast(y, deb_lsd()), lsd))
   # list to deb_decimal
   expect_equal(vec_cast(y, deb_decimal()), deb_as_decimal(x))
-  expect_snapshot(vec_cast(c(y, 5), deb_decimal()), error = TRUE)
   # list to deb_tetra
   expect_identical(vec_cast(tetra_list, deb_tetra()), z)
-  expect_snapshot(vec_cast(c(tetra_list, 5), deb_tetra()), error = TRUE)
   # deb_lsd to list
   expect_identical(vec_cast(x, list()), y)
   # deb_tetra to list
   expect_identical(vec_cast(z, list()), tetra_list)
   # deb_as_list
-  expect_snapshot(deb_as_list(dec), error = TRUE)
   expect_identical(deb_as_list(x), y)
   expect_identical(deb_as_list(z), tetra_list)
+  # Errors
+  expect_snapshot(deb_as_list(deb_decimal(1:5)), error = TRUE)
+  expect_snapshot(vec_cast(c(y, 5), deb_lsd()), error = TRUE)
+  expect_snapshot(vec_cast(c(y, 5), deb_decimal()), error = TRUE)
+  expect_snapshot(vec_cast(c(tetra_list, 5), deb_tetra()), error = TRUE)
 })
 
 test_that("vec_cast works between deb_lsd and deb_decimal", {
@@ -228,6 +189,7 @@ test_that("vec_cast works between deb_lsd and deb_decimal", {
   expect_equal(vec_cast(dec_alt, deb_lsd(bases = c(50, 16))), lsd_alt)
   expect_equal(vec_cast(lsd_alt, deb_decimal(bases = c(50, 16))), dec_alt)
   expect_equal(vec_cast(lsd1, deb_decimal(unit = "s")), dec_s)
+
   # deb_decimal with tetra bases to lsd
   # Data
   dec_l_tetra <- deb_decimal(1.11875, bases = bases3)
@@ -356,7 +318,6 @@ test_that("deb_as_lsd works", {
   expect_equal(deb_as_lsd(1.505, bases = c(50, 16)),
                deb_lsd(1, 25, 4, c(50, 16)))
   expect_equal(deb_as_lsd(NA), deb_lsd(NA, NA, NA))
-  expect_snapshot(deb_as_lsd(factor("hello")), error = TRUE)
 
   # List to deb_lsd
   x <- deb_lsd(l = 0:3, s = 4:7, d = 8:11)
@@ -364,6 +325,8 @@ test_that("deb_as_lsd works", {
             c(2, 6, 10), c(3, 7, 11))
 
   expect_identical(deb_as_lsd(y), x)
+
+  expect_snapshot(deb_as_lsd(factor("hello")), error = TRUE)
 })
 
 test_that("deb_as_decimal works", {
@@ -388,13 +351,14 @@ test_that("deb_as_decimal works", {
   expect_equal(deb_as_decimal(1.505, bases = c(50, 16)), dec_alt)
   expect_equal(deb_as_decimal(22.25, unit = "s"), dec_s)
   expect_equal(deb_as_decimal(NA), deb_decimal(NA))
-  expect_snapshot(deb_as_decimal(factor("hello")), error = TRUE)
 
   # List to deb_decimal
   x <- deb_lsd(l = 0:3, s = 4:7, d = 8:11)
   y <- list(c(0, 4, 8), c(1, 5, 9),
             c(2, 6, 10), c(3, 7, 11))
   expect_identical(deb_as_decimal(y), deb_as_decimal(x))
+
+  expect_snapshot(deb_as_decimal(factor("hello")), error = TRUE)
 })
 
 test_that("deb_as_tetra works", {
@@ -413,10 +377,6 @@ test_that("deb_as_tetra works", {
   expect_equal(deb_as_tetra(1.11875), tetra)
   expect_equal(deb_as_tetra(1.204375, bases = c(50, 16, 8)), tetra_alt)
   expect_equal(deb_as_tetra(NA), deb_tetra(NA, NA, NA, NA))
-  expect_snapshot(deb_as_tetra(factor("hello")), error = TRUE)
-  # Error with no f unit
-  expect_snapshot(deb_as_tetra(deb_lsd(1, 2, 3)), error = TRUE)
-  expect_snapshot(deb_as_tetra(deb_decimal(1.1125)), error = TRUE)
 
   # List to deb_tetra
   x <- deb_tetra(l = 0:3, s = 4:7, d = 8:11, f = 1:4)
@@ -425,6 +385,10 @@ test_that("deb_as_tetra works", {
 
   expect_identical(deb_as_tetra(y), x)
 
+  expect_snapshot(deb_as_tetra(factor("hello")), error = TRUE)
+  # Error with no f unit
+  expect_snapshot(deb_as_tetra(deb_lsd(1, 2, 3)), error = TRUE)
+  expect_snapshot(deb_as_tetra(deb_decimal(1.1125)), error = TRUE)
 })
 
 # Test assignment subsetting ----------------------------------------------
@@ -453,6 +417,11 @@ test_that("assignment subsetting works", {
 
   tetra <- deb_tetra(c(NA, 1), c(NA, 2), c(NA, 4), c(NA, 2))
   tetra1 <- deb_tetra(1, 2, 4, 2)
+
+  lsd_alt <- deb_lsd(1, 2, 3, bases = c(50, 16))
+  dec_alt <- deb_decimal(1, bases = c(50, 16))
+  tetra_alt <- deb_tetra(1, 2, 3, 4, bases = c(50, 16, 8))
+  dec_tetra_alt <- deb_decimal(1, bases = c(50, 16, 8))
 
   # deb_lsd
   lsd[[1]] <- lsd1
@@ -540,16 +509,16 @@ test_that("assignment subsetting works", {
 
   # Errors due to attribute mismatches
   expect_snapshot(lsd[[1]] <- lsd_alt, error = TRUE)
-  expect_snapshot(lsd[[1]] <- dec_bases, error = TRUE)
-  expect_snapshot(dec[[1]] <- dec_bases, error = TRUE)
+  expect_snapshot(lsd[[1]] <- dec_alt, error = TRUE)
+  expect_snapshot(dec[[1]] <- dec_alt, error = TRUE)
   expect_snapshot(dec[[1]] <- lsd_alt, error = TRUE)
   expect_snapshot(tetra[[1]] <- tetra_alt, error = TRUE)
 
   # Mixed bases errors
   expect_snapshot(lsd[[1]] <- tetra_alt, error = TRUE)
   expect_snapshot(tetra_alt[[1]] <- lsd, error = TRUE)
-  expect_snapshot(dec[[1]] <- dec_s_tetra_alt, error = TRUE)
+  expect_snapshot(dec[[1]] <- dec_tetra_alt, error = TRUE)
   expect_snapshot(dec_tetra_alt[[1]] <- dec_l, error = TRUE)
-  expect_snapshot(lsd[[1]] <- dec_s_tetra_alt, error = TRUE)
+  expect_snapshot(lsd[[1]] <- dec_tetra_alt, error = TRUE)
   expect_snapshot(dec_tetra_alt[[1]] <- lsd1, error = TRUE)
 })

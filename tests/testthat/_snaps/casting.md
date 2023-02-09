@@ -56,11 +56,19 @@
 
 ---
 
-    Can't convert `dec` <deb_decimal> to <integer>.
+    Code
+      vec_cast(dec, integer())
+    Condition
+      Error:
+      ! Can't convert `dec` <deb_decimal> to <integer>.
 
 ---
 
-    Can't convert `factor("hello")` <factor<48b69>> to <deb_decimal>.
+    Code
+      vec_cast(factor("hello"), deb_decimal())
+    Condition
+      Error:
+      ! Can't convert `factor("hello")` <factor<48b69>> to <deb_decimal>.
 
 # vec_cast works for deb_decimal with tetra bases
 
@@ -93,6 +101,15 @@
 # vec_cast works with lists
 
     Code
+      deb_as_list(deb_decimal(1:5))
+    Condition
+      Error in `deb_as_list()`:
+      ! `x ` must be a <deb_lsd> or <deb_tetra> vector.
+      x You've supplied a <deb_decimal>.
+
+---
+
+    Code
       vec_cast(c(y, 5), deb_lsd())
     Condition
       Error in `vec_cast.deb_lsd.list()`:
@@ -116,15 +133,6 @@
       Error in `vec_cast.deb_tetra.list()`:
       ! `x` must be a list of numeric vectors of length 4.
       x You've supplied a list of <numeric> vectors of length(s) 4, 4, 4, 4, and 1.
-
----
-
-    Code
-      deb_as_list(dec)
-    Condition
-      Error in `deb_as_list()`:
-      ! `x ` must be a <deb_lsd> or <deb_tetra> vector.
-      x You've supplied a <deb_decimal>.
 
 # vec_cast works between deb_lsd and deb_decimal
 
@@ -313,7 +321,7 @@
 ---
 
     Code
-      lsd[[1]] <- dec_bases
+      lsd[[1]] <- dec_alt
     Condition
       Error:
       ! Incompatible `bases`.
@@ -325,7 +333,7 @@
 ---
 
     Code
-      dec[[1]] <- dec_bases
+      dec[[1]] <- dec_alt
     Condition
       Error:
       ! Incompatible `bases`.
@@ -385,7 +393,7 @@
 ---
 
     Code
-      dec[[1]] <- dec_s_tetra_alt
+      dec[[1]] <- dec_tetra_alt
     Condition
       Error:
       ! Incompatible `bases`.
@@ -409,7 +417,7 @@
 ---
 
     Code
-      lsd[[1]] <- dec_s_tetra_alt
+      lsd[[1]] <- dec_tetra_alt
     Condition
       Error:
       ! Incompatible `bases`.
