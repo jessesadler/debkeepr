@@ -206,15 +206,11 @@ deb_account_summary <- function(df,
   }
 
   pos <- df %>%
-    dplyr::group_by({{ credit }}) %>%
-    dplyr::summarise(!! cn := sum({{ lsd }}, na.rm = na.rm),
-                     .groups = "drop") %>%
-    dplyr::rename(account_id = {{ credit }}, credit = {{ lsd }})
+    deb_summarise(credit, data = {{ lsd }}, na.rm = na.rm) %>%
+    dplyr::rename(credit = {{ lsd }})
   neg <- df %>%
-    dplyr::group_by({{ debit }}) %>%
-    dplyr::summarise(!! cn := sum({{ lsd }}, na.rm = na.rm),
-                     .groups = "drop") %>%
-    dplyr::rename(account_id = {{ debit }}, debit = {{ lsd }})
+    deb_summarise(debit, data = {{ lsd }}, na.rm = na.rm) %>%
+    dplyr::rename(debit = {{ lsd }})
 
   # If statements to ensure NAs from above not turned into 0s.
   # If all accounts present in pos and neg, no NAs will be introduced
@@ -300,11 +296,7 @@ deb_credit <- function(df,
     df <- dplyr::mutate(df, !! cn := deb_as_decimal({{ lsd }}))
   }
 
-  pos <- df %>%
-    dplyr::group_by({{ credit }}) %>%
-    dplyr::summarise(!! cn := sum({{ lsd }}, na.rm = na.rm),
-                     .groups = "drop") %>%
-    dplyr::rename(account_id = {{ credit }})
+  pos <- deb_summarise(df, credit, data = {{ lsd }}, na.rm = na.rm)
   neg <- dplyr::distinct(df, {{ debit }})
 
   if (all_present(pos, neg)) {
@@ -360,11 +352,7 @@ deb_debit <- function(df,
     df <- dplyr::mutate(df, !! cn := deb_as_decimal({{ lsd }}))
   }
 
-  neg <- df %>%
-    dplyr::group_by({{ debit }}) %>%
-    dplyr::summarise(!! cn := sum({{ lsd }}, na.rm = na.rm),
-                     .groups = "drop") %>%
-    dplyr::rename(account_id = {{ debit }})
+  neg <- deb_summarise(df, debit, data = {{ lsd }}, na.rm = na.rm)
   pos <- dplyr::distinct(df, {{ credit }})
 
   if (all_present(pos, neg)) {

@@ -103,3 +103,25 @@ create_debtype <- function(x, val = NA, n = 1L) {
     vec_rep(deb_as_tetra(val, bases = bases), times = n)
   }
 }
+
+#' Group and summarise credit or debit columns
+#'
+#' Used in `deb_account_summary()`, `deb_credit()`, and `deb_debit()` to
+#' group either credit or debit columns, sum data column of deb-type
+#' vector, and rename the accounts column account_id. data column maintains
+#' its name.
+#' @keywords internal
+#' @param df Transactions data frame.
+#' @param relation Credit relation; either credit or debit.
+#' @param data deb-type column
+#' @param na.rm Inherited from parent function and used in summarise().
+#' @return A tibble with two columns named account_id and same as data.
+#' @noRd
+deb_summarise <- function(df, relation, data, na.rm) {
+
+  df %>%
+    dplyr::group_by({{ relation }}) %>%
+    dplyr::summarise("{{data}}" := sum({{ data }}, na.rm = na.rm),
+                     .groups = "drop") %>%
+    dplyr::rename(account_id = {{ relation }})
+}

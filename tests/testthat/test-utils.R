@@ -30,3 +30,42 @@ test_that("create_debtype works", {
   expect_length(create_debtype(deb_decimal(1:10)), 1)
   expect_length(create_debtype(deb_as_tetra(1:10)), 1)
 })
+
+test_that("deb_summarise works", {
+  # This is also thoroughly tested in test-transactions.R
+  # Data
+  l <- c(10, 10, 7, 9, 15, 12, NA)
+  s <- c(15, 15, 11, 2, 0, 10, NA)
+  d <- c(6, 6, 8, 11, 9, 4.5, NA)
+
+  tbl <- tibble::tibble(
+    credit = c("a", "b", "a", "c", "d", "c", "a"),
+    debit = c("b", "a", "c", "a", "a", "e", "b"),
+    from = credit,
+    to = debit,
+    lsd = deb_lsd(l, s, d),
+    tetra = deb_as_tetra(lsd, f = 4)
+  )
+
+  # Function works
+  expect_equal(dim(deb_summarise(tbl, credit, lsd, na.rm = TRUE)), c(4, 2))
+  expect_equal(dim(deb_summarise(tbl, debit, lsd, na.rm = TRUE)), c(4, 2))
+  # Correct column names
+  expect_equal(names(deb_summarise(tbl, credit, lsd, na.rm = TRUE)),
+               c("account_id", "lsd"))
+  expect_equal(names(deb_summarise(tbl, credit, tetra, na.rm = TRUE)),
+               c("account_id", "tetra"))
+  # Only contains accounts for that relation
+  expect_equal(deb_summarise(tbl, credit, lsd, na.rm = TRUE)[["account_id"]],
+               c("a", "b", "c", "d"))
+  expect_equal(deb_summarise(tbl, debit, lsd, na.rm = TRUE)[["account_id"]],
+               c("a", "b", "c", "e"))
+  # With different relation column names
+  expect_equal(deb_summarise(tbl, relation = credit, lsd, na.rm = TRUE),
+               deb_summarise(tbl, relation = from, lsd, na.rm = TRUE))
+  expect_equal(deb_summarise(tbl, relation = debit, lsd, na.rm = TRUE),
+               deb_summarise(tbl, relation = to, lsd, na.rm = TRUE))
+  # NA
+  expect_true(is.na(deb_summarise(tbl, credit, lsd, na.rm = FALSE)[[1, 2]]))
+  expect_true(is.na(deb_summarise(tbl, debit, lsd, na.rm = FALSE)[[2, 2]]))
+})
