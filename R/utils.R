@@ -125,3 +125,30 @@ deb_summarise <- function(df, relation, data, na.rm) {
                      .groups = "drop") %>%
     dplyr::rename(account_id = {{ relation }})
 }
+
+#' Fill in accounts from `y` that are not present in `x` with value of 0
+#'
+#' Used in `deb_account_summary()`, `deb_credit()`, and `deb_debit()` to
+#' deal with situation of having accounts that only appear in credit or debit
+#' and there are NAs, so need to distinguish between NAs and 0s. Used in
+#' concert with `deb_summarise()`.
+#' @keywords internal
+#' @param x,y Data frames produced by `deb_summarise()` with account_id
+#'   and deb-type value column.
+#' @return `x` with accounts that are missing filled in by `y` and given
+#'   a value of `0`.
+#' @noRd
+
+deb_fill_missing <- function(x, y) {
+  data_name <- colnames(x)[[2]]
+
+  x_acc <- x[[1]]
+  y_acc <- y[[1]]
+  # What is in y that is not in x
+  missing <- y_acc[!vec_in(x_acc, y_acc)]
+
+  tibble::tibble(
+    account_id = vec_c(x_acc, missing),
+    "{data_name}" := vec_c(x[[2]], vec_rep(0, vec_size(missing)))
+  )
+}

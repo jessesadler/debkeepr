@@ -69,3 +69,32 @@ test_that("deb_summarise works", {
   expect_true(is.na(deb_summarise(tbl, credit, lsd, na.rm = FALSE)[[1, 2]]))
   expect_true(is.na(deb_summarise(tbl, debit, lsd, na.rm = FALSE)[[2, 2]]))
 })
+
+test_that("deb_fill_missing works", {
+  # This is also thoroughly tested in test-transactions.R
+  # Data is produced by deb_summarise() above
+  # Data
+  credit <- tibble::tibble(
+    account_id = c("a", "b", "c", "d"),
+    credit = deb_lsd(c(NA, 10, 21, 15), c(NA, 15, 13, 0), c(NA, 6, 3.5, 9))
+  )
+  debit <- tibble::tibble(
+    account_id = c("a", "b", "c", "e"),
+    debit = deb_lsd(c(34, NA, 7, 12), c(19, NA, 11, 10), c(2, NA, 8, 4.5))
+  )
+
+  # Function works
+  expect_equal(dim(deb_fill_missing(credit, debit)), c(5, 2))
+  expect_equal(dim(deb_fill_missing(debit, credit)), c(5, 2))
+  # Gets column names right
+  expect_equal(names(deb_fill_missing(credit, debit)),
+               c("account_id", "credit"))
+  expect_equal(names(deb_fill_missing(debit, credit)),
+               c("account_id", "debit"))
+  # Adds correct missing account
+  expect_equal(deb_fill_missing(credit, debit)[[5, 1]], "e")
+  expect_equal(deb_fill_missing(debit, credit)[[5, 1]], "d")
+  # Adds correct value of 0
+  expect_equal(deb_fill_missing(credit, debit)[[5, 2]], deb_lsd(0, 0, 0))
+  expect_equal(deb_fill_missing(debit, credit)[[5, 2]], deb_lsd(0, 0, 0))
+})

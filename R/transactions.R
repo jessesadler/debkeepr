@@ -233,20 +233,10 @@ deb_account_summary <- function(df,
   # If there are NAs and NAs will be introduced by join, need to distinguish
   # between the two types. Add 0s from missing accounts then join.
   } else {
-    pos_acc <- pos[[1]]
-    neg_acc <- neg[[1]]
+    cred <- deb_fill_missing(pos, neg)
+    deb <- deb_fill_missing(neg, pos)
 
-    pos_missing <- neg_acc[!(neg_acc %in% pos_acc)]
-    neg_missing <- pos_acc[!(pos_acc %in% neg_acc)]
-
-    pos <- tibble::tibble(account_id = c(pos_acc, pos_missing),
-                          credit = c(pos$credit,
-                                     rep(0, vec_size(pos_missing))))
-    neg <- tibble::tibble(account_id = c(neg_acc, neg_missing),
-                          debit = c(neg$debit,
-                                    rep(0, vec_size(neg_missing))))
-
-    ret <- dplyr::left_join(pos, neg, by = "account_id") %>%
+    ret <- dplyr::left_join(cred, deb, by = "account_id") %>%
       dplyr::mutate(current = credit - debit,
                     current = dplyr::if_else(should_be_int(current),
                                              round(current),
@@ -307,13 +297,7 @@ deb_credit <- function(df,
       dplyr::mutate(!! cn := dplyr::coalesce({{ lsd }}, 0))
   } else {
     # Find missing accounts and make them 0
-    pos_acc <- pos[[1]]
-    neg_acc <- neg[[1]]
-
-    pos_missing <- neg_acc[!(neg_acc %in% pos_acc)]
-    ret <- tibble::tibble(account_id = c(pos_acc, pos_missing),
-                          !! cn := c(pos[[2]],
-                                     rep(0, vec_size(pos_missing))))
+    ret <- deb_fill_missing(pos, neg)
   }
 
   if (deb_is_lsd(deb_vctr)) {
@@ -361,14 +345,7 @@ deb_debit <- function(df,
     ret <- dplyr::full_join(neg, pos, c("account_id" = names(pos))) %>%
       dplyr::mutate(!! cn := dplyr::coalesce({{ lsd }}, 0))
   } else {
-    neg_acc <- neg[[1]]
-    pos_acc <- pos[[1]]
-
-    neg_missing <- pos_acc[!(pos_acc %in% neg_acc)]
-
-    ret <- tibble::tibble(account_id = c(neg_acc, neg_missing),
-                          !! cn := c(neg[[2]],
-                                     rep(0, vec_size(neg_missing))))
+    ret <- deb_fill_missing(neg, pos)
   }
 
   if (deb_is_lsd(deb_vctr)) {
