@@ -58,7 +58,7 @@
       ! `bases` must be a numeric vector of length 3.
       x You've supplied a <numeric> vector of length 2.
 
-# deb_lsd prints
+# deb_tetra prints
 
     <deb_tetra[3]>
     [1] 1:4s:7d:2f 2:5s:8d:4f 3:6s:9d:6f

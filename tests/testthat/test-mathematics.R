@@ -29,10 +29,9 @@ test_that("sum and mean with deb_lsd work", {
 })
 
 test_that("sum and mean work with deb_decimal", {
-  # Bases and data
-  bases3 <- c(20, 12, 4)
-  dec_tetra <- deb_decimal(c(36.8125, 112.3125, 72.375, 48.5625),
-                           unit = "s", bases = bases3)
+  # Data
+  x <- deb_decimal(c(36.8125, 112.3125, 72.375, 48.5625),
+                   unit = "s", bases = c(20, 12, 4))
 
   expect_equal(sum(deb_decimal(1.8375), deb_decimal(1.5)), deb_decimal(3.3375))
   expect_equal(sum(deb_decimal(36.75, unit = "s"), deb_decimal(20, "s")),
@@ -47,12 +46,12 @@ test_that("sum and mean work with deb_decimal", {
   expect_equal(sum(deb_decimal(1.8375), deb_decimal(36.75, unit = "s")),
                deb_decimal(3.675))
   # Tetra bases
-  expect_equal(sum(dec_tetra), deb_decimal(270.0625, "s", bases3))
-  expect_equal(sum(deb_decimal(1.840625, bases = bases3),
-                   deb_decimal(1767, unit = "f", bases = bases3)),
-               deb_decimal(3.68125, bases = bases3))
+  expect_equal(sum(x), deb_decimal(270.0625, "s", c(20, 12, 4)))
+  expect_equal(sum(deb_decimal(1.840625, bases = c(20, 12, 4)),
+                   deb_decimal(1767, unit = "f", bases = c(20, 12, 4))),
+               deb_decimal(3.68125, bases = c(20, 12, 4)))
   # Mixed bases
-  expect_equal(sum(dec_tetra, deb_decimal(1.8375)), deb_decimal(15.340625))
+  expect_equal(sum(x, deb_decimal(1.8375)), deb_decimal(15.340625))
   # Errors
   expect_snapshot(error = TRUE,
     sum(deb_decimal(1.8375), deb_decimal(1.8375, bases = c(50, 16))))
@@ -62,15 +61,14 @@ test_that("sum and mean work with deb_decimal", {
 })
 
 test_that("sum and mean with deb_tetra work", {
-  # Bases and data
-  bases4 <- c(50, 16, 8)
-  tetra_alt <- deb_tetra(c(1, 5), c(10, 36), c(3, 8), c(4, 6),
-                         bases = bases4)
+  # Data
+  x <- deb_tetra(c(1, 5), c(10, 36), c(3, 8), c(4, 6),
+                 bases = c(50, 16, 8))
 
   expect_equal(sum(deb_tetra(1, 16, 9, 3), deb_tetra(5, 12, 3, 3)),
                deb_tetra(7, 9, 1, 2))
-  expect_equal(sum(tetra_alt), deb_tetra(6, 46, 12, 2, bases4))
-  expect_equal(mean(tetra_alt), deb_tetra(3, 23, 6, 1, bases4))
+  expect_equal(sum(x), deb_tetra(6, 46, 12, 2, c(50, 16, 8)))
+  expect_equal(mean(x), deb_tetra(3, 23, 6, 1, c(50, 16, 8)))
   # NA
   expect_equal(sum(deb_tetra(c(1, NA), c(16, NA), c(9, NA), c(3, NA))),
                deb_tetra(NA, NA, NA, NA))
@@ -81,7 +79,7 @@ test_that("sum and mean with deb_tetra work", {
                    na.rm = TRUE),
                deb_tetra(1, 16, 9, 3))
   # Error with different bases
-  expect_snapshot(sum(deb_tetra(1, 16, 9, 3), tetra_alt), error = TRUE)
+  expect_snapshot(sum(deb_tetra(1, 16, 9, 3), x), error = TRUE)
 })
 
 test_that("sum works with deb-style vectors and numeric", {
@@ -92,31 +90,30 @@ test_that("sum works with deb-style vectors and numeric", {
 
 test_that("sum works between deb-style vectors", {
   # Bases and data
-  bases3 <- c(20, 12, 4)
-  lsd1 <- deb_lsd(1, 16, 9)
-  tetra1 <- deb_tetra(1, 16, 9, 3)
+  lsd <- deb_lsd(1, 16, 9)
+  tetra <- deb_tetra(1, 16, 9, 3)
 
   # lsd and lsd decimal -> lsd
-  expect_equal(sum(lsd1, deb_decimal(1.8375)), deb_lsd(3, 13, 6))
+  expect_equal(sum(lsd, deb_decimal(1.8375)), deb_lsd(3, 13, 6))
   # lsd and tetra decimal -> lsd
-  expect_equal(sum(lsd1, deb_decimal(36.8125, unit = "s", bases = bases3)),
+  expect_equal(sum(lsd, deb_decimal(36.8125, "s", c(20, 12, 4))),
                deb_lsd(3, 13, 6.75))
   # lsd and tetra -> lsd
-  expect_equal(sum(lsd1, tetra1), deb_lsd(3, 13, 6.75))
+  expect_equal(sum(lsd, tetra), deb_lsd(3, 13, 6.75))
   # tetra and tetra decimal -> tetra
-  expect_equal(sum(tetra1, deb_decimal(36.8125, unit = "s", bases = bases3)),
+  expect_equal(sum(tetra, deb_decimal(36.8125, "s", c(20, 12, 4))),
                deb_tetra(3, 13, 7, 2))
   # tetra and lsd decimal -> tetra
-  expect_equal(sum(tetra1, deb_decimal(36.75, unit = "s")),
+  expect_equal(sum(tetra, deb_decimal(36.75, unit = "s")),
                deb_tetra(3, 13, 6, 3))
   # All three -> lsd
-  expect_equal(sum(lsd1, deb_decimal(36.75, unit = "s"), tetra1),
+  expect_equal(sum(lsd, deb_decimal(36.75, unit = "s"), tetra),
                deb_lsd(5, 10, 3.75))
   # Errors
   expect_snapshot(error = TRUE,
-                  sum(lsd1, deb_decimal(1.8375, bases = c(50, 16))))
+                  sum(lsd, deb_decimal(1.8375, bases = c(50, 16))))
   expect_snapshot(error = TRUE,
-                  sum(lsd1, deb_tetra(1, 16, 9, 3, c(50, 16, 8))))
+                  sum(lsd, deb_tetra(1, 16, 9, 3, c(50, 16, 8))))
 })
 
 test_that("cumulative functions work", {

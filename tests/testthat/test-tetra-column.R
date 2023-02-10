@@ -66,8 +66,6 @@ test_that("deb_spread_tetra works", {
   y2 <- data.frame(accounts = accounts,
                    data = deb_tetra(libra, solidus, denarius, farthing))
 
-  # Error
-  expect_snapshot(deb_spread_tetra(x, tetra = l), error = TRUE)
   # defaults
   expect_equal(ncol(deb_spread_tetra(y)), 6)
   expect_equal(deb_spread_tetra(y)[[3]], libra)
@@ -82,4 +80,6 @@ test_that("deb_spread_tetra works", {
   # non-default l, s, d, and f names
   expect_identical(deb_spread_tetra(y2, tetra = data,
                                     replace = TRUE), x)
+  # Error
+  expect_snapshot(deb_spread_tetra(x, tetra = l), error = TRUE)
 })

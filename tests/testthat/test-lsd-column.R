@@ -60,8 +60,6 @@ test_that("deb_spread_lsd works", {
   y2 <- data.frame(accounts = accounts,
                    data = deb_lsd(libra, solidus, denarius))
 
-  # Error
-  expect_snapshot(deb_spread_lsd(x, lsd = l), error = TRUE)
   # defaults
   expect_equal(ncol(deb_spread_lsd(y)), 5)
   expect_equal(deb_spread_lsd(y)[[3]], libra)
@@ -75,4 +73,6 @@ test_that("deb_spread_lsd works", {
   # non-default l, s, and d names
   expect_identical(deb_spread_lsd(y2, lsd = data,
                                   replace = TRUE), x)
+  # Error
+  expect_snapshot(deb_spread_lsd(x, lsd = l), error = TRUE)
 })

@@ -15,7 +15,6 @@ test_that("new_decimal works", {
 test_that("deb_decimal works", {
   x <- c(1.125, 2.5, 3.3)
   y <- deb_decimal(x)
-  tetra <- c(20, 12, 4)
 
   # Prototype
   expect_length(deb_decimal(), 0)
@@ -37,8 +36,8 @@ test_that("deb_decimal works", {
   expect_equal(deb_bases(deb_decimal(x, bases = c(60, 16))),
                c(s = 60L, d = 16L))
   # With tetra
-  expect_length(deb_decimal(x, bases = tetra), 3)
-  expect_equal(deb_unit(deb_decimal(x, unit = "f", bases = tetra)), "f")
+  expect_length(deb_decimal(x, bases = c(20, 12, 4)), 3)
+  expect_equal(deb_unit(deb_decimal(x, unit = "f", bases = c(20, 12, 4))), "f")
   # Errors
   expect_snapshot(deb_decimal(x, unit = "hello"), error = TRUE)
   expect_snapshot(deb_decimal("hello"), error = TRUE)
@@ -52,8 +51,6 @@ test_that("deb_decimal prints", {
   y <- deb_decimal(x)
   tetra <- c(20, 12, 4)
 
-  expect_snapshot_output(print(y))
-  expect_snapshot_output(print(deb_decimal(NA)))
   expect_equal(vctrs::vec_ptype_abbr(y), "l[20s:12d]")
   expect_equal(vctrs::vec_ptype_abbr(deb_decimal(1, unit = "s",
                                                  bases = c(60, 16))),
@@ -61,10 +58,14 @@ test_that("deb_decimal prints", {
   expect_equal(unit_word(deb_decimal(1, "s")), "solidus")
   expect_equal(unit_word(deb_decimal(1, "d")), "denarius")
   # With tetra
-  expect_snapshot_output(print(deb_decimal(x, bases = tetra)))
-  expect_equal(unit_word(deb_decimal(1, "f", tetra)), "farthing")
-  expect_equal(vctrs::vec_ptype_abbr(deb_decimal(1, bases = tetra)),
+  expect_equal(unit_word(deb_decimal(1, "f", c(20, 12, 4))), "farthing")
+  expect_equal(vctrs::vec_ptype_abbr(deb_decimal(1, bases = c(20, 12, 4))),
                "l[20s:12d:4f]")
-  expect_equal(vctrs::vec_ptype_abbr(deb_decimal(1, unit = "f", bases = tetra)),
+  expect_equal(vctrs::vec_ptype_abbr(
+    deb_decimal(1, unit = "f", bases = c(20, 12, 4))),
                "f[20s:12d:4f]")
+
+  expect_snapshot_output(print(y))
+  expect_snapshot_output(print(deb_decimal(NA)))
+  expect_snapshot_output(print(deb_decimal(x, bases = c(20, 12, 4))))
 })

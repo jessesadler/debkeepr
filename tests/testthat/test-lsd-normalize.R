@@ -89,14 +89,6 @@ test_that("it comes together with deb_normalize with deb_tetra", {
 })
 
 test_that("deb_normalize works with numeric vector", {
-  # Errors
-  expect_snapshot_error(deb_normalize(TRUE))
-  expect_snapshot_error(deb_normalize(4))
-  expect_snapshot_error(deb_normalize(1:5))
-  expect_snapshot_error(deb_normalize(1:3, bases = c(20, 12, 4)))
-  expect_snapshot_error(deb_normalize(1:3, bases = c("hello", "hi")))
-  expect_snapshot_error(deb_normalize(1:4))
-
   # It works for lsd
   expect_s3_class(deb_normalize(c(5, 82, 56)), "deb_lsd")
   expect_equal(deb_normalize(c(5, 82, 56)), deb_lsd(9, 6, 8))
@@ -108,4 +100,11 @@ test_that("deb_normalize works with numeric vector", {
                   "deb_tetra")
   expect_equal(deb_normalize(c(5, 82, 55, 7), bases = c(20, 12, 4)),
                deb_tetra(9, 6, 8, 3))
+  # Errors
+  expect_snapshot_error(deb_normalize(TRUE))
+  expect_snapshot_error(deb_normalize(4))
+  expect_snapshot_error(deb_normalize(1:5))
+  expect_snapshot_error(deb_normalize(1:3, bases = c(20, 12, 4)))
+  expect_snapshot_error(deb_normalize(1:3, bases = c("hello", "hi")))
+  expect_snapshot_error(deb_normalize(1:4))
 })

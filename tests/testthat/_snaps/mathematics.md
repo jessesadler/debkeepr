@@ -49,7 +49,7 @@
 # sum and mean with deb_tetra work
 
     Code
-      sum(deb_tetra(1, 16, 9, 3), tetra_alt)
+      sum(deb_tetra(1, 16, 9, 3), x)
     Condition
       Error:
       ! Incompatible `bases`.
@@ -61,7 +61,7 @@
 # sum works between deb-style vectors
 
     Code
-      sum(lsd1, deb_decimal(1.8375, bases = c(50, 16)))
+      sum(lsd, deb_decimal(1.8375, bases = c(50, 16)))
     Condition
       Error:
       ! Incompatible `bases`.
@@ -73,7 +73,7 @@
 ---
 
     Code
-      sum(lsd1, deb_tetra(1, 16, 9, 3, c(50, 16, 8)))
+      sum(lsd, deb_tetra(1, 16, 9, 3, c(50, 16, 8)))
     Condition
       Error:
       ! Incompatible `bases`.

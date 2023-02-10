@@ -84,10 +84,10 @@ test_that("Bases conversion works with deb_tetra vectors", {
                as.numeric(tetra1))
   # Errors
   expect_snapshot(deb_convert_bases(tetra1, c(40, 24)), error = TRUE)
-  expect_snapshot(deb_convert_bases(tetra1, to = c(NA, 20, 12)),
-                  error = TRUE)
-  expect_snapshot(deb_convert_bases(tetra1, to = c(-10, -20, -12)),
-                  error = TRUE)
+  expect_snapshot(error = TRUE,
+                  deb_convert_bases(tetra1, to = c(NA, 20, 12)))
+  expect_snapshot(error = TRUE,
+                  deb_convert_bases(tetra1, to = c(-10, -20, -12)))
 })
 
 # Unit conversion ---------------------------------------------------------

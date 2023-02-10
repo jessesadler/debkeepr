@@ -113,7 +113,7 @@
 # Arithmetic operators work with deb_lsd and deb_decimal
 
     Code
-      lsd_alt + dec_l
+      lsd_alt + dec
     Condition
       Error:
       ! Incompatible `bases`.
@@ -125,7 +125,7 @@
 ---
 
     Code
-      dec_l + lsd_alt
+      dec + lsd_alt
     Condition
       Error:
       ! Incompatible `bases`.
@@ -137,7 +137,7 @@
 ---
 
     Code
-      lsd2 + deb_decimal(1.5, bases = c(50, 16, 8))
+      lsd + deb_decimal(1.5, bases = c(50, 16, 8))
     Condition
       Error:
       ! Incompatible `bases`.
@@ -149,7 +149,7 @@
 ---
 
     Code
-      dec_tetra_l + lsd_alt
+      dec_tetra + lsd_alt
     Condition
       Error:
       ! Incompatible `bases`.
@@ -169,7 +169,7 @@
 # Arithmetic operators work with deb_lsd and deb_tetra
 
     Code
-      lsd_alt + tetra1
+      lsd_alt + tetra
     Condition
       Error:
       ! Incompatible `bases`.
@@ -181,7 +181,7 @@
 ---
 
     Code
-      tetra1 + lsd_alt
+      tetra + lsd_alt
     Condition
       Error:
       ! Incompatible `bases`.
@@ -201,7 +201,7 @@
 # Arithmetic operators work with deb_tetra and deb_decimal
 
     Code
-      tetra_alt + dec_tetra_l
+      tetra_alt + dec
     Condition
       Error:
       ! Incompatible `bases`.
@@ -213,7 +213,7 @@
 ---
 
     Code
-      dec_tetra_l + tetra_alt
+      dec + tetra_alt
     Condition
       Error:
       ! Incompatible `bases`.
@@ -237,7 +237,7 @@
 ---
 
     Code
-      deb_decimal(1.5, bases = bases2) - tetra1
+      deb_decimal(1.5, bases = c(50, 16)) - x
     Condition
       Error:
       ! Incompatible `bases`.
