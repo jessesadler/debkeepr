@@ -1,3 +1,22 @@
+# Test utility functions: These are also widely tested elsewhere
+
+test_that("all_present works", {
+  x <- tibble::tibble(id = rep(1:5, 5))
+  y <- tibble::tibble(id = rep(3:7, 4))
+
+  expect_false(all_present(x, y))
+
+  x <- tibble::tibble(id = rep(1:5, 5))
+  y <- tibble::tibble(id = rep(1:5, 4))
+
+  expect_true(all_present(x, y))
+
+  x <- tibble::tibble(id = rep(letters[1:9], 5))
+  y <- tibble::tibble(id = rep(letters[10:20], 4))
+
+  expect_false(all_present(x, y))
+})
+
 test_that("create_debtype works", {
 
   # Basic functionality

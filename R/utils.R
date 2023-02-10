@@ -75,8 +75,11 @@ bases_hierarchy <- function(x, y, x_arg = "", y_arg = "") {
 #' @keywords internal
 #' @noRd
 
-all_present <- function(pos, neg) {
-  all(pos[[1]] %in% neg[[1]], neg[[1]] %in% pos[[1]])
+all_present <- function(x, y) {
+  x <- vec_unique(x[[1]])
+  y <- vec_unique(y[[1]])
+
+  all(vec_in(x, y), vec_in(y, x))
 }
 
 #' Create deb-type vector given a prototype, default value, and size
@@ -147,6 +150,7 @@ deb_fill_missing <- function(x, y) {
   # What is in y that is not in x
   missing <- y_acc[!vec_in(x_acc, y_acc)]
 
+  # glue-style syntax for data-column name
   tibble::tibble(
     account_id = vec_c(x_acc, missing),
     "{data_name}" := vec_c(x[[2]], vec_rep(0, vec_size(missing)))
