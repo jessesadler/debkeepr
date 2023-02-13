@@ -207,11 +207,10 @@ Moving beyond the comparison of accounts bearing the capital of merchants, the v
 The practice of creating multiple accounts facilitated the calculation of profits or losses associated with individual ventures, but it also means that the total transactional value of an account book is a less meaningful measurement of capital investment than it might first appear. To properly keep track of various types of capital, Dafforne often transferred capital from one account to another, leading the same or similar values to be recorded multiple times. Thus, the total debit and sum of the transactions relating to the sale of fruit for Del Varino in his three accounts of £1446 18s. was much greater than the proceeds of the sale of £541 4s. 9d.
 
 ```{r varino debits}
-(varino_debits <- filter(debits, account_id >= 40 & account_id <= 42))
+(varino_debits <- filter(debits, account_id %in% 40:42))
 
 # Total debit
-sum(varino_debits$dec) %>% 
-  deb_as_lsd()
+sum(varino_debits$lsd)
 ```
 
 ## Analyzing individual accounts
