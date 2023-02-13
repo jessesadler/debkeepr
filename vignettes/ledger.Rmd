@@ -117,21 +117,23 @@ deb_credit(transactions) %>%
 
 The above plots treat either the transactions or accounts as discrete entities. However, an account book is naturally relational. The structure of `dafforne_transactions` and `dafforne_accounts` purposely mimics that used to create [network graphs](https://www.jessesadler.com/post/network-analysis-with-r/#nodes-edges). `dafforne_transactions` has the form of a directed edge list: each transaction is a link between two accounts with the values going from the credit account to the debit account. `dafforne_accounts` is a node list or a data frame in which each account id found in either the credit or debit column of `dafforne_transactions` is listed along with additional information about the accounts. There are a variety of ways to [create and plot network graphs in R](https://www.jessesadler.com/post/network-analysis-with-r/), but this vignette uses [igraph](http://igraph.org) to create the graph object and [ggraph](https://cran.r-project.org/web/packages/ggraph/index.html) to plot the graph.
 
-A network graph can show various types of information beyond the linking of the accounts by associating the edges or links and the nodes or accounts with variables from the data. The links between the accounts can be related to the total value of the transactions in each direction, and the nodes can be associated with either the total value they received (debit) or sent (credit). Extra information can be added to the nodes by joining the total values for each account with columns from the `dafforne_accounts` data. In this case, the "investor" variable is attached to the debit values for each account. Once again, the `deb_decimal` column is used within the pipeline to enable plotting with `ggplot2`.
+A network graph can show various types of information beyond the linking of the accounts by associating the edges or links and the nodes or accounts with variables from the data. The links between the accounts can be related to the total value of the transactions in each direction, and the nodes can be associated with either the total value they received (debit) or sent (credit). Extra information can be added to the nodes by joining the total values for each account with columns from the `dafforne_accounts` data. In this case, the "investor" variable is attached to the debit values for each account. `ggraph` currently works best with regular numeric vectors, and so the `deb_lsd` column is transformed into numeric for both nodes and edges and these columns are labeled as val.
 
 ```{r network-analysis, warning = FALSE, message = FALSE}
 library(igraph)
 library(ggraph)
 
 # Nodes: Total debit for each account
-debits <- deb_debit(transactions, lsd = dec) %>% 
+debits <- deb_debit(transactions, lsd = lsd) %>% 
+  mutate(val = as.numeric(lsd)) %>% 
   left_join(select(accounts, id, investor), by = c("account_id" = "id"))
 
 # Edges: Sum of transactions by link
 transactions_sum <- transactions %>% 
   group_by(credit, debit) %>% 
-  summarise(dec = sum(dec), .groups = "drop") %>% 
-  arrange(dec)
+  summarise(lsd = sum(lsd), .groups = "drop") %>% 
+  mutate(val = as.numeric(lsd)) %>% 
+  arrange(val)
 
 # Create igraph object
 ledger_graph <- graph_from_data_frame(d = transactions_sum,
@@ -145,13 +147,13 @@ The creation of an `igraph` object opens a whole set of tools for analyzing the 
 # Ledger graph
 set.seed(240)
 ggraph(ledger_graph, layout = "kk") + 
-  geom_edge_fan(aes(edge_alpha = dec),
+  geom_edge_fan(aes(alpha = val),
                 width = 1,
                 arrow = arrow(length = unit(2, 'mm'),
                               type = "closed"),
                 end_cap = circle(3, 'mm')) + 
   scale_edge_alpha(labels = scales::dollar_format(prefix = "£")) + 
-  geom_node_point(aes(size = dec, color = investor), alpha = 0.9) + 
+  geom_node_point(aes(size = val, color = investor), alpha = 0.9) + 
   scale_color_brewer(palette = "Paired", direction = -1) + 
   geom_node_text(aes(label = name)) + 
   scale_size_continuous(range = c(1, 10),
