@@ -589,7 +589,7 @@ total debit and sum of the transactions relating to the sale of fruit
 for Del Varino in his three accounts of £1446 18s. was much greater than
 the proceeds of the sale of £541 4s. 9d.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="op">(</span><span class="va">varino_debits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">debits</span>, <span class="va">account_id</span> <span class="op">&gt;=</span> <span class="fl">40</span> <span class="op">&amp;</span> <span class="va">account_id</span> <span class="op">&lt;=</span> <span class="fl">42</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="op">(</span><span class="va">varino_debits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">debits</span>, <span class="va">account_id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fl">40</span><span class="op">:</span><span class="fl">42</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 4</span></span></span>
 <span><span class="co">#&gt;   account_id            lsd   val investor        </span></span>
 <span><span class="co">#&gt;        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lsd[20s:12d]&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
@@ -598,11 +598,9 @@ the proceeds of the sale of £541 4s. 9d.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>         42      500:2s:8d  500. Diego del Varino</span></span>
 <span></span>
 <span><span class="co"># Total debit</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">varino_debits</span><span class="op">$</span><span class="va">dec</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../reference/cast-lsd.html">deb_as_lsd</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Unknown or uninitialised column: `dec`.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">varino_debits</span><span class="op">$</span><span class="va">lsd</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;deb_lsd[1]&gt;</span></span>
-<span><span class="co">#&gt; [1] 0:0s:0d</span></span>
+<span><span class="co">#&gt; [1] 1446:18s:0d</span></span>
 <span><span class="co">#&gt; # Bases: 20s 12d</span></span></code></pre></div>
 </div>
 <div class="section level2">
