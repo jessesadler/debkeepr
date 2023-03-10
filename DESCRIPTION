@@ -3,7 +3,7 @@ Package: debkeepr
 Title: Analysis of Non-Decimal Currencies and Double-Entry Bookkeeping
 Version: 0.0.6.9001
 Authors@R: 
-    person("Jesse", "Sadler", , "jrsadler@icloud.com", role = c("aut", "cre"),
+    person("Jesse", "Sadler", , "jrsadler@icloud.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0001-6081-9681"))
 Description: Analysis of historical non-decimal currencies and value
     systems that use either tripartite or tetrapartite systems such as
