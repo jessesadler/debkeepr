@@ -11,3 +11,4 @@
 ^Meta$
 ^cache$
 ^\.github$
+^cran-comments\.md$
