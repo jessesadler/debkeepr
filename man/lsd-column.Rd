@@ -53,6 +53,10 @@ Default is \code{s}.}
 \item{d_col}{Unquoted name for the pence column created by the function.
 Default is \code{d}.}
 }
+\value{
+A data frame with a new \code{deb_lsd} column for \code{deb_gather_lsd()}
+or new pounds, shillings, and pence columns for \code{deb_spread_lsd()}.
+}
 \description{
 \itemize{
 \item \code{deb_gather_lsd()} creates a \code{deb_lsd} column from separate variables

@@ -57,6 +57,10 @@
 #' @param f_col An unquoted name for the farthings column created by the
 #'   function. Default is `f`.
 #'
+#' @returns A data frame with a new `deb_tetra` column for `deb_gather_tetra()`
+#'   or new pounds, shillings, pence, and farthing columns for
+#'   `deb_spread_tetra()`.
+#'
 #' @examples
 #'
 #' libra <- c(3, 5, 6, 2)

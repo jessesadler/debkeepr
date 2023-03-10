@@ -68,6 +68,11 @@ function. Default is \code{d}.}
 \item{f_col}{An unquoted name for the farthings column created by the
 function. Default is \code{f}.}
 }
+\value{
+A data frame with a new \code{deb_tetra} column for \code{deb_gather_tetra()}
+or new pounds, shillings, pence, and farthing columns for
+\code{deb_spread_tetra()}.
+}
 \description{
 \itemize{
 \item \code{deb_gather_tetra()} creates a \code{deb_tetra} column from separate

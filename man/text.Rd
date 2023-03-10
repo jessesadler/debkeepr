@@ -89,7 +89,7 @@ A Character vector of formatted values.
 }
 \description{
 Flexible way to format \code{deb_lsd}, \code{deb_decimal}, and \code{deb_tetra} vectors
-for use as labels or texts.
+for use as labels or text.
 }
 \details{
 \code{deb_text} is similar to \code{as.character()} in that both return a character

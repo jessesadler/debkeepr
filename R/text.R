@@ -3,7 +3,7 @@
 #' Format `deb_lsd`, `deb_decimal`, and `deb_tetra` vectors as text
 #'
 #' Flexible way to format `deb_lsd`, `deb_decimal`, and `deb_tetra` vectors
-#' for use as labels or texts.
+#' for use as labels or text.
 #'
 #' @details
 #' `deb_text` is similar to `as.character()` in that both return a character

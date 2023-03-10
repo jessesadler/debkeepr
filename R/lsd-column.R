@@ -48,9 +48,12 @@
 #' @param l_col Unquoted name for the pounds column created by the function.
 #'   Default is `l`.
 #' @param s_col Unquoted name for the shillings column created by the function.
-#'  Default is `s`.
+#'   Default is `s`.
 #' @param d_col Unquoted name for the pence column created by the function.
-#'  Default is `d`.
+#'   Default is `d`.
+#'
+#' @returns A data frame with a new `deb_lsd` column for `deb_gather_lsd()`
+#'   or new pounds, shillings, and pence columns for `deb_spread_lsd()`.
 #'
 #' @examples
 #'
