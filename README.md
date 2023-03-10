@@ -6,7 +6,7 @@ status](https://www.r-pkg.org/badges/version/debkeepr)](https://cran.r-project.o
 [![R-CMD-check](https://github.com/jessesadler/debkeepr/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/jessesadler/debkeepr/actions/workflows/check-standard.yaml)
 [![Coverage
 status](https://codecov.io/gh/jessesadler/debkeepr/branch/main/graph/badge.svg)](https://app.codecov.io/gh/jessesadler/debkeepr?branch=main)
-[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 
 `debkeepr` integrates non-decimal currencies that use tripartite and
 tetrapartite systems into the methodologies of Digital Humanities and
@@ -65,33 +65,33 @@ tetrapartite systems through the `bases` attribute of `deb_lsd`,
 
 Translations of *libra*, *solidus*, and *denarius* units:
 
--   English: pounds, shillings, pence
--   French: livres, sols or sous, deniers
--   Italian: lire, soldi, denari
--   Flemish: ponden, schellingen, groten
--   Dutch: guilders, stuivers, penningen
+- English: pounds, shillings, pence
+- French: livres, sols or sous, deniers
+- Italian: lire, soldi, denari
+- Flemish: ponden, schellingen, groten
+- Dutch: guilders, stuivers, penningen
 
 ## Resources
 
--   [Getting Started with debkeepr
-    vignette](https://jessesadler.github.io/debkeepr/articles/debkeepr.html):
-    An introduction to the `deb_lsd`, `deb_tetra`, and `deb_decimal`
-    types and their use as vectors and as columns in data frames.
--   [Transactions in Richard Dafforne’s Journal
-    vignette](https://jessesadler.github.io/debkeepr/articles/transactions.html):
-    Examples of financial and arithmetic calculations dealing with
-    various currencies taken from the practice journal in Richard
-    Dafforne’s *Merchant’s Mirrour* (1660), a 17th-century textbook for
-    learning accounting practices.
--   [Analysis of Richard Dafforne’s Journal and Ledger
-    vignette](https://jessesadler.github.io/debkeepr/articles/ledger.html):
-    An analysis of the practice journal and ledger in Dafforne’s
-    *Merchant’s Mirrour* using the `dafforne_transactions` and
-    `dafforne_accounts` data provided in `debkeepr`.
--   [A PDF copy of Dafforne’s practice
-    journal](https://github.com/jessesadler/debkeepr/blob/master/data-raw/dafforne-journal.pdf)
-    can be consulted to further investigate the practices of early
-    modern double-entry bookkeeping.
+- [Getting Started with debkeepr
+  vignette](https://jessesadler.github.io/debkeepr/articles/debkeepr.html):
+  An introduction to the `deb_lsd`, `deb_tetra`, and `deb_decimal` types
+  and their use as vectors and as columns in data frames.
+- [Transactions in Richard Dafforne’s Journal
+  vignette](https://jessesadler.github.io/debkeepr/articles/transactions.html):
+  Examples of financial and arithmetic calculations dealing with various
+  currencies taken from the practice journal in Richard Dafforne’s
+  *Merchant’s Mirrour* (1660), a 17th-century textbook for learning
+  accounting practices.
+- [Analysis of Richard Dafforne’s Journal and Ledger
+  vignette](https://jessesadler.github.io/debkeepr/articles/ledger.html):
+  An analysis of the practice journal and ledger in Dafforne’s
+  *Merchant’s Mirrour* using the `dafforne_transactions` and
+  `dafforne_accounts` data provided in `debkeepr`.
+- [A PDF copy of Dafforne’s practice
+  journal](https://github.com/jessesadler/debkeepr/blob/master/data-raw/dafforne-journal.pdf)
+  can be consulted to further investigate the practices of early modern
+  double-entry bookkeeping.
 
 ## Usage
 
@@ -284,7 +284,7 @@ being represented. `deb_lsd`, `deb_tetra`, and `deb_decimal` vectors can
 also be combined with numeric vectors or cast from and to numeric
 vectors. `debkeepr` uses an internal [conversion
 hierarchy](https://vctrs.r-lib.org/articles/type-size.html) of
-`numeric()` -> `deb_decimal()` -> `deb_tetra` -> `deb_lsd()`.
+`numeric()` -\> `deb_decimal()` -\> `deb_tetra` -\> `deb_lsd()`.
 
 ``` r
 # deb_decimal -> deb_lsd
@@ -355,32 +355,32 @@ vignette](https://jessesadler.github.io/debkeepr/articles/debkeepr.html)
 for an in depth discussion of the similarities and differences between
 the two types.
 
--   The `deb_lsd` and `deb_tetra` types have the advantage of
-    maintaining the structure and values used by non-decimal currencies,
-    making it easier to identify and present such values.
--   `deb_decimal` implements a wider array of mathematical functions and
-    arithmetic operations than `deb_lsd` or `deb_tetra`.
--   You can move between `deb_lsd` or `deb_tetra` types and the
-    `deb_decimal` type without losing any data through `deb_as_lsd()`,
-    `deb_as_tetra()`, and `deb_as_decimal()` casting methods.
--   Because `deb_lsd`, `deb_tetra`, and `deb_decimal` are based on the
-    [vctrs](https://vctrs.r-lib.org/) package, all types act as expected
-    in data frames or [tibbles](https://tibble.tidyverse.org) columns.
-    From [dplyr
-    1.0.0](https://www.tidyverse.org/blog/2020/06/dplyr-1-0-0/) — which
-    is the minimal version used by debkeepr — all dplyr functions work
-    on both `debkeepr` types.
--   [ggplot2](https://ggplot2.tidyverse.org) does not know how to pick a
-    scale for `deb_lsd` or `deb_tetra` types. In contrast, `deb_decimal`
-    vectors work properly with `ggplot2`, though explicitly identifying
-    the scale as continuous — with `scale_y_continuous()` or
-    `scale_x_continuous()` — is needed to avoid the appearance of a
-    message.
--   `deb_lsd`, `deb_tetra`, and `deb_decimal` vectors cannot be combined
-    in a single function if their `bases` differ. Tripartite and
-    tetrapartite values can be combined if the bases of their *solidus*
-    and *denarius* bases match. The only way to transform the bases of
-    `deb_lsd`, `deb_tetra`, and `deb_decimal` vectors is explicitly with
-    `deb_convert_bases()`. This prevents mistakenly combining two
-    different currencies together without properly converting their
-    values.
+- The `deb_lsd` and `deb_tetra` types have the advantage of maintaining
+  the structure and values used by non-decimal currencies, making it
+  easier to identify and present such values.
+- `deb_decimal` implements a wider array of mathematical functions and
+  arithmetic operations than `deb_lsd` or `deb_tetra`.
+- You can move between `deb_lsd` or `deb_tetra` types and the
+  `deb_decimal` type without losing any data through `deb_as_lsd()`,
+  `deb_as_tetra()`, and `deb_as_decimal()` casting methods.
+- Because `deb_lsd`, `deb_tetra`, and `deb_decimal` are based on the
+  [vctrs](https://vctrs.r-lib.org/) package, all types act as expected
+  in data frames or [tibbles](https://tibble.tidyverse.org) columns.
+  From [dplyr
+  1.0.0](https://www.tidyverse.org/blog/2020/06/dplyr-1-0-0/) — which is
+  the minimal version used by debkeepr — all dplyr functions work on
+  both `debkeepr` types.
+- [ggplot2](https://ggplot2.tidyverse.org) does not know how to pick a
+  scale for `deb_lsd` or `deb_tetra` types. In contrast, `deb_decimal`
+  vectors work properly with `ggplot2`, though explicitly identifying
+  the scale as continuous — with `scale_y_continuous()` or
+  `scale_x_continuous()` — is needed to avoid the appearance of a
+  message.
+- `deb_lsd`, `deb_tetra`, and `deb_decimal` vectors cannot be combined
+  in a single function if their `bases` differ. Tripartite and
+  tetrapartite values can be combined if the bases of their *solidus*
+  and *denarius* bases match. The only way to transform the bases of
+  `deb_lsd`, `deb_tetra`, and `deb_decimal` vectors is explicitly with
+  `deb_convert_bases()`. This prevents mistakenly combining two
+  different currencies together without properly converting their
+  values.
