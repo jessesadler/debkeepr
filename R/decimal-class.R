@@ -222,7 +222,7 @@ obj_print_footer.deb_decimal <- function(x, ...) {
 # Abbreviated name for tibble columns -------------------------------------
 
 #' @export
-vec_ptype_abbr.deb_decimal <- function(x) {
+vec_ptype_abbr.deb_decimal <- function(x, ...) {
 
   if (vec_size(deb_bases(x)) == 2L) {
     paste0(attr(x, "unit"), "[",

@@ -180,6 +180,6 @@ obj_print_footer.deb_lsd <- function(x, ...) {
 # Abbreviated name for tibble columns -------------------------------------
 
 #' @export
-vec_ptype_abbr.deb_lsd <- function(x) {
+vec_ptype_abbr.deb_lsd <- function(x, ...) {
   paste0("lsd[", attr(x, "bases")[[1]], "s:", attr(x, "bases")[[2]], "d]")
 }

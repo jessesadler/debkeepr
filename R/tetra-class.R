@@ -173,7 +173,7 @@ obj_print_footer.deb_tetra <- function(x, ...) {
 # Abbreviated name for tibble columns -------------------------------------
 
 #' @export
-vec_ptype_abbr.deb_tetra <- function(x) {
+vec_ptype_abbr.deb_tetra <- function(x, ...) {
   paste0("tetra[", attr(x, "bases")[[1]], "s:",
          attr(x, "bases")[[2]], "d:",
          attr(x, "bases")[[3]], "f]")
