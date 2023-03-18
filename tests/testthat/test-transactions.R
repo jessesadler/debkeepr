@@ -41,9 +41,11 @@ test_that("deb_account works", {
     dec_tetra = deb_as_decimal(tetra),
     lsd_alt = deb_lsd(l, s, d, c(50, 16))
   )
+  df <- as.data.frame(tbl)
 
   # Check that the function works
   expect_equal(dim(deb_account(tbl, "c", lsd = lsd)), c(3L, 2L))
+  expect_equal(dim(deb_account(df, "c", lsd = lsd)), c(3L, 2L))
   expect_equal(names(deb_account(tbl, "c", lsd = lsd)), c("relation", "lsd"))
   expect_equal(deb_account(tbl, "c", lsd = lsd)[["relation"]],
                c("credit", "debit", "current"))
@@ -54,6 +56,8 @@ test_that("deb_account works", {
   # Different credit and debit column names
   expect_identical(deb_account(tbl, "c", from, to, lsd),
                    deb_account(tbl, "c", lsd = lsd))
+  # Returns data frame
+  expect_false(tibble::is_tibble(deb_account(df, "c", lsd = tetra)))
 
   # Correct outcome
   res1 <- deb_lsd(l = c(21, 7, 14),
@@ -62,6 +66,7 @@ test_that("deb_account works", {
   res2 <- deb_as_tetra(res1, f = 4)
 
   expect_equal(deb_account(tbl, "c", lsd = lsd)[["lsd"]], res1)
+  expect_equal(deb_account(df, "c", lsd = lsd)[["lsd"]], res1)
   expect_equal(deb_account(tbl, "c", lsd = dec)[["dec"]],
                deb_as_decimal(res1))
   expect_equal(deb_account(tbl, "c", lsd = tetra)[["tetra"]], res2)
@@ -158,6 +163,7 @@ test_that("deb_account_summary works with all accounts present in cred and deb",
     dec_tetra = deb_as_decimal(tetra),
     lsd_alt = deb_lsd(l, s, d, c(50, 16))
   )
+  df <- as.data.frame(tbl)
   res1 <- tibble::tibble(
     account_id = c("a", "b", "c"),
     credit  = deb_lsd(c(18, 25, 21), c(7, 16, 13), c(2, 3, 3.5)),
@@ -168,6 +174,7 @@ test_that("deb_account_summary works with all accounts present in cred and deb",
 
   # Check that the function works
   expect_equal(dim(deb_account_summary(tbl, lsd = lsd)), c(3L, 4L))
+  expect_equal(dim(deb_account_summary(df, lsd = lsd)), c(3L, 4L))
   expect_equal(names(deb_account_summary(tbl, lsd = lsd)),
                c("account_id", "credit", "debit", "current"))
   expect_equal(deb_account_summary(tbl, lsd = lsd)[["account_id"]],
@@ -179,9 +186,12 @@ test_that("deb_account_summary works with all accounts present in cred and deb",
   # Different credit and debit column names
   expect_identical(deb_account_summary(tbl, from, to, lsd),
                    deb_account_summary(tbl, lsd = lsd))
+  # Returns data frame
+  expect_false(tibble::is_tibble(deb_account_summary(df, lsd = tetra)))
 
   # Correct outcomes
   expect_equal(deb_account_summary(tbl, lsd = lsd), res1)
+  expect_equal(deb_account_summary(df, lsd = lsd), as.data.frame(res1))
   expect_equal(deb_account_summary(tbl, lsd = dec),
                switch_type(res1, deb_as_decimal))
   expect_equal(deb_account_summary(tbl, lsd = tetra), res2)
@@ -272,15 +282,19 @@ test_that("deb_credit works", {
     dec_tetra = deb_as_decimal(tetra),
     lsd_alt = deb_lsd(l, s, d, c(50, 16))
   )
+  df <- as.data.frame(tbl)
 
   # Function works
   expect_equal(dim(deb_credit(tbl[1:4, ])), c(3L, 2L)) # all present
+  expect_equal(dim(deb_credit(df[1:4, ])), c(3L, 2L)) # all present
   expect_equal(dim(deb_credit(tbl[1:6, ])), c(5L, 2L)) # Missing credit/debit
   expect_equal(dim(deb_credit(tbl)), c(5L, 2L)) # Missing credit/debit and NA
   expect_equal(names(deb_credit(tbl)), c("account_id", "lsd"))
   expect_equal(names(deb_credit(tbl, from, to, lsd = tetra)),
                c("account_id", "tetra"))
   expect_equal(deb_credit(tbl)[["account_id"]], c("a", "b", "c", "d", "e"))
+  # Returns data frame
+  expect_false(tibble::is_tibble(deb_credit(df, lsd = dec)))
 
   # All accounts present in credit and debit
   res1 <- deb_lsd(c(18, 10, 9), c(7, 15, 2), c(2, 6, 11))
@@ -289,6 +303,7 @@ test_that("deb_credit works", {
                   bases = c(50, 16))
 
   expect_equal(deb_credit(tbl[1:4, ], lsd = lsd)[["lsd"]], res1)
+  expect_equal(deb_credit(df[1:4, ], lsd = lsd)[["lsd"]], res1)
   # Same as credit column in deb_account_summary()
   expect_equal(deb_credit(tbl[1:4, ])[["lsd"]],
                deb_account_summary(tbl[1:4, ])[["credit"]])
@@ -333,15 +348,19 @@ test_that("deb_debit works", {
     dec_tetra = deb_as_decimal(tetra),
     lsd_alt = deb_lsd(l, s, d, c(50, 16))
   )
+  df <- as.data.frame(tbl)
 
   # Function works
   expect_equal(dim(deb_debit(tbl[1:4, ])), c(3L, 2L)) # all present
+  expect_equal(dim(deb_debit(df[1:4, ])), c(3L, 2L)) # all present
   expect_equal(dim(deb_debit(tbl[1:6, ])), c(5L, 2L)) # Missing credit/debit
   expect_equal(dim(deb_debit(tbl)), c(5L, 2L)) # Missing credit/debit and NA
   expect_equal(names(deb_debit(tbl)), c("account_id", "lsd"))
   expect_equal(names(deb_debit(tbl, from, to, lsd = tetra)),
                c("account_id", "tetra"))
   expect_equal(deb_debit(tbl)[["account_id"]], c("a", "b", "c", "d", "e"))
+  # Returns data frame
+  expect_false(tibble::is_tibble(deb_debit(df, lsd = dec)))
 
   # All accounts present in credit and debit
   res1 <- deb_lsd(c(19, 10, 7), c(18, 15, 11), c(5, 6, 8))
@@ -350,6 +369,7 @@ test_that("deb_debit works", {
                   bases = c(50, 16))
 
   expect_equal(deb_debit(tbl[1:4, ], lsd = lsd)[["lsd"]], res1)
+  expect_equal(deb_debit(df[1:4, ], lsd = lsd)[["lsd"]], res1)
   # Same as debit column in deb_account_summary()
   expect_equal(deb_debit(tbl[1:4, ])[["lsd"]],
                deb_account_summary(tbl[1:4, ])[["debit"]])
@@ -394,14 +414,18 @@ test_that("deb_current works                                                    
     lsd = deb_lsd(l, s, d),
     tetra = deb_as_tetra(lsd, f = 4)
   )
+  df <- as.data.frame(tbl)
 
   # Function works
   expect_equal(dim(deb_current(tbl[1:6, ])), c(5L, 2L))
+  expect_equal(dim(deb_current(df[1:6, ])), c(5L, 2L))
   expect_equal(names(deb_current(tbl[1:6, ])), c("account_id", "lsd"))
   expect_equal(names(deb_current(tbl[1:6, ], from, to, lsd = tetra)),
                c("account_id", "tetra"))
   expect_equal(deb_current(tbl[1:6, ])[["account_id"]],
                c("a", "b", "c", "d", "e"))
+  # Returns data frame
+  expect_false(tibble::is_tibble(deb_current(df, lsd = tetra)))
 
   # Correct outcome
   res1 <-  deb_lsd(c(-16, 0, 14, 15, -12),
@@ -410,6 +434,7 @@ test_that("deb_current works                                                    
   res2 <- replace(res1, c(1, 2), NA)
 
   expect_equal(deb_current(tbl[1:6, ])[["lsd"]], res1)
+  expect_equal(deb_current(df[1:6, ])[["lsd"]], res1)
   expect_equal(deb_current(tbl[1:6, ], lsd = tetra)[["tetra"]],
                deb_account_summary(tbl[1:6, ], lsd = tetra)[["current"]])
   expect_equal(deb_current(tbl)[["lsd"]], res2)
@@ -429,15 +454,19 @@ test_that("deb_open works", {
     lsd = deb_lsd(l, s, d),
     tetra = deb_as_tetra(lsd, f = 4)
   )
+  df <- as.data.frame(tbl)
 
   # Function works
   expect_equal(dim(deb_open(tbl[1:6, ])), c(4L, 2L))
+  expect_equal(dim(deb_open(df[1:6, ])), c(4L, 2L))
   expect_equal(dim(deb_open(tbl)), c(5L, 2L)) # Includes all accounts with NA
   expect_equal(names(deb_open(tbl[1:6, ])), c("account_id", "lsd"))
   expect_equal(names(deb_open(tbl[1:6, ], from, to, lsd = tetra)),
                c("account_id", "tetra"))
   expect_equal(deb_open(tbl[1:6, ])[["account_id"]],
                c("a", "c", "d", "e"))
+  # Returns data frame
+  expect_false(tibble::is_tibble(deb_open(df, lsd = tetra)))
 
   # Correct outcome
   res1 <-  deb_lsd(c(-16, 14, 15, -12),
@@ -446,6 +475,7 @@ test_that("deb_open works", {
   res2 <- vec_c(NA, replace(res1, 1, NA))
 
   expect_equal(deb_open(tbl[1:6, ])[["lsd"]], res1)
+  expect_equal(deb_open(df[1:6, ])[["lsd"]], res1)
   # Same as current without 0 for account b
   expect_equal(deb_open(tbl[1:6, ], lsd = tetra)[["tetra"]],
                deb_account_summary(tbl[1:6, ], lsd = tetra)[["current"]][-2])
@@ -473,19 +503,24 @@ test_that("deb_balance works", {
     lsd = deb_lsd(l, s, d),
     tetra = deb_as_tetra(lsd, f = 4)
   )
+  df <- as.data.frame(tbl)
 
   # Function works
   expect_equal(dim(deb_balance(tbl[1:6, ])), c(2L, 2L))
+  expect_equal(dim(deb_balance(df[1:6, ])), c(2L, 2L))
   expect_equal(names(deb_balance(tbl[1:6, ])), c("relation", "lsd"))
   expect_equal(names(deb_balance(tbl[1:6, ], from, to, lsd = tetra)),
                c("relation", "tetra"))
   expect_equal(deb_balance(tbl[1:6, ])[["relation"]],
                c("credit", "debit"))
+  # Returns data frame
+  expect_false(tibble::is_tibble(deb_balance(df, lsd = tetra)))
 
   # Correct outcome
   res <- tibble::tibble(relation = c("credit", "debit"),
                         lsd = deb_lsd(c(29, -29), c(2, -2), c(4.5, -4.5)))
   expect_equal(deb_balance(tbl[1:6, ], lsd = lsd), res)
+  expect_equal(deb_balance(df[1:6, ], lsd = lsd), as.data.frame(res))
   expect_equal(deb_balance(tbl[1:6, ], lsd = tetra)[["tetra"]],
                deb_tetra(c(29, -29), c(2, -2), c(4, -4), c(2, -2)))
   # NAs

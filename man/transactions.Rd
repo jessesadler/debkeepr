@@ -39,50 +39,51 @@ deb_open(df, credit = credit, debit = debit, lsd = lsd, na.rm = FALSE)
 deb_balance(df, credit = credit, debit = debit, lsd = lsd, na.rm = FALSE)
 }
 \arguments{
-\item{df}{A data frame with at least credit, debit, and lsd variables.}
+\item{df}{A data frame or tibble with at least credit, debit, and lsd
+columns.}
 
 \item{account_id}{The id of the account to be used to calculate the
 credit, debit, and current values.}
 
-\item{credit}{Credit column: Unquoted name of the credit variable,
+\item{credit}{Credit column: Unquoted name of the credit column,
 representing the accounts that discharge the transactional values or
 from which the values derive. Default is \code{credit}.}
 
-\item{debit}{Debit column: Unquoted name of the debit variable,
+\item{debit}{Debit column: Unquoted name of the debit column,
 representing the accounts that receive the transactional values.
 Default is \code{debit}.}
 
-\item{lsd}{Value column: Unquoted name of a variable of class \code{deb_lsd},
+\item{lsd}{Value column: Unquoted name of a column of class \code{deb_lsd},
 \code{deb_decimal}, or \code{deb_tetra}. Default is \code{lsd}.}
 
 \item{na.rm}{Logical. Should missing values (including \code{NaN}) be removed?}
 }
 \value{
-Transaction functions return a tibble with variables for the accounts in
-\code{df} and credit, debit, and/or current values in the same type and \code{bases}
-as \code{lsd}:
+Transaction functions return a data frame or tibble with columns for the
+accounts in \code{df} and credit, debit, and/or current values in the same type
+and \code{bases} as \code{lsd}:
 \itemize{
-\item \code{deb_account()}: a tibble with three rows showing the credit, debit, and
-current value of the given account.
-\item \code{deb_account_summary()} a tibble with one row for each account in \code{df}
-and credit, debit, and current value variables.
-\item \code{deb_credit()}: a tibble with one row for each account with the total
+\item \code{deb_account()}: a data frame with three rows showing the credit, debit,
+and current value of the given account.
+\item \code{deb_account_summary()} a data frame with one row for each account in
+\code{df} and credit, debit, and current value columns.
+\item \code{deb_credit()}: a data frame with one row for each account with the total
 credit of the accounts.
-\item \code{deb_debit()}: a tibble with one row for each account with the total
+\item \code{deb_debit()}: a data frame with one row for each account with the total
 debit of the accounts.
-\item \code{deb_current()}: a tibble with one row for each account with the current
-value of the accounts.
-\item \code{deb_open()}: a tibble with one row for each account whose current value
-is not \code{0}. If all accounts are equal to zero, a tibble with zero rows
-will be returned.
-\item \code{deb_balance()}: a tibble with two rows showing the credit and debit
+\item \code{deb_current()}: a data frame with one row for each account with the
+current value of the accounts.
+\item \code{deb_open()}: a data frame with one row for each account whose current
+value is not \code{0}. If all accounts are equal to zero, a data frame with
+zero rows will be returned.
+\item \code{deb_balance()}: a data frame with two rows showing the credit and debit
 remaining in \code{df}.
 }
 }
 \description{
 Family of seven related functions to analyze transactions data frames
 that have credit, debit, and tetrapartite (lsd) or tetrapartite (lsdf)
-variables, mimicking an account book.
+columns, mimicking an account book.
 \itemize{
 \item \code{deb_account()} credit, debit, and current value of a single account.
 \item \code{deb_account_summary()} credit, debit, and current value of all accounts.
@@ -98,17 +99,17 @@ data frame.
 \section{Transactions data frames:}{
 Transactions data frames have the structure of an account book. They
 should have a similar arrangement to \code{dafforne_transactions}. Each row is
-a transaction in the book. \code{credit} and \code{debit} variables contain the
+a transaction in the book. \code{credit} and \code{debit} columns contain the
 account ids associated with discharging account (credit) and the receiving
-account (debit). The \code{lsd} variable represents the tripartite or
+account (debit). The \code{lsd} column represents the tripartite or
 tetrapartite value of each transaction. Like \code{dafforne_transactions},
-transactions data frames can have additional variables with attributes for
+transactions data frames can have additional columns with attributes for
 each transaction such as id or date among others.
 }
 
 \examples{
 # Examples use dafforne_transactions data,
-# which have default variable names.
+# which have default column names.
 # See dafforne_accounts for account names.
 
 # Credit, debit, and current value of cash account

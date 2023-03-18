@@ -8,7 +8,7 @@
 #' @description
 #' Family of seven related functions to analyze transactions data frames
 #' that have credit, debit, and tetrapartite (lsd) or tetrapartite (lsdf)
-#' variables, mimicking an account book.
+#' columns, mimicking an account book.
 #'
 #' - `deb_account()` credit, debit, and current value of a single account.
 #' - `deb_account_summary()` credit, debit, and current value of all accounts.
@@ -23,50 +23,51 @@
 #' # Transactions data frames:
 #' Transactions data frames have the structure of an account book. They
 #' should have a similar arrangement to `dafforne_transactions`. Each row is
-#' a transaction in the book. `credit` and `debit` variables contain the
+#' a transaction in the book. `credit` and `debit` columns contain the
 #' account ids associated with discharging account (credit) and the receiving
-#' account (debit). The `lsd` variable represents the tripartite or
+#' account (debit). The `lsd` column represents the tripartite or
 #' tetrapartite value of each transaction. Like `dafforne_transactions`,
-#' transactions data frames can have additional variables with attributes for
+#' transactions data frames can have additional columns with attributes for
 #' each transaction such as id or date among others.
 #'
-#' @param df A data frame with at least credit, debit, and lsd variables.
+#' @param df A data frame or tibble with at least credit, debit, and lsd
+#'   columns.
 #' @param account_id The id of the account to be used to calculate the
 #'   credit, debit, and current values.
-#' @param credit Credit column: Unquoted name of the credit variable,
+#' @param credit Credit column: Unquoted name of the credit column,
 #'   representing the accounts that discharge the transactional values or
 #'   from which the values derive. Default is `credit`.
-#' @param debit Debit column: Unquoted name of the debit variable,
+#' @param debit Debit column: Unquoted name of the debit column,
 #'   representing the accounts that receive the transactional values.
 #'   Default is `debit`.
-#' @param lsd Value column: Unquoted name of a variable of class `deb_lsd`,
+#' @param lsd Value column: Unquoted name of a column of class `deb_lsd`,
 #'   `deb_decimal`, or `deb_tetra`. Default is `lsd`.
 #' @param na.rm Logical. Should missing values (including `NaN`) be removed?
 #'
 #' @returns
-#' Transaction functions return a tibble with variables for the accounts in
-#' `df` and credit, debit, and/or current values in the same type and `bases`
-#' as `lsd`:
+#' Transaction functions return a data frame or tibble with columns for the
+#' accounts in `df` and credit, debit, and/or current values in the same type
+#' and `bases` as `lsd`:
 #'
-#' - `deb_account()`: a tibble with three rows showing the credit, debit, and
-#'   current value of the given account.
-#' - `deb_account_summary()` a tibble with one row for each account in `df`
-#'   and credit, debit, and current value variables.
-#' - `deb_credit()`: a tibble with one row for each account with the total
+#' - `deb_account()`: a data frame with three rows showing the credit, debit,
+#'   and current value of the given account.
+#' - `deb_account_summary()` a data frame with one row for each account in
+#'   `df` and credit, debit, and current value columns.
+#' - `deb_credit()`: a data frame with one row for each account with the total
 #'   credit of the accounts.
-#' - `deb_debit()`: a tibble with one row for each account with the total
+#' - `deb_debit()`: a data frame with one row for each account with the total
 #'   debit of the accounts.
-#' - `deb_current()`: a tibble with one row for each account with the current
-#'   value of the accounts.
-#' - `deb_open()`: a tibble with one row for each account whose current value
-#'   is not `0`. If all accounts are equal to zero, a tibble with zero rows
-#'   will be returned.
-#' - `deb_balance()`: a tibble with two rows showing the credit and debit
+#' - `deb_current()`: a data frame with one row for each account with the
+#'   current value of the accounts.
+#' - `deb_open()`: a data frame with one row for each account whose current
+#'   value is not `0`. If all accounts are equal to zero, a data frame with
+#'   zero rows will be returned.
+#' - `deb_balance()`: a data frame with two rows showing the credit and debit
 #'   remaining in `df`.
 #'
 #' @examples
 #' # Examples use dafforne_transactions data,
-#' # which have default variable names.
+#' # which have default column names.
 #' # See dafforne_accounts for account names.
 #'
 #' # Credit, debit, and current value of cash account
@@ -174,9 +175,14 @@ deb_account <- function(df, account_id,
   # Current
   current <- pos - neg
 
-  # Make tibble
-  tibble::tibble(relation = c("credit", "debit", "current"),
-                 !! cn := c(pos, neg, current))
+  # Make data frame
+  if (tibble::is_tibble(df)) {
+    tibble::tibble(relation = c("credit", "debit", "current"),
+                   !! cn := c(pos, neg, current))
+  } else {
+    data_frame(relation = c("credit", "debit", "current"),
+               !! cn := c(pos, neg, current))
+  }
 }
 
 
@@ -256,8 +262,14 @@ deb_account_summary <- function(df,
                     current = deb_as_tetra(current))
   }
   # Arrange by id and return
-  ret %>%
+  ret <- ret %>%
     dplyr::arrange(.data[["account_id"]])
+  # Return
+  if (tibble::is_tibble(df)) {
+    ret
+  } else {
+    as.data.frame(ret)
+  }
 }
 
 
@@ -306,8 +318,14 @@ deb_credit <- function(df,
     ret[[cn]] <- deb_as_tetra(ret[[cn]])
   }
   # Arrange by id and return
-  ret %>%
+  ret <- ret %>%
     dplyr::arrange(.data[["account_id"]])
+  # Return
+  if (tibble::is_tibble(df)) {
+    ret
+  } else {
+    as.data.frame(ret)
+  }
 }
 
 
@@ -354,8 +372,14 @@ deb_debit <- function(df,
     ret[[cn]] <- deb_as_tetra(ret[[cn]])
   }
   # Arrange by id and return
-  ret %>%
+  ret <- ret %>%
     dplyr::arrange(.data[["account_id"]])
+  # Return
+  if (tibble::is_tibble(df)) {
+    ret
+  } else {
+    as.data.frame(ret)
+  }
 }
 
 
@@ -424,7 +448,12 @@ deb_balance <- function(df,
   } else {
    balance <- c(sum(vals[vals > 0]), sum(vals[vals < 0]))
   }
-
-  tibble::tibble(relation = c("credit", "debit"),
-                 !! cn := balance)
+  # Make data frame
+  if (tibble::is_tibble(df)) {
+    tibble::tibble(relation = c("credit", "debit"),
+                   !! cn := balance)
+  } else {
+   data_frame(relation = c("credit", "debit"),
+              !! cn := balance)
+  }
 }
