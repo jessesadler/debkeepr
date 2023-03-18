@@ -3,6 +3,7 @@
 #' Arithmetic operations for debkeepr
 #' @param x,y Vectors.
 #' @param op Arithmetic operation.
+#' @param ... For future expansion
 #' @name arithmetic
 NULL
 
@@ -13,14 +14,14 @@ NULL
 #' @rdname arithmetic
 #' @method vec_arith deb_lsd
 #' @export
-vec_arith.deb_lsd <- function(op, x, y) {
+vec_arith.deb_lsd <- function(op, x, y, ...) {
   UseMethod("vec_arith.deb_lsd", y)
 }
 
 #' @rdname arithmetic
 #' @method vec_arith.deb_lsd default
 #' @export
-vec_arith.deb_lsd.default <- function(op, x, y) {
+vec_arith.deb_lsd.default <- function(op, x, y, ...) {
   stop_incompatible_op(op, x, y)
 }
 
@@ -62,7 +63,7 @@ lsd_minus <- function(x, y) {
 #' @rdname arithmetic
 #' @method vec_arith.deb_lsd deb_lsd
 #' @export
-vec_arith.deb_lsd.deb_lsd <- function(op, x, y) {
+vec_arith.deb_lsd.deb_lsd <- function(op, x, y, ...) {
   bases_equal(x, y)
 
   switch(
@@ -127,7 +128,7 @@ lsd_divisor <- function(dividend, x) {
 #' @rdname arithmetic
 #' @method vec_arith.deb_lsd numeric
 #' @export
-vec_arith.deb_lsd.numeric <- function(op, x, y) {
+vec_arith.deb_lsd.numeric <- function(op, x, y, ...) {
   switch(
     op,
     "*" = lsd_multiply(x, multiplier = y),
@@ -141,7 +142,7 @@ vec_arith.deb_lsd.numeric <- function(op, x, y) {
 #' @rdname arithmetic
 #' @method vec_arith.numeric deb_lsd
 #' @export
-vec_arith.numeric.deb_lsd <- function(op, x, y) {
+vec_arith.numeric.deb_lsd <- function(op, x, y, ...) {
   switch(
     op,
     "*" = lsd_multiply(y, multiplier = x),
@@ -169,7 +170,7 @@ lsd_negate <- function(x) {
 #' @rdname arithmetic
 #' @method vec_arith.deb_lsd MISSING
 #' @export
-vec_arith.deb_lsd.MISSING <- function(op, x, y) {
+vec_arith.deb_lsd.MISSING <- function(op, x, y, ...) {
   switch(
     op,
     `-` = lsd_negate(x),
@@ -185,14 +186,14 @@ vec_arith.deb_lsd.MISSING <- function(op, x, y) {
 #' @rdname arithmetic
 #' @method vec_arith deb_decimal
 #' @export
-vec_arith.deb_decimal <- function(op, x, y) {
+vec_arith.deb_decimal <- function(op, x, y, ...) {
   UseMethod("vec_arith.deb_decimal", y)
 }
 
 #' @rdname arithmetic
 #' @method vec_arith.deb_decimal default
 #' @export
-vec_arith.deb_decimal.default <- function(op, x, y) {
+vec_arith.deb_decimal.default <- function(op, x, y, ...) {
   stop_incompatible_op(op, x, y)
 }
 
@@ -207,7 +208,7 @@ vec_arith.deb_decimal.default <- function(op, x, y) {
 #' @keywords internal
 #' @noRd
 
-dec_arithmetic <- function(op, x, y) {
+dec_arithmetic <- function(op, x, y, ...) {
   xy <- vec_cast_common(x, y)
   vec_arith_base(op, xy[[1]], xy[[2]])
 }
@@ -215,7 +216,7 @@ dec_arithmetic <- function(op, x, y) {
 #' @rdname arithmetic
 #' @method vec_arith.deb_decimal deb_decimal
 #' @export
-vec_arith.deb_decimal.deb_decimal <- function(op, x, y) {
+vec_arith.deb_decimal.deb_decimal <- function(op, x, y, ...) {
   # Deal with possibility of mixed bases: tetra becomes lsd
 
   # Both lsd or both tetra
@@ -255,7 +256,7 @@ vec_arith.deb_decimal.deb_decimal <- function(op, x, y) {
 #' @rdname arithmetic
 #' @method vec_arith.deb_decimal numeric
 #' @export
-vec_arith.deb_decimal.numeric <- function(op, x, y) {
+vec_arith.deb_decimal.numeric <- function(op, x, y, ...) {
   switch(
     op,
     "+" = ,
@@ -276,7 +277,7 @@ vec_arith.deb_decimal.numeric <- function(op, x, y) {
 #' @rdname arithmetic
 #' @method vec_arith.numeric deb_decimal
 #' @export
-vec_arith.numeric.deb_decimal <- function(op, x, y) {
+vec_arith.numeric.deb_decimal <- function(op, x, y, ...) {
   switch(
     op,
     "+" = ,
@@ -295,7 +296,7 @@ vec_arith.numeric.deb_decimal <- function(op, x, y) {
 #' @rdname arithmetic
 #' @method vec_arith.deb_decimal MISSING
 #' @export
-vec_arith.deb_decimal.MISSING <- function(op, x, y) {
+vec_arith.deb_decimal.MISSING <- function(op, x, y, ...) {
   switch(
     op,
     `-` = x * -1,
@@ -312,14 +313,14 @@ vec_arith.deb_decimal.MISSING <- function(op, x, y) {
 #' @rdname arithmetic
 #' @method vec_arith deb_tetra
 #' @export
-vec_arith.deb_tetra <- function(op, x, y) {
+vec_arith.deb_tetra <- function(op, x, y, ...) {
   UseMethod("vec_arith.deb_tetra", y)
 }
 
 #' @rdname arithmetic
 #' @method vec_arith.deb_tetra default
 #' @export
-vec_arith.deb_tetra.default <- function(op, x, y) {
+vec_arith.deb_tetra.default <- function(op, x, y, ...) {
   stop_incompatible_op(op, x, y)
 }
 
@@ -363,7 +364,7 @@ tetra_minus <- function(x, y) {
 #' @rdname arithmetic
 #' @method vec_arith.deb_tetra deb_tetra
 #' @export
-vec_arith.deb_tetra.deb_tetra <- function(op, x, y) {
+vec_arith.deb_tetra.deb_tetra <- function(op, x, y, ...) {
   bases_equal(x, y)
 
   switch(
@@ -430,7 +431,7 @@ tetra_divisor <- function(dividend, x) {
 #' @rdname arithmetic
 #' @method vec_arith.deb_tetra numeric
 #' @export
-vec_arith.deb_tetra.numeric <- function(op, x, y) {
+vec_arith.deb_tetra.numeric <- function(op, x, y, ...) {
   switch(
     op,
     "*" = tetra_multiply(x, multiplier = y),
@@ -444,7 +445,7 @@ vec_arith.deb_tetra.numeric <- function(op, x, y) {
 #' @rdname arithmetic
 #' @method vec_arith.numeric deb_tetra
 #' @export
-vec_arith.numeric.deb_tetra <- function(op, x, y) {
+vec_arith.numeric.deb_tetra <- function(op, x, y, ...) {
   switch(
     op,
     "*" = tetra_multiply(y, multiplier = x),
@@ -473,7 +474,7 @@ tetra_negate <- function(x) {
 #' @rdname arithmetic
 #' @method vec_arith.deb_tetra MISSING
 #' @export
-vec_arith.deb_tetra.MISSING <- function(op, x, y) {
+vec_arith.deb_tetra.MISSING <- function(op, x, y, ...) {
   switch(
     op,
     `-` = tetra_negate(x),
@@ -490,7 +491,7 @@ vec_arith.deb_tetra.MISSING <- function(op, x, y) {
 #' @rdname arithmetic
 #' @method vec_arith.deb_lsd deb_decimal
 #' @export
-vec_arith.deb_lsd.deb_decimal <- function(op, x, y) {
+vec_arith.deb_lsd.deb_decimal <- function(op, x, y, ...) {
   if (vec_size(deb_bases(y)) == 2L) {
     bases_equal(x, y)
   } else {
@@ -512,7 +513,7 @@ vec_arith.deb_lsd.deb_decimal <- function(op, x, y) {
 #' @rdname arithmetic
 #' @method vec_arith.deb_decimal deb_lsd
 #' @export
-vec_arith.deb_decimal.deb_lsd <- function(op, x, y) {
+vec_arith.deb_decimal.deb_lsd <- function(op, x, y, ...) {
   if (vec_size(deb_bases(x)) == 2L) {
     bases_equal(x, y)
   } else {
@@ -536,7 +537,7 @@ vec_arith.deb_decimal.deb_lsd <- function(op, x, y) {
 #' @rdname arithmetic
 #' @method vec_arith.deb_lsd deb_tetra
 #' @export
-vec_arith.deb_lsd.deb_tetra <- function(op, x, y) {
+vec_arith.deb_lsd.deb_tetra <- function(op, x, y, ...) {
   mixed_bases_equal(x, y)
 
   switch(
@@ -553,7 +554,7 @@ vec_arith.deb_lsd.deb_tetra <- function(op, x, y) {
 #' @rdname arithmetic
 #' @method vec_arith.deb_tetra deb_lsd
 #' @export
-vec_arith.deb_tetra.deb_lsd <- function(op, x, y) {
+vec_arith.deb_tetra.deb_lsd <- function(op, x, y, ...) {
   mixed_bases_equal(y, x)
 
   switch(
@@ -572,7 +573,7 @@ vec_arith.deb_tetra.deb_lsd <- function(op, x, y) {
 #' @rdname arithmetic
 #' @method vec_arith.deb_tetra deb_decimal
 #' @export
-vec_arith.deb_tetra.deb_decimal <- function(op, x, y) {
+vec_arith.deb_tetra.deb_decimal <- function(op, x, y, ...) {
   if (vec_size(deb_bases(y)) == 3L) {
     bases_equal(x, y)
   } else {
@@ -596,7 +597,7 @@ vec_arith.deb_tetra.deb_decimal <- function(op, x, y) {
 #' @rdname arithmetic
 #' @method vec_arith.deb_decimal deb_tetra
 #' @export
-vec_arith.deb_decimal.deb_tetra <- function(op, x, y) {
+vec_arith.deb_decimal.deb_tetra <- function(op, x, y, ...) {
   if (vec_size(deb_bases(x)) == 3L) {
     bases_equal(x, y)
   } else {
