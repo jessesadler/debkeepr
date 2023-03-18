@@ -485,7 +485,7 @@ ggplot(data = dec_summary) +
   geom_linerange(aes(x = account_id, ymin = debit, ymax = credit)) + 
   geom_point(aes(x = account_id, y = current)) + 
   geom_text(aes(x = account_id, y = current, label = current_text), nudge_x = 0.32) + 
-  scale_y_continuous(labels = scales::dollar_format(prefix = "£")) + 
+  scale_y_continuous(labels = scales::label_dollar(prefix = "\u00a3")) + 
   geom_hline(yintercept = 0) + 
   labs(x = "Accounts",
        y = "Value in pounds",

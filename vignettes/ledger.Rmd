@@ -54,7 +54,7 @@ To get a visual overview of the transactions, the value of each transaction can 
 ```{r credit-transactions, fig.height = 4, fig.width = 7}
 ggplot(data = transactions) + 
   geom_point(aes(x = credit, y = dec), alpha = 0.7) + 
-  scale_y_continuous(labels = scales::dollar_format(prefix = "£")) + 
+  scale_y_continuous(labels = scales::label_dollar(prefix = "\u00a3")) + 
   labs(x = "Creditor accounts",
        y = "Transaction values",
        title = "Value of Transactions by Creditor Account") + 
@@ -68,7 +68,7 @@ ggplot(data = transactions) +
   geom_point(aes(x = credit, y = dec, color = "Credit"), alpha = 0.7) + 
   geom_point(aes(x = debit, y = dec, color = "Debit"), alpha = 0.7) + 
   scale_color_manual(values = c(Credit = "black", Debit = "red")) + 
-  scale_y_continuous(labels = scales::dollar_format(prefix = "£")) + 
+  scale_y_continuous(labels = scales::label_dollar(prefix = "\u00a3")) + 
   labs(x = "Accounts",
        y = "Transaction values",
        color = "Relationship",
@@ -96,7 +96,7 @@ deb_account_summary(transactions, lsd = dec) %>%
 	  geom_point(aes(x = account_id, y = current,
 	                 color = if_else(current == 0, "Closed", "Open"))) +
 	  scale_color_manual(values = c(Open = "black", Closed = "blue")) + 
-      scale_y_continuous(labels = scales::dollar_format(prefix = "£")) + 
+      scale_y_continuous(labels = scales::label_dollar(prefix = "\u00a3")) + 
       labs(x = "Accounts",
            y = "Pounds sterling",
            color = "Status",
