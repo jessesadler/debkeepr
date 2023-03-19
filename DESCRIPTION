@@ -15,7 +15,7 @@ BugReports: https://github.com/jessesadler/debkeepr/issues
 Depends:
     R (>= 3.5)
 Imports:
-    cli (>= 3.2.0),
+    cli (>= 3.4.0),
     dplyr (>= 1.0.0),
     magrittr,
     methods,
