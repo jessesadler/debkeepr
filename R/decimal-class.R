@@ -17,8 +17,12 @@ new_decimal <- function(x = double(),
                         bases = c(20L, 12L)) {
   unit <- rlang::arg_match(unit)
 
-  vec_assert(x, ptype = double())
-  vec_assert(bases, ptype = integer())
+  if (!rlang::is_double(x)) {
+    rlang::abort("`x` must be a double vector.")
+  }
+  if (!rlang::is_integer(bases)) {
+    rlang::abort("`bases` must be an integer vector.")
+  }
 
   # Check size of bases and add names to bases vector
   if (vec_size(bases) == 2L) {

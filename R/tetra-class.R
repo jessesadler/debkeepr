@@ -16,14 +16,25 @@ new_tetra <- function(l = double(),
                       d = double(),
                       f = double(),
                       bases = c(20L, 12L, 4L)) {
-
-  vec_assert(l, ptype = double())
-  vec_assert(s, ptype = double())
-  vec_assert(d, ptype = double())
-  vec_assert(f, ptype = double())
-
+  # double assert
+  if (!rlang::is_double(l)) {
+    rlang::abort("`l` must be a double vector.")
+  }
+  if (!rlang::is_double(s)) {
+    rlang::abort("`s` must be a double vector.")
+  }
+  if (!rlang::is_double(d)) {
+    rlang::abort("`d` must be a double vector.")
+  }
+  if (!rlang::is_double(f)) {
+    rlang::abort("`f` must be a double vector.")
+  }
   # Bases assert
-  vec_assert(bases, ptype = integer(), size = 3)
+  if (!rlang::is_integer(bases)) {
+    rlang::abort("`bases` must be an integer vector.")
+  }
+  vec_check_size(bases, size = 3L)
+
   bases <- rlang::set_names(bases, c("s", "d", "f"))
 
   new_rcrd(list(l = l, s = s, d = d, f = f),
