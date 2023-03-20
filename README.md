@@ -6,7 +6,8 @@ status](https://www.r-pkg.org/badges/version/debkeepr)](https://cran.r-project.o
 [![R-CMD-check](https://github.com/jessesadler/debkeepr/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/jessesadler/debkeepr/actions/workflows/check-standard.yaml)
 [![Coverage
 status](https://codecov.io/gh/jessesadler/debkeepr/branch/main/graph/badge.svg)](https://app.codecov.io/gh/jessesadler/debkeepr?branch=main)
-[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![Lifecycle:
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
 `debkeepr` integrates non-decimal currencies that use tripartite and
 tetrapartite systems into the methodologies of Digital Humanities and
@@ -26,12 +27,17 @@ bookkeeping](https://en.wikipedia.org/wiki/Double-entry_bookkeeping_system).
 
 ## Installation
 
-You can install `debkeepr` from GitHub with
-[remotes](https://remotes.r-lib.org):
+Install the released version of debkeepr from CRAN:
 
 ``` r
-# install.packages("remotes")
-remotes::install_github("jessesadler/debkeepr")
+install.packages("debkeepr")
+```
+
+Or install the development version from GitHub with:
+
+``` r
+# install.packages("pak")
+pak::pak("jessesadler/debkeepr")
 ```
 
 Please open an [issue](https://github.com/jessesadler/debkeepr/issues)
