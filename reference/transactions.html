@@ -206,7 +206,8 @@ each transaction such as id or date among others.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Credit, debit, and current value of cash account</span></span></span>
 <span class="r-in"><span><span class="fu">deb_account</span><span class="op">(</span><span class="va">dafforne_transactions</span>, account_id <span class="op">=</span> <span class="fl">1</span>,</span></span>
-<span class="r-in"><span>            credit <span class="op">=</span> <span class="va">credit</span>, debit <span class="op">=</span> <span class="va">debit</span><span class="op">)</span></span></span>
+<span class="r-in"><span>            credit <span class="op">=</span> <span class="va">credit</span>, debit <span class="op">=</span> <span class="va">debit</span>,</span></span>
+<span class="r-in"><span>            lsd <span class="op">=</span> <span class="va">lsd</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 2</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   relation            lsd</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;lsd[20s:12d]&gt;</span></span>
@@ -275,7 +276,8 @@ each transaction such as id or date among others.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 36 more rows</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Current value of accounts in Dafforne's ledger</span></span></span>
-<span class="r-in"><span><span class="fu">deb_current</span><span class="op">(</span><span class="va">dafforne_transactions</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">current</span> <span class="op">&lt;-</span> <span class="fu">deb_current</span><span class="op">(</span><span class="va">dafforne_transactions</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">current</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 46 × 2</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    account_id            lsd</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lsd[20s:12d]&gt;</span></span>
@@ -292,7 +294,8 @@ each transaction such as id or date among others.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 36 more rows</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Current value of open account in Dafforne's ledger</span></span></span>
-<span class="r-in"><span><span class="fu">deb_open</span><span class="op">(</span><span class="va">dafforne_transactions</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">open</span> <span class="op">&lt;-</span> <span class="fu">deb_open</span><span class="op">(</span><span class="va">dafforne_transactions</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">open</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 14 × 2</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    account_id             lsd</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;lsd[20s:12d]&gt;</span></span>
@@ -313,9 +316,9 @@ each transaction such as id or date among others.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compare the amount of rows in returned values of</span></span></span>
 <span class="r-in"><span><span class="co"># deb_current() vs deb_open()</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu">deb_current</span><span class="op">(</span><span class="va">dafforne_transactions</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">current</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 46</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu">deb_open</span><span class="op">(</span><span class="va">dafforne_transactions</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">open</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 14</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Credit and debit remaining on Dafforne's ledger</span></span></span>
