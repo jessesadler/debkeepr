@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Analysis of historical non-decimal currencies and value systems that use either tripartite or tetrapartite systems such as pounds, shillings, and pence.
+Analysis of historical non-decimal currencies and value systems that use tripartite or tetrapartite systems such as pounds, shillings, and pence. It introduces new vector classes to represent non-decimal currencies, making them compatible with numeric classes, and provides functions to work with these classes in data frames in the context of double-entry bookkeeping.
 }
 \seealso{
 Useful links:

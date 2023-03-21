@@ -33,7 +33,9 @@ new_tetra <- function(l = double(),
   if (!rlang::is_integer(bases)) {
     rlang::abort("`bases` must be an integer vector.")
   }
-  vec_check_size(bases, size = 3L)
+  if (vec_size(bases) != 3L) {
+    rlang::abort("`bases` must be an integer vector of length 3.")
+  }
 
   bases <- rlang::set_names(bases, c("s", "d", "f"))
 
