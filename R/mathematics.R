@@ -197,6 +197,7 @@ trunc.deb_lsd <- function(x, ...) {
 #' @param .fn A mathematical function from the base package.
 #' @param .x A vector.
 #' @param ... Additional arguments passed to `.fn`.
+#' @returns A `deb_lsd` vector.
 #' @export
 vec_math.deb_lsd <- function(.fn, .x, ...) {
   # Implement sum to allow various types of deb-style vectors in ...
@@ -332,6 +333,7 @@ trunc.deb_tetra <- function(x, ...) {
 #' @param .fn A mathematical function from the base package.
 #' @param .x A vector.
 #' @param ... Additional arguments passed to `.fn`.
+#' @returns A `deb_tetra` vector.
 #' @export
 vec_math.deb_tetra <- function(.fn, .x, ...) {
   # Implement sum to allow various types of deb-style vectors in ...

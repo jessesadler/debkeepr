@@ -4,6 +4,8 @@
 #' @param x,y Vectors.
 #' @param op Arithmetic operation.
 #' @param ... For future expansion
+#' @returns A `deb_lsd`, `deb_tetra`, `deb_decimal` or `numeric` vector
+#'   depending on the inputs and arithmetic operator.
 #' @name arithmetic
 NULL
 

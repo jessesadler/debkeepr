@@ -5,6 +5,7 @@
 #' Equality and comparison
 #' @param x A deb_lsd vector.
 #' @param ... Arguments passed on to further methods.
+#' @returns A data frame or numeric vector to be used for comparison.
 #' @name comparison
 NULL
 

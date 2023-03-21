@@ -6,6 +6,9 @@
 \usage{
 x \%<-\% value
 }
+\value{
+Invisibly returns \code{value}.
+}
 \description{
 See \code{\link[zeallot]{\%<-\%}} for more details.
 }

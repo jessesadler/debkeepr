@@ -13,6 +13,9 @@
 
 \item{...}{Additional arguments passed to \code{.fn}.}
 }
+\value{
+A \code{deb_lsd} vector.
+}
 \description{
 Error message for unimplemented mathematics functions
 }

@@ -1,4 +1,9 @@
+# debkeepr 0.1.1
+
+- Documentation fixes for CRAN checks.
+
 # debkeepr 0.1.0
+
 - Prep for CRAN release.
 - Transaction functions now return a data.frame if input is data.frame.
 - Make all tests self-sufficient.

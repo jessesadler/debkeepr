@@ -21,6 +21,9 @@
 
 \item{...}{Arguments passed on to further methods.}
 }
+\value{
+A data frame or numeric vector to be used for comparison.
+}
 \description{
 Equality and comparison
 }

@@ -83,6 +83,10 @@
 
 \item{...}{For future expansion}
 }
+\value{
+A \code{deb_lsd}, \code{deb_tetra}, \code{deb_decimal} or \code{numeric} vector
+depending on the inputs and arithmetic operator.
+}
 \description{
 Arithmetic operations for debkeepr
 }
