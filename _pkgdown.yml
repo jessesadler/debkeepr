@@ -11,7 +11,7 @@ authors:
     href: https://www.jessesadler.com
 
 development:
-  mode: unreleased
+  mode: release
 
 reference:
   - title: debkeepr types
