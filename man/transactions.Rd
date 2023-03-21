@@ -114,7 +114,8 @@ each transaction such as id or date among others.
 
 # Credit, debit, and current value of cash account
 deb_account(dafforne_transactions, account_id = 1,
-            credit = credit, debit = debit)
+            credit = credit, debit = debit,
+            lsd = lsd)
 
 # Credit, debit, and current value of profit and loss account
 deb_account(dafforne_transactions, account_id = 23)
@@ -129,15 +130,17 @@ deb_credit(dafforne_transactions)
 deb_debit(dafforne_transactions)
 
 # Current value of accounts in Dafforne's ledger
-deb_current(dafforne_transactions)
+current <- deb_current(dafforne_transactions)
+current
 
 # Current value of open account in Dafforne's ledger
-deb_open(dafforne_transactions)
+open <- deb_open(dafforne_transactions)
+open
 
 # Compare the amount of rows in returned values of
 # deb_current() vs deb_open()
-nrow(deb_current(dafforne_transactions))
-nrow(deb_open(dafforne_transactions))
+nrow(current)
+nrow(open)
 
 # Credit and debit remaining on Dafforne's ledger
 deb_balance(dafforne_transactions)
