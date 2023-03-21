@@ -1,3 +1,9 @@
+# debkeepr 0.1.0
+- Prep for CRAN release.
+- Transaction functions now return a data.frame if input is data.frame.
+- Make all tests self-sufficient.
+- Update tidy eval syntax.
+
 # debkeepr 0.0.6
 
 - New `deb_tetra` class to enable functionality with tetrapartite values. `deb_tetra` vectors can do everything that `deb_lsd` vectors can do and can also interact with `deb_decimal` vectors.
