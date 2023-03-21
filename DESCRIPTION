@@ -21,7 +21,7 @@ Imports:
     methods,
     rlang (>= 1.1.0),
     tibble (>= 3.0.0),
-    vctrs (>= 0.6.0),
+    vctrs (>= 0.5.2),
     zeallot
 Suggests: 
     covr,
