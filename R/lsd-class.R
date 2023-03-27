@@ -29,9 +29,7 @@ new_lsd <- function(l = double(),
   if (!rlang::is_integer(bases)) {
     rlang::abort("`bases` must be an integer vector.")
   }
-  if (vec_size(bases) != 2L) {
-    rlang::abort("`bases` must be an integer vector of length 2.")
-  }
+  vec_check_size(bases, size = 2L)
 
   bases <- rlang::set_names(bases, c("s", "d"))
 

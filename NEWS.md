@@ -1,5 +1,7 @@
 # debkeepr (development version)
 
+- Bump vctrs minimal version to 0.6.1.
+
 # debkeepr 0.1.1
 
 - Documentation fixes for CRAN checks.
