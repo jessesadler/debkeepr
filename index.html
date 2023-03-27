@@ -137,7 +137,7 @@
 <li>
 <a href="https://jessesadler.github.io/debkeepr/articles/ledger.html">Analysis of Richard Dafforne’s Journal and Ledger vignette</a>: An analysis of the practice journal and ledger in Dafforne’s <em>Merchant’s Mirrour</em> using the <code>dafforne_transactions</code> and <code>dafforne_accounts</code> data provided in <code>debkeepr</code>.</li>
 <li>
-<a href="https://github.com/jessesadler/debkeepr/blob/master/data-raw/dafforne-journal.pdf" class="external-link">A PDF copy of Dafforne’s practice journal</a> can be consulted to further investigate the practices of early modern double-entry bookkeeping.</li>
+<a href="https://github.com/jessesadler/debkeepr/blob/main/data-raw/dafforne-journal.pdf" class="external-link">A PDF copy of Dafforne’s practice journal</a> can be consulted to further investigate the practices of early modern double-entry bookkeeping.</li>
 </ul>
 </div>
 <div class="section level2">
@@ -148,7 +148,7 @@
 <li>Historical currencies consist of three or four separate non-decimal <strong>units</strong>. Most often: pounds, shillings, and pence with sometimes a fourth unit, such as the farthing, added on.</li>
 <li>The <strong>bases</strong> of the shillings, pence, and optionally farthing units differed by region, coinage, and era.</li>
 </ol>
-<p>The <code>deb_lsd</code> type maintains the tripartite structure of non-decimal currencies and provides a <code>bases</code> attribute to record the bases for the shillings and pence units. The <code>deb_tetra</code> type extends the concept of the <code>deb_lsd</code> type to incorporate currencies and other types of values that consist of four units. The <code>deb_decimal</code> type provides a means to decimalize both <code>deb_lsd</code> and <code>deb_tetra</code> types while keeping track of the two or three non-decimal bases and the unit represented.</p>
+<p>The <code>deb_lsd</code> type maintains the tripartite structure of non-decimal currencies and provides a <code>bases</code> attribute to record the bases for the shillings and pence units. The <code>deb_tetra</code> type extends the concept of the <code>deb_lsd</code> type to incorporate currencies and other types of values that consist of four units. The <code>deb_decimal</code> type provides a means to decimalize both <code>deb_lsd</code> and <code>deb_tetra</code> types while keeping track of the two or three non-decimal <code>bases</code> and the <code>unit</code> represented as attributes.</p>
 <p>Let’s see how this works in practice, beginning with <code>deb_lsd</code> vectors. Note that all of the functions in <code>debkeepr</code> begin with the prefix <code>deb_</code>, which is short for double-entry bookkeeping.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jessesadler/debkeepr" class="external-link">debkeepr</a></span><span class="op">)</span></span>

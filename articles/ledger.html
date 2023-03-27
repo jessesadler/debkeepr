@@ -109,21 +109,22 @@ use of time, thereby precluding the use of digital tools to analyze or
 visualize the contents.</p>
 <p>The <code>debkeepr</code> package seeks to facilitate digital
 analysis of account books through the implementation of the
-<code>deb_lsd</code> and <code>deb_decimal</code> classes or types that
-integrate pounds, shillings, and pence values into R.<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;For an introduction to the use of &lt;code&gt;debkeepr&lt;/code&gt;,
+<code>deb_lsd</code>, <code>deb_tetra</code>, and
+<code>deb_decimal</code> types that integrate non-decimal values into
+R.<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;For an introduction to the use of &lt;code&gt;debkeepr&lt;/code&gt;,
 see the &lt;a href="https://jessesadler.github.io/debkeepr/articles/debkeepr.html"&gt;Getting
-Started with debkeepr&lt;/a&gt; vignette.&lt;/p&gt;'><sup>1</sup></a> At a very practical
-level, the goal of <code>debkeepr</code> is to make the transcription of
-historical account books into a data base a more valuable research
-activity. Once the contents of a set of account books are transcribed
-into a data base — such as the example journal and ledger from Richard
-Dafforne’s <em>The Merchant’s Mirrour, Or Directions for the Perfect
-Ordering and Keeping of His Accounts</em> (London, 1660) used here —
-<code>debkeepr</code> assists the researcher in both the analysis and
-presentation of the data. By creating an environment to analyze the
-contents of account books in R, <code>debkeepr</code> also seeks to make
-the analysis of accounts more transparent and amendable to the practices
-of reproducible research.</p>
+Started with debkeepr&lt;/a&gt; vignette.&lt;/p&gt;'><sup>1</sup></a> At a
+very practical level, the goal of <code>debkeepr</code> is to make the
+transcription of historical account books into a data base a more
+valuable research activity. Once the contents of a set of account books
+are transcribed into a data base — such as the example journal and
+ledger from Richard Dafforne’s <em>The Merchant’s Mirrour, Or Directions
+for the Perfect Ordering and Keeping of His Accounts</em> (London, 1660)
+used here — <code>debkeepr</code> assists the researcher in both the
+analysis and presentation of the data. By creating an environment to
+analyze the contents of account books in R, <code>debkeepr</code> also
+seeks to make the analysis of accounts more transparent and amendable to
+the practices of reproducible research.</p>
 <p>This vignette uses the practice journal and ledger from the 1660
 edition of Richard Dafforne’s <em>Merchant’s Mirrour</em> to show some
 of the ways that <code>debkeepr</code> facilitates the examination and
@@ -151,7 +152,7 @@ by transaction, the ledger is organized by account. Each transaction is
 placed in the ledger twice, once under the credit account and once under
 the debit account — hence double-entry bookkeeping. Dafforne’s journal
 contains 191 transactions between 47 accounts, and thus the ledger
-possesses 282 entries divided among the 47 accounts.</p>
+possesses 382 entries divided among the 47 accounts.</p>
 <p>The data from these account books are included in the
 <code>debkeepr</code> package. <code>dafforne_transactions</code> is a
 data frame that includes all of the transactions from the journal except
@@ -222,7 +223,7 @@ point in the data analysis pipeline. The following code simplifies the
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8      9    11 1633-01-04      360:0s:0d   360.000000</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9      1     9 1633-01-04      144:0s:0d   144.000000</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10      5    10 1633-01-04      120:0s:0d   120.000000</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 167 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 167 more rows</span></span></span></code></pre></div>
 <p>To get a visual overview of the transactions, the value of each
 transaction can be plotted. Because each transaction is associated with
 two accounts — a debtor account and a creditor account — the journal
@@ -283,7 +284,7 @@ with <code><a href="../reference/transactions.html">deb_account_summary()</a></c
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>          8    1580:10s:0d    1580:10s:0d        0:0s:0d</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>          9     1744:1s:4d     1744:1s:4d        0:0s:0d</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>         10      606:2s:6d      606:2s:6d        0:0s:0d</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 36 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 36 more rows</span></span></span></code></pre></div>
 <p>From this information, a line-range plot can be constructed with the
 upper limit represented by the total credit, the lower limit the total
 debit, and the current value by a point. Though conceptually it is not
