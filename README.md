@@ -95,7 +95,7 @@ Translations of *libra*, *solidus*, and *denarius* units:
   *Merchant’s Mirrour* using the `dafforne_transactions` and
   `dafforne_accounts` data provided in `debkeepr`.
 - [A PDF copy of Dafforne’s practice
-  journal](https://github.com/jessesadler/debkeepr/blob/master/data-raw/dafforne-journal.pdf)
+  journal](https://github.com/jessesadler/debkeepr/blob/main/data-raw/dafforne-journal.pdf)
   can be consulted to further investigate the practices of early modern
   double-entry bookkeeping.
 
@@ -117,7 +117,8 @@ shillings and pence units. The `deb_tetra` type extends the concept of
 the `deb_lsd` type to incorporate currencies and other types of values
 that consist of four units. The `deb_decimal` type provides a means to
 decimalize both `deb_lsd` and `deb_tetra` types while keeping track of
-the two or three non-decimal bases and the unit represented.
+the two or three non-decimal `bases` and the `unit` represented as
+attributes.
 
 Let’s see how this works in practice, beginning with `deb_lsd` vectors.
 Note that all of the functions in `debkeepr` begin with the prefix
